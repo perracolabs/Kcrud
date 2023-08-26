@@ -2,6 +2,9 @@
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
+val exposed_version: String by project
+val koin_version: String by project
+
 
 plugins {
     kotlin("jvm") version "1.9.0"
@@ -36,17 +39,21 @@ dependencies {
     implementation("com.typesafe:config:1.4.2")
 
     // https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
-    implementation("org.jetbrains.exposed:exposed-core:0.42.0")
-    implementation("org.jetbrains.exposed:exposed-dao:0.42.0")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.42.0")
+    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
+
+    // https://github.com/Kotlin/kotlinx-datetime
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     // https://mvnrepository.com/artifact/com.h2database/h2
     implementation("com.h2database:h2:2.1.210")
 
     // https://insert-koin.io/docs/quickstart/ktor
     // https://github.com/InsertKoinIO/koin-getting-started
-    implementation("io.insert-koin:koin-ktor:3.4.3")
-    implementation("io.insert-koin:koin-logger-slf4j:3.4.3")
+    implementation("io.insert-koin:koin-ktor:$koin_version")
+    implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
 
     implementation("io.mockk:mockk:1.11.0")
     testImplementation("io.ktor:ktor-server-tests-jvm")

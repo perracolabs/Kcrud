@@ -11,6 +11,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.LocalDate
 import org.koin.test.KoinTest
 import kotlin.test.Test
 
@@ -28,7 +29,13 @@ class EmployeeControllerTest : KoinTest {
 
         // Given
         val employeeId = 1
-        val mockEmployee = EmployeeEntity(id = employeeId, name = "Test Employee Name", age = 30)
+        val mockEmployee = EmployeeEntity(
+            id = employeeId,
+            firstName = "Pepito",
+            lastName = "Paquito",
+            dob = LocalDate(year = 2023, monthNumber = 1, dayOfMonth = 1)
+        )
+
         coEvery { mockRepository.findById(employeeId) } returns mockEmployee
 
         // Simulate the call.

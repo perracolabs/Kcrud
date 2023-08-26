@@ -51,12 +51,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      */
     fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntity? {
         val currentEmployee = findById(id) ?: return null
-        val updatedEmployee = EmployeeEntity(
-            id = currentEmployee.id,
-            name = employeePatch.name ?: currentEmployee.name,
-            age = employeePatch.age ?: currentEmployee.age
-        )
-        return repository.update(id, updatedEmployee)
+        return repository.patch(currentEmployee, employeePatch)
     }
 
     /**

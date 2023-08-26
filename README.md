@@ -8,15 +8,16 @@ Create or update employees: http://localhost:8080/v1/employee
 
 ```
 {
-    "name": "Saco Paco",
-    "age": 25
+    "firstName": "Saco",
+    "lastName": "Paco",
+    "dob": "2023-01-01"
 }
 ```
 Patch an existing employee: http://localhost:8080/v1/employee/{id}
 
 ```
 {
-    "age": 45
+    "lastName": "Kotliner"
 }
 ```
 
