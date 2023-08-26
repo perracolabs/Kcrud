@@ -1,6 +1,6 @@
 package com.kcrud.app.configuration
 
-import com.kcrud.data.models.UserTable
+import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -32,7 +32,7 @@ object DatabaseFactory {
         val database = Database.connect(url = jdbcURL, driver = DRIVER_CLASS_NAME)
 
         transaction(database) {
-            SchemaUtils.create(UserTable)
+            SchemaUtils.create(EmployeeTable)
             println("Database ready.")
         }
     }

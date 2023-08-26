@@ -41,7 +41,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:0.42.0")
 
     // https://mvnrepository.com/artifact/com.h2database/h2
-    implementation("com.h2database:h2:2.2.220")
+    implementation("com.h2database:h2:2.1.210")
 
     // https://insert-koin.io/docs/quickstart/ktor
     // https://github.com/InsertKoinIO/koin-getting-started

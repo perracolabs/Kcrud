@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
 
 
-internal object UserTable : Table(name = "user") {
-    val id = integer(name = "user_id").autoIncrement()
+internal object EmployeeTable : Table(name = "employee") {
+    val id = integer(name = "employee_id").autoIncrement()
     val name = varchar(name = "name", length = 64)
     val age = integer(name = "age")
 
@@ -13,14 +13,14 @@ internal object UserTable : Table(name = "user") {
 }
 
 @Serializable
-data class UserEntity(
+data class EmployeeEntity(
     val id: Int? = null,
     val name: String,
     val age: Int
 )
 
 @Serializable
-data class UserPatchDTO(
+data class EmployeePatchDTO(
     val name: String? = null,
     val age: Int? = null
 )

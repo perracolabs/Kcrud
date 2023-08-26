@@ -4,7 +4,7 @@ A simple **CRUD** implementation in [Kotlin](https://kotlinlang.org/) using [Kto
 
 ### [Postman](https://www.postman.com/) examples:
 
-Create or update users: http://localhost:8080/v1/user
+Create or update employees: http://localhost:8080/v1/employee
 
 ```
 {
@@ -12,7 +12,7 @@ Create or update users: http://localhost:8080/v1/user
     "age": 25
 }
 ```
-Patch an existing user: http://localhost:8080/v1/user/{id}
+Patch an existing employee: http://localhost:8080/v1/employee/{id}
 
 ```
 {
@@ -20,6 +20,6 @@ Patch an existing user: http://localhost:8080/v1/user/{id}
 }
 ```
 
-Get or delete existing users: http://localhost:8080/v1/user/{id}
+Get or delete an existing employee: http://localhost:8080/v1/employee/{id}
 
-Get or delete all users: http://localhost:8080/v1/users
+Get or delete all employees: http://localhost:8080/v1/employees

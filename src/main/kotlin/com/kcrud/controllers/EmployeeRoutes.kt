@@ -5,11 +5,11 @@ import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
 
-fun Route.user() {
+fun Route.employee() {
 
-    val controller: UserController by inject()
+    val controller: EmployeeController by inject()
 
-    route("v1/user/{id}") {
+    route("v1/employee/{id}") {
         get { controller.get(call) }
 
         put { controller.update(call) }
@@ -19,13 +19,13 @@ fun Route.user() {
         delete { controller.delete(call) }
     }
 
-    route("v1/users") {
+    route("v1/employees") {
         get { controller.getAll(call) }
 
         delete { controller.deleteAll(call) }
     }
 
-    route("v1/user") {
+    route("v1/employee") {
         post { controller.create(call) }
     }
 }

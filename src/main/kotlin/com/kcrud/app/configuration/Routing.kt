@@ -1,6 +1,6 @@
 package com.kcrud.app.configuration
 
-import com.kcrud.controllers.user
+import com.kcrud.controllers.employee
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -14,6 +14,6 @@ fun Application.configureRouting() {
     }
 
     routing {
-        user()
+        employee()
     }
 }

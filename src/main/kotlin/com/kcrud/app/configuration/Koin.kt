@@ -1,9 +1,9 @@
 package com.kcrud.app.configuration
 
-import com.kcrud.controllers.UserController
-import com.kcrud.data.repositories.IUserRepository
-import com.kcrud.data.repositories.UserRepository
-import com.kcrud.services.UserService
+import com.kcrud.controllers.EmployeeController
+import com.kcrud.data.repositories.IEmployeeRepository
+import com.kcrud.data.repositories.EmployeeRepository
+import com.kcrud.services.EmployeeService
 import io.ktor.server.application.*
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -13,9 +13,9 @@ import org.koin.core.module.dsl.bind
 
 fun Application.configureDependencyInjection() {
     val appModule = module {
-        singleOf(::UserRepository) { bind<IUserRepository>() }
-        singleOf(::UserService)
-        singleOf(::UserController)
+        singleOf(::EmployeeRepository) { bind<IEmployeeRepository>() }
+        singleOf(::EmployeeService)
+        singleOf(::EmployeeController)
     }
 
     install(plugin = Koin) {
