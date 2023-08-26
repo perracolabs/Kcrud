@@ -17,7 +17,7 @@ class EmployeeRepository : IEmployeeRepository {
         var generatedKey: Int? = null
         transaction {
             val insertStatement = EmployeeTable.insert { data ->
-                entityToModel(employee, data)
+                entityToStatement(employee, data)
             }
             generatedKey = insertStatement[EmployeeTable.id]
         }
@@ -43,7 +43,7 @@ class EmployeeRepository : IEmployeeRepository {
     override fun update(id: Int, employee: EmployeeEntity): EmployeeEntity? {
         transaction {
             EmployeeTable.update({ EmployeeTable.id eq id }) { data ->
-                entityToModel(employee, data)
+                entityToStatement(employee, data)
             }
         }
         return findById(id)
@@ -83,7 +83,7 @@ class EmployeeRepository : IEmployeeRepository {
         )
     }
 
-    private fun entityToModel(employee: EmployeeEntity, statement: UpdateBuilder<Int>) {
+    private fun entityToStatement(employee: EmployeeEntity, statement: UpdateBuilder<Int>) {
         statement[EmployeeTable.firstName] = employee.firstName
         statement[EmployeeTable.lastName] = employee.lastName
         statement[EmployeeTable.dob] = employee.dob.toJavaLocalDate()
