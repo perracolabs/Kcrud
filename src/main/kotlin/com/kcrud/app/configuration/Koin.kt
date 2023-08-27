@@ -13,6 +13,7 @@ import org.koin.ktor.plugin.Koin
 
 /**
  * Application extension function to configure dependency injection.
+ * See [Koin for Ktor documentation](https://insert-koin.io/docs/quickstart/ktor)
  */
 fun Application.configureDependencyInjection() {
 

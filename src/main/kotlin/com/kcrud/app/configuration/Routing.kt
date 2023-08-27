@@ -8,6 +8,7 @@ import io.ktor.server.routing.*
 
 /**
  * Application extension function to configure the routing settings.
+ * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html)
  */
 fun Application.configureRouting() {
 

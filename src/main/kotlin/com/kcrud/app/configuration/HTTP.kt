@@ -7,6 +7,7 @@ import io.ktor.server.plugins.cors.routing.*
 
 /**
  * Application extension function to configure HTTP settings.
+ * See: [CORS Documentation](https://ktor.io/docs/cors.html)
  */
 fun Application.configureHTTP() {
 
