@@ -1,5 +1,5 @@
 # kcrud
-A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) using [Ktor](https://ktor.io/).
+A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
 
 ### Characteristics:
 * All common **REST** operations.
@@ -83,6 +83,7 @@ mutation {
         id
         firstName
         lastName
+        fullName
         dob
     }
 }
@@ -99,6 +100,7 @@ mutation {
         id
         firstName
         lastName
+        fullName
         dob
     }
 }
@@ -113,6 +115,7 @@ mutation {
         id
         firstName
         lastName
+        fullName
         dob
     }
 }
