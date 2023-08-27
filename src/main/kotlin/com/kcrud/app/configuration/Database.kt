@@ -47,7 +47,18 @@ object DatabaseFactory {
             // In-memory sqlite databases get destroyed between transactions.
             // Getting a connection will preserve the in-memory database unless explicitly closed.
             // See: https://github.com/JetBrains/Exposed/issues/726#issuecomment-932202379
-            DriverManager.getConnection(connectionDetails.jdbcUrl)
+            val connection = DriverManager.getConnection(connectionDetails.jdbcUrl)
+
+            // Add shutdown hook to close the connection.
+            Runtime.getRuntime().addShutdownHook(Thread {
+                connection?.let {
+                    if (!it.isClosed) {
+                        println("Shutdown hook triggered. Closing database connection.")
+                        it.close()
+                        println("Database connection closed.")
+                    }
+                }
+            })
         }
 
         val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
