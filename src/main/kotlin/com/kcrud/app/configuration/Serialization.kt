@@ -8,6 +8,7 @@ import kotlinx.serialization.json.Json
 
 /**
  * Application extension function to configure serialization.
+ * See [kotlin serialization guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
  */
 fun Application.configureSerialization() {
 
