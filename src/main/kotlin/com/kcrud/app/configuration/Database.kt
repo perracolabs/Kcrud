@@ -4,10 +4,12 @@ import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.sql.DriverManager
 
 
 /**
  * Provides functionality to initialize and manage a connection to the database.
+ * H2 and SQLite are supported, for both in-memory and file based.
  */
 object DatabaseFactory {
 
@@ -19,17 +21,34 @@ object DatabaseFactory {
         PERSISTENT
     }
 
-    private const val DRIVER_CLASS_NAME = "org.h2.Driver"
-    private const val DATABASE_NAME = "dbv1"
+    enum class DBType {
+        H2,
+        SQLite
+    }
+
+    // Prefix for the database name.
+    private const val DB_NAME = "dbv1"
+
+    // The path for persistent database storage.
+    private const val DB_PATH = "./.database/"
 
     /**
-     * Initializes the database connection based on the provided mode.
+     * Initializes the database connection based on the provided mode and database type.
      *
      * @param mode The mode in which the database should be initialized.
+     * @param type The type of the database to use.
      */
-    fun init(mode: Mode) {
-        val jdbcURL = getJdbcUrl(mode)
-        val database = Database.connect(url = jdbcURL, driver = DRIVER_CLASS_NAME)
+    fun init(mode: Mode, type: DBType) {
+        val (jdbcURL, driver) = getDatabaseConfig(mode, type)
+
+        if (mode == Mode.IN_MEMORY && type == DBType.SQLite) {
+            // In-memory sqlite databases get destroyed between transactions.
+            // Getting a connection will preserve the in-memory database unless explicitly closed.
+            // See: https://github.com/JetBrains/Exposed/issues/726#issuecomment-932202379
+            DriverManager.getConnection(jdbcURL)
+        }
+
+        val database = Database.connect(url = jdbcURL, driver = driver)
 
         transaction(database) {
             SchemaUtils.create(EmployeeTable)
@@ -38,15 +57,24 @@ object DatabaseFactory {
     }
 
     /**
-     * Returns the JDBC URL corresponding to the provided database mode.
+     * Returns the JDBC URL and Driver class name corresponding to the provided database mode and type.
      *
      * @param mode The mode for which the JDBC URL is needed.
-     * @return The JDBC URL for the specified mode.
+     * @param type The type of the database to use.
+     * @return Pair of JDBC URL and Driver class name for the specified mode and type.
      */
-    private fun getJdbcUrl(mode: Mode): String {
-        return when (mode) {
-            Mode.IN_MEMORY -> "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;"
-            Mode.PERSISTENT -> "jdbc:h2:file:./build/$DATABASE_NAME"
+    private fun getDatabaseConfig(mode: Mode, type: DBType): Pair<String, String> {
+        val dbName = "${DB_NAME}_${type.name.lowercase()}"
+        return when (type) {
+            DBType.H2 -> when (mode) {
+                Mode.IN_MEMORY -> Pair("jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver")
+                Mode.PERSISTENT -> Pair("jdbc:h2:file:$DB_PATH$dbName", "org.h2.Driver")
+            }
+
+            DBType.SQLite -> when (mode) {
+                Mode.IN_MEMORY -> Pair("jdbc:sqlite:file:test?mode=memory&cache=shared", "org.sqlite.JDBC")
+                Mode.PERSISTENT -> Pair("jdbc:sqlite:$DB_PATH$dbName.db", "org.sqlite.JDBC")
+            }
         }
     }
 }

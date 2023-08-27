@@ -18,5 +18,5 @@ fun Application.module() {
 
     configureRouting()
 
-    DatabaseFactory.init(DatabaseFactory.Mode.PERSISTENT)
+    DatabaseFactory.init(mode=DatabaseFactory.Mode.PERSISTENT, type = DatabaseFactory.DBType.H2)
 }

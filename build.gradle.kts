@@ -55,6 +55,8 @@ dependencies {
 
     // https://github.com/h2database/h2database
     implementation("com.h2database:h2:2.1.210")
+    // https://github.com/sqlite/sqlite
+    implementation("org.xerial:sqlite-jdbc:3.42.0.1")
 
     implementation("io.mockk:mockk:1.11.0")
     testImplementation("io.ktor:ktor-server-tests-jvm")
