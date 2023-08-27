@@ -6,7 +6,7 @@ import io.ktor.server.plugins.cors.routing.*
 
 
 /**
- * Extension function to configure HTTP settings for a Ktor Application.
+ * Application extension function to configure HTTP settings.
  */
 fun Application.configureHTTP() {
 

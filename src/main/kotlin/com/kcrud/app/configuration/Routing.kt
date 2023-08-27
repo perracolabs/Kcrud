@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 
 
 /**
- * Extension function to configure the routing settings for a Ktor Application.
+ * Application extension function to configure the routing settings.
  */
 fun Application.configureRouting() {
 

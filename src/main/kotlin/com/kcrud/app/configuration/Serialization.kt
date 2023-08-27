@@ -7,7 +7,7 @@ import kotlinx.serialization.json.Json
 
 
 /**
- * Extension function to configure serialization settings for a Ktor Application.
+ * Application extension function to configure serialization.
  */
 fun Application.configureSerialization() {
 
