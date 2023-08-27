@@ -4,6 +4,8 @@ import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.sql.DriverManager
 
 
@@ -64,16 +66,20 @@ object DatabaseFactory {
      * @return Pair of JDBC URL and Driver class name for the specified mode and type.
      */
     private fun getDatabaseConfig(mode: Mode, type: DBType): Pair<String, String> {
-        val dbName = "${DB_NAME}_${type.name.lowercase()}"
+        val path = "$DB_PATH${type.name}"
+        Files.createDirectories(Paths.get(path))
+
+        val dbName = "$path/${DB_NAME}"
+
         return when (type) {
             DBType.H2 -> when (mode) {
                 Mode.IN_MEMORY -> Pair("jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver")
-                Mode.PERSISTENT -> Pair("jdbc:h2:file:$DB_PATH$dbName", "org.h2.Driver")
+                Mode.PERSISTENT -> Pair("jdbc:h2:file:$dbName", "org.h2.Driver")
             }
 
             DBType.SQLite -> when (mode) {
                 Mode.IN_MEMORY -> Pair("jdbc:sqlite:file:test?mode=memory&cache=shared", "org.sqlite.JDBC")
-                Mode.PERSISTENT -> Pair("jdbc:sqlite:$DB_PATH$dbName.db", "org.sqlite.JDBC")
+                Mode.PERSISTENT -> Pair("jdbc:sqlite:$dbName.db", "org.sqlite.JDBC")
             }
         }
     }
