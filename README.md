@@ -9,7 +9,7 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 
 ---
 
-### Postman **REST** examples:
+### [Postman](https://www.postman.com/) **REST** examples:
 
 * Create or update employees: http://localhost:8080/v1/employee
 
