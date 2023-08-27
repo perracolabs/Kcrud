@@ -4,6 +4,9 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 
+/**
+ * Database model for employees.
+ */
 internal object EmployeeTable : Table(name = "employee") {
     val id = integer(name = "employee_id").autoIncrement()
     val firstName = varchar(name = "first_name", length = 64)
