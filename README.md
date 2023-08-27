@@ -1,7 +1,7 @@
 # kcrud
 A simple **CRUD** implementation in [Kotlin](https://kotlinlang.org/) using [Ktor](https://ktor.io/), including dependency injection with [Koin](https://insert-koin.io/).
 
-Has support for H2 and SQLite databases, for both in-memory or file based.
+Has support for [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) databases, for both in-memory or file based.
 
 ### [Postman](https://www.postman.com/) examples:
 
