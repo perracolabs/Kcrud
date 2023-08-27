@@ -13,7 +13,7 @@ internal object EmployeeTable : Table(name = "employee") {
     val lastName = varchar(name = "last_name", length = 64)
     val dob = date(name = "dob")
 
-    override val primaryKey = PrimaryKey(id)
+    override val primaryKey = PrimaryKey(id, name = "PK_Employee_ID")
 }
 
 @Serializable
