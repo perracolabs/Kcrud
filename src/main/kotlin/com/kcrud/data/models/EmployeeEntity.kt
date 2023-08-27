@@ -38,7 +38,7 @@ data class EmployeeEntityIn(
 }
 
 /**
- * Entity for patching individual employee fields.
+ * Employee entity for patching individual fields.
  */
 @Serializable
 data class EmployeePatchDTO(

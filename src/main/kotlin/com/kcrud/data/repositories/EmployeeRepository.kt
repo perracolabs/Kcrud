@@ -1,7 +1,7 @@
 package com.kcrud.data.repositories
 
-import com.kcrud.data.models.EmployeeEntityIn
 import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.models.EmployeeEntityIn
 import com.kcrud.data.models.EmployeePatchDTO
 import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.*
@@ -72,6 +72,9 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
+    /**
+     * Converts a database [ResultRow] to an [EmployeeEntity] object.
+     */
     private fun rowToEntity(row: ResultRow): EmployeeEntity {
         return EmployeeEntity(
             id = row[EmployeeTable.id],
@@ -81,6 +84,9 @@ class EmployeeRepository : IEmployeeRepository {
         )
     }
 
+    /**
+     * Populates an SQL [UpdateBuilder] with data from an [EmployeeEntityIn] instance.
+     */
     private fun entityToStatement(employee: EmployeeEntityIn, statement: UpdateBuilder<Int>) {
         statement[EmployeeTable.firstName] = employee.firstName.trim()
         statement[EmployeeTable.lastName] = employee.lastName.trim()
