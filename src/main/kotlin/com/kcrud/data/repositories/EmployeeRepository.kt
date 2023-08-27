@@ -13,20 +13,18 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class EmployeeRepository : IEmployeeRepository {
 
     override fun create(employee: EmployeeEntityIn): EmployeeEntity {
-        var generatedKey: Int? = null
-        transaction {
-            val insertStatement = EmployeeTable.insert { data ->
-                entityToStatement(employee, data)
-            }
-            generatedKey = insertStatement[EmployeeTable.id]
+        return transaction {
+            val newEmployeeId = EmployeeTable.insert { dbEmployee ->
+                entityToStatement(employee = employee, statement = dbEmployee)
+            } get EmployeeTable.id
+            findById(id = newEmployeeId)!!
         }
-        return findById(generatedKey!!)!!
     }
 
     override fun findById(id: Int): EmployeeEntity? {
         return transaction {
             EmployeeTable.select { EmployeeTable.id eq id }.map { row ->
-                rowToEntity(row)
+                rowToEntity(row = row)
             }.singleOrNull()
         }
     }
@@ -34,30 +32,29 @@ class EmployeeRepository : IEmployeeRepository {
     override fun findAll(): List<EmployeeEntity> {
         return transaction {
             EmployeeTable.selectAll().map { row ->
-                rowToEntity(row)
+                rowToEntity(row = row)
             }
         }
     }
 
     override fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntity? {
-        transaction {
-            EmployeeTable.update({ EmployeeTable.id eq id }) { data ->
-                entityToStatement(employee, data)
+        return transaction {
+            EmployeeTable.update({ EmployeeTable.id eq id }) { dbEmployee ->
+                entityToStatement(employee = employee, statement = dbEmployee)
             }
+            findById(id = id)
         }
-        return findById(id)
     }
 
     override fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntity? {
-        val currentEmployeeData = findById(id) ?: return null
-
-        val newEmployeeData = EmployeeEntityIn(
-            firstName = employeePatch.firstName ?: currentEmployeeData.firstName,
-            lastName = employeePatch.lastName ?: currentEmployeeData.lastName,
-            dob = employeePatch.dob ?: currentEmployeeData.dob
-        )
-
-        return update(id, newEmployeeData)
+        return findById(id)?.let { currentEmployeeData ->
+            val newEmployeeData = EmployeeEntityIn(
+                firstName = employeePatch.firstName ?: currentEmployeeData.firstName,
+                lastName = employeePatch.lastName ?: currentEmployeeData.lastName,
+                dob = employeePatch.dob ?: currentEmployeeData.dob
+            )
+            update(id = id, employee = newEmployeeData)
+        }
     }
 
     override fun delete(id: Int) {
