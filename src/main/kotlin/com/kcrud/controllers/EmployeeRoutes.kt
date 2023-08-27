@@ -12,22 +12,28 @@ fun Route.employee() {
 
     val controller: EmployeeController by inject()
 
-    // Define routes for operations related to a single employee.
-    route("v1/employee/{id}") {
-        get { controller.get(call) }
-        put { controller.update(call) }
-        patch { controller.patch(call) }
-        delete { controller.delete(call) }
-    }
+    route("v1") {
 
-    // Define routes for operations related to multiple employees.
-    route("v1/employees") {
-        get { controller.getAll(call) }
-        delete { controller.deleteAll(call) }
-    }
+        // Routes for operations related to a single employee.
+        route("employee") {
 
-    // Define route for creating a new employee.
-    route("v1/employee") {
-        post { controller.create(call) }
+            route("{id}") {
+                get { controller.get(call) }
+                put { controller.update(call) }
+                patch { controller.patch(call) }
+                delete { controller.delete(call) }
+            }
+
+            // Route for creating a new employee.
+            post { controller.create(call) }
+        }
+
+        // Routes for operations related to multiple employees.
+        route("employees") {
+            get { controller.getAll(call) }
+            delete { controller.deleteAll(call) }
+        }
     }
 }
+
+
