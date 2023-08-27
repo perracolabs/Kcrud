@@ -85,8 +85,10 @@ class EmployeeRepository : IEmployeeRepository {
      * Populates an SQL [UpdateBuilder] with data from an [EmployeeEntityIn] instance.
      */
     private fun entityToStatement(employee: EmployeeEntityIn, statement: UpdateBuilder<Int>) {
-        statement[EmployeeTable.firstName] = employee.firstName.trim()
-        statement[EmployeeTable.lastName] = employee.lastName.trim()
-        statement[EmployeeTable.dob] = employee.dob
+        with(statement) {
+            this[EmployeeTable.firstName] = employee.firstName.trim()
+            this[EmployeeTable.lastName] = employee.lastName.trim()
+            this[EmployeeTable.dob] = employee.dob
+        }
     }
 }
