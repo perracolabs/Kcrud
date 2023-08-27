@@ -9,11 +9,6 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 
 ---
 
-### [Postman](https://www.postman.com/) configuration:
-For each operation (Get, Post, etc.) add a **Header** entry:
-* key: Content-Type
-* value: application/json
-
 ### Postman **REST** examples:
 
 * Create or update employees: http://localhost:8080/v1/employee
@@ -43,7 +38,7 @@ For each operation (Get, Post, etc.) add a **Header** entry:
 * Use the next URL in Postman: http://localhost:8080/graphql
 * Choose **Body** select **GraphQL**
 
-#### GraphQL queries:
+#### Queries:
 
 *  Return a single employee
 ```graphql
@@ -70,7 +65,7 @@ query {
    }
 }
 ```
-#### GraphQL mutations:
+#### Mutations:
 
 * Create a new employee
 ```graphql
