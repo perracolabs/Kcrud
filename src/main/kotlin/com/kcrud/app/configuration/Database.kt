@@ -41,16 +41,16 @@ object DatabaseFactory {
      * @param type The type of the database to use.
      */
     fun init(mode: Mode, type: DBType) {
-        val (jdbcURL, driver) = getDatabaseConfig(mode, type)
+        val connectionDetails = getConnectionDetails(mode, type)
 
         if (mode == Mode.IN_MEMORY && type == DBType.SQLite) {
             // In-memory sqlite databases get destroyed between transactions.
             // Getting a connection will preserve the in-memory database unless explicitly closed.
             // See: https://github.com/JetBrains/Exposed/issues/726#issuecomment-932202379
-            DriverManager.getConnection(jdbcURL)
+            DriverManager.getConnection(connectionDetails.jdbcUrl)
         }
 
-        val database = Database.connect(url = jdbcURL, driver = driver)
+        val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
 
         transaction(database) {
             SchemaUtils.create(EmployeeTable)
@@ -63,9 +63,9 @@ object DatabaseFactory {
      *
      * @param mode The mode for which the JDBC URL is needed.
      * @param type The type of the database to use.
-     * @return Pair of JDBC URL and Driver class name for the specified mode and type.
+     * @return The resolved JDBC URL and Driver class name.
      */
-    private fun getDatabaseConfig(mode: Mode, type: DBType): Pair<String, String> {
+    private fun getConnectionDetails(mode: Mode, type: DBType): ConnectionDetails {
         val path = "$DB_PATH${type.name}"
         Files.createDirectories(Paths.get(path))
 
@@ -73,14 +73,16 @@ object DatabaseFactory {
 
         return when (type) {
             DBType.H2 -> when (mode) {
-                Mode.IN_MEMORY -> Pair("jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver")
-                Mode.PERSISTENT -> Pair("jdbc:h2:file:$dbName", "org.h2.Driver")
+                Mode.IN_MEMORY -> ConnectionDetails(jdbcUrl = "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver")
+                Mode.PERSISTENT -> ConnectionDetails(jdbcUrl = "jdbc:h2:file:$dbName", driver = "org.h2.Driver")
             }
 
             DBType.SQLite -> when (mode) {
-                Mode.IN_MEMORY -> Pair("jdbc:sqlite:file:test?mode=memory&cache=shared", "org.sqlite.JDBC")
-                Mode.PERSISTENT -> Pair("jdbc:sqlite:$dbName.db", "org.sqlite.JDBC")
+                Mode.IN_MEMORY -> ConnectionDetails(jdbcUrl = "jdbc:sqlite:file:test?mode=memory&cache=shared", driver = "org.sqlite.JDBC")
+                Mode.PERSISTENT -> ConnectionDetails(jdbcUrl = "jdbc:sqlite:$dbName.db", driver = "org.sqlite.JDBC")
             }
         }
     }
+
+    private data class ConnectionDetails(val jdbcUrl: String, val driver: String)
 }
