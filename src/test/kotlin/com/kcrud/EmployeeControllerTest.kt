@@ -1,7 +1,7 @@
 package com.kcrud
 
 import com.kcrud.controllers.EmployeeController
-import com.kcrud.data.models.EmployeeEntityOut
+import com.kcrud.data.models.EmployeeEntity
 import com.kcrud.data.repositories.IEmployeeRepository
 import com.kcrud.services.EmployeeService
 import io.ktor.server.application.*
@@ -29,17 +29,17 @@ class EmployeeControllerTest : KoinTest {
 
         // Given
         val employeeId = 1
-        val mockEmployeeOutput = EmployeeEntityOut(
+        val mockEmployee = EmployeeEntity(
             id = employeeId,
             firstName = "Pepito",
             lastName = "Paquito",
             dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1)
         )
 
-        assert(mockEmployeeOutput.age != 0)
-        assert(mockEmployeeOutput.fullName.isNotBlank())
+        assert(mockEmployee.age != 0)
+        assert(mockEmployee.fullName.isNotBlank())
 
-        coEvery { mockRepository.findById(employeeId) } returns mockEmployeeOutput
+        coEvery { mockRepository.findById(employeeId) } returns mockEmployee
 
         // Simulate the call.
         val call = mockk<ApplicationCall>(relaxed = true)
@@ -58,7 +58,7 @@ class EmployeeControllerTest : KoinTest {
         // Verify interactions.
         coVerify {
             mockRepository.findById(employeeId)
-            call.respond(mockEmployeeOutput)
+            call.respond(mockEmployee)
         }
 
         println("testGetEmployee completed successfully.")

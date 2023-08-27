@@ -1,7 +1,7 @@
 package com.kcrud.data.repositories
 
 import com.kcrud.data.models.EmployeeEntityIn
-import com.kcrud.data.models.EmployeeEntityOut
+import com.kcrud.data.models.EmployeeEntity
 import com.kcrud.data.models.EmployeePatchDTO
 
 
@@ -12,20 +12,20 @@ interface IEmployeeRepository {
      * @param employee The employee entity to be created.
      * @return The created employee entity with generated ID.
      */
-    fun create(employee: EmployeeEntityIn): EmployeeEntityOut
+    fun create(employee: EmployeeEntityIn): EmployeeEntity
 
     /**
      * Retrieves an employee entity by its ID from the database.
      * @param id The ID of the employee to be retrieved.
      * @return The employee entity if found, null otherwise.
      */
-    fun findById(id: Int): EmployeeEntityOut?
+    fun findById(id: Int): EmployeeEntity?
 
     /**
      * Retrieves all employee entities from the database.
      * @return List of all employee entities.
      */
-    fun findAll(): List<EmployeeEntityOut>
+    fun findAll(): List<EmployeeEntity>
 
     /**
      * Updates an employee's details in the database using the provided ID and employee entity.
@@ -33,7 +33,7 @@ interface IEmployeeRepository {
      * @param employee The new details for the employee.
      * @return The updated employee entity if the update was successful, null otherwise.
      */
-    fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntityOut?
+    fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntity?
 
     /**
      * Patches a given employee's details.
@@ -41,7 +41,7 @@ interface IEmployeeRepository {
      * @param employeePatch The details to be applied.
      * @return The updated employee entity if the update was successful, null otherwise.
      */
-    fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntityOut?
+    fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntity?
 
     /**
      * Deletes an employee from the database using the provided ID.

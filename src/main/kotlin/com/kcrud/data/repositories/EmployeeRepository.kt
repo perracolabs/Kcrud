@@ -1,7 +1,7 @@
 package com.kcrud.data.repositories
 
 import com.kcrud.data.models.EmployeeEntityIn
-import com.kcrud.data.models.EmployeeEntityOut
+import com.kcrud.data.models.EmployeeEntity
 import com.kcrud.data.models.EmployeePatchDTO
 import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.*
@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class EmployeeRepository : IEmployeeRepository {
 
-    override fun create(employee: EmployeeEntityIn): EmployeeEntityOut {
+    override fun create(employee: EmployeeEntityIn): EmployeeEntity {
         var generatedKey: Int? = null
         transaction {
             val insertStatement = EmployeeTable.insert { data ->
@@ -23,7 +23,7 @@ class EmployeeRepository : IEmployeeRepository {
         return findById(generatedKey!!)!!
     }
 
-    override fun findById(id: Int): EmployeeEntityOut? {
+    override fun findById(id: Int): EmployeeEntity? {
         return transaction {
             EmployeeTable.select { EmployeeTable.id eq id }.map { row ->
                 rowToEntity(row)
@@ -31,7 +31,7 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun findAll(): List<EmployeeEntityOut> {
+    override fun findAll(): List<EmployeeEntity> {
         return transaction {
             EmployeeTable.selectAll().map { row ->
                 rowToEntity(row)
@@ -39,7 +39,7 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntityOut? {
+    override fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntity? {
         transaction {
             EmployeeTable.update({ EmployeeTable.id eq id }) { data ->
                 entityToStatement(employee, data)
@@ -48,7 +48,7 @@ class EmployeeRepository : IEmployeeRepository {
         return findById(id)
     }
 
-    override fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntityOut? {
+    override fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntity? {
         val currentEmployeeData = findById(id) ?: return null
 
         val newEmployeeData = EmployeeEntityIn(
@@ -72,8 +72,8 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    private fun rowToEntity(row: ResultRow): EmployeeEntityOut {
-        return EmployeeEntityOut(
+    private fun rowToEntity(row: ResultRow): EmployeeEntity {
+        return EmployeeEntity(
             id = row[EmployeeTable.id],
             firstName = row[EmployeeTable.firstName],
             lastName = row[EmployeeTable.lastName],

@@ -1,7 +1,7 @@
 package com.kcrud.services
 
 import com.kcrud.data.models.EmployeeEntityIn
-import com.kcrud.data.models.EmployeeEntityOut
+import com.kcrud.data.models.EmployeeEntity
 import com.kcrud.data.models.EmployeePatchDTO
 import com.kcrud.data.repositories.IEmployeeRepository
 import org.koin.core.component.KoinComponent
@@ -14,7 +14,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employee The employee entity to be created.
      * @return The created employee entity with generated ID.
      */
-    fun create(employee: EmployeeEntityIn): EmployeeEntityOut {
+    fun create(employee: EmployeeEntityIn): EmployeeEntity {
         return repository.create(employee)
     }
 
@@ -23,7 +23,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param id The ID of the employee to be retrieved.
      * @return The employee entity if found, null otherwise.
      */
-    fun findById(id: Int): EmployeeEntityOut? {
+    fun findById(id: Int): EmployeeEntity? {
         return repository.findById(id)
     }
 
@@ -31,7 +31,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * Retrieves all employees in the system.
      * @return List of all employee entities.
      */
-    fun findAll(): List<EmployeeEntityOut> {
+    fun findAll(): List<EmployeeEntity> {
         return repository.findAll()
     }
 
@@ -41,7 +41,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employee The new details for the employee.
      * @return The updated employee entity if the update was successful, null otherwise.
      */
-    fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntityOut? {
+    fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntity? {
         return repository.update(id, employee)
     }
 
@@ -50,7 +50,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employeePatch The employee data to be updated.
      * @return The updated employee.
      */
-    fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntityOut? {
+    fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntity? {
         return repository.patch(id, employeePatch)
     }
 
