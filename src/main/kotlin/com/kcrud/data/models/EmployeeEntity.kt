@@ -13,7 +13,11 @@ data class EmployeeEntity(
     val dob: LocalDate,
     val fullName: String = "$firstName $lastName"
 ) {
-    // Example of a serializable dynamic field using a delegate.
+    // This is an example of how to circumvent the limitation that
+    // kotlinx.serialization does not support delegated properties.
+    // The regular, serializable property 'age' is manually assigned
+    // the value of the delegated property 'ageDelegate'. This makes
+    // 'age' serializable while still using the logic contained in AgeDelegate.
     private val ageDelegate: Int by AgeDelegate(dob)
     val age = ageDelegate
 }
