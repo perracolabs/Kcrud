@@ -59,7 +59,6 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
         } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employee ID.")
     }
 
-
     /**
      * Handles PATCH request to update details of a specific employee.
      * Reads the updated employee details from the request, updates the employee, and responds with the updated employee details.
@@ -86,7 +85,6 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
             call.respond(HttpStatusCode.NoContent)
         } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employee ID.")
     }
-
 
     /**
      * Handles DELETE request to delete all employees.
