@@ -37,7 +37,7 @@ class EmployeeControllerTest : KoinTest {
         )
 
         assert(mockEmployee.age != 0)
-        assert(mockEmployee.fullName != "")
+        assert(mockEmployee.fullName.isNotEmpty())
 
         coEvery { mockRepository.findById(employeeId) } returns mockEmployee
 
