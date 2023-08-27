@@ -12,8 +12,8 @@ data class EmployeeEntityIn(
     val dob: LocalDate
 ) {
     init {
-        require(firstName.isNotEmpty()) { "First name can't be empty." }
-        require(lastName.isNotEmpty()) { "Last name can't be empty." }
+        require(firstName.isNotBlank()) { "First name can't be empty." }
+        require(lastName.isNotBlank()) { "Last name can't be empty." }
     }
 }
 
@@ -41,10 +41,10 @@ data class EmployeePatchDTO(
 ) {
     init {
         firstName?.let {
-            require(it.isNotEmpty()) { "First name can't be empty." }
+            require(it.isNotBlank()) { "First name can't be empty." }
         }
         lastName?.let {
-            require(it.isNotEmpty()) { "Last name can't be empty." }
+            require(it.isNotBlank()) { "Last name can't be empty." }
         }
     }
 }

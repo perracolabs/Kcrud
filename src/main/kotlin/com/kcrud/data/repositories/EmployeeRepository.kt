@@ -82,8 +82,8 @@ class EmployeeRepository : IEmployeeRepository {
     }
 
     private fun entityToStatement(employee: EmployeeEntityIn, statement: UpdateBuilder<Int>) {
-        statement[EmployeeTable.firstName] = employee.firstName
-        statement[EmployeeTable.lastName] = employee.lastName
+        statement[EmployeeTable.firstName] = employee.firstName.trim()
+        statement[EmployeeTable.lastName] = employee.lastName.trim()
         statement[EmployeeTable.dob] = employee.dob
     }
 }
