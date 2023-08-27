@@ -33,8 +33,11 @@ class EmployeeControllerTest : KoinTest {
             id = employeeId,
             firstName = "Pepito",
             lastName = "Paquito",
-            dob = LocalDate(year = 2023, monthNumber = 1, dayOfMonth = 1)
+            dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1)
         )
+
+        assert(mockEmployee.age != 0)
+        assert(mockEmployee.fullName != "")
 
         coEvery { mockRepository.findById(employeeId) } returns mockEmployee
 

@@ -3,8 +3,6 @@ package com.kcrud.data.repositories
 import com.kcrud.data.models.EmployeeEntity
 import com.kcrud.data.models.EmployeePatchDTO
 import com.kcrud.data.models.EmployeeTable
-import kotlinx.datetime.toJavaLocalDate
-import kotlinx.datetime.toKotlinLocalDate
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -79,13 +77,13 @@ class EmployeeRepository : IEmployeeRepository {
             id = row[EmployeeTable.id],
             firstName = row[EmployeeTable.firstName],
             lastName = row[EmployeeTable.lastName],
-            dob = row[EmployeeTable.dob].toKotlinLocalDate()
+            dob = row[EmployeeTable.dob]
         )
     }
 
     private fun entityToStatement(employee: EmployeeEntity, statement: UpdateBuilder<Int>) {
         statement[EmployeeTable.firstName] = employee.firstName
         statement[EmployeeTable.lastName] = employee.lastName
-        statement[EmployeeTable.dob] = employee.dob.toJavaLocalDate()
+        statement[EmployeeTable.dob] = employee.dob
     }
 }

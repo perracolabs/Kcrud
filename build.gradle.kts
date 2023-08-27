@@ -1,15 +1,7 @@
-
-val ktor_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
-val exposed_version: String by project
-val koin_version: String by project
-
-
 plugins {
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "1.9.10"
     id("io.ktor.plugin") version "2.3.3"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 group = "com.kcrud"
@@ -28,36 +20,45 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.ktor:ktor-server-cors-jvm")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
-    implementation("io.ktor:ktor-server-netty-jvm")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+    // https://github.com/ktorio/ktor
+    val ktorVersion = "2.3.3"
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
 
-    // https://mvnrepository.com/artifact/com.typesafe/config
-    implementation("com.typesafe:config:1.4.2")
+    implementation("ch.qos.logback:logback-classic:1.2.11")
 
-    // https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
-    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
+    // https://github.com/Kotlin/kotlinx.serialization
+    // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md
+    val serializationVersion = "1.6.0"
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$serializationVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$serializationVersion")
 
     // https://github.com/Kotlin/kotlinx-datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
-    // https://mvnrepository.com/artifact/com.h2database/h2
-    implementation("com.h2database:h2:2.1.210")
+    // https://github.com/lightbend/config
+    implementation("com.typesafe:config:1.4.2")
+
+    // https://github.com/JetBrains/Exposed
+    val exposedVersion = "0.42.1"
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
 
     // https://insert-koin.io/docs/quickstart/ktor
     // https://github.com/InsertKoinIO/koin-getting-started
-    implementation("io.insert-koin:koin-ktor:$koin_version")
-    implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
+    val koinVersion = "3.4.3"
+    implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+
+    // https://github.com/h2database/h2database
+    implementation("com.h2database:h2:2.1.210")
 
     implementation("io.mockk:mockk:1.11.0")
     testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.10")
     testImplementation("io.ktor:ktor-server-test-host-jvm:2.3.3")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     testImplementation("org.slf4j:slf4j-api:1.7.32")
