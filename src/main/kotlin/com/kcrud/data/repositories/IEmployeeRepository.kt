@@ -1,7 +1,7 @@
 package com.kcrud.data.repositories
 
-import com.kcrud.data.models.EmployeeEntityIn
 import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.models.EmployeeInput
 import com.kcrud.data.models.EmployeePatchDTO
 
 
@@ -12,7 +12,7 @@ interface IEmployeeRepository {
      * @param employee The employee entity to be created.
      * @return The created employee entity with generated ID.
      */
-    fun create(employee: EmployeeEntityIn): EmployeeEntity
+    fun create(employee: EmployeeInput): EmployeeEntity
 
     /**
      * Retrieves an employee entity by its ID from the database.
@@ -33,7 +33,7 @@ interface IEmployeeRepository {
      * @param employee The new details for the employee.
      * @return The updated employee entity if the update was successful, null otherwise.
      */
-    fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntity?
+    fun update(id: Int, employee: EmployeeInput): EmployeeEntity?
 
     /**
      * Patches a given employee's details.
@@ -46,12 +46,14 @@ interface IEmployeeRepository {
     /**
      * Deletes an employee from the database using the provided ID.
      * @param id The ID of the employee to be deleted.
+     * @return The number of deleted records.
      */
-    fun delete(id: Int)
+    fun delete(id: Int): Int
 
     /**
      * Deletes all employees from the database.
+     * @return The number of deleted records.
      */
-    fun deleteAll()
+    fun deleteAll(): Int
 }
 

@@ -1,6 +1,7 @@
 package com.kcrud.app
 
 import com.kcrud.app.configuration.*
+import com.kcrud.app.configuration.configureGraphQL
 import io.ktor.server.application.*
 
 
@@ -17,6 +18,8 @@ fun Application.module() {
     configureSerialization()
 
     configureRouting()
+
+    configureGraphQL()
 
     DatabaseFactory.init(mode=DatabaseFactory.Mode.PERSISTENT, type = DatabaseFactory.DBType.H2)
 }

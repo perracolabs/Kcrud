@@ -1,6 +1,6 @@
 package com.kcrud.controllers
 
-import com.kcrud.data.models.EmployeeEntityIn
+import com.kcrud.data.models.EmployeeInput
 import com.kcrud.data.models.EmployeePatchDTO
 import com.kcrud.services.EmployeeService
 import io.ktor.http.*
@@ -37,7 +37,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
      * Reads the employee details from the request, creates a new employee, and responds with the created employee details.
      */
     suspend fun create(call: ApplicationCall) {
-        call.receive<EmployeeEntityIn>()
+        call.receive<EmployeeInput>()
             .run { service.create(this) }
             .also { newEmployee -> call.respond(HttpStatusCode.Created, newEmployee) }
     }
@@ -48,7 +48,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
      */
     suspend fun update(call: ApplicationCall) {
         call.parameters["id"]?.toIntOrNull()?.let { employeeId ->
-            val updatedEmployee = call.receive<EmployeeEntityIn>().run {
+            val updatedEmployee = call.receive<EmployeeInput>().run {
                 service.update(employeeId, this)
             }
 

@@ -28,7 +28,7 @@ data class EmployeeEntity(
  * Employee entity details for deserialization.
  */
 @Serializable
-data class EmployeeEntityIn(
+data class EmployeeInput(
     val firstName: String,
     val lastName: String,
     val dob: LocalDate

@@ -1,7 +1,7 @@
 package com.kcrud.data.repositories
 
 import com.kcrud.data.models.EmployeeEntity
-import com.kcrud.data.models.EmployeeEntityIn
+import com.kcrud.data.models.EmployeeInput
 import com.kcrud.data.models.EmployeePatchDTO
 import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.*
@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class EmployeeRepository : IEmployeeRepository {
 
-    override fun create(employee: EmployeeEntityIn): EmployeeEntity {
+    override fun create(employee: EmployeeInput): EmployeeEntity {
         return transaction {
             val newEmployeeId = EmployeeTable.insert { dbEmployee ->
                 entityToStatement(employee = employee, statement = dbEmployee)
@@ -37,7 +37,7 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntity? {
+    override fun update(id: Int, employee: EmployeeInput): EmployeeEntity? {
         return transaction {
             EmployeeTable.update({ EmployeeTable.id eq id }) { dbEmployee ->
                 entityToStatement(employee = employee, statement = dbEmployee)
@@ -48,7 +48,7 @@ class EmployeeRepository : IEmployeeRepository {
 
     override fun patch(id: Int, employeePatch: EmployeePatchDTO): EmployeeEntity? {
         return findById(id)?.let { currentEmployeeData ->
-            val newEmployeeData = EmployeeEntityIn(
+            val newEmployeeData = EmployeeInput(
                 firstName = employeePatch.firstName ?: currentEmployeeData.firstName,
                 lastName = employeePatch.lastName ?: currentEmployeeData.lastName,
                 dob = employeePatch.dob ?: currentEmployeeData.dob
@@ -57,14 +57,14 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun delete(id: Int) {
-        transaction {
+    override fun delete(id: Int): Int {
+        return transaction {
             EmployeeTable.deleteWhere { EmployeeTable.id eq id }
         }
     }
 
-    override fun deleteAll() {
-        transaction {
+    override fun deleteAll(): Int {
+        return transaction {
             EmployeeTable.deleteAll()
         }
     }
@@ -82,9 +82,9 @@ class EmployeeRepository : IEmployeeRepository {
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [EmployeeEntityIn] instance.
+     * Populates an SQL [UpdateBuilder] with data from an [EmployeeInput] instance.
      */
-    private fun entityToStatement(employee: EmployeeEntityIn, statement: UpdateBuilder<Int>) {
+    private fun entityToStatement(employee: EmployeeInput, statement: UpdateBuilder<Int>) {
         with(statement) {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()

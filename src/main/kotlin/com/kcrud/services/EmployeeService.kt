@@ -1,7 +1,7 @@
 package com.kcrud.services
 
-import com.kcrud.data.models.EmployeeEntityIn
 import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.models.EmployeeInput
 import com.kcrud.data.models.EmployeePatchDTO
 import com.kcrud.data.repositories.IEmployeeRepository
 import org.koin.core.component.KoinComponent
@@ -14,7 +14,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employee The employee entity to be created.
      * @return The created employee entity with generated ID.
      */
-    fun create(employee: EmployeeEntityIn): EmployeeEntity {
+    fun create(employee: EmployeeInput): EmployeeEntity {
         return repository.create(employee)
     }
 
@@ -41,7 +41,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employee The new details for the employee.
      * @return The updated employee entity if the update was successful, null otherwise.
      */
-    fun update(id: Int, employee: EmployeeEntityIn): EmployeeEntity? {
+    fun update(id: Int, employee: EmployeeInput): EmployeeEntity? {
         return repository.update(id, employee)
     }
 
