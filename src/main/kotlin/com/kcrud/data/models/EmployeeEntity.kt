@@ -10,9 +10,11 @@ data class EmployeeEntity(
     val id: Int,
     val firstName: String,
     val lastName: String,
-    val dob: LocalDate,
-    val fullName: String = "$firstName $lastName"
+    val dob: LocalDate
 ) {
+    // To serialize default values 'encodeDefaults' in the json configuration must be set to True.
+    val fullName: String = "$firstName $lastName"
+
     // This is an example of how to circumvent the limitation that
     // kotlinx.serialization does not support delegated properties.
     // The regular, serializable property 'age' is manually assigned
