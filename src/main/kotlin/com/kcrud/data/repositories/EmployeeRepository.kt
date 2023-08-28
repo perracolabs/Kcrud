@@ -1,8 +1,8 @@
 package com.kcrud.data.repositories
 
 import com.kcrud.data.entities.ContactEntity
-import com.kcrud.data.models.ContactTable
 import com.kcrud.data.entities.EmployeeEntity
+import com.kcrud.data.models.ContactTable
 import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -22,7 +22,7 @@ class EmployeeRepository : IEmployeeRepository {
                 }).select { EmployeeTable.id eq id }
 
             query.map { row ->
-                rowToEntity(row = row)
+                rowToEmployeeEntity(row = row)
             }.singleOrNull()
         }
     }
@@ -37,7 +37,7 @@ class EmployeeRepository : IEmployeeRepository {
                 }).selectAll()
 
             query.map { row ->
-                rowToEntity(row = row)
+                rowToEmployeeEntity(row = row)
             }
         }
     }
@@ -97,7 +97,7 @@ class EmployeeRepository : IEmployeeRepository {
     /**
      * Converts a database [ResultRow] to an [EmployeeEntity] object.
      */
-    private fun rowToEntity(row: ResultRow): EmployeeEntity {
+    private fun rowToEmployeeEntity(row: ResultRow): EmployeeEntity {
         return EmployeeEntity(
             id = row[EmployeeTable.id],
             firstName = row[EmployeeTable.firstName],
