@@ -11,23 +11,22 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 
 ### [Postman](https://www.postman.com/) **REST** examples:
 
-* Create or update employees: http://localhost:8080/v1/employee
+* Create employees: http://localhost:8080/v1/employee
 
 ```json
 {
     "firstName": "Saco",
-    "lastName": "Paco",
-    "dob": "2000-01-01"
-}
-```
-* Patch an existing employee: http://localhost:8080/v1/employee/{id}
-
-```json
-{
-    "lastName": "Kotliner"
+    "lastName": "Pago",
+    "dob": "1988-01-01",
+    "contactDetails": {
+        "email": "saco.pago@email.com",
+        "phone": "123-456-7890"
+    }
 }
 ```
 
+* For updating employees, same json as above but supply the id in the url: http://localhost:8080/v1/employee/{id}
+  
 * Get or delete an existing employee: http://localhost:8080/v1/employee/{id}
 
 * Get or delete all employees: http://localhost:8080/v1/employees
@@ -36,7 +35,7 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 
 ### Postman **GraphQL** examples:
 * Use the next URL in Postman: http://localhost:8080/graphql
-* Choose **Body** select **GraphQL**
+* Choose **GraphQL** under the **Body** option. 
 
 #### Queries:
 
@@ -48,7 +47,12 @@ query {
         firstName
         lastName
         fullName
-        dob
+        dob 
+        contactDetails {
+            id
+            email
+            phone
+        }
    }
 }
 ```
@@ -62,6 +66,11 @@ query {
         lastName
         fullName
         dob
+        contactDetails {
+            id
+            email
+            phone
+        }
    }
 }
 ```
@@ -73,13 +82,22 @@ mutation {
     createEmployee(employee: {
         firstName: "NewName",
         lastName: "NewSurname",
-        dob: "2000-01-01"
+        dob: "2000-01-01",
+        contactDetails: {
+            email: "saco1.paco1@email.com"
+            phone: "987-654-321"
+        }
     }) {
         id
         firstName
         lastName
         fullName
         dob
+        contactDetails {
+            id
+            email
+            phone
+        }
     }
 }
 ```
@@ -87,31 +105,25 @@ mutation {
 * Update an existing employee
 ```graphql
 mutation {
-    createEmployee(id: 1, employee: {
+    updateEmployee(id: 1, employee: {
         firstName: "NewName",
         lastName: "NewSurname",
-        dob: "2000-01-01"
+        dob: "2000-01-01",
+        contactDetails: {
+            email: "saco1.paco1@email.com"
+            phone: "987-654-321"
+        }
     }) {
         id
         firstName
         lastName
         fullName
         dob
-    }
-}
-```
-
-* Update individual fields of an existing employee
-```graphql
-mutation {
-    createEmployee(id: 1, employee: {
-        dob: "2012-01-01"
-    }) {
-        id
-        firstName
-        lastName
-        fullName
-        dob
+        contactDetails {
+            id
+            email
+            phone
+        }
     }
 }
 ```
