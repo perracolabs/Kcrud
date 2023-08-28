@@ -1,8 +1,8 @@
 package com.kcrud.data.repositories
 
-import com.kcrud.data.models.ContactDetailsEntity
-import com.kcrud.data.models.ContactDetailsTable
-import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.entities.ContactEntity
+import com.kcrud.data.models.ContactTable
+import com.kcrud.data.entities.EmployeeEntity
 import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -15,10 +15,10 @@ class EmployeeRepository : IEmployeeRepository {
     override fun findById(id: Int): EmployeeEntity? {
         return transaction {
             val query = EmployeeTable.join(
-                otherTable = ContactDetailsTable,
+                otherTable = ContactTable,
                 joinType = JoinType.INNER,
                 additionalConstraint = {
-                    EmployeeTable.contactDetailsId eq ContactDetailsTable.id
+                    EmployeeTable.contactId eq ContactTable.id
                 }).select { EmployeeTable.id eq id }
 
             query.map { row ->
@@ -30,10 +30,10 @@ class EmployeeRepository : IEmployeeRepository {
     override fun findAll(): List<EmployeeEntity> {
         return transaction {
             val query = EmployeeTable.join(
-                otherTable = ContactDetailsTable,
+                otherTable = ContactTable,
                 joinType = JoinType.INNER,
                 additionalConstraint = {
-                    EmployeeTable.contactDetailsId eq ContactDetailsTable.id
+                    EmployeeTable.contactId eq ContactTable.id
                 }).selectAll()
 
             query.map { row ->
@@ -44,16 +44,16 @@ class EmployeeRepository : IEmployeeRepository {
 
     override fun create(employee: EmployeeEntity): EmployeeEntity {
         return transaction {
-            val newContactDetailsId = ContactDetailsTable.insert { dbContact ->
-                dbContact[email] = employee.contactDetails.email.trim()
-                dbContact[phone] = employee.contactDetails.phone.trim()
-            } get ContactDetailsTable.id
+            val newContactId = ContactTable.insert { dbContact ->
+                dbContact[email] = employee.contact.email.trim()
+                dbContact[phone] = employee.contact.phone.trim()
+            } get ContactTable.id
 
-            employee.contactDetails.id = newContactDetailsId
+            employee.contact.id = newContactId
 
             val newEmployeeId = EmployeeTable.insert { dbEmployee ->
                 employeeToStatement(employee = employee, statement = dbEmployee)
-                dbEmployee[contactDetailsId] = newContactDetailsId
+                dbEmployee[contactId] = newContactId
             } get EmployeeTable.id
 
             findById(id = newEmployeeId)!!
@@ -62,18 +62,18 @@ class EmployeeRepository : IEmployeeRepository {
 
     override fun update(id: Int, employee: EmployeeEntity): EmployeeEntity? {
         return transaction {
-            // First, find the existing employee to get the contactDetailsId.
+            // First, find the existing employee to get the contact id.
             val currentEmployee = findById(id) ?: return@transaction null
-            val dbContactDetailsId = currentEmployee.contactDetails.id!!
-            employee.contactDetails.id = dbContactDetailsId
+            val dbContactId = currentEmployee.contact.id!!
+            employee.contact.id = dbContactId
 
-            // Update ContactDetailsTable.
-            ContactDetailsTable.update({ ContactDetailsTable.id eq dbContactDetailsId }) { dbContactDetails ->
-                dbContactDetails[email] = employee.contactDetails.email.trim()
-                dbContactDetails[phone] = employee.contactDetails.phone.trim()
+            // Update the Contact table.
+            ContactTable.update({ ContactTable.id eq dbContactId }) { dbContact ->
+                dbContact[email] = employee.contact.email.trim()
+                dbContact[phone] = employee.contact.phone.trim()
             }
 
-            // Update EmployeeTable.
+            // Update the Employee table.
             EmployeeTable.update({ EmployeeTable.id eq id }) { dbEmployee ->
                 employeeToStatement(employee = employee, statement = dbEmployee)
             }
@@ -103,10 +103,10 @@ class EmployeeRepository : IEmployeeRepository {
             firstName = row[EmployeeTable.firstName],
             lastName = row[EmployeeTable.lastName],
             dob = row[EmployeeTable.dob],
-            contactDetails = ContactDetailsEntity(
-                id = row[ContactDetailsTable.id],
-                email = row[ContactDetailsTable.email],
-                phone = row[ContactDetailsTable.phone]
+            contact = ContactEntity(
+                id = row[ContactTable.id],
+                email = row[ContactTable.email],
+                phone = row[ContactTable.phone]
             )
         )
     }
@@ -119,7 +119,7 @@ class EmployeeRepository : IEmployeeRepository {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()
             this[EmployeeTable.dob] = employee.dob
-            this[EmployeeTable.contactDetailsId] = employee.contactDetails.id!!
+            this[EmployeeTable.contactId] = employee.contact.id!!
         }
     }
 }

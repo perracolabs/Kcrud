@@ -1,6 +1,6 @@
 package com.kcrud.services
 
-import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.entities.EmployeeEntity
 import com.kcrud.data.repositories.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 

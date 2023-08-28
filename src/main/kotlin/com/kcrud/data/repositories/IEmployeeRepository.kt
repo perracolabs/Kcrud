@@ -1,6 +1,6 @@
 package com.kcrud.data.repositories
 
-import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.entities.EmployeeEntity
 
 
 interface IEmployeeRepository {

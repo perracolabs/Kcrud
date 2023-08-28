@@ -12,7 +12,7 @@ internal object EmployeeTable : Table(name = "employee") {
     val firstName = varchar(name = "first_name", length = 64)
     val lastName = varchar(name = "last_name", length = 64)
     val dob = date(name = "dob")
-    val contactDetailsId = integer("contact_details_id") references ContactDetailsTable.id
+    val contactId = integer("contact_id") references ContactTable.id
 
     override val primaryKey = PrimaryKey(firstColumn = id, name = "PK_Employee_ID")
 }

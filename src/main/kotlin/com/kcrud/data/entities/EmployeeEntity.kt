@@ -1,4 +1,4 @@
-package com.kcrud.data.models
+package com.kcrud.data.entities
 
 import com.kcrud.utils.AgeDelegate
 import kotlinx.datetime.LocalDate
@@ -11,7 +11,7 @@ data class EmployeeEntity(
     val firstName: String,
     val lastName: String,
     val dob: LocalDate,
-    val contactDetails: ContactDetailsEntity
+    val contact: ContactEntity
 ) {
     init {
         require(firstName.isNotBlank()) { "First name can't be empty." }

@@ -1,10 +1,10 @@
-package com.kcrud.data.models
+package com.kcrud.data.entities
 
 import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class ContactDetailsEntity(
+data class ContactEntity(
     var id: Int? = null,
     val email: String,
     val phone: String

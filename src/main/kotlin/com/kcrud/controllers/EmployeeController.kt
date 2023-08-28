@@ -1,6 +1,6 @@
 package com.kcrud.controllers
 
-import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.entities.EmployeeEntity
 import com.kcrud.services.EmployeeService
 import io.ktor.http.*
 import io.ktor.server.application.*

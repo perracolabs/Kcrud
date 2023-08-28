@@ -1,7 +1,7 @@
 package com.kcrud.data.graphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.entities.EmployeeEntity
 import com.kcrud.data.repositories.EmployeeRepository
 import kotlinx.datetime.LocalDate
 import java.time.DayOfWeek

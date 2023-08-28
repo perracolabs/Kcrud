@@ -18,7 +18,7 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
     "firstName": "Saco",
     "lastName": "Pago",
     "dob": "1988-01-01",
-    "contactDetails": {
+    "contact": {
         "email": "saco.pago@email.com",
         "phone": "123-456-7890"
     }
@@ -48,7 +48,7 @@ query {
         lastName
         fullName
         dob 
-        contactDetails {
+        contact {
             id
             email
             phone
@@ -66,7 +66,7 @@ query {
         lastName
         fullName
         dob
-        contactDetails {
+        contact {
             id
             email
             phone
@@ -83,7 +83,7 @@ mutation {
         firstName: "NewName",
         lastName: "NewSurname",
         dob: "2000-01-01",
-        contactDetails: {
+        contact: {
             email: "saco1.paco1@email.com"
             phone: "987-654-321"
         }
@@ -93,7 +93,7 @@ mutation {
         lastName
         fullName
         dob
-        contactDetails {
+        contact {
             id
             email
             phone
@@ -109,7 +109,7 @@ mutation {
         firstName: "NewName",
         lastName: "NewSurname",
         dob: "2000-01-01",
-        contactDetails: {
+        contact: {
             email: "saco1.paco1@email.com"
             phone: "987-654-321"
         }
@@ -119,7 +119,7 @@ mutation {
         lastName
         fullName
         dob
-        contactDetails {
+        contact {
             id
             email
             phone

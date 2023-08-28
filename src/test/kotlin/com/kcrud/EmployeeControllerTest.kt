@@ -1,8 +1,8 @@
 package com.kcrud
 
 import com.kcrud.controllers.EmployeeController
-import com.kcrud.data.models.ContactDetailsEntity
-import com.kcrud.data.models.EmployeeEntity
+import com.kcrud.data.entities.ContactEntity
+import com.kcrud.data.entities.EmployeeEntity
 import com.kcrud.data.repositories.IEmployeeRepository
 import com.kcrud.services.EmployeeService
 import io.ktor.server.application.*
@@ -35,7 +35,7 @@ class EmployeeControllerTest : KoinTest {
             firstName = "Pepito",
             lastName = "Paquito",
             dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            contactDetails = ContactDetailsEntity(
+            contact = ContactEntity(
                 id = 1,
                 email = "saco.paco@email.com",
                 phone = "123-456-789"
