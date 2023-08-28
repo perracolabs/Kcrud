@@ -1,4 +1,4 @@
-package com.kcrud.app.configuration
+package com.kcrud.app.plugins
 
 import io.ktor.http.*
 import io.ktor.server.application.*

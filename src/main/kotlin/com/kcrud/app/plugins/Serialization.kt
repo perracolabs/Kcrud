@@ -1,4 +1,4 @@
-package com.kcrud.app.configuration
+package com.kcrud.app.plugins
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

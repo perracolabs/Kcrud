@@ -1,4 +1,4 @@
-package com.kcrud.app.configuration
+package com.kcrud.app.plugins
 
 import com.kcrud.controllers.employee
 import io.ktor.server.application.*

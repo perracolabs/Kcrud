@@ -1,6 +1,6 @@
 package com.kcrud
 
-import com.kcrud.app.configuration.configureRouting
+import com.kcrud.app.plugins.configureRouting
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*

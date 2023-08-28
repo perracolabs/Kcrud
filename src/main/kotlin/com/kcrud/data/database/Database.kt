@@ -1,4 +1,4 @@
-package com.kcrud.app.configuration
+package com.kcrud.data.database
 
 import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.Database
@@ -82,7 +82,7 @@ object DatabaseFactory {
         val path = "$DB_PATH${type.name}"
         Files.createDirectories(Paths.get(path))
 
-        val dbName = "$path/${DB_NAME}"
+        val dbName = "$path/$DB_NAME"
 
         return when (type) {
             DBType.H2 -> when (mode) {
