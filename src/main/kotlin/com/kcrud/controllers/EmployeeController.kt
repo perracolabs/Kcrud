@@ -14,6 +14,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
 
     /**
      * Handles GET request to retrieve details of a specific employee.
+     *
      * Responds with the employee details if found, otherwise appropriate error messages.
      */
     suspend fun get(call: ApplicationCall) {
@@ -26,6 +27,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
 
     /**
      * Handles GET request to retrieve details of all employees.
+     *
      * Responds with a list of all employees.
      */
     suspend fun getAll(call: ApplicationCall) {
@@ -34,6 +36,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
 
     /**
      * Handles POST request to create a new employee.
+     *
      * Reads the employee details from the request, creates a new employee, and responds with the created employee details.
      */
     suspend fun create(call: ApplicationCall) {
@@ -44,6 +47,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
 
     /**
      * Handles PUT request to update details of a specific employee.
+     *
      * Reads the updated employee details from the request, updates the employee, and responds with the updated employee details.
      */
     suspend fun update(call: ApplicationCall) {
@@ -61,6 +65,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
 
     /**
      * Handles PATCH request to update details of a specific employee.
+     *
      * Reads the updated employee details from the request, updates the employee, and responds with the updated employee details.
      */
     suspend fun patch(call: ApplicationCall) {
@@ -77,6 +82,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
 
     /**
      * Handles DELETE request to delete a specific employee.
+     *
      * Deletes the employee if found and responds with appropriate status code.
      */
     suspend fun delete(call: ApplicationCall) {
@@ -88,6 +94,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
 
     /**
      * Handles DELETE request to delete all employees.
+     *
      * Deletes all employees from the database and responds with an appropriate status code.
      */
     suspend fun deleteAll(call: ApplicationCall) {

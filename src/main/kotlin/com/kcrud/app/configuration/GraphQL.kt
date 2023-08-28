@@ -8,7 +8,9 @@ import io.ktor.server.application.*
 
 /**
  * Application extension function to configure GraphQL.
+ *
  * Currently, using KGraphQL engine.
+ *
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
 fun Application.configureGraphQL() {

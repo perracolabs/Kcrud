@@ -11,6 +11,7 @@ import java.sql.DriverManager
 
 /**
  * Provides functionality to initialize and manage a connection to the database.
+ *
  * H2 and SQLite are supported, for both in-memory and file based.
  */
 object DatabaseFactory {

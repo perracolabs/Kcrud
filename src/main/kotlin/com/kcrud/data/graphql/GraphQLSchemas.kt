@@ -13,6 +13,7 @@ import java.time.Month
 /**
  * Demonstrates modularization of GraphQL schemas for scalability.
  * This object serves as an example of how to modularize different components of a GraphQL schema.
+ *
  * By following this pattern, it becomes easier to split a large and growing schema into separate
  * files for better maintainability.
  */
