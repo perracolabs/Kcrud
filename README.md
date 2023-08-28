@@ -25,7 +25,7 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 }
 ```
 
-* For update employees, same json as above but supply the id: http://localhost:8080/v1/employee/{id}
+* For updating employees, same json as above but supply the id in the url: http://localhost:8080/v1/employee/{id}
   
 * Get or delete an existing employee: http://localhost:8080/v1/employee/{id}
 
