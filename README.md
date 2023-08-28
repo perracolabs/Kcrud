@@ -36,7 +36,7 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 
 ### Postman **GraphQL** examples:
 * Use the next URL in Postman: http://localhost:8080/graphql
-* Choose **Body** select **GraphQL**
+* Choose **GraphQL** under the **Body** option. 
 
 #### Queries:
 
