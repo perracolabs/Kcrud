@@ -2,8 +2,6 @@ package com.kcrud.data.graphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.EmployeeEntity
-import com.kcrud.data.models.EmployeeInput
-import com.kcrud.data.models.EmployeePatchDTO
 import com.kcrud.data.repositories.EmployeeRepository
 import kotlinx.datetime.LocalDate
 import java.time.DayOfWeek
@@ -74,12 +72,8 @@ object GraphQLSchemas {
      */
     fun configureMutationInputs(schemaBuilder: SchemaBuilder) {
         schemaBuilder.apply {
-            inputType<EmployeeInput> {
+            inputType<EmployeeEntity> {
                 name = "Input type definition for Employee."
-            }
-
-            inputType<EmployeePatchDTO> {
-                description = "Input type definition for updating employees."
             }
         }
     }
@@ -93,12 +87,12 @@ object GraphQLSchemas {
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."
-                resolver { employee: EmployeeInput -> repository.create(employee = employee) }
+                resolver { employee: EmployeeEntity -> repository.create(employee = employee) }
             }
 
             mutation("updateEmployee") {
                 description = "Updates an existing employee."
-                resolver { id: Int, employee: EmployeePatchDTO -> repository.patch(id = id, employeePatch = employee) }
+                resolver { id: Int, employee: EmployeeEntity -> repository.update(id = id, employee = employee) }
             }
 
             mutation("deleteEmployee") {

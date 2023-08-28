@@ -1,6 +1,7 @@
 package com.kcrud
 
 import com.kcrud.controllers.EmployeeController
+import com.kcrud.data.models.ContactDetailsEntity
 import com.kcrud.data.models.EmployeeEntity
 import com.kcrud.data.repositories.IEmployeeRepository
 import com.kcrud.services.EmployeeService
@@ -33,7 +34,12 @@ class EmployeeControllerTest : KoinTest {
             id = employeeId,
             firstName = "Pepito",
             lastName = "Paquito",
-            dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1)
+            dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
+            contactDetails = ContactDetailsEntity(
+                id = 1,
+                email = "saco.paco@email.com",
+                phone = "123-456-789"
+            )
         )
 
         assert(mockEmployee.age != 0)

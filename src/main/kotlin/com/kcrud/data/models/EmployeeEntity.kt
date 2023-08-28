@@ -7,11 +7,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EmployeeEntity(
-    val id: Int,
+    val id: Int? = null,
     val firstName: String,
     val lastName: String,
-    val dob: LocalDate
+    val dob: LocalDate,
+    val contactDetails: ContactDetailsEntity
 ) {
+    init {
+        require(firstName.isNotBlank()) { "First name can't be empty." }
+        require(lastName.isNotBlank()) { "Last name can't be empty." }
+    }
+
     // To serialize default values 'encodeDefaults' in the json configuration must be set to True.
     val fullName: String = "$firstName $lastName"
 
@@ -22,38 +28,4 @@ data class EmployeeEntity(
     // 'age' serializable while still using the logic contained in AgeDelegate.
     private val ageDelegate: Int by AgeDelegate(dob)
     val age = ageDelegate
-}
-
-/**
- * Employee entity details for deserialization.
- */
-@Serializable
-data class EmployeeInput(
-    val firstName: String,
-    val lastName: String,
-    val dob: LocalDate
-) {
-    init {
-        require(firstName.isNotBlank()) { "First name can't be empty." }
-        require(lastName.isNotBlank()) { "Last name can't be empty." }
-    }
-}
-
-/**
- * Employee entity for patching individual fields.
- */
-@Serializable
-data class EmployeePatchDTO(
-    val firstName: String? = null,
-    val lastName: String? = null,
-    val dob: LocalDate? = null
-) {
-    init {
-        firstName?.let {
-            require(it.isNotBlank()) { "First name can't be empty." }
-        }
-        lastName?.let {
-            require(it.isNotBlank()) { "Last name can't be empty." }
-        }
-    }
 }

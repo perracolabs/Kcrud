@@ -1,7 +1,6 @@
 package com.kcrud.controllers
 
-import com.kcrud.data.models.EmployeeInput
-import com.kcrud.data.models.EmployeePatchDTO
+import com.kcrud.data.models.EmployeeEntity
 import com.kcrud.services.EmployeeService
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -40,7 +39,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
      * Reads the employee details from the request, creates a new employee, and responds with the created employee details.
      */
     suspend fun create(call: ApplicationCall) {
-        call.receive<EmployeeInput>()
+        call.receive<EmployeeEntity>()
             .run { service.create(this) }
             .also { newEmployee -> call.respond(HttpStatusCode.Created, newEmployee) }
     }
@@ -52,7 +51,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
      */
     suspend fun update(call: ApplicationCall) {
         call.parameters["id"]?.toIntOrNull()?.let { employeeId ->
-            val updatedEmployee = call.receive<EmployeeInput>().run {
+            val updatedEmployee = call.receive<EmployeeEntity>().run {
                 service.update(employeeId, this)
             }
 
@@ -60,23 +59,6 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
                 call.respond(HttpStatusCode.OK, employee)
             } ?: call.respond(HttpStatusCode.NotFound, "Employee ID not found: $employeeId")
 
-        } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employee ID.")
-    }
-
-    /**
-     * Handles PATCH request to update details of a specific employee.
-     *
-     * Reads the updated employee details from the request, updates the employee, and responds with the updated employee details.
-     */
-    suspend fun patch(call: ApplicationCall) {
-        call.parameters["id"]?.toIntOrNull()?.let { employeeId ->
-            val patchedEmployee = call.receive<EmployeePatchDTO>().run {
-                service.patch(employeeId, this)
-            }
-
-            patchedEmployee?.also { employee ->
-                call.respond(HttpStatusCode.OK, employee)
-            } ?: call.respond(HttpStatusCode.NotFound, "Employee ID not found: $employeeId")
         } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employee ID.")
     }
 

@@ -20,7 +20,6 @@ fun Route.employee() {
             route("{id}") {
                 get { controller.get(call) }
                 put { controller.update(call) }
-                patch { controller.patch(call) }
                 delete { controller.delete(call) }
             }
 
