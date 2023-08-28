@@ -72,7 +72,7 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:3.42.0.1")
 
     // GraphQL
-    // https://github.com/aPureBase
+    // https://github.com/aPureBase/KGraphQL
     implementation("com.apurebase:kgraphql:0.19.0")
     implementation("com.apurebase:kgraphql-ktor:0.19.0")
 
