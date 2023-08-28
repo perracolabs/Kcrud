@@ -16,10 +16,10 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 ```json
 {
     "firstName": "Saco",
-    "lastName": "Pago",
+    "lastName": "Paco",
     "dob": "1988-01-01",
     "contact": {
-        "email": "saco.pago@email.com",
+        "email": "saco.paco@email.com",
         "phone": "123-456-7890"
     }
 }
@@ -80,12 +80,12 @@ query {
 ```graphql
 mutation {
     createEmployee(employee: {
-        firstName: "NewName",
-        lastName: "NewSurname",
+        firstName: "Saco",
+        lastName: "Paco",
         dob: "2000-01-01",
         contact: {
-            email: "saco1.paco1@email.com"
-            phone: "987-654-321"
+            email: "saco.paco@email.com"
+            phone: "123-456-789"
         }
     }) {
         id
@@ -106,11 +106,11 @@ mutation {
 ```graphql
 mutation {
     updateEmployee(id: 1, employee: {
-        firstName: "NewName",
-        lastName: "NewSurname",
+        firstName: "NewSaco",
+        lastName: "NewPaco",
         dob: "2000-01-01",
         contact: {
-            email: "saco1.paco1@email.com"
+            email: "new.saco.paco@email.com"
             phone: "987-654-321"
         }
     }) {
