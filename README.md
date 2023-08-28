@@ -120,6 +120,7 @@ mutation {
         fullName
         dob
         contactDetails {
+            id
             email
             phone
         }
