@@ -17,11 +17,10 @@ fun Application.configureHTTP() {
 
         // Allow specific HTTP methods.
         allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Get)
         allowMethod(HttpMethod.Put)
         allowMethod(HttpMethod.Delete)
-        allowMethod(HttpMethod.Patch)
-        allowMethod(HttpMethod.Get)
-        allowMethod(HttpMethod.Post)
 
         // Allow specific headers.
         allowHeader(HttpHeaders.Authorization)

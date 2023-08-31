@@ -17,14 +17,13 @@ fun Route.employee() {
         // Routes for operations related to a single employee.
         route("employee") {
 
+            post { controller.create(call) }
+
             route("{id}") {
                 get { controller.get(call) }
                 put { controller.update(call) }
                 delete { controller.delete(call) }
             }
-
-            // Route for creating a new employee.
-            post { controller.create(call) }
         }
 
         // Routes for operations related to multiple employees.
