@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.10"
-    id("io.ktor.plugin") version "2.3.3"
+    id("io.ktor.plugin") version "2.3.4"
     kotlin("plugin.serialization") version "1.9.10"
 }
 
@@ -26,23 +26,22 @@ repositories {
 dependencies {
     // Ktor
     // https://github.com/ktorio/ktor
-    val ktorVersion = "2.3.3"
+    val ktorVersion = "2.3.4"
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
 
-    implementation("ch.qos.logback:logback-classic:1.2.11")
+    implementation("ch.qos.logback:logback-classic:1.4.11")
 
     // Kotlinx Serialization
     // https://github.com/Kotlin/kotlinx.serialization
     // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md
-    val serializationVersion = "1.6.0"
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:$serializationVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$serializationVersion")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
 
     // Serializable Date Time
     // https://github.com/Kotlin/kotlinx-datetime
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 
     // 'Conf' type safety
     // https://github.com/lightbend/config
@@ -69,19 +68,19 @@ dependencies {
 
     // SQLite database
     // https://github.com/sqlite/sqlite
-    implementation("org.xerial:sqlite-jdbc:3.42.0.1")
+    implementation("org.xerial:sqlite-jdbc:3.43.0.0")
 
     // GraphQL
     // https://github.com/aPureBase/KGraphQL
     implementation("com.apurebase:kgraphql:0.19.0")
     implementation("com.apurebase:kgraphql-ktor:0.19.0")
 
-    implementation("io.mockk:mockk:1.11.0")
-    testImplementation("io.ktor:ktor-server-tests-jvm")
+    implementation("io.mockk:mockk:1.13.7")
+    testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.10")
-    testImplementation("io.ktor:ktor-server-test-host-jvm:2.3.3")
+    testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
-    testImplementation("org.slf4j:slf4j-api:1.7.32")
+    testImplementation("org.slf4j:slf4j-api:2.0.7")
     testImplementation("ch.qos.logback:logback-classic:1.2.11")
     testImplementation("io.insert-koin:koin-test:3.4.3")
 }
