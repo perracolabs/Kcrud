@@ -59,13 +59,13 @@ To include the obtained JWT token in the requests, follow these steps:
 `json`
 ```json
 {
-   "firstName": "Saco",
-   "lastName": "Paco",
-   "dob": "1988-01-01",
-   "contact": {
-      "email": "saco.paco@email.com",
-      "phone": "123-456-7890"
-   }
+    "firstName": "Saco",
+    "lastName": "Paco",
+    "dob": "1988-01-01",
+    "contact": {
+        "email": "saco.paco@email.com",
+        "phone": "123-456-7890"
+    }
 }
 ```
 ---
