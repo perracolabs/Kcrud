@@ -1,9 +1,9 @@
 package com.kcrud.utils
 
-import appSettings
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import com.kcrud.app.appSettings
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*

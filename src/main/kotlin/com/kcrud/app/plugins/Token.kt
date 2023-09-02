@@ -1,8 +1,8 @@
 package com.kcrud.app.plugins
 
-import appSettings
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.kcrud.app.appSettings
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

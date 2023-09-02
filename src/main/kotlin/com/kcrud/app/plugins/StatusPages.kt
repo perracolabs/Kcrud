@@ -1,6 +1,6 @@
 package com.kcrud.app.plugins
 
-import appSettings
+import com.kcrud.app.appSettings
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
