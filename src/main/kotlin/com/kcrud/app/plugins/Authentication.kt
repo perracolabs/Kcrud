@@ -12,6 +12,7 @@ import io.ktor.server.auth.jwt.*
  * Configures the Basic and JWT-based authentications.
  *
  * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
+ *
  * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
  */
 fun Application.configureAuthentication() {

@@ -9,6 +9,8 @@ import io.ktor.server.response.*
 
 /**
  * Install the StatusPages feature for handling HTTP status codes.
+ *
+ * See: [Ktor Status Pages Documentation](https://ktor.io/docs/status-pages.html)
  */
 fun Application.configureStatusPages() {
 

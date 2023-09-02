@@ -14,7 +14,7 @@ import io.ktor.server.routing.*
  * This includes a basic GET route for the root URL and conditional
  * JWT authentication for employee-related routes.
  *
- * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html).
+ * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html)
  */
 fun Application.configureRouting() {
 

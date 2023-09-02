@@ -11,7 +11,7 @@ import io.ktor.server.plugins.cors.routing.*
  * Configures allowed HTTP methods, headers, and other CORS-specific settings
  * such as permitting credentials and non-simple content types.
  *
- * See: [CORS Documentation](https://ktor.io/docs/cors.html).
+ * See: [CORS Documentation](https://ktor.io/docs/cors.html)
  */
 fun Application.configureHTTP() {
 

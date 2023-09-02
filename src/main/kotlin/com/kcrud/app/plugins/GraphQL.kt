@@ -10,7 +10,7 @@ import org.koin.ktor.ext.inject
 /**
  * Sets up the GraphQL engine. Currently, using KGraphQL.
  *
- * See: [KGraphQL Documentation](https://kgraphql.io/).
+ * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
 fun Application.configureGraphQL() {
 

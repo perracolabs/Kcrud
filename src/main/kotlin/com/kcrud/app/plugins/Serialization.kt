@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
 /**
  * Sets up and installs the ContentNegotiation feature for JSON serialization.
  *
- * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
+ * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
  */
 fun Application.configureSerialization() {
 
