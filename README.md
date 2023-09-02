@@ -46,6 +46,7 @@ To include the obtained JWT token in the requests, follow these steps:
    - Key: `Authorization`
    - Value: `Bearer <The-token-with-no-quotes>`
 
+---
 
 ### **REST** endpoints:
 
