@@ -2,10 +2,10 @@
 A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
 
 ### Characteristics:
-* All common **REST** operations.
+* Most common **REST** operations.
 * [GraphQL](https://graphql.org/) queries and mutations.
 * [Koin](https://insert-koin.io/) dependency injection.
-* [JWT Authentication](https://ktor.io/docs/jwt.html) for both REST and GraphQL. 
+* [JWT Authentication](https://ktor.io/docs/jwt.html) for both REST and GraphQL.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) databases, for both in-memory or file based.
 
 ---
@@ -32,48 +32,47 @@ When set to `True` all `REST` and `GraphQL` endpoints will require authenticatio
 For convenience, there is a `POST` endpoint to generate tokens.
 Available only while the `development` setting in `hconf` is set to `true`.
 
-Make a `POST` request in **Postman** with `token` endpoint:
+Make a `POST` request with `token` endpoint:
 ```
 http://localhost:8080/token
 ```
 
-* #### Using the obtained Token in *Postman* requests
+* #### Using the obtained Token in *[Postman](https://www.postman.com/)* requests
 
 To include the obtained JWT token in the requests, follow these steps:
 
 1. Open **Postman** and go to the **Headers** tab.
 2. Add a new key-value pair:
-    - Key: `Authorization`
-    - Value: `Bearer <The-token-with-no-quotes>`
+   - Key: `Authorization`
+   - Value: `Bearer <The-token-with-no-quotes>`
 
 
-### [Postman](https://www.postman.com/) **REST** examples:
+### **REST** endpoints:
 
-* Create employees: http://localhost:8080/v1/employee
+* Create an employee: `POST` http://localhost:8080/v1/employee
+* Update an employee: `PUT` http://localhost:8080/v1/employee/{id}
+* Get an employee: `GET` http://localhost:8080/v1/employee/{id}
+* Delete an employee: `DELETE` http://localhost:8080/v1/employee/{id}
+* Get all employees: `GET` http://localhost:8080/v1/employees
+* Delete all employees: `DELETE` http://localhost:8080/v1/employees
 
+`json`
 ```json
 {
-    "firstName": "Saco",
-    "lastName": "Paco",
-    "dob": "1988-01-01",
-    "contact": {
-        "email": "saco.paco@email.com",
-        "phone": "123-456-7890"
-    }
+   "firstName": "Saco",
+   "lastName": "Paco",
+   "dob": "1988-01-01",
+   "contact": {
+      "email": "saco.paco@email.com",
+      "phone": "123-456-7890"
+   }
 }
 ```
-
-* For updating employees, same json as above but supply the id in the url: http://localhost:8080/v1/employee/{id}
-
-* Get or delete an existing employee: http://localhost:8080/v1/employee/{id}
-
-* Get or delete all employees: http://localhost:8080/v1/employees
-
 ---
 
 ### Postman **GraphQL** examples:
-* Use the next URL in Postman: http://localhost:8080/graphql
-* Choose **GraphQL** under the **Body** option.
+* Endpoint: http://localhost:8080/graphql
+* Choose `GraphQL` under the `Body` option.
 
 #### Queries:
 
