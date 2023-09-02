@@ -2,10 +2,10 @@ package com.kcrud.app.plugins
 
 import com.apurebase.kgraphql.GraphQL
 import com.kcrud.data.graphql.GraphQLSchemas
-import com.kcrud.data.repositories.EmployeeRepository
+import com.kcrud.data.repositories.IEmployeeRepository
 import com.kcrud.utils.Security
 import io.ktor.server.application.*
-
+import org.koin.ktor.ext.inject
 
 /**
  * Sets up the GraphQL engine. Currently, using KGraphQL.
@@ -13,6 +13,7 @@ import io.ktor.server.application.*
  * See: [KGraphQL Documentation](https://kgraphql.io/).
  */
 fun Application.configureGraphQL() {
+
     install(GraphQL) {
         playground = true  // Enable GraphQL playground for easier development and testing.
 
@@ -21,16 +22,16 @@ fun Application.configureGraphQL() {
             Security().verifyToken(call)
         }
 
-        // Initialize the Employee repository.
-        val repository = EmployeeRepository()
+        val employeeRepository: IEmployeeRepository by inject()
 
         // Define the GraphQL schema.
         schema {
-            GraphQLSchemas.configureCommonTypes(schemaBuilder = this)
-            GraphQLSchemas.configureQueryTypes(schemaBuilder = this)
-            GraphQLSchemas.configureQueries(schemaBuilder = this, repository = repository)
-            GraphQLSchemas.configureMutationInputs(schemaBuilder = this)
-            GraphQLSchemas.configureMutations(schemaBuilder = this, repository = repository)
+            GraphQLSchemas(schemaBuilder = this, repository = employeeRepository)
+                .configureCommonTypes()
+                .configureQueryTypes()
+                .configureQueries()
+                .configureMutationInputs()
+                .configureMutations()
         }
     }
 }

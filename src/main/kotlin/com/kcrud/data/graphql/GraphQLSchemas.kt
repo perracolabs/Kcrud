@@ -2,7 +2,7 @@ package com.kcrud.data.graphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.entities.EmployeeEntity
-import com.kcrud.data.repositories.EmployeeRepository
+import com.kcrud.data.repositories.IEmployeeRepository
 import kotlinx.datetime.LocalDate
 import java.time.DayOfWeek
 import java.time.Month
@@ -14,14 +14,16 @@ import java.time.Month
  *
  * By following this pattern, it becomes easier to split a large and growing schema into separate
  * files for better maintainability.
+ *
+ * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
+ * @param repository The data repository used in mutation resolvers.
  */
-object GraphQLSchemas {
+class GraphQLSchemas(private val schemaBuilder: SchemaBuilder, private val repository: IEmployeeRepository) {
 
     /**
      * Configures common types like enums and scalars that are used in both queries and mutations.
-     * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
      */
-    fun configureCommonTypes(schemaBuilder: SchemaBuilder) {
+    fun configureCommonTypes(): GraphQLSchemas {
         schemaBuilder.apply {
             enum<DayOfWeek> {
                 description = "Day of week."
@@ -34,26 +36,27 @@ object GraphQLSchemas {
                 deserialize = { str -> LocalDate.parse(str) }
             }
         }
+
+        return this
     }
 
     /**
      * Configures query types specifically.
-     * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
      */
-    fun configureQueryTypes(schemaBuilder: SchemaBuilder) {
+    fun configureQueryTypes(): GraphQLSchemas {
         schemaBuilder.apply {
             type<EmployeeEntity> {
                 description = "Query type definition for employee."
             }
         }
+
+        return this
     }
 
     /**
      * Configures query resolvers to fetch data.
-     * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
-     * @param repository The data repository used in query resolvers.
      */
-    fun configureQueries(schemaBuilder: SchemaBuilder, repository: EmployeeRepository) {
+    fun configureQueries(): GraphQLSchemas {
         schemaBuilder.apply {
             query("employee") {
                 description = "Returns a single employee given its id."
@@ -64,26 +67,27 @@ object GraphQLSchemas {
                 resolver { -> repository.findAll() }
             }
         }
+
+        return this
     }
 
     /**
      * Configures input types for mutations.
-     * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
      */
-    fun configureMutationInputs(schemaBuilder: SchemaBuilder) {
+    fun configureMutationInputs(): GraphQLSchemas {
         schemaBuilder.apply {
             inputType<EmployeeEntity> {
                 name = "Input type definition for Employee."
             }
         }
+
+        return this
     }
 
     /**
      * Configures mutation resolvers to modify data.
-     * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
-     * @param repository The data repository used in mutation resolvers.
      */
-    fun configureMutations(schemaBuilder: SchemaBuilder, repository: EmployeeRepository) {
+    fun configureMutations(): GraphQLSchemas {
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."
@@ -105,5 +109,7 @@ object GraphQLSchemas {
                 resolver { -> repository.deleteAll() }
             }
         }
+
+        return this
     }
 }

@@ -22,9 +22,9 @@ fun Application.module() {
 
     configureTokenGenerator()
 
-    configureDependencyInjection()
-
     configureSerialization()
+
+    configureDependencyInjection()
 
     configureRouting()
 
