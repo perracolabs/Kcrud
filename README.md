@@ -5,7 +5,7 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 * All common **REST** operations.
 * [GraphQL](https://graphql.org/) queries and mutations.
 * [Koin](https://insert-koin.io/) dependency injection.
-* JWT Authentication for both REST and GraphQL. 
+* [JWT Authentication](https://ktor.io/docs/jwt.html) for both REST and GraphQL. 
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) databases, for both in-memory or file based.
 
 ---
