@@ -34,6 +34,3 @@ fun Application.configureDependencyInjection() {
         modules(appModule)
     }
 }
-
-
-

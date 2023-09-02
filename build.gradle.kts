@@ -39,9 +39,12 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
 
-    // Authentication
-    // https://ktor.io/docs/jwt.html#add_dependencies
+    // Basic Authentication
+    // https://ktor.io/docs/basic.html
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
+
+    // JWT Authentication
+    // https://ktor.io/docs/jwt.html
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
 
     // Logging

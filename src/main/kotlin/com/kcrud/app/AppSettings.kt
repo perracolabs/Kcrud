@@ -1,6 +1,13 @@
-package com.kcrud.app
-
+import io.ktor.server.application.*
 import io.ktor.server.config.*
+
+
+/**
+ * Application extension function to retrieve the singleton instance of AppSettings.
+ */
+fun Application.appSettings(): AppSettings {
+    return AppSettings(environment.config)
+}
 
 /**
  * Holds the configurations settings for the application.
@@ -12,7 +19,8 @@ import io.ktor.server.config.*
 data class AppSettings(
     val development: Development,
     val deployment: Deployment,
-    val jwt: Jwt
+    val jwt: Jwt,
+    val basicAuth: BasicAuth
 ) {
     /**
      * Development class holds settings specific to the development environment.
@@ -37,16 +45,39 @@ data class AppSettings(
      */
     data class Jwt(val isEnabled: Boolean, val audience: String, val issuer: String, val realm: String, val secretKey: String)
 
+    /**
+     * Basic authentication class settings.
+     * @property isEnabled Indicates if basic authentication is enabled.
+     * @property providerName Specifies the authentication provider name.
+     * @property realm Specifies the realm for the basic authentication.
+     */
+    data class BasicAuth(val isEnabled: Boolean, val providerName: String, val realm: String, val username: String, val password: String)
+
     companion object {
+        // Singleton instance of AppSettings
+        private var instance: AppSettings? = null
+
         /**
-         * Factory method to create the class instance from an ApplicationConfig.
+         * Factory method to create the singleton instance of AppSettings.
          * @param config The ApplicationConfig object from which settings are parsed.
-         * @return An instance of AppConfig with values populated from the provided config.
+         * @return The singleton instance of AppSettings with values populated from the provided config.
          */
         operator fun invoke(config: ApplicationConfig): AppSettings {
+            return instance ?: synchronized(this) {
+                instance ?: createSettings(config).also { instance = it }
+            }
+        }
+
+        /**
+         * Create the instance of AppSettings by parsing the configuration.
+         * @param config The ApplicationConfig object from which settings are parsed.
+         * @return An instance of AppSettings with values populated from the provided config.
+         */
+        private fun createSettings(config: ApplicationConfig): AppSettings {
             val developmentConfig = config.property("ktor.development").getString().toBoolean()
             val deployConfig = config.config("ktor.deployment")
             val jwtConfig = config.config("ktor.jwt")
+            val basicAuthConfig = config.config("ktor.basic_auth")
 
             return AppSettings(
                 Development(isEnabled = developmentConfig),
@@ -55,11 +86,18 @@ data class AppSettings(
                     host = deployConfig.property("host").getString()
                 ),
                 Jwt(
-                    isEnabled = jwtConfig.property("is_enabled").getString().toBoolean(),
+                    isEnabled = jwtConfig.property("enabled").getString().toBoolean(),
                     audience = jwtConfig.property("audience").getString(),
                     issuer = jwtConfig.property("issuer").getString(),
                     realm = jwtConfig.property("realm").getString(),
-                    secretKey = jwtConfig.property("secret_key").getString()
+                    secretKey = jwtConfig.property("secret-key").getString()
+                ),
+                BasicAuth(
+                    isEnabled = basicAuthConfig.property("enabled").getString().toBoolean(),
+                    providerName = basicAuthConfig.property("provider-name").getString(),
+                    realm = basicAuthConfig.property("realm").getString(),
+                    username = basicAuthConfig.property("username").getString(),
+                    password = basicAuthConfig.property("password").getString()
                 )
             )
         }

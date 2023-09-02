@@ -1,6 +1,6 @@
 package com.kcrud.app.plugins
 
-import com.kcrud.app.AppSettings
+import appSettings
 import com.kcrud.controllers.employee
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -18,22 +18,30 @@ import io.ktor.server.routing.*
  */
 fun Application.configureRouting() {
 
-    val settings = AppSettings(config = environment.config)
+    val settings = appSettings()
 
     routing {
-
-        // GET request at the root URL returns "Hello World!".
-        get("/") {
-            call.respondText("Hello World!")
+        // Basic Authentication for the root endpoint.
+        if (settings.basicAuth.isEnabled) {
+            authenticate(settings.basicAuth.providerName) {
+                get("/") {
+                    call.respondText("Hello World! You are authenticated.")
+                }
+            }
+        } else {
+            // No authentication required.
+            get("/") {
+                call.respondText("Hello World!")
+            }
         }
 
-        // Conditionally enable JWT authentication for employee-related routes.
+        // JWT Authentication for employee-related routes.
         if (settings.jwt.isEnabled) {
             authenticate {
                 employee()
             }
         } else {
-            // No JWT authentication required.
+            // No authentication required.
             employee()
         }
     }

@@ -1,24 +1,26 @@
 package com.kcrud.app.plugins
 
+import appSettings
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.kcrud.app.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 
+
 /**
- * Configures the JWT-based authentication.
+ * Configures the Basic and JWT-based authentications.
  *
  * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
+ * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
  */
 fun Application.configureAuthentication() {
 
-    val settings = AppSettings(config = environment.config)
+    val settings = appSettings()
 
-    // Configure the JWT authentication feature.
     authentication {
 
+        // JWT-based authentications.
         jwt {
             realm = settings.jwt.realm
 
@@ -35,6 +37,19 @@ fun Application.configureAuthentication() {
             validate { credential ->
                 if (credential.payload.audience.contains(settings.jwt.audience)) {
                     JWTPrincipal(credential.payload)
+                } else {
+                    null
+                }
+            }
+        }
+
+        // Basic authentication.
+        basic(settings.basicAuth.providerName) {
+            realm = settings.basicAuth.realm
+
+            validate { credentials ->
+                if (credentials.name == settings.basicAuth.username && credentials.password == settings.basicAuth.password) {
+                    UserIdPrincipal(credentials.name)
                 } else {
                     null
                 }

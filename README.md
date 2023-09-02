@@ -5,41 +5,30 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 * Most common **REST** operations.
 * [GraphQL](https://graphql.org/) queries and mutations.
 * [Koin](https://insert-koin.io/) dependency injection.
-* [JWT Authentication](https://ktor.io/docs/jwt.html) for both REST and GraphQL.
+* [JWT](https://ktor.io/docs/jwt.html) authentication for both REST and GraphQL.
+* [Basic](https://ktor.io/docs/basic.html) authentication example.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) databases, for both in-memory or file based.
 
 ---
 
-### Handling Security
+## Handling Security
 
-*Kcrud* security is managed through JWT (JSON Web Tokens). The enabling or disabling of JWT security is managed through the `hconf` configuration file.
+The enabling or disabling of security is managed through the `hconf` configuration file.
+Under the `jwt` and `basic-auth` sections, you'll find an `is_enabled` flag.
 
-* #### Configuration in `hconf`
+- For `JWT`, both  `REST` and `GraphQL` endpoints will require authentication.
+- For `basic authentication`, only the root endpoint prompts for username and password.
 
-In the `hconf` file, under the `jwt` section, you'll find an `is_enabled` flag. This flag determines if JWT is active or not.
+### Fetching a new `JWT` authorization token
 
-```hconf
-...
-    jwt {
-        is_enabled = false  // Set to true to enable JWT
-        ...
-    }
-```
-When set to `True` all `REST` and `GraphQL` endpoints will require authentication.
-
-* #### Fetching an authorization Token
-
-For convenience, there is a `POST` endpoint to generate tokens.
+For convenience, use the following `POST` endpoint to generate tokens.
 Available only while the `development` setting in `hconf` is set to `true`.
 
-Make a `POST` request with `token` endpoint:
 ```
 http://localhost:8080/token
 ```
 
-* #### Using the obtained Token in *[Postman](https://www.postman.com/)* requests
-
-To include the obtained JWT token in the requests, follow these steps:
+- #### Using the obtained Token in *[Postman](https://www.postman.com/)* requests
 
 1. Open **Postman** and go to the **Headers** tab.
 2. Add a new key-value pair:
@@ -72,12 +61,13 @@ To include the obtained JWT token in the requests, follow these steps:
 ---
 
 ### Postman **GraphQL** examples:
-* Endpoint: http://localhost:8080/graphql
-* Choose `GraphQL` under the `Body` option.
+- Endpoint: http://localhost:8080/graphql
+
+- Choose `GraphQL` under the `Body` option.
 
 #### Queries:
 
-*  Return a single employee
+- Return a single employee
 ```graphql
 query {
     employee(id: 1) {
@@ -95,7 +85,7 @@ query {
 }
 ```
 
-* Return all employees
+- Return all employees
 ```graphql
 query {
     employees {
@@ -114,7 +104,7 @@ query {
 ```
 #### Mutations:
 
-* Create a new employee
+- Create a new employee
 ```graphql
 mutation {
     createEmployee(employee: {
@@ -140,7 +130,7 @@ mutation {
 }
 ```
 
-* Update an existing employee
+- Update an existing employee
 ```graphql
 mutation {
     updateEmployee(id: 1, employee: {
@@ -166,14 +156,14 @@ mutation {
 }
 ```
 
-* Delete a single employee
+- Delete a single employee
 ```graphql
 mutation {
     deleteEmployee(id: 1)
 }
 ```
 
-* Delete all employees
+- Delete all employees
 ```graphql
 mutation {
     deleteAllEmployees

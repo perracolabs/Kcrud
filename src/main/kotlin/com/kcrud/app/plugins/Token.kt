@@ -1,8 +1,8 @@
 package com.kcrud.app.plugins
 
+import appSettings
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.kcrud.app.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -20,7 +20,7 @@ import java.util.*
  */
 fun Application.configureTokenGenerator() {
 
-    val settings = AppSettings(config = environment.config)
+    val settings = appSettings()
     val oneMonthExpiration = 30 * 24 * 60 * 60 * 1000L
     val expirationDate = Date(System.currentTimeMillis() + oneMonthExpiration)
 

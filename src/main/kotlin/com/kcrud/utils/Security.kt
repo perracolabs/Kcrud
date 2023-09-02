@@ -1,10 +1,13 @@
 package com.kcrud.utils
 
+import appSettings
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import com.kcrud.app.AppSettings
+import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.response.*
+import kotlinx.coroutines.runBlocking
 
 /**
  * Security class responsible for verifying JWT tokens.
@@ -18,10 +21,9 @@ class Security {
      * Verify the JWT token from the incoming request.
      *
      * @param call The ApplicationCall from the incoming request.
-     * @throws UnauthorizedException If token verification fails.
      */
     fun verifyToken(call: ApplicationCall) {
-        val settings = AppSettings(config = call.application.environment.config)
+        val settings = call.application.appSettings()
 
         if (!settings.jwt.isEnabled)
             return
@@ -35,15 +37,10 @@ class Security {
             verifier.verify(JWT.decode(token))
         } catch (e: Exception) {
             println(e.message)
-            throw UnauthorizedException("Error while authorizing.")
+
+            runBlocking {
+                call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Error while authorizing.")
+            }
         }
     }
 }
-
-/**
- * Custom exception to handle unauthorized access.
- *
- * @param message The exception message.
- */
-class UnauthorizedException(message: String) : RuntimeException(message)
-
