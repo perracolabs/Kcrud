@@ -6,7 +6,10 @@ import io.ktor.server.application.*
 
 
 /**
- * Main entry point for the Ktor application module.
+ * Ktor Configuration Module.
+ *
+ * Responsible for setting up various features like authentication,
+ * routing, and database initialization for the Ktor application.
  */
 @Suppress("unused")
 fun Application.module() {

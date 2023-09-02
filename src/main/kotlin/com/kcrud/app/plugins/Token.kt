@@ -2,7 +2,7 @@ package com.kcrud.app.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.kcrud.utils.AppConfig
+import com.kcrud.app.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -20,20 +20,20 @@ import java.util.*
  */
 fun Application.configureTokenGenerator() {
 
-    val appConfig = AppConfig(config = environment.config)
+    val settings = AppSettings(config = environment.config)
     val oneMonthExpiration = 30 * 24 * 60 * 60 * 1000L
     val expirationDate = Date(System.currentTimeMillis() + oneMonthExpiration)
 
-    if (appConfig.development.isEnabled) {
+    if (settings.development.isEnabled) {
         routing {
             post("/token") {
 
                 // Generate JWT token with the given settings.
                 val jwtToken = JWT.create()
-                    .withAudience(appConfig.jwt.audience)
-                    .withIssuer(appConfig.jwt.issuer)
+                    .withAudience(settings.jwt.audience)
+                    .withIssuer(settings.jwt.issuer)
                     .withExpiresAt(expirationDate)
-                    .sign(Algorithm.HMAC256(appConfig.jwt.secretKey))
+                    .sign(Algorithm.HMAC256(settings.jwt.secretKey))
 
                 // Respond with the generated JWT token.
                 call.respond(hashMapOf("token" to jwtToken))

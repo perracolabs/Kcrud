@@ -3,6 +3,7 @@ package com.kcrud.utils
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import com.kcrud.app.AppSettings
 import io.ktor.server.application.*
 
 /**
@@ -20,13 +21,13 @@ class Security {
      * @throws UnauthorizedException If token verification fails.
      */
     fun verifyToken(call: ApplicationCall) {
-        val appConfig = AppConfig(config = call.application.environment.config)
+        val settings = AppSettings(config = call.application.environment.config)
 
-        if (!appConfig.jwt.isEnabled)
+        if (!settings.jwt.isEnabled)
             return
 
         try {
-            val algorithm: Algorithm = Algorithm.HMAC256(appConfig.jwt.secretKey)
+            val algorithm: Algorithm = Algorithm.HMAC256(settings.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
 
             val authHeader = call.request.headers["Authorization"] ?: ""

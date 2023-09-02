@@ -1,4 +1,4 @@
-package com.kcrud.utils
+package com.kcrud.app
 
 import io.ktor.server.config.*
 
@@ -9,7 +9,7 @@ import io.ktor.server.config.*
  * @property deployment The application's deployment settings.
  * @property jwt The JWT authentication settings.
  */
-data class AppConfig(
+data class AppSettings(
     val development: Development,
     val deployment: Deployment,
     val jwt: Jwt
@@ -43,12 +43,12 @@ data class AppConfig(
          * @param config The ApplicationConfig object from which settings are parsed.
          * @return An instance of AppConfig with values populated from the provided config.
          */
-        operator fun invoke(config: ApplicationConfig): AppConfig {
+        operator fun invoke(config: ApplicationConfig): AppSettings {
             val developmentConfig = config.property("ktor.development").getString().toBoolean()
             val deployConfig = config.config("ktor.deployment")
             val jwtConfig = config.config("ktor.jwt")
 
-            return AppConfig(
+            return AppSettings(
                 Development(isEnabled = developmentConfig),
                 Deployment(
                     port = deployConfig.property("port").getString().toInt(),
