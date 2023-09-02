@@ -21,10 +21,11 @@ import java.util.*
 fun Application.configureTokenGenerator() {
 
     val settings = appSettings()
-    val oneMonthExpiration = 30 * 24 * 60 * 60 * 1000L
-    val expirationDate = Date(System.currentTimeMillis() + oneMonthExpiration)
 
     if (settings.development.isEnabled) {
+        val oneMonthExpiration = 30 * 24 * 60 * 60 * 1000L
+        val expirationDate = Date(System.currentTimeMillis() + oneMonthExpiration)
+
         routing {
             post("/token") {
 
