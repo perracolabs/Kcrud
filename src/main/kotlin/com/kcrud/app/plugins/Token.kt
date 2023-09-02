@@ -16,7 +16,7 @@ import java.util.*
  *
  * Hardcoding expiration to 1 month, tweak as needed.
  *
- * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html)
+ * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
  */
 fun Application.configureTokenGenerator() {
 
