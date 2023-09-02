@@ -2,7 +2,7 @@
 A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
 
 ### Characteristics:
-* All common **REST** operations.
+* Most common **REST** operations.
 * [GraphQL](https://graphql.org/) queries and mutations.
 * [Koin](https://insert-koin.io/) dependency injection.
 * [JWT Authentication](https://ktor.io/docs/jwt.html) for both REST and GraphQL. 
