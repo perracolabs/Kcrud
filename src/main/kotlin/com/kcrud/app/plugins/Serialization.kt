@@ -7,29 +7,22 @@ import kotlinx.serialization.json.Json
 
 
 /**
- * Application extension function to configure serialization.
+ * Sets up and installs the ContentNegotiation feature for JSON serialization.
  *
- * See [kotlin serialization guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
+ * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
  */
 fun Application.configureSerialization() {
 
-    // Install the ContentNegotiation feature to handle serialization.
     install(ContentNegotiation) {
-
-        // Use the json serializer with specific configurations.
+        // Define the behavior and characteristics of the JSON serializer.
         json(Json {
-            // Pretty-print JSON output for better readability.
-            prettyPrint = true
-
-            // Allow less strict parsing of JSON input, accepting JSON that might not be perfectly formatted.
-            isLenient = true
-
-            // Include default values during serialization.
-            encodeDefaults = true
-
-            // Do not ignore unknown keys during deserialization.
-            ignoreUnknownKeys = false
+            prettyPrint = true         // Format JSON output for easier reading.
+            isLenient = true           // Allow flexible parsing of incoming JSON.
+            encodeDefaults = true      // Serialize properties with default values.
+            ignoreUnknownKeys = false  // Fail on unknown keys in the incoming JSON.
         })
     }
 }
+
+
 

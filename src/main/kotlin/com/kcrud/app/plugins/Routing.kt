@@ -1,28 +1,40 @@
 package com.kcrud.app.plugins
 
 import com.kcrud.controllers.employee
+import com.kcrud.utils.AppConfig
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 
 /**
- * Application extension function to configure the routing settings.
+ * Initializes and sets up routing for the application.
  *
- * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html)
+ * This includes a basic GET route for the root URL and conditional JWT authentication
+ * for employee-related routes.
+ *
+ * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html).
  */
 fun Application.configureRouting() {
 
-    // Basic routing for the root URL path.
-    routing {
-        get("/") {
-            // Respond with a text message when the root URL is accessed.
-            call.respondText("Hello World! But, there is nothing to see here.")
-        }
-    }
+    val appConfig = AppConfig(config = environment.config)
 
-    // Additional routing configuration specific to the 'employee' domain.
     routing {
-        employee()
+
+        // GET request at the root URL returns "Hello World!".
+        get("/") {
+            call.respondText("Hello World!")
+        }
+
+        // Conditionally enable JWT authentication for employee-related routes.
+        if (appConfig.jwt.isEnabled) {
+            authenticate(optional = true) {
+                employee()
+            }
+        } else {
+            // No JWT authentication required.
+            employee()
+        }
     }
 }

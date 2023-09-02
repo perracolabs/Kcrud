@@ -21,7 +21,7 @@ object GraphQLSchemas {
      * Configures common types like enums and scalars that are used in both queries and mutations.
      * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
      */
-    fun configureTypes(schemaBuilder: SchemaBuilder) {
+    fun configureCommonTypes(schemaBuilder: SchemaBuilder) {
         schemaBuilder.apply {
             enum<DayOfWeek> {
                 description = "Day of week."

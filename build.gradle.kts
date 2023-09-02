@@ -14,6 +14,12 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
+ktor {
+    fatJar {
+        archiveFileName.set("ktor.jar")
+    }
+}
+
 kotlin {
     jvmToolchain(11)
 }
@@ -24,13 +30,22 @@ repositories {
 }
 
 dependencies {
+
     // Ktor
     // https://github.com/ktorio/ktor
     val ktorVersion = "2.3.4"
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
 
+    // Authentication
+    // https://ktor.io/docs/jwt.html#add_dependencies
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
+
+    // Logging
+    // https://github.com/qos-ch/logback
     implementation("ch.qos.logback:logback-classic:1.4.11")
 
     // Kotlinx Serialization

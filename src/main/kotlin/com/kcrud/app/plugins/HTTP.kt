@@ -6,34 +6,37 @@ import io.ktor.server.plugins.cors.routing.*
 
 
 /**
- * Application extension function to configure HTTP settings.
+ * Initializes CORS (Cross-Origin Resource Sharing) settings for the application.
  *
- * See: [CORS Documentation](https://ktor.io/docs/cors.html)
+ * Configures allowed HTTP methods, headers, and other CORS-specific settings
+ * such as permitting credentials and non-simple content types.
+ *
+ * See: [CORS Documentation](https://ktor.io/docs/cors.html).
  */
 fun Application.configureHTTP() {
 
-    // Install the CORS feature to handle Cross-Origin Resource Sharing.
+    // Install and configure the CORS feature.
     install(CORS) {
 
-        // Allow specific HTTP methods.
+        // Specify allowed HTTP methods for CORS requests.
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Post)
         allowMethod(HttpMethod.Get)
         allowMethod(HttpMethod.Put)
         allowMethod(HttpMethod.Delete)
 
-        // Allow specific headers.
+        // Specify allowed HTTP headers for CORS requests.
         allowHeader(HttpHeaders.Authorization)
         allowHeader(HttpHeaders.ContentType)
 
-        // Allow requests from any host.
-        // Note: This is not recommended for production environments.
+        // Allow requests from any host. Not recommended for production.
         anyHost()
 
-        // Allow credentials like cookies and HTTP authentication to be included in CORS requests.
+        // Enable inclusion of credentials in CORS requests.
         allowCredentials = true
 
-        // Allow non-simple content-types, enabling scenarios like file uploads.
+        // Enable non-simple content types, allowing for more complex operations like file uploads.
         allowNonSimpleContentTypes = true
     }
 }
+

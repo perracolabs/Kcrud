@@ -1,8 +1,6 @@
 package com.kcrud.app
 
 import com.kcrud.app.plugins.*
-import com.kcrud.app.plugins.configureGraphQL
-import com.kcrud.app.plugins.configureRouting
 import com.kcrud.data.database.DatabaseFactory
 import io.ktor.server.application.*
 
@@ -15,6 +13,12 @@ fun Application.module() {
 
     configureHTTP()
 
+    configureAuthentication()
+
+    configureStatusPages()
+
+    configureTokenGenerator()
+
     configureDependencyInjection()
 
     configureSerialization()
@@ -23,5 +27,5 @@ fun Application.module() {
 
     configureGraphQL()
 
-    DatabaseFactory.init(mode= DatabaseFactory.Mode.PERSISTENT, type = DatabaseFactory.DBType.H2)
+    DatabaseFactory.init(mode = DatabaseFactory.Mode.PERSISTENT, type = DatabaseFactory.DBType.H2)
 }

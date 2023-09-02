@@ -10,30 +10,30 @@ import org.koin.ktor.plugin.Koin
 
 
 /**
- * Application extension function to configure dependency injection.
+ * Sets up and initializes dependency injection using the Koin framework.
  *
- * See [Koin for Ktor documentation](https://insert-koin.io/docs/quickstart/ktor)
+ * See: [Koin for Ktor Documentation](https://insert-koin.io/docs/quickstart/ktor).
  */
 fun Application.configureDependencyInjection() {
 
-    // Define the Koin module for application dependencies.
+    // Declare a Koin module to manage application-level dependencies.
     val appModule = module {
 
-        // Bind EmployeeRepository to the IEmployeeRepository interface.
-        // Create a single instance of EmployeeRepository when an IEmployeeRepository is requested.
+        // Provide a singleton instance of EmployeeRepository for any IEmployeeRepository requests.
         single<IEmployeeRepository> { EmployeeRepository() }
 
-        // Create a single instance of EmployeeService.
+        // Instantiate a singleton EmployeeService, injecting the required EmployeeRepository.
         single { EmployeeService(get()) }
 
-        // Create a single instance of EmployeeController.
+        // Instantiate a singleton EmployeeController, injecting the required EmployeeService.
         single { EmployeeController(get()) }
     }
 
-    // Install the Koin DI framework and load the defined module.
+    // Initialize Koin dependency injection with the defined module.
     install(plugin = Koin) {
         modules(appModule)
     }
 }
+
 
 
