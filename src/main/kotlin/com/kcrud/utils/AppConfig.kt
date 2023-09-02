@@ -24,10 +24,8 @@ data class AppConfig(
      * Deployment class holds settings related to the deployment of the application.
      * @property port Specifies the port on which the application runs.
      * @property host Specifies the host of the application.
-     * @property autoReload Indicates if auto-reloading is enabled.
-     * @property watch Holds a list of resources to watch for changes.
      */
-    data class Deployment(val port: Int, val host: String, val autoReload: Boolean, val watch: List<String>)
+    data class Deployment(val port: Int, val host: String)
 
     /**
      * Jwt class holds settings related to JWT authentication.
@@ -54,9 +52,7 @@ data class AppConfig(
                 Development(isEnabled = developmentConfig),
                 Deployment(
                     port = deployConfig.property("port").getString().toInt(),
-                    host = deployConfig.property("host").getString(),
-                    autoReload = deployConfig.property("autoreload").getString().toBoolean(),
-                    watch = deployConfig.property("watch").getList()
+                    host = deployConfig.property("host").getString()
                 ),
                 Jwt(
                     isEnabled = jwtConfig.property("is_enabled").getString().toBoolean(),
