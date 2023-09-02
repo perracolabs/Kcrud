@@ -29,7 +29,7 @@ fun Application.configureRouting() {
 
         // Conditionally enable JWT authentication for employee-related routes.
         if (appConfig.jwt.isEnabled) {
-            authenticate(optional = true) {
+            authenticate {
                 employee()
             }
         } else {
