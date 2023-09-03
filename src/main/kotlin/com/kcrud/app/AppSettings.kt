@@ -17,6 +17,7 @@ fun Application.appSettings(): AppSettings {
  * @property development The development environment settings.
  * @property deployment The application's deployment settings.
  * @property jwt The JWT authentication settings.
+ * @property basicAuth The basic authentication settings.
  */
 data class AppSettings(
     val development: Development,
