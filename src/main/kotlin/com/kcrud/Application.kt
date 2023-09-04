@@ -1,15 +1,24 @@
-package com.kcrud.app
+package com.kcrud
 
-import com.kcrud.app.plugins.*
 import com.kcrud.data.database.DatabaseFactory
+import com.kcrud.plugins.*
 import io.ktor.server.application.*
+import io.ktor.server.netty.*
 
 
 /**
- * Ktor Configuration Module.
+ * Application main entry point.
  *
- * Responsible for setting up various features like authentication,
- * routing, and database initialization for the Ktor application.
+ * See: [Choosing an engine](https://ktor.io/docs/engines.html)
+ */
+fun main(args: Array<String>) {
+    EngineMain.main(args)
+}
+
+/**
+ * Application configuration module, responsible for setting up various
+ * features like authentication, routing, and database initialization
+ * for the Ktor application.
  *
  * See: [Plugins](https://ktor.io/docs/plugins.html#install)
  */

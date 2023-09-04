@@ -1,4 +1,4 @@
-package com.kcrud.app.plugins
+package com.kcrud.plugins
 
 import com.kcrud.controllers.EmployeeController
 import com.kcrud.data.repositories.EmployeeRepository

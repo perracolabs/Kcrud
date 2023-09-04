@@ -1,4 +1,4 @@
-package com.kcrud.app.plugins
+package com.kcrud.plugins
 
 import com.apurebase.kgraphql.GraphQL
 import com.kcrud.data.graphql.GraphQLSchemas
