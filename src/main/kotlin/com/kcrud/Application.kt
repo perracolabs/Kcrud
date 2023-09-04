@@ -20,6 +20,9 @@ fun main(args: Array<String>) {
  * features like authentication, routing, and database initialization
  * for the Ktor application.
  *
+ * Suppressing the 'unused' warning, as the module is specified in the
+ * 'application.conf` file using HOCON format, and the linter is unaware.
+ *
  * See: [Plugins](https://ktor.io/docs/plugins.html#install)
  */
 @Suppress("unused")
