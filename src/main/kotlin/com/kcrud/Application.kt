@@ -23,6 +23,8 @@ fun main(args: Array<String>) {
  * Suppressing the 'unused' warning, as the module is specified in the
  * 'application.conf` file using HOCON format, and the linter is unaware.
  *
+ * See: [Modules](https://ktor.io/docs/modules.html)
+ *
  * See: [Plugins](https://ktor.io/docs/plugins.html#install)
  */
 @Suppress("unused")
