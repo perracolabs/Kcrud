@@ -91,13 +91,7 @@ data class AppSettings(
             val deployment = instantiateConfig(config, "ktor.deployment", Deployment::class)
             val jwt = instantiateConfig(config, "ktor.jwt", Jwt::class)
             val basicAuth = instantiateConfig(config, "ktor.basic_auth", BasicAuth::class)
-
-            return AppSettings(
-                global,
-                deployment,
-                jwt,
-                basicAuth
-            )
+            return AppSettings(global = global, deployment = deployment, jwt = jwt, basicAuth = basicAuth)
         }
 
         /**
@@ -113,9 +107,7 @@ data class AppSettings(
             val configMap: Map<String, Any?> = config.config(keyPath).toMap()
             val constructor = kClass.primaryConstructor!!
             val arguments = constructor.parameters.associateWith { parameter ->
-                val value = configMap[parameter.name]
-                    ?: throw IllegalArgumentException("Missing configuration value for ${parameter.name}")
-                value
+                configMap[parameter.name] ?: throw IllegalArgumentException("Missing configuration value for ${parameter.name}")
             }
 
             return constructor.callBy(args = arguments)
