@@ -24,7 +24,7 @@ fun Application.configureTokenGenerator() {
 
     val settings = appSettings()
 
-    if (settings.development.isEnabled) {
+    if (settings.global.development) {
         val oneMonthExpiration = 30 * 24 * 60 * 60 * 1000L
         val expirationDate = Date(System.currentTimeMillis() + oneMonthExpiration)
 
