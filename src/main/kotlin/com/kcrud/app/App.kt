@@ -10,6 +10,8 @@ import io.ktor.server.application.*
  *
  * Responsible for setting up various features like authentication,
  * routing, and database initialization for the Ktor application.
+ *
+ * See: [Plugins](https://ktor.io/docs/plugins.html#install)
  */
 @Suppress("unused")
 fun Application.module() {
