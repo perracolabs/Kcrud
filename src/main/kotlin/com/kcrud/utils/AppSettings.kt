@@ -76,7 +76,7 @@ data class AppSettings(
          */
         operator fun invoke(config: ApplicationConfig): AppSettings {
             return instance ?: synchronized(this) {
-                instance ?: createSettings(config).also { instance = it }
+                instance ?: createSettings(config = config).also { instance = it }
             }
         }
 
