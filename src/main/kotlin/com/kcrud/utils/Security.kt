@@ -31,7 +31,10 @@ class Security {
             val algorithm: Algorithm = Algorithm.HMAC256(settings.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
 
-            val authHeader = call.request.headers["Authorization"] ?: ""
+            val authHeader = call.request.headers.entries().find {
+                it.key.equals("Authorization", ignoreCase = true)
+            }?.value?.get(0) ?: ""
+
             val token = authHeader.split("Bearer ").last()
             verifier.verify(JWT.decode(token))
         } catch (e: Exception) {
