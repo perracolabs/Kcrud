@@ -44,11 +44,12 @@ class Security {
             it.key.equals("Authorization", ignoreCase = true)
         }?.value?.get(0) ?: ""
 
-        val bearerIndex = authHeader.indexOf("Bearer ", ignoreCase = true)
+        val bearerPrefix = "Bearer "
+        val bearerIndex = authHeader.indexOf(bearerPrefix, ignoreCase = true)
         if (bearerIndex == -1) {
             throw IllegalArgumentException("Missing Bearer in Authorization header.")
         }
 
-        return authHeader.substring(bearerIndex + "Bearer ".length)
+        return authHeader.substring(bearerIndex + bearerPrefix.length)
     }
 }
