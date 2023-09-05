@@ -22,9 +22,9 @@ import java.util.*
  */
 fun Application.configureTokenGenerator() {
 
-    val settings = appSettings()
+    val appSettings = appSettings()
 
-    if (settings.global.development) {
+    if (appSettings.global.development) {
         val oneMonthExpiration = 30 * 24 * 60 * 60 * 1000L
         val expirationDate = Date(System.currentTimeMillis() + oneMonthExpiration)
 
@@ -33,10 +33,10 @@ fun Application.configureTokenGenerator() {
 
                 // Generate JWT token with the given settings.
                 val jwtToken = JWT.create()
-                    .withAudience(settings.jwt.audience)
-                    .withIssuer(settings.jwt.issuer)
+                    .withAudience(appSettings.jwt.audience)
+                    .withIssuer(appSettings.jwt.issuer)
                     .withExpiresAt(expirationDate)
-                    .sign(Algorithm.HMAC256(settings.jwt.secretKey))
+                    .sign(Algorithm.HMAC256(appSettings.jwt.secretKey))
 
                 // Respond with the generated JWT token.
                 call.respond(hashMapOf("token" to jwtToken))

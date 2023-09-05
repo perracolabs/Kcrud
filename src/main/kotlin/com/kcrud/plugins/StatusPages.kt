@@ -14,14 +14,14 @@ import io.ktor.server.response.*
  */
 fun Application.configureStatusPages() {
 
-    val settings = appSettings()
+    val appSettings = appSettings()
 
     install(StatusPages) {
         // Handle 401 Unauthorized status.
         status(HttpStatusCode.Unauthorized) { call: ApplicationCall, status: HttpStatusCode ->
             // Add WWW-Authenticate header to the response, indicating Basic Authentication is required.
             // This is specific to Basic Authentication, doesn't affect JWT.
-            call.response.header(name = "WWW-Authenticate", value = "Basic realm=\"${settings.basicAuth.realm}\"")
+            call.response.header(name = "WWW-Authenticate", value = "Basic realm=\"${appSettings.basicAuth.realm}\"")
 
             // Respond with 401 Unauthorized status code.
             call.respond(status = HttpStatusCode.Unauthorized, message = "$status")

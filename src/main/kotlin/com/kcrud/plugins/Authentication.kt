@@ -17,26 +17,26 @@ import io.ktor.server.auth.jwt.*
  */
 fun Application.configureAuthentication() {
 
-    val settings = appSettings()
+    val appSettings = appSettings()
 
     authentication {
 
         // JWT-based authentications.
         jwt {
-            realm = settings.jwt.realm
+            realm = appSettings.jwt.realm
 
             // Build and set the JWT verifier with the configured settings.
             verifier(
                 JWT
-                    .require(Algorithm.HMAC256(settings.jwt.secretKey))
-                    .withAudience(settings.jwt.audience)
-                    .withIssuer(settings.jwt.issuer)
+                    .require(Algorithm.HMAC256(appSettings.jwt.secretKey))
+                    .withAudience(appSettings.jwt.audience)
+                    .withIssuer(appSettings.jwt.issuer)
                     .build()
             )
 
             // Validate the credentials; check if the audience in the token matches the expected audience.
             validate { credential ->
-                if (credential.payload.audience.contains(settings.jwt.audience)) {
+                if (credential.payload.audience.contains(appSettings.jwt.audience)) {
                     JWTPrincipal(credential.payload)
                 } else {
                     null
@@ -45,11 +45,11 @@ fun Application.configureAuthentication() {
         }
 
         // Basic authentication.
-        basic(settings.basicAuth.providerName) {
-            realm = settings.basicAuth.realm
+        basic(appSettings.basicAuth.providerName) {
+            realm = appSettings.basicAuth.realm
 
             validate { credentials ->
-                if (credentials.name == settings.basicAuth.username && credentials.password == settings.basicAuth.password) {
+                if (credentials.name == appSettings.basicAuth.username && credentials.password == appSettings.basicAuth.password) {
                     UserIdPrincipal(credentials.name)
                 } else {
                     null

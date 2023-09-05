@@ -19,14 +19,14 @@ class Security {
     private val logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     fun verifyToken(call: ApplicationCall) {
-        val settings = call.application.appSettings()
+        val appSettings = call.application.appSettings()
 
-        if (!settings.jwt.isEnabled)
+        if (!appSettings.jwt.isEnabled)
             return
 
         try {
             val token = getAuthorizationToken(call)
-            val algorithm: Algorithm = Algorithm.HMAC256(settings.jwt.secretKey)
+            val algorithm: Algorithm = Algorithm.HMAC256(appSettings.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             verifier.verify(JWT.decode(token))
         } catch (e: Exception) {
