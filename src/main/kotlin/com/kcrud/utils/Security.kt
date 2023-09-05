@@ -25,7 +25,7 @@ class Security {
             return
 
         try {
-            val token = getAuthorizationToke(call)
+            val token = getAuthorizationToken(call)
             val algorithm: Algorithm = Algorithm.HMAC256(settings.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             verifier.verify(JWT.decode(token))
@@ -39,7 +39,7 @@ class Security {
         }
     }
 
-    private fun getAuthorizationToke(call: ApplicationCall): String {
+    private fun getAuthorizationToken(call: ApplicationCall): String {
         val authHeader = call.request.headers.entries().find {
             it.key.equals("Authorization", ignoreCase = true)
         }?.value?.get(0) ?: ""
