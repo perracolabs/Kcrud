@@ -30,6 +30,8 @@ fun main(args: Array<String>) {
 @Suppress("unused")
 fun Application.module() {
 
+    configureSettingsProvider()
+
     configureHTTP()
 
     configureAuthentication()

@@ -19,7 +19,7 @@ fun Application.configureGraphQL() {
 
         // Set the security context to verify the JWT token for each incoming GraphQL request.
         context { call ->
-            Security().verifyToken(call)
+            Security.verifyToken(call)
         }
 
         val employeeRepository: IEmployeeRepository by inject()

@@ -1,7 +1,7 @@
 package com.kcrud.plugins
 
 import com.kcrud.controllers.employee
-import com.kcrud.utils.appSettings
+import com.kcrud.utils.SettingsProvider
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -18,7 +18,7 @@ import io.ktor.server.routing.*
  */
 fun Application.configureRouting() {
 
-    val appSettings = appSettings()
+    val appSettings = SettingsProvider.get
 
     routing {
         // Basic Authentication for the root endpoint.

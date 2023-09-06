@@ -31,7 +31,7 @@ repositories {
 
 dependencies {
 
-    // Ktor
+    // Ktor.
     // https://github.com/ktorio/ktor
     val ktorVersion = "2.3.4"
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
@@ -39,33 +39,33 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
 
-    // Basic Authentication
+    // Basic Authentication.
     // https://ktor.io/docs/basic.html
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
 
-    // JWT Authentication
+    // JWT Authentication.
     // https://ktor.io/docs/jwt.html
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
 
-    // Logging
+    // Logging.
     // https://github.com/qos-ch/logback
     implementation("ch.qos.logback:logback-classic:1.4.11")
 
-    // Kotlinx Serialization
+    // Kotlinx Serialization.
     // https://github.com/Kotlin/kotlinx.serialization
     // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
 
-    // Serializable Date Time
+    // Serializable Date Time.
     // https://github.com/Kotlin/kotlinx-datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 
-    // 'Conf' type safety
+    // 'Conf' type safety.
     // https://github.com/lightbend/config
     implementation("com.typesafe:config:1.4.2")
 
-    // Exposed ORM
+    // Exposed ORM.
     // https://github.com/JetBrains/Exposed
     val exposedVersion = "0.43.0"
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
@@ -73,22 +73,22 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
 
-    // Koin
+    // Koin.
     // https://insert-koin.io/docs/quickstart/ktor
     // https://github.com/InsertKoinIO/koin-getting-started
     val koinVersion = "3.4.3"
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 
-    // H2 database
+    // H2 database.
     // https://github.com/h2database/h2database
     implementation("com.h2database:h2:2.1.210")
 
-    // SQLite database
+    // SQLite database.
     // https://github.com/sqlite/sqlite
     implementation("org.xerial:sqlite-jdbc:3.43.0.0")
 
-    // GraphQL
+    // GraphQL.
     // https://github.com/aPureBase/KGraphQL
     implementation("com.apurebase:kgraphql:0.19.0")
     implementation("com.apurebase:kgraphql-ktor:0.19.0")
@@ -98,7 +98,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.10")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
-    testImplementation("org.slf4j:slf4j-api:2.0.7")
+    testImplementation("org.slf4j:slf4j-api:2.0.9")
     testImplementation("ch.qos.logback:logback-classic:1.2.11")
     testImplementation("io.insert-koin:koin-test:3.4.3")
 }

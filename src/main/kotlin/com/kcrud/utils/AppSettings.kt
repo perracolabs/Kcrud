@@ -5,12 +5,26 @@ import io.ktor.server.config.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
-
 /**
- * Application extension function to retrieve the singleton instance of AppSettings.
+ * Singleton object for providing the configuration settings throughout the application.
+ *
+ * After initializing the application with the `install` function, you can
+ * access the settings anywhere in your app through the `get` property.
  */
-fun Application.appSettings(): AppSettings {
-    return AppSettings(environment.config)
+object SettingsProvider {
+    private lateinit var settings: AppSettings
+
+    val get: AppSettings
+        get() {
+            if (!::settings.isInitialized) {
+                throw UninitializedPropertyAccessException("SettingsProvider not initialized. Make sure to call SettingsProvider.install.")
+            }
+            return settings
+        }
+
+    fun install(pipeline: Application) {
+        settings = AppSettings(pipeline.environment.config)
+    }
 }
 
 /**
