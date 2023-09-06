@@ -22,7 +22,7 @@ fun Application.configureGraphQL() {
             Security.verifyToken(call)
         }
 
-        val employeeRepository: IEmployeeRepository by inject()
+        val employeeRepository by inject<IEmployeeRepository>()
 
         // Define the GraphQL schema.
         schema {

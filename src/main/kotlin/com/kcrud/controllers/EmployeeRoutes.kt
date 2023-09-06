@@ -10,7 +10,7 @@ import org.koin.ktor.ext.inject
  */
 fun Route.employee() {
 
-    val controller: EmployeeController by inject()
+    val controller by inject<EmployeeController>()
 
     route("v1") {
 
