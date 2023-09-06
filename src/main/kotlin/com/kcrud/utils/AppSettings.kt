@@ -121,7 +121,8 @@ data class AppSettings(
             val configMap: Map<String, Any?> = config.config(keyPath).toMap()
             val constructor = kClass.primaryConstructor!!
             val arguments = constructor.parameters.associateWith { parameter ->
-                configMap[parameter.name] ?: throw IllegalArgumentException("Missing configuration value for ${parameter.name}")
+                configMap[parameter.name]
+                    ?: throw IllegalArgumentException("Missing configuration key [${parameter.name}] in section [$keyPath]")
             }
 
             return constructor.callBy(args = arguments)
