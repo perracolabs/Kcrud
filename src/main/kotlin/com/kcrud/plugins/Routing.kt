@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud.plugins
 
 import com.kcrud.controllers.employee
@@ -6,7 +12,6 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-
 
 /**
  * Initializes and sets up routing for the application.

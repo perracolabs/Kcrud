@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud.data.graphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
@@ -6,7 +12,6 @@ import com.kcrud.data.repositories.IEmployeeRepository
 import kotlinx.datetime.LocalDate
 import java.time.DayOfWeek
 import java.time.Month
-
 
 /**
  * Demonstrates modularization of GraphQL schemas for scalability.

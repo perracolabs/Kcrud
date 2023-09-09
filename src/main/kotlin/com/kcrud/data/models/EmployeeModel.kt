@@ -1,8 +1,12 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
 package com.kcrud.data.models
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
-
 
 /**
  * Database model for employees.

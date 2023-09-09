@@ -1,9 +1,14 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud.plugins
 
 import com.kcrud.utils.Security
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-
 
 /**
  * Configures the Basic and JWT-based authentications.

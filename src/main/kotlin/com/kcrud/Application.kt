@@ -1,10 +1,15 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud
 
 import com.kcrud.data.database.DatabaseFactory
 import com.kcrud.plugins.*
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
-
 
 /**
  * Application main entry point.

@@ -1,9 +1,14 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud.data.entities
 
 import com.kcrud.utils.AgeDelegate
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-
 
 @Serializable
 data class EmployeeEntity(

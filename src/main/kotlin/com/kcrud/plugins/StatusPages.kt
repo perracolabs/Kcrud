@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud.plugins
 
 import com.kcrud.utils.SettingsProvider
@@ -5,7 +11,6 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
-
 
 /**
  * Install the StatusPages feature for handling HTTP status codes.

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud.plugins
 
 import com.kcrud.controllers.EmployeeController
@@ -9,7 +15,6 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
-
 
 /**
  * Sets up and initializes dependency injection using the Koin framework.

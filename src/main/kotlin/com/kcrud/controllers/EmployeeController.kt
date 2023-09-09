@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud.controllers
 
 import com.kcrud.data.entities.EmployeeEntity
@@ -7,7 +13,6 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import org.koin.core.component.KoinComponent
-
 
 class EmployeeController(private val service: EmployeeService) : KoinComponent {
 

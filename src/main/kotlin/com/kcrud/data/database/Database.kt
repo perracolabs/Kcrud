@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 package com.kcrud.data.database
 
 import com.kcrud.data.models.EmployeeTable
@@ -7,7 +13,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.sql.DriverManager
-
 
 /**
  * Provides functionality to initialize and manage a connection to the database.
