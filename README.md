@@ -1,4 +1,4 @@
-# kcrud
+# Kcrud
 A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
 
 ### Characteristics:
