@@ -1,1 +1,1 @@
-rootProject.name = "kcrud"
+rootProject.name = "Kcrud"
