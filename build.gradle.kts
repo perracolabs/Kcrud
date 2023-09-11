@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
 plugins {
     kotlin("jvm") version "1.9.10"
     id("io.ktor.plugin") version "2.3.4"
