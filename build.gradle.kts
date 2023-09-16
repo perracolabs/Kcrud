@@ -81,8 +81,8 @@ dependencies {
 
     // Koin.
     // https://insert-koin.io/docs/quickstart/ktor
+    // https://github.com/InsertKoinIO/koin
     // https://github.com/InsertKoinIO/koin-getting-started
-    // https://github.com/InsertKoinIO/koin/blob/main/CHANGELOG.md
     val koinVersion = "3.5.1"
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
