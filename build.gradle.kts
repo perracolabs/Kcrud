@@ -89,6 +89,7 @@ dependencies {
 
     // H2 database.
     // https://github.com/h2database/h2database
+    // TODO: update once IntelliJ supports the latest driver.
     implementation("com.h2database:h2:2.1.210")
 
     // SQLite database.
