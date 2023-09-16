@@ -82,7 +82,8 @@ dependencies {
     // Koin.
     // https://insert-koin.io/docs/quickstart/ktor
     // https://github.com/InsertKoinIO/koin-getting-started
-    val koinVersion = "3.4.3"
+    // https://github.com/InsertKoinIO/koin/blob/main/CHANGELOG.md
+    val koinVersion = "3.5.1"
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 
@@ -106,5 +107,5 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     testImplementation("org.slf4j:slf4j-api:2.0.9")
     testImplementation("ch.qos.logback:logback-classic:1.2.11")
-    testImplementation("io.insert-koin:koin-test:3.4.3")
+    testImplementation("io.insert-koin:koin-test:3.5.0")
 }
