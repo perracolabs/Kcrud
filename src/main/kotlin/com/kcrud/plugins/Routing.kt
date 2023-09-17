@@ -42,8 +42,8 @@ fun Application.configureRouting() {
 }
 
 private fun Route.root(appSettings: AppSettings) {
-    // Basic Authentication for the root endpoint.
     if (appSettings.basicAuth.isEnabled) {
+        // Basic Authentication for the root endpoint.
         authenticate(appSettings.basicAuth.providerName) {
             get("/") {
                 call.respondText("Hello World! You are authenticated.")
