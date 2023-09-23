@@ -24,9 +24,10 @@ import io.ktor.server.routing.*
  */
 fun Application.configureTokenGenerator() {
     routing {
-        generateTokenEndpoint()
-
-        refreshTokenEndpoint()
+        route("auth/token") {
+            generateTokenEndpoint()
+            refreshTokenEndpoint()
+        }
     }
 }
 
@@ -35,7 +36,7 @@ fun Application.configureTokenGenerator() {
  */
 private fun Route.generateTokenEndpoint() {
     authenticate(SettingsProvider.get.basicAuth.providerName) {
-        post("auth/token/create") {
+        post("create") {
             val jwtToken = Security.generateToken()
             call.respond(hashMapOf("token" to jwtToken))
         }
@@ -47,7 +48,7 @@ private fun Route.generateTokenEndpoint() {
  * No Basic Authentication is required here, but an existing token's validity will be checked.
  */
 private fun Route.refreshTokenEndpoint() {
-    post("auth/token/refresh") {
+    post("refresh") {
         val tokenState = Security.getTokenState(call)
 
         when (tokenState) {
