@@ -7,7 +7,6 @@
 package com.kcrud.plugins
 
 import com.kcrud.controllers.employee
-import com.kcrud.utils.AppSettings
 import com.kcrud.utils.SettingsProvider
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -24,13 +23,11 @@ import io.ktor.server.routing.*
  */
 fun Application.configureRouting() {
 
-    val appSettings = SettingsProvider.get
-
     routing {
-        root(appSettings)
+        root()
 
         // JWT Authentication for employee-related routes.
-        if (appSettings.jwt.isEnabled) {
+        if (SettingsProvider.get.jwt.isEnabled) {
             authenticate {
                 employee()
             }
@@ -41,7 +38,9 @@ fun Application.configureRouting() {
     }
 }
 
-private fun Route.root(appSettings: AppSettings) {
+private fun Route.root() {
+    val appSettings = SettingsProvider.get
+
     if (appSettings.basicAuth.isEnabled) {
         // Basic Authentication for the root endpoint.
         authenticate(appSettings.basicAuth.providerName) {

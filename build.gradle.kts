@@ -101,7 +101,7 @@ dependencies {
     implementation("com.apurebase:kgraphql:0.19.0")
     implementation("com.apurebase:kgraphql-ktor:0.19.0")
 
-    implementation("io.mockk:mockk:1.13.7")
+    implementation("io.mockk:mockk:1.13.8")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.10")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
