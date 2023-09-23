@@ -24,17 +24,14 @@ Under the `jwt` and `basic-auth` sections, you'll find an `is_enabled` flag.
 ```
 http://localhost:8080/auth/token/create
 ```
-Creating a new token requires basic credential authentication. In Postman select the `Authorization` tab
+Creating a new token requires basic credential authentication. In *[Postman](https://www.postman.com/)* select the `Authorization` tab
 and create a `Basic Auth` type with the credentials defined in the `application.conf` file
 located under the `resources` directory.
-
 - #### To refresh an existing token use the following endpoint:
 ```
 http://localhost:8080/auth/token/refresh
 ```
-
 - #### Refreshing or using the obtained Token in *[Postman](https://www.postman.com/)* requests:
-
 1. Open **Postman** and select the **Headers** tab.
 2. Add a new key-value pair:
    - Key: `Authorization`

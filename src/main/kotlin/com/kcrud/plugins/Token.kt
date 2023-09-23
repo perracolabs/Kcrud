@@ -23,39 +23,49 @@ import io.ktor.server.routing.*
  * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html)
  */
 fun Application.configureTokenGenerator() {
-
     routing {
-        // Endpoint for initial token generation; requires Basic Authentication.
-        // Use this endpoint when the client logs in for the first time.
-        authenticate(SettingsProvider.get.basicAuth.providerName) {
-            post("auth/token/create") {
+        generateTokenEndpoint()
+
+        refreshTokenEndpoint()
+    }
+}
+
+/**
+ * Endpoint for initial token generation; requires Basic Authentication.
+ */
+private fun Route.generateTokenEndpoint() {
+    authenticate(SettingsProvider.get.basicAuth.providerName) {
+        post("auth/token/create") {
+            val jwtToken = Security.generateToken()
+            call.respond(hashMapOf("token" to jwtToken))
+        }
+    }
+}
+
+/**
+ * Endpoint for token refresh.
+ * No Basic Authentication is required here, but an existing token's validity will be checked.
+ */
+private fun Route.refreshTokenEndpoint() {
+    post("auth/token/refresh") {
+        val tokenState = Security.getTokenState(call)
+
+        when (tokenState) {
+            Security.TokenState.Valid -> {
+                // Token is still valid; return the same token to the client.
+                val jwtToken = Security.getAuthorizationToken(call)
+                call.respond(hashMapOf("token" to jwtToken))
+            }
+
+            Security.TokenState.Expired -> {
+                // Token has expired; generate a new token and respond with it.
                 val jwtToken = Security.generateToken()
                 call.respond(hashMapOf("token" to jwtToken))
             }
-        }
 
-        // Endpoint for token refresh.
-        // No Basic Authentication is required here, but the existing token's validity will be checked.
-        post("auth/token/refresh") {
-            val tokenState = Security.getTokenState(call)
-
-            when (tokenState) {
-                Security.TokenState.Valid -> {
-                    // Token is still valid; return the same token to the client.
-                    val jwtToken = Security.getAuthorizationToken(call)
-                    call.respond(hashMapOf("token" to jwtToken))
-                }
-
-                Security.TokenState.Expired -> {
-                    // Token has expired; generate a new token and respond with it.
-                    val jwtToken = Security.generateToken()
-                    call.respond(hashMapOf("token" to jwtToken))
-                }
-
-                Security.TokenState.Invalid -> {
-                    // Token is invalid; respond with an Unauthorized status.
-                    call.respond(HttpStatusCode.Unauthorized, "Invalid token.")
-                }
+            Security.TokenState.Invalid -> {
+                // Token is invalid; respond with an Unauthorized status.
+                call.respond(HttpStatusCode.Unauthorized, "Invalid token.")
             }
         }
     }
