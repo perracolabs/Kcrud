@@ -28,7 +28,7 @@ fun Application.configureTokenGenerator() {
         // Endpoint for initial token generation; requires Basic Authentication.
         // Use this endpoint when the client logs in for the first time.
         authenticate(SettingsProvider.get.basicAuth.providerName) {
-            post("auth/token") {
+            post("auth/token/create") {
                 val jwtToken = Security.generateToken()
                 call.respond(hashMapOf("token" to jwtToken))
             }
@@ -36,7 +36,7 @@ fun Application.configureTokenGenerator() {
 
         // Endpoint for token refresh.
         // No Basic Authentication is required here, but the existing token's validity will be checked.
-        post("auth/refresh") {
+        post("auth/token/refresh") {
             val tokenState = Security.getTokenState(call)
 
             when (tokenState) {

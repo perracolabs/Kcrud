@@ -19,18 +19,23 @@ Under the `jwt` and `basic-auth` sections, you'll find an `is_enabled` flag.
 - For `JWT`, both  `REST` and `GraphQL` endpoints will require authentication.
 - For `basic authentication`, only the root endpoint prompts for username and password.
 
-### Fetching a new `JWT` authorization token
-
-For convenience, use the following `POST` endpoint to generate tokens.
-Available only while the `development` setting in `hconf` is set to `true`.
-
+### Generating and Refreshing JWT Authorization Tokens
+- #### To Create a new JWT (JSON Web Token) authorization token use the following endpoint:
 ```
-http://localhost:8080/token
+http://localhost:8080/auth/token/create
+```
+Creating a new token requires basic credential authentication. In Postman select the `Authorization` tab
+and create a `Basic Auth` type with the credentials defined in the `application.conf` file
+located under the `resources` directory.
+
+- #### To refresh an existing token use the following endpoint:
+```
+http://localhost:8080/auth/token/refresh
 ```
 
-- #### Using the obtained Token in *[Postman](https://www.postman.com/)* requests
+- #### Refreshing or using the obtained Token in *[Postman](https://www.postman.com/)* requests:
 
-1. Open **Postman** and go to the **Headers** tab.
+1. Open **Postman** and select the **Headers** tab.
 2. Add a new key-value pair:
    - Key: `Authorization`
    - Value: `Bearer <The-token-with-no-quotes>`
