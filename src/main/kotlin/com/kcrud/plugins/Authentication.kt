@@ -6,9 +6,11 @@
 
 package com.kcrud.plugins
 
+import com.kcrud.controllers.TokenRoutes
 import com.kcrud.utils.Security
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.routing.*
 
 /**
  * Configures the Basic and JWT-based authentications.
@@ -22,5 +24,14 @@ fun Application.configureAuthentication() {
     authentication {
         Security.configureJwt(config = this)
         Security.configureBasicAuth(config = this)
+    }
+
+    val tokenRoutes = TokenRoutes()
+
+    routing {
+        route("auth/token") {
+            tokenRoutes.generateTokenEndpoint(this)
+            tokenRoutes.refreshTokenEndpoint(this)
+        }
     }
 }

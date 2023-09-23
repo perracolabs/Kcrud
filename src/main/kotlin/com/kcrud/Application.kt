@@ -43,8 +43,6 @@ fun Application.module() {
 
     configureStatusPages()
 
-    configureTokenGenerator()
-
     configureSerialization()
 
     configureDependencyInjection()
