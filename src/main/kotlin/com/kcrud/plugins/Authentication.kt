@@ -6,7 +6,7 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.controllers.TokenRoutes
+import com.kcrud.routes.TokenRoutes
 import com.kcrud.utils.Security
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

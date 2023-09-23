@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.controllers
+package com.kcrud.routes
 
 import com.kcrud.utils.Security
 import com.kcrud.utils.SettingsProvider
