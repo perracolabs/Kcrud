@@ -9,6 +9,7 @@ package com.kcrud.plugins
 import com.kcrud.utils.SettingsProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 
@@ -30,6 +31,17 @@ fun Application.configureStatusPages() {
 
             // Respond with 401 Unauthorized status code.
             call.respond(status = HttpStatusCode.Unauthorized, message = "$status")
+        }
+
+        // Additional exception handling.
+        exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
+            call.respond(HttpStatusCode.BadRequest, cause.localizedMessage)
+        }
+        exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
+            call.respond(HttpStatusCode.NotFound, cause.localizedMessage)
+        }
+        exception<Throwable> { call: ApplicationCall, cause: Throwable ->
+            call.respond(HttpStatusCode.InternalServerError, "An internal server error occurred. ${cause.localizedMessage}")
         }
     }
 }

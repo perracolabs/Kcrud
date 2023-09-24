@@ -19,45 +19,50 @@ import org.koin.ktor.ext.inject
 class EmployeeRoutes(private val routingNode: Route) {
 
     fun routing() {
-        routingNode.route("v1") {
-            val controller by inject<EmployeeController>()
-
-            // JWT Authentication for employee-related routes.
+        routingNode.route(API_VERSION) {
             if (SettingsProvider.get.jwt.isEnabled) {
                 authenticate {
-                    employeeRoutes(this, controller)
-                    employeesRoutes(this, controller)
+                    setupRoutes(this)
                 }
             } else {
-                // No authentication required.
-                employeeRoutes(this, controller)
-                employeesRoutes(this, controller)
+                setupRoutes(this)
             }
         }
     }
 
-    private fun employeeRoutes(routeScope: Route, controller: EmployeeController) {
+    private fun setupRoutes(routeScope: Route) {
         routeScope {
-            route("employee") {
+            val controller by inject<EmployeeController>()
 
-                post { controller.create(call) }
+            setupEmployeeRoutes(this, controller)
+            setupEmployeesRoutes(this, controller)
+        }
+    }
 
-                route("{id}") {
-                    get { controller.get(call) }
-                    put { controller.update(call) }
-                    delete { controller.delete(call) }
-                }
+    private fun setupEmployeeRoutes(routeScope: Route, controller: EmployeeController) {
+        routeScope.route(EMPLOYEE_ROUTE) {
+
+            post { controller.create(call) }
+
+            route("{id}") {
+                get { controller.get(call) }
+                put { controller.update(call) }
+                delete { controller.delete(call) }
             }
         }
     }
 
-    private fun employeesRoutes(routeScope: Route, controller: EmployeeController) {
-        routeScope {
-            route("employees") {
-                get { controller.getAll(call) }
-                delete { controller.deleteAll(call) }
-            }
+    private fun setupEmployeesRoutes(routeScope: Route, controller: EmployeeController) {
+        routeScope.route(EMPLOYEES_ROUTE) {
+            get { controller.getAll(call) }
+            delete { controller.deleteAll(call) }
         }
+    }
+
+    companion object {
+        private const val API_VERSION = "v1"
+        private const val EMPLOYEE_ROUTE = "employee"
+        private const val EMPLOYEES_ROUTE = "employees"
     }
 }
 
