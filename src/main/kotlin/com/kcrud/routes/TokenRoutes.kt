@@ -6,7 +6,7 @@
 
 package com.kcrud.routes
 
-import com.kcrud.utils.Security
+import com.kcrud.security.AuthenticationToken
 import com.kcrud.utils.SettingsProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -36,7 +36,7 @@ class TokenRoutes(private val routingNode: Route) {
     private fun setupGenerateToken(routeScope: Route) {
         routeScope.authenticate(SettingsProvider.get.basicAuth.providerName) {
             post("create") {
-                val jwtToken = Security.generateToken()
+                val jwtToken = AuthenticationToken.generate()
                 call.respond(hashMapOf(KEY_TOKEN to jwtToken))
             }
         }
@@ -48,22 +48,22 @@ class TokenRoutes(private val routingNode: Route) {
      */
     private fun setupRefreshToken(routeScope: Route) {
         routeScope.post("refresh") {
-            val tokenState = Security.getTokenState(call)
+            val tokenState = AuthenticationToken.getState(call)
 
             when (tokenState) {
-                Security.TokenState.Valid -> {
+                AuthenticationToken.TokenState.Valid -> {
                     // Token is still valid; return the same token to the client.
-                    val jwtToken = Security.getAuthorizationToken(call)
+                    val jwtToken = AuthenticationToken.fromHeader(call)
                     call.respond(hashMapOf(KEY_TOKEN to jwtToken))
                 }
 
-                Security.TokenState.Expired -> {
+                AuthenticationToken.TokenState.Expired -> {
                     // Token has expired; generate a new token and respond with it.
-                    val jwtToken = Security.generateToken()
+                    val jwtToken = AuthenticationToken.generate()
                     call.respond(hashMapOf(KEY_TOKEN to jwtToken))
                 }
 
-                Security.TokenState.Invalid -> {
+                AuthenticationToken.TokenState.Invalid -> {
                     // Token is invalid; respond with an Unauthorized status.
                     call.respond(HttpStatusCode.Unauthorized, "Invalid token.")
                 }

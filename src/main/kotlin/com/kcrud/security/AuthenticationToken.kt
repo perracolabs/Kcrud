@@ -4,16 +4,15 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.utils
+package com.kcrud.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
+import com.kcrud.utils.SettingsProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
@@ -25,7 +24,7 @@ import java.util.*
  * This class contains the logic for verifying JWT tokens using HMAC256 algorithm.
  * If the token is invalid or any exception occurs, an UnauthorizedException will be thrown.
  */
-object Security {
+object AuthenticationToken {
     private val logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     // Hardcoded expiration to 1 month, tweak as needed.
@@ -35,57 +34,15 @@ object Security {
         Valid, Expired, Invalid
     }
 
-    fun configureJwt(config: AuthenticationConfig) {
-        val appSettings = SettingsProvider.get
-
-        config.jwt {
-            realm = appSettings.jwt.realm
-
-            // Build and set the JWT verifier with the configured settings.
-            verifier(
-                JWT
-                    .require(Algorithm.HMAC256(appSettings.jwt.secretKey))
-                    .withAudience(appSettings.jwt.audience)
-                    .withIssuer(appSettings.jwt.issuer)
-                    .build()
-            )
-
-            // Validate the credentials; check if the audience in the token matches the expected audience.
-            validate { credential ->
-                if (credential.payload.audience.contains(appSettings.jwt.audience)) {
-                    JWTPrincipal(credential.payload)
-                } else {
-                    null
-                }
-            }
-        }
-    }
-
-    fun configureBasicAuth(config: AuthenticationConfig) {
-        val appSettings = SettingsProvider.get
-
-        config.basic(appSettings.basicAuth.providerName) {
-            realm = appSettings.basicAuth.realm
-
-            validate { credentials ->
-                if (credentials.name == appSettings.basicAuth.username && credentials.password == appSettings.basicAuth.password) {
-                    UserIdPrincipal(credentials.name)
-                } else {
-                    null
-                }
-            }
-        }
-    }
-
     /**
      * Verify the authorization token from the headers.
      * If invalid then the Unauthorized response is sent.
      */
-    fun verifyToken(call: ApplicationCall) {
+    fun verify(call: ApplicationCall) {
         val appSettings = SettingsProvider.get
 
         if (appSettings.jwt.isEnabled) {
-            if (getTokenState(call) != TokenState.Valid) {
+            if (getState(call) != TokenState.Valid) {
                 runBlocking {
                     call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Error while authorizing.")
                 }
@@ -94,13 +51,13 @@ object Security {
     }
 
     /**
-     * Returns the current [TokenState] of the header authorization token.
+     * Returns the current [TokenState] from the header authorization token.
      */
-    fun getTokenState(call: ApplicationCall): TokenState {
+    fun getState(call: ApplicationCall): TokenState {
         val appSettings = SettingsProvider.get
 
         return try {
-            val token = getAuthorizationToken(call)
+            val token = fromHeader(call)
             val algorithm: Algorithm = Algorithm.HMAC256(appSettings.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             verifier.verify(JWT.decode(token))
@@ -116,7 +73,7 @@ object Security {
     /**
      * Returns the current authorization token from the headers.
      */
-    fun getAuthorizationToken(call: ApplicationCall): String {
+    fun fromHeader(call: ApplicationCall): String {
         val authHeader = call.request.headers.entries().find {
             it.key.equals("Authorization", ignoreCase = true)
         }?.value?.get(0) ?: ""
@@ -133,7 +90,7 @@ object Security {
     /**
      * Generate a new authorization token.
      */
-    fun generateToken(): String {
+    fun generate(): String {
         val appSettings = SettingsProvider.get
         val expirationDate = Date(System.currentTimeMillis() + ONE_MONTH_EXPIRATION)
 

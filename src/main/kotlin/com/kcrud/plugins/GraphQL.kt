@@ -9,7 +9,7 @@ package com.kcrud.plugins
 import com.apurebase.kgraphql.GraphQL
 import com.kcrud.data.graphql.GraphQLSchemas
 import com.kcrud.data.repositories.IEmployeeRepository
-import com.kcrud.utils.Security
+import com.kcrud.security.AuthenticationToken
 import io.ktor.server.application.*
 import org.koin.ktor.ext.inject
 
@@ -25,7 +25,7 @@ fun Application.configureGraphQL() {
 
         // Set the security context to verify the JWT token for each incoming GraphQL request.
         context { call ->
-            Security.verifyToken(call)
+            AuthenticationToken.verify(call)
         }
 
         val employeeRepository by inject<IEmployeeRepository>()
