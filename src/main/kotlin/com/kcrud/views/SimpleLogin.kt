@@ -47,7 +47,7 @@ class SimpleLogin {
                         }
                     }
                     p {
-                        submitInput() { value = "Login" }
+                        submitInput { value = "Login" }
                     }
                 }
             }
