@@ -39,7 +39,9 @@ class EmployeeRoutes(private val routingNode: Route) {
     private fun employeeRoutes(routeScope: Route, controller: EmployeeController) {
         routeScope {
             route("employee") {
+
                 post { controller.create(call) }
+
                 route("{id}") {
                     get { controller.get(call) }
                     put { controller.update(call) }
