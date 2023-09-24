@@ -29,7 +29,7 @@ class TokenRoutes(private val routingNode: Route) {
         routingNode.route(AUTH_TOKEN_ROUTE) {
 
             // Example for new token generation rate limit.
-            rateLimit(RateLimitName(RateLimitSetup.SCOPE_NEW_TOKEN)) {
+            rateLimit(RateLimitName(RateLimitSetup.SCOPE_NEW_AUTH_TOKEN)) {
                 setupGenerateToken(this)
             }
 

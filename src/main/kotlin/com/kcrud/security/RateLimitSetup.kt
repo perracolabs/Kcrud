@@ -30,12 +30,12 @@ class RateLimitSetup {
         rateLimitConfig.apply {
 
             // Example scope for new token generation rate limit.
-            register(RateLimitName(SCOPE_NEW_TOKEN)) {
+            register(RateLimitName(SCOPE_NEW_AUTH_TOKEN)) {
                 rateLimiter(limit = 100, refillPeriod = 10.seconds)
             }
 
             // Example scope for the public API rate limit.
-            register(RateLimitName(SCOPE_PUBLIC)) {
+            register(RateLimitName(SCOPE_PUBLIC_API)) {
                 rateLimiter(limit = 1_000, refillPeriod = 1.seconds)
             }
         }
@@ -43,9 +43,9 @@ class RateLimitSetup {
 
     companion object {
         // Scope key for authorization tokens.
-        const val SCOPE_NEW_TOKEN = "new_token"
+        const val SCOPE_NEW_AUTH_TOKEN = "new_auth_token"
 
         // Scope key for the public API.
-        const val SCOPE_PUBLIC = "public"
+        const val SCOPE_PUBLIC_API = "public_api"
     }
 }

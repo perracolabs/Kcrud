@@ -25,7 +25,7 @@ import io.ktor.server.routing.*
 fun Application.configureRouting() {
 
     routing {
-        rateLimit(RateLimitName(RateLimitSetup.SCOPE_PUBLIC)) {
+        rateLimit(RateLimitName(RateLimitSetup.SCOPE_PUBLIC_API)) {
             RootRoutes(this).configure()
             EmployeeRoutes(this).configure()
         }
