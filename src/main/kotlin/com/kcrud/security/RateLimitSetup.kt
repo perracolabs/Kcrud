@@ -10,7 +10,17 @@ import io.ktor.server.plugins.ratelimit.*
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Configures the routes rate limits.
+ * Configures the routes rate limits by defining the maximum allowed calls per period.
+ *
+ * These must be applied when defining the routes by using the same scope key. Example:
+ *
+ *```
+ * routing {
+ *      rateLimit(RateLimitName(RateLimitSetup.SCOPE_PUBLIC)) {
+ *           get("some_endpoint") { ... }
+ *      }
+ * }
+ *```
  *
  * See: [Ktor Rate Limit](https://ktor.io/docs/rate-limit.html)
  */
@@ -18,13 +28,14 @@ class RateLimitSetup {
 
     fun configure(rateLimitConfig: RateLimitConfig) {
         rateLimitConfig.apply {
+
+            // Example scope for new token generation rate limit.
             register(RateLimitName(SCOPE_NEW_TOKEN)) {
-                // Example limiting new tokens generation at 100 every 10 second.
                 rateLimiter(limit = 100, refillPeriod = 10.seconds)
             }
 
+            // Example scope for the public API rate limit.
             register(RateLimitName(SCOPE_PUBLIC)) {
-                // Example limiting public API calls at 1000 per second.
                 rateLimiter(limit = 1_000, refillPeriod = 1.seconds)
             }
         }
