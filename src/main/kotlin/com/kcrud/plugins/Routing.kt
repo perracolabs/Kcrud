@@ -8,9 +8,7 @@ package com.kcrud.plugins
 
 import com.kcrud.routes.EmployeeRoutes
 import com.kcrud.routes.RootRoutes
-import com.kcrud.utils.SettingsProvider
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 
 /**
@@ -24,16 +22,8 @@ import io.ktor.server.routing.*
 fun Application.configureRouting() {
 
     routing {
-        RootRoutes().root(this)
+        RootRoutes(this).routing()
 
-        // JWT Authentication for employee-related routes.
-        if (SettingsProvider.get.jwt.isEnabled) {
-            authenticate {
-                EmployeeRoutes().employee(this)
-            }
-        } else {
-            // No authentication required.
-            EmployeeRoutes().employee(this)
-        }
+        EmployeeRoutes(this).routing()
     }
 }

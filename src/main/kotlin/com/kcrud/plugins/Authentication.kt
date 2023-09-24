@@ -26,12 +26,11 @@ fun Application.configureAuthentication() {
         Security.configureBasicAuth(config = this)
     }
 
-    val tokenRoutes = TokenRoutes()
-
     routing {
         route("auth/token") {
-            tokenRoutes.generateTokenEndpoint(this)
-            tokenRoutes.refreshTokenEndpoint(this)
+            val tokenRoutes = TokenRoutes(this)
+            tokenRoutes.generateToken()
+            tokenRoutes.refreshToken()
         }
     }
 }

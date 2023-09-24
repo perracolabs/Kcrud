@@ -13,13 +13,13 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 /**
- * Managers the root endpoint.
+ * Defines the root endpoint for the Ktor application.
  */
-class RootRoutes {
-    fun root(route: Route) {
-        route {
-            val appSettings = SettingsProvider.get
+class RootRoutes(private val routingNode: Route) {
+    private val appSettings = SettingsProvider.get
 
+    fun routing() {
+        routingNode {
             if (appSettings.basicAuth.isEnabled) {
                 // Basic Authentication for the root endpoint.
                 authenticate(appSettings.basicAuth.providerName) {
