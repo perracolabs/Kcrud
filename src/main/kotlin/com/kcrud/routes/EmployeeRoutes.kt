@@ -31,7 +31,7 @@ class EmployeeRoutes(private val routingNode: Route) {
     }
 
     private fun setupRoutes(routeScope: Route) {
-        routeScope {
+        routeScope.apply {
             val controller by inject<EmployeeController>()
 
             setupEmployeeRoutes(this, controller)
