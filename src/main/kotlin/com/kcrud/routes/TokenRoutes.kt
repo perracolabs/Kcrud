@@ -27,12 +27,10 @@ class TokenRoutes(private val routingNode: Route) {
      * Endpoint for initial token generation; requires Basic Authentication.
      */
     fun generateToken() {
-        routingNode {
-            authenticate(SettingsProvider.get.basicAuth.providerName) {
-                post("create") {
-                    val jwtToken = Security.generateToken()
-                    call.respond(hashMapOf(KEY_TOKEN to jwtToken))
-                }
+        routingNode.authenticate(SettingsProvider.get.basicAuth.providerName) {
+            post("create") {
+                val jwtToken = Security.generateToken()
+                call.respond(hashMapOf(KEY_TOKEN to jwtToken))
             }
         }
     }
@@ -42,27 +40,25 @@ class TokenRoutes(private val routingNode: Route) {
      * No Basic Authentication is required here, but an existing token's validity will be checked.
      */
     fun refreshToken() {
-        routingNode {
-            post("refresh") {
-                val tokenState = Security.getTokenState(call)
+        routingNode.post("refresh") {
+            val tokenState = Security.getTokenState(call)
 
-                when (tokenState) {
-                    Security.TokenState.Valid -> {
-                        // Token is still valid; return the same token to the client.
-                        val jwtToken = Security.getAuthorizationToken(call)
-                        call.respond(hashMapOf(KEY_TOKEN to jwtToken))
-                    }
+            when (tokenState) {
+                Security.TokenState.Valid -> {
+                    // Token is still valid; return the same token to the client.
+                    val jwtToken = Security.getAuthorizationToken(call)
+                    call.respond(hashMapOf(KEY_TOKEN to jwtToken))
+                }
 
-                    Security.TokenState.Expired -> {
-                        // Token has expired; generate a new token and respond with it.
-                        val jwtToken = Security.generateToken()
-                        call.respond(hashMapOf(KEY_TOKEN to jwtToken))
-                    }
+                Security.TokenState.Expired -> {
+                    // Token has expired; generate a new token and respond with it.
+                    val jwtToken = Security.generateToken()
+                    call.respond(hashMapOf(KEY_TOKEN to jwtToken))
+                }
 
-                    Security.TokenState.Invalid -> {
-                        // Token is invalid; respond with an Unauthorized status.
-                        call.respond(HttpStatusCode.Unauthorized, "Invalid token.")
-                    }
+                Security.TokenState.Invalid -> {
+                    // Token is invalid; respond with an Unauthorized status.
+                    call.respond(HttpStatusCode.Unauthorized, "Invalid token.")
                 }
             }
         }

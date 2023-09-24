@@ -22,8 +22,8 @@ import io.ktor.server.routing.*
 fun Application.configureRouting() {
 
     routing {
-        RootRoutes(this).routing()
+        RootRoutes(this).configure()
 
-        EmployeeRoutes(this).routing()
+        EmployeeRoutes(this).configure()
     }
 }

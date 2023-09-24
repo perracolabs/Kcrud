@@ -18,7 +18,7 @@ import org.koin.ktor.ext.inject
  */
 class EmployeeRoutes(private val routingNode: Route) {
 
-    fun routing() {
+    fun configure() {
         routingNode.route(API_VERSION) {
             if (SettingsProvider.get.jwt.isEnabled) {
                 authenticate {

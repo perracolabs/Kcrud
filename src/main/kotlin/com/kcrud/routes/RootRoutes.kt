@@ -18,7 +18,7 @@ import io.ktor.server.routing.*
 class RootRoutes(private val routingNode: Route) {
     private val appSettings = SettingsProvider.get
 
-    fun routing() {
+    fun configure() {
         routingNode {
             if (appSettings.basicAuth.isEnabled) {
                 // Basic Authentication for the root endpoint.
