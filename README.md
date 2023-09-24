@@ -7,6 +7,7 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 * [Koin](https://insert-koin.io/) dependency injection.
 * [JWT](https://ktor.io/docs/jwt.html) authentication for both REST and GraphQL.
 * [Basic](https://ktor.io/docs/basic.html) authentication example.
+* [Rate limit](https://ktor.io/docs/rate-limit.html) examples.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) databases, for both in-memory or file based.
 
 ---

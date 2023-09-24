@@ -8,7 +8,9 @@ package com.kcrud.plugins
 
 import com.kcrud.routes.EmployeeRoutes
 import com.kcrud.routes.RootRoutes
+import com.kcrud.security.RateLimitSetup
 import io.ktor.server.application.*
+import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
 
 /**
@@ -22,8 +24,11 @@ import io.ktor.server.routing.*
 fun Application.configureRouting() {
 
     routing {
-        RootRoutes(this).configure()
+        rateLimit(RateLimitName(RateLimitSetup.SCOPE_PUBLIC)) {
 
-        EmployeeRoutes(this).configure()
+            RootRoutes(this).configure()
+
+            EmployeeRoutes(this).configure()
+        }
     }
 }

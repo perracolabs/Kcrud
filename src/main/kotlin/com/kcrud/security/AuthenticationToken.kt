@@ -42,9 +42,22 @@ object AuthenticationToken {
         val appSettings = SettingsProvider.get
 
         if (appSettings.jwt.isEnabled) {
-            if (getState(call) != TokenState.Valid) {
-                runBlocking {
-                    call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Error while authorizing.")
+            val tokenState = getState(call)
+            when (tokenState) {
+                TokenState.Valid -> {
+                    // Token is valid; continue processing.
+                }
+
+                TokenState.Expired -> {
+                    runBlocking {
+                        call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Token has expired.")
+                    }
+                }
+
+                TokenState.Invalid -> {
+                    runBlocking {
+                        call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Token is invalid.")
+                    }
                 }
             }
         }
@@ -65,7 +78,7 @@ object AuthenticationToken {
         } catch (e: TokenExpiredException) {
             TokenState.Expired
         } catch (e: Exception) {
-            logger.error("Unauthorized: Error while authorizing. $e")
+            logger.error("Token verification failed: ${e.message}")
             TokenState.Invalid
         }
     }
@@ -79,12 +92,12 @@ object AuthenticationToken {
         }?.value?.get(0) ?: ""
 
         val bearerPrefix = "Bearer"
-        val bearerIndex = authHeader.indexOf(bearerPrefix, ignoreCase = true)
-        if (bearerIndex == -1) {
-            throw IllegalArgumentException("Missing Bearer in Authorization header.")
+
+        if (authHeader.isBlank() || !authHeader.startsWith(bearerPrefix, ignoreCase = true)) {
+            throw IllegalArgumentException("Invalid Authorization header format.")
         }
 
-        return authHeader.substring(bearerIndex + bearerPrefix.length).trim()
+        return authHeader.substring(bearerPrefix.length).trim()
     }
 
     /**

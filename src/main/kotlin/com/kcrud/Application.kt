@@ -39,6 +39,8 @@ fun Application.module() {
 
     configureHTTP()
 
+    configureRateLimit()
+
     configureAuthentication()
 
     configureStatusPages()

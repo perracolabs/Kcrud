@@ -7,10 +7,12 @@
 package com.kcrud.routes
 
 import com.kcrud.security.AuthenticationToken
+import com.kcrud.security.RateLimitSetup
 import com.kcrud.utils.SettingsProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
@@ -25,7 +27,12 @@ class TokenRoutes(private val routingNode: Route) {
 
     fun configure() {
         routingNode.route(AUTH_TOKEN_ROUTE) {
-            setupGenerateToken(this)
+
+            // Example of how to limit the rate for new token generation.
+            rateLimit(RateLimitName(RateLimitSetup.SCOPE_NEW_TOKEN)) {
+                setupGenerateToken(this)
+            }
+
             setupRefreshToken(this)
         }
     }
