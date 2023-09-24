@@ -27,7 +27,6 @@ fun Application.configureRouting() {
     routing {
         rateLimit(RateLimitName(RateLimitSetup.SCOPE_PUBLIC)) {
             RootRoutes(this).configure()
-
             EmployeeRoutes(this).configure()
         }
 
