@@ -27,10 +27,6 @@ fun Application.configureAuthentication() {
     }
 
     routing {
-        route("auth/token") {
-            val tokenRoutes = TokenRoutes(this)
-            tokenRoutes.generateToken()
-            tokenRoutes.refreshToken()
-        }
+        TokenRoutes(this).configure()
     }
 }
