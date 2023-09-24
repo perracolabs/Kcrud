@@ -7,6 +7,7 @@
 package com.kcrud.routes
 
 import com.kcrud.utils.SettingsProvider
+import com.kcrud.views.SimpleLogin
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -22,9 +23,20 @@ class RootRoutes(private val routingNode: Route) {
         routingNode {
             if (appSettings.basicAuth.isEnabled) {
                 // Basic Authentication for the root endpoint.
-                authenticate(appSettings.basicAuth.providerName) {
+                if (appSettings.basicAuth.customLogin) {
+                    // Use the custom login form to handle authentication.
                     get("/") {
-                        call.respondText("Hello World! You are authenticated.")
+                        SimpleLogin().generateForm(call)
+                    }
+                    post(SimpleLogin.KEY_LOGIN_ROUTE) {
+                        SimpleLogin().manageResponse(call)
+                    }
+                } else {
+                    // Use built-in browser-based basic authentication.
+                    authenticate(appSettings.basicAuth.providerName) {
+                        get("/") {
+                            call.respondText("Authentication successful")
+                        }
                     }
                 }
             } else {

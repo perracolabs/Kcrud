@@ -79,10 +79,18 @@ data class AppSettings(
      * @property isEnabled Flag to enable/disable basic authentication.
      * @property providerName Name of the basic authentication provider.
      * @property realm Security realm for the basic authentication.
+     * @property customLogin Whether to use the custom Login Form, or the browser-based basic authentication.
      * @property username Username for basic authentication.
      * @property password Password for basic authentication.
      */
-    data class BasicAuth(val isEnabled: Boolean, val providerName: String, val realm: String, val username: String, val password: String)
+    data class BasicAuth(
+        val isEnabled: Boolean,
+        val providerName: String,
+        val realm: String,
+        val customLogin: Boolean,
+        val username: String,
+        val password: String
+    )
 
     companion object {
         // Singleton instance of AppSettings.
