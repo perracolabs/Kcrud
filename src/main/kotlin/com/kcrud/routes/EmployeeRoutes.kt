@@ -30,8 +30,8 @@ class EmployeeRoutes(private val routingNode: Route) {
         }
     }
 
-    private fun setupRoutes(routeScope: Route) {
-        routeScope.apply {
+    private fun setupRoutes(routeNode: Route) {
+        routeNode.apply {
             val controller by inject<EmployeeController>()
 
             setupEmployeeRoutes(this, controller)
@@ -39,8 +39,8 @@ class EmployeeRoutes(private val routingNode: Route) {
         }
     }
 
-    private fun setupEmployeeRoutes(routeScope: Route, controller: EmployeeController) {
-        routeScope.route(EMPLOYEE_ROUTE) {
+    private fun setupEmployeeRoutes(routeNode: Route, controller: EmployeeController) {
+        routeNode.route(EMPLOYEE_ROUTE) {
 
             post { controller.create(call) }
 
@@ -52,8 +52,8 @@ class EmployeeRoutes(private val routingNode: Route) {
         }
     }
 
-    private fun setupEmployeesRoutes(routeScope: Route, controller: EmployeeController) {
-        routeScope.route(EMPLOYEES_ROUTE) {
+    private fun setupEmployeesRoutes(routeNode: Route, controller: EmployeeController) {
+        routeNode.route(EMPLOYEES_ROUTE) {
             get { controller.getAll(call) }
             delete { controller.deleteAll(call) }
         }
