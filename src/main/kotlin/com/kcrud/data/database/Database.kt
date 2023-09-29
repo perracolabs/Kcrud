@@ -10,6 +10,7 @@ import com.kcrud.data.models.EmployeeTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.sql.DriverManager
@@ -20,6 +21,7 @@ import java.sql.DriverManager
  * H2 and SQLite are supported, for both in-memory and file based.
  */
 object DatabaseFactory {
+    private val logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     enum class Mode {
         /** Represents an in-memory database mode. */
@@ -60,9 +62,9 @@ object DatabaseFactory {
             Runtime.getRuntime().addShutdownHook(Thread {
                 connection?.let {
                     if (!it.isClosed) {
-                        println("Shutdown hook triggered. Closing database connection.")
+                        logger.info("Shutdown hook triggered. Closing database connection.")
                         it.close()
-                        println("Database connection closed.")
+                        logger.info("Database connection closed.")
                     }
                 }
             })
@@ -72,7 +74,7 @@ object DatabaseFactory {
 
         transaction(database) {
             SchemaUtils.create(EmployeeTable)
-            println("Database ready.")
+            logger.info("Database ready.")
         }
     }
 
