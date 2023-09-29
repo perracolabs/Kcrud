@@ -30,10 +30,10 @@ class TokenRouting(private val routingNode: Route) {
 
             // Example for new token generation rate limit.
             rateLimit(RateLimitName(RateLimitSetup.SCOPE_NEW_AUTH_TOKEN)) {
-                setupGenerateToken(this)
+                setupGenerateToken(node = this)
             }
 
-            setupRefreshToken(this)
+            setupRefreshToken(node = this)
         }
     }
 

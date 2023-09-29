@@ -17,6 +17,6 @@ import io.ktor.server.plugins.ratelimit.*
  */
 fun Application.configureRateLimit() {
     install(RateLimit) {
-        RateLimitSetup().configure(this)
+        RateLimitSetup().configure(rateLimitConfig = this)
     }
 }

@@ -35,13 +35,13 @@ fun Application.configureStatusPages() {
 
         // Additional exception handling.
         exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
-            call.respond(HttpStatusCode.BadRequest, cause.localizedMessage)
+            call.respond(status = HttpStatusCode.BadRequest, message = cause.localizedMessage)
         }
         exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
-            call.respond(HttpStatusCode.NotFound, cause.localizedMessage)
+            call.respond(status = HttpStatusCode.NotFound, message = cause.localizedMessage)
         }
         exception<Throwable> { call: ApplicationCall, cause: Throwable ->
-            call.respond(HttpStatusCode.InternalServerError, "An internal server error occurred. ${cause.localizedMessage}")
+            call.respond(status = HttpStatusCode.InternalServerError, message = "Internal server error. ${cause.localizedMessage}")
         }
     }
 }

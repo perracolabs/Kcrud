@@ -22,10 +22,10 @@ class EmployeeRouting(private val routingNode: Route) {
         routingNode.route(API_VERSION) {
             if (SettingsProvider.get.jwt.isEnabled) {
                 authenticate {
-                    setupRoutes(this)
+                    setupRoutes(node = this)
                 }
             } else {
-                setupRoutes(this)
+                setupRoutes(node = this)
             }
         }
     }
@@ -34,8 +34,8 @@ class EmployeeRouting(private val routingNode: Route) {
         node.apply {
             val controller by inject<EmployeeController>()
 
-            setupEmployeeRoutes(this, controller)
-            setupEmployeesRoutes(this, controller)
+            setupEmployeeRoutes(node = this, controller = controller)
+            setupEmployeesRoutes(node = this, controller = controller)
         }
     }
 

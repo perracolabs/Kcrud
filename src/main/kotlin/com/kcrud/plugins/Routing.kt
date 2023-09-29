@@ -26,10 +26,10 @@ fun Application.configureRouting() {
 
     routing {
         rateLimit(RateLimitName(RateLimitSetup.SCOPE_PUBLIC_API)) {
-            RootRouting(this).configure()
-            EmployeeRouting(this).configure()
+            RootRouting(routingNode = this).configure()
+            EmployeeRouting(routingNode = this).configure()
         }
 
-        TokenRouting(this).configure()
+        TokenRouting(routingNode = this).configure()
     }
 }

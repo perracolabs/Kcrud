@@ -12,6 +12,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.kcrud.utils.SettingsProvider
 import io.ktor.http.*
+import io.ktor.http.auth.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
@@ -88,16 +89,14 @@ object AuthenticationToken {
      */
     fun fromHeader(call: ApplicationCall): String {
         val authHeader = call.request.headers.entries().find {
-            it.key.equals("Authorization", ignoreCase = true)
+            it.key.equals(HttpHeaders.Authorization, ignoreCase = true)
         }?.value?.get(0) ?: ""
 
-        val bearerPrefix = "Bearer"
-
-        if (authHeader.isBlank() || !authHeader.startsWith(bearerPrefix, ignoreCase = true)) {
+        if (authHeader.isBlank() || !authHeader.startsWith(AuthScheme.Bearer, ignoreCase = true)) {
             throw IllegalArgumentException("Invalid Authorization header format.")
         }
 
-        return authHeader.substring(bearerPrefix.length).trim()
+        return authHeader.substring(AuthScheme.Bearer.length).trim()
     }
 
     /**
