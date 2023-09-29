@@ -17,30 +17,30 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 /**
- * Handles the routes for generating and refreshing authorization tokens.
+ * Access-token related endpoint configurations.
  *
  * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
  *
  * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
  */
-class TokenRouting(private val routingNode: Route) {
+class AccessTokenRouting(private val routingNode: Route) {
 
     fun configure() {
         routingNode.route(AUTH_TOKEN_PATH) {
 
             // Example for new token generation rate limit.
             rateLimit(RateLimitName(RateLimitSetup.SCOPE_NEW_AUTH_TOKEN)) {
-                setupGenerateToken(node = this)
+                createTokenRoute(node = this)
             }
 
-            setupRefreshToken(node = this)
+            refreshTokenRoute(node = this)
         }
     }
 
     /**
      * Endpoint for initial token generation; requires Basic Authentication.
      */
-    private fun setupGenerateToken(node: Route) {
+    private fun createTokenRoute(node: Route) {
         node.authenticate(SettingsProvider.get.basicAuth.providerName) {
             post("create") {
                 val jwtToken = AuthenticationToken.generate()
@@ -53,7 +53,7 @@ class TokenRouting(private val routingNode: Route) {
      * Endpoint for token refresh.
      * No Basic Authentication is required here, but an existing token's validity will be checked.
      */
-    private fun setupRefreshToken(node: Route) {
+    private fun refreshTokenRoute(node: Route) {
         node.post("refresh") {
             val tokenState = AuthenticationToken.getState(call)
 

@@ -22,7 +22,7 @@ class AgeDelegate(private val dob: LocalDate) {
 }
 
 /**
- * Utility singleton providing time-related utility functions.
+ * Singleton providing time-related utility functions.
  */
 object DateTimeUtils {
     fun calculateAge(dob: LocalDate): Int {

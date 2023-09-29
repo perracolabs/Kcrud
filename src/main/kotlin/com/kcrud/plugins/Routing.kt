@@ -6,9 +6,9 @@
 
 package com.kcrud.plugins
 
+import com.kcrud.routes.AccessTokenRouting
 import com.kcrud.routes.EmployeeRouting
 import com.kcrud.routes.RootRouting
-import com.kcrud.routes.TokenRouting
 import com.kcrud.security.RateLimitSetup
 import io.ktor.server.application.*
 import io.ktor.server.plugins.ratelimit.*
@@ -30,6 +30,6 @@ fun Application.configureRouting() {
             EmployeeRouting(routingNode = this).configure()
         }
 
-        TokenRouting(routingNode = this).configure()
+        AccessTokenRouting(routingNode = this).configure()
     }
 }

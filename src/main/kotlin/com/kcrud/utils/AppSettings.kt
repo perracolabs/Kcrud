@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
 /**
- * Singleton object for providing the configuration settings throughout the application.
+ * Singleton providing the configuration settings throughout the application.
  *
  * After initializing the application with the `install` function, you can
  * access the settings anywhere in your app through the `get` property.

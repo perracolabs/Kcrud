@@ -14,7 +14,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 /**
- * Defines the root endpoint for the Ktor application.
+ * Root endpoint configurations.
  */
 class RootRouting(private val routingNode: Route) {
     private val appSettings = SettingsProvider.get

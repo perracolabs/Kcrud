@@ -14,7 +14,7 @@ import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
 /**
- * Defines the employee-related routes for the Ktor application.
+ * Employee related endpoint configurations.
  */
 class EmployeeRouting(private val routingNode: Route) {
 
@@ -34,12 +34,12 @@ class EmployeeRouting(private val routingNode: Route) {
         node.apply {
             val controller by inject<EmployeeController>()
 
-            setupEmployeeRoutes(node = this, controller = controller)
-            setupEmployeesRoutes(node = this, controller = controller)
+            employeeRoutes(node = this, controller = controller)
+            employeesRoutes(node = this, controller = controller)
         }
     }
 
-    private fun setupEmployeeRoutes(node: Route, controller: EmployeeController) {
+    private fun employeeRoutes(node: Route, controller: EmployeeController) {
         node.route(EMPLOYEE_ROUTE) {
 
             post { controller.create(call) }
@@ -52,7 +52,7 @@ class EmployeeRouting(private val routingNode: Route) {
         }
     }
 
-    private fun setupEmployeesRoutes(node: Route, controller: EmployeeController) {
+    private fun employeesRoutes(node: Route, controller: EmployeeController) {
         node.route(EMPLOYEES_ROUTE) {
             get { controller.getAll(call) }
             delete { controller.deleteAll(call) }
