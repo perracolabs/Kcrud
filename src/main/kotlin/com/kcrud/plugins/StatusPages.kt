@@ -27,7 +27,7 @@ fun Application.configureStatusPages() {
         status(HttpStatusCode.Unauthorized) { call: ApplicationCall, status: HttpStatusCode ->
             // Add WWW-Authenticate header to the response, indicating Basic Authentication is required.
             // This is specific to Basic Authentication, doesn't affect JWT.
-            call.response.header(name = "WWW-Authenticate", value = "Basic realm=\"${appSettings.basicAuth.realm}\"")
+            call.response.header(name = HttpHeaders.WWWAuthenticate, value = "Basic realm=\"${appSettings.basicAuth.realm}\"")
 
             // Respond with 401 Unauthorized status code.
             call.respond(status = HttpStatusCode.Unauthorized, message = "$status")
