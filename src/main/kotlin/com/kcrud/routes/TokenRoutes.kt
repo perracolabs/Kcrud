@@ -26,7 +26,7 @@ import io.ktor.server.routing.*
 class TokenRoutes(private val routingNode: Route) {
 
     fun configure() {
-        routingNode.route(AUTH_TOKEN_ROUTE) {
+        routingNode.route(AUTH_TOKEN_PATH) {
 
             // Example for new token generation rate limit.
             rateLimit(RateLimitName(RateLimitSetup.SCOPE_NEW_AUTH_TOKEN)) {
@@ -79,7 +79,7 @@ class TokenRoutes(private val routingNode: Route) {
     }
 
     companion object {
-        private const val AUTH_TOKEN_ROUTE = "auth/token"
+        private const val AUTH_TOKEN_PATH = "auth/token"
         private const val KEY_TOKEN = "token"
     }
 }

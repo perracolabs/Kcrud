@@ -29,7 +29,7 @@ class SimpleLogin {
             body {
                 h1 { +"Simple Login Page" }
 
-                form(action = KEY_LOGIN_ROUTE, method = FormMethod.post) {
+                form(action = LOGIN_PATH, method = FormMethod.post) {
                     p {
                         label {
                             +"Username: "
@@ -71,7 +71,7 @@ class SimpleLogin {
     }
 
     companion object {
-        const val KEY_LOGIN_ROUTE = "/login"
+        const val LOGIN_PATH = "/login"
         private const val KEY_USERNAME = "username"
         private const val KEY_PASSWORD = "password"
     }

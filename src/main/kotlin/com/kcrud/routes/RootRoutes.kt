@@ -28,7 +28,7 @@ class RootRoutes(private val routingNode: Route) {
                     get("/") {
                         SimpleLogin().generateForm(call)
                     }
-                    post(SimpleLogin.KEY_LOGIN_ROUTE) {
+                    post(SimpleLogin.LOGIN_PATH) {
                         SimpleLogin().manageResponse(call)
                     }
                 } else {
