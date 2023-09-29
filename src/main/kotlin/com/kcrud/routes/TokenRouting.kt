@@ -23,7 +23,7 @@ import io.ktor.server.routing.*
  *
  * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
  */
-class TokenRoutes(private val routingNode: Route) {
+class TokenRouting(private val routingNode: Route) {
 
     fun configure() {
         routingNode.route(AUTH_TOKEN_PATH) {

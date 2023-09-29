@@ -16,7 +16,7 @@ import org.koin.ktor.ext.inject
 /**
  * Defines the employee-related routes for the Ktor application.
  */
-class EmployeeRoutes(private val routingNode: Route) {
+class EmployeeRouting(private val routingNode: Route) {
 
     fun configure() {
         routingNode.route(API_VERSION) {
