@@ -40,8 +40,8 @@ class TokenRoutes(private val routingNode: Route) {
     /**
      * Endpoint for initial token generation; requires Basic Authentication.
      */
-    private fun setupGenerateToken(routeNode: Route) {
-        routeNode.authenticate(SettingsProvider.get.basicAuth.providerName) {
+    private fun setupGenerateToken(node: Route) {
+        node.authenticate(SettingsProvider.get.basicAuth.providerName) {
             post("create") {
                 val jwtToken = AuthenticationToken.generate()
                 call.respond(hashMapOf(KEY_TOKEN to jwtToken))
@@ -53,8 +53,8 @@ class TokenRoutes(private val routingNode: Route) {
      * Endpoint for token refresh.
      * No Basic Authentication is required here, but an existing token's validity will be checked.
      */
-    private fun setupRefreshToken(routeNode: Route) {
-        routeNode.post("refresh") {
+    private fun setupRefreshToken(node: Route) {
+        node.post("refresh") {
             val tokenState = AuthenticationToken.getState(call)
 
             when (tokenState) {
