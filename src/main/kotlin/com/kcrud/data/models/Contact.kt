@@ -4,12 +4,12 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.entities
+package com.kcrud.data.models
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ContactEntity(
+data class Contact(
     var id: Int? = null,
     val email: String,
     val phone: String

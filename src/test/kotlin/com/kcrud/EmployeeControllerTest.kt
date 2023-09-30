@@ -7,8 +7,8 @@
 package com.kcrud
 
 import com.kcrud.controllers.EmployeeController
-import com.kcrud.data.entities.ContactEntity
-import com.kcrud.data.entities.EmployeeEntity
+import com.kcrud.data.models.Contact
+import com.kcrud.data.models.Employee
 import com.kcrud.data.repositories.IEmployeeRepository
 import com.kcrud.services.EmployeeService
 import io.ktor.server.application.*
@@ -35,12 +35,12 @@ class EmployeeControllerTest : KoinTest {
 
         // Given
         val employeeId = 1
-        val mockEmployee = EmployeeEntity(
+        val mockEmployee = Employee(
             id = employeeId,
             firstName = "Pepito",
             lastName = "Paquito",
             dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            contact = ContactEntity(
+            contact = Contact(
                 id = 1,
                 email = "saco.paco@email.com",
                 phone = "123-456-789"

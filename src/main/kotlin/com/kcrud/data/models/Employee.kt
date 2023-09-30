@@ -4,19 +4,19 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.entities
+package com.kcrud.data.models
 
 import com.kcrud.utils.AgeDelegate
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EmployeeEntity(
+data class Employee(
     val id: Int? = null,
     val firstName: String,
     val lastName: String,
     val dob: LocalDate,
-    val contact: ContactEntity
+    val contact: Contact
 ) {
     init {
         require(firstName.isNotBlank()) { "First name can't be empty." }

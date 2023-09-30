@@ -6,37 +6,37 @@
 
 package com.kcrud.data.repositories
 
-import com.kcrud.data.entities.EmployeeEntity
+import com.kcrud.data.models.Employee
 
 interface IEmployeeRepository {
 
     /**
-     * Retrieves an employee entity by its ID from the database.
+     * Retrieves an employee model by its ID from the database.
      * @param id The ID of the employee to be retrieved.
-     * @return The employee entity if found, null otherwise.
+     * @return The employee model if found, null otherwise.
      */
-    fun findById(id: Int): EmployeeEntity?
+    fun findById(id: Int): Employee?
 
     /**
-     * Retrieves all employee entities from the database.
-     * @return List of all employee entities.
+     * Retrieves all employee models from the database.
+     * @return List of all employee models.
      */
-    fun findAll(): List<EmployeeEntity>
+    fun findAll(): List<Employee>
 
     /**
-     * Creates a new employee in the database and returns the created employee entity.
-     * @param employee The employee entity to be created.
-     * @return The created employee entity with generated ID.
+     * Creates a new employee in the database and returns the created employee model.
+     * @param employee The employee to be created.
+     * @return The created employee model with generated ID.
      */
-    fun create(employee: EmployeeEntity): EmployeeEntity
+    fun create(employee: Employee): Employee
 
     /**
-     * Updates an employee's details in the database using the provided ID and employee entity.
+     * Updates an employee's details in the database using the provided ID and employee model.
      * @param id The ID of the employee to be updated.
      * @param employee The new details for the employee.
-     * @return The updated employee entity if the update was successful, null otherwise.
+     * @return The updated employee model if the update was successful, null otherwise.
      */
-    fun update(id: Int, employee: EmployeeEntity): EmployeeEntity?
+    fun update(id: Int, employee: Employee): Employee?
 
     /**
      * Deletes an employee from the database using the provided ID.

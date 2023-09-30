@@ -7,7 +7,7 @@
 package com.kcrud.data.graphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.entities.EmployeeEntity
+import com.kcrud.data.models.Employee
 import com.kcrud.data.repositories.IEmployeeRepository
 import kotlinx.datetime.LocalDate
 import java.time.DayOfWeek
@@ -50,7 +50,7 @@ class GraphQLSchemas(private val schemaBuilder: SchemaBuilder, private val repos
      */
     fun configureQueryTypes(): GraphQLSchemas {
         schemaBuilder.apply {
-            type<EmployeeEntity> {
+            type<Employee> {
                 description = "Query type definition for employee."
             }
         }
@@ -81,7 +81,7 @@ class GraphQLSchemas(private val schemaBuilder: SchemaBuilder, private val repos
      */
     fun configureMutationInputs(): GraphQLSchemas {
         schemaBuilder.apply {
-            inputType<EmployeeEntity> {
+            inputType<Employee> {
                 name = "Input type definition for Employee."
             }
         }
@@ -96,12 +96,12 @@ class GraphQLSchemas(private val schemaBuilder: SchemaBuilder, private val repos
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."
-                resolver { employee: EmployeeEntity -> repository.create(employee = employee) }
+                resolver { employee: Employee -> repository.create(employee = employee) }
             }
 
             mutation("updateEmployee") {
                 description = "Updates an existing employee."
-                resolver { id: Int, employee: EmployeeEntity -> repository.update(id = id, employee = employee) }
+                resolver { id: Int, employee: Employee -> repository.update(id = id, employee = employee) }
             }
 
             mutation("deleteEmployee") {

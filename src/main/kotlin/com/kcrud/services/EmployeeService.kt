@@ -6,7 +6,7 @@
 
 package com.kcrud.services
 
-import com.kcrud.data.entities.EmployeeEntity
+import com.kcrud.data.models.Employee
 import com.kcrud.data.repositories.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 
@@ -14,27 +14,27 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
 
     /**
      * Creates a new employee in the system.
-     * @param employee The employee entity to be created.
-     * @return The created employee entity with generated ID.
+     * @param employee The employee to be created.
+     * @return The created employee model with generated ID.
      */
-    fun create(employee: EmployeeEntity): EmployeeEntity {
+    fun create(employee: Employee): Employee {
         return repository.create(employee)
     }
 
     /**
      * Retrieves as employee by its ID.
      * @param id The ID of the employee to be retrieved.
-     * @return The employee entity if found, null otherwise.
+     * @return The employee model if found, null otherwise.
      */
-    fun findById(id: Int): EmployeeEntity? {
+    fun findById(id: Int): Employee? {
         return repository.findById(id)
     }
 
     /**
      * Retrieves all employees in the system.
-     * @return List of all employee entities.
+     * @return List of all employee models.
      */
-    fun findAll(): List<EmployeeEntity> {
+    fun findAll(): List<Employee> {
         return repository.findAll()
     }
 
@@ -42,9 +42,9 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * Updates an employee's details in the system.
      * @param id The ID of the employee to be updated.
      * @param employee The new details for the employee.
-     * @return The updated employee entity if the update was successful, null otherwise.
+     * @return The updated employee model if the update was successful, null otherwise.
      */
-    fun update(id: Int, employee: EmployeeEntity): EmployeeEntity? {
+    fun update(id: Int, employee: Employee): Employee? {
         return repository.update(id, employee)
     }
 
