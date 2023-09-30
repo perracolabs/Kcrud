@@ -22,9 +22,9 @@ class EmployeeRepository : IEmployeeRepository {
             val query = EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.INNER,
-                additionalConstraint = {
-                    EmployeeTable.contactId eq ContactTable.id
-                }).select { EmployeeTable.id eq id }
+                onColumn = EmployeeTable.contactId,
+                otherColumn = ContactTable.id
+            ).select { EmployeeTable.id eq id }
 
             query.map { row ->
                 rowToEmployeeEntity(row = row)
@@ -37,9 +37,9 @@ class EmployeeRepository : IEmployeeRepository {
             val query = EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.INNER,
-                additionalConstraint = {
-                    EmployeeTable.contactId eq ContactTable.id
-                }).selectAll()
+                onColumn = EmployeeTable.contactId,
+                otherColumn = ContactTable.id
+            ).selectAll()
 
             query.map { row ->
                 rowToEmployeeEntity(row = row)
@@ -57,7 +57,7 @@ class EmployeeRepository : IEmployeeRepository {
             employee.contact.id = newContactId
 
             val newEmployeeId = EmployeeTable.insert { dbEmployee ->
-                employeeToStatement(employee = employee, statement = dbEmployee)
+                employeeEntityToStatement(employee = employee, dbStatement = dbEmployee)
                 dbEmployee[contactId] = newContactId
             } get EmployeeTable.id
 
@@ -73,14 +73,14 @@ class EmployeeRepository : IEmployeeRepository {
             employee.contact.id = dbContactId
 
             // Update the Contact table.
-            ContactTable.update({ ContactTable.id eq dbContactId }) { dbContact ->
+            ContactTable.update(where = { ContactTable.id eq dbContactId }) { dbContact ->
                 dbContact[email] = employee.contact.email.trim()
                 dbContact[phone] = employee.contact.phone.trim()
             }
 
             // Update the Employee table.
-            EmployeeTable.update({ EmployeeTable.id eq id }) { dbEmployee ->
-                employeeToStatement(employee = employee, statement = dbEmployee)
+            EmployeeTable.update(where = { EmployeeTable.id eq id }) { dbEmployee ->
+                employeeEntityToStatement(employee = employee, dbStatement = dbEmployee)
             }
 
             findById(id = id)
@@ -119,8 +119,8 @@ class EmployeeRepository : IEmployeeRepository {
     /**
      * Populates an SQL [UpdateBuilder] with data from an [EmployeeEntity] instance.
      */
-    private fun employeeToStatement(employee: EmployeeEntity, statement: UpdateBuilder<Int>) {
-        with(statement) {
+    private fun employeeEntityToStatement(employee: EmployeeEntity, dbStatement: UpdateBuilder<Int>) {
+        with(dbStatement) {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()
             this[EmployeeTable.dob] = employee.dob
