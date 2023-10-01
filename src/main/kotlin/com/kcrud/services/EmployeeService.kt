@@ -7,27 +7,18 @@
 package com.kcrud.services
 
 import com.kcrud.data.models.Employee
-import com.kcrud.data.repositories.IEmployeeRepository
+import com.kcrud.data.repositories.employee.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 
 class EmployeeService(private val repository: IEmployeeRepository) : KoinComponent {
 
     /**
-     * Creates a new employee in the system.
-     * @param employee The employee to be created.
-     * @return The created employee model with generated ID.
-     */
-    fun create(employee: Employee): Employee {
-        return repository.create(employee)
-    }
-
-    /**
      * Retrieves as employee by its ID.
-     * @param id The ID of the employee to be retrieved.
+     * @param employeeId The ID of the employee to be retrieved.
      * @return The employee model if found, null otherwise.
      */
-    fun findById(id: Int): Employee? {
-        return repository.findById(id)
+    fun findById(employeeId: Int): Employee? {
+        return repository.findById(employeeId)
     }
 
     /**
@@ -39,27 +30,38 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
     }
 
     /**
+     * Creates a new employee in the system.
+     * @param employee The employee to be created.
+     * @return The created employee model with generated ID.
+     */
+    fun create(employee: Employee): Employee {
+        return repository.create(employee)
+    }
+
+    /**
      * Updates an employee's details in the system.
-     * @param id The ID of the employee to be updated.
+     * @param employeeId The ID of the employee to be updated.
      * @param employee The new details for the employee.
      * @return The updated employee model if the update was successful, null otherwise.
      */
-    fun update(id: Int, employee: Employee): Employee? {
-        return repository.update(id, employee)
+    fun update(employeeId: Int, employee: Employee): Employee? {
+        return repository.update(employeeId = employeeId, employee = employee)
     }
 
     /**
      * Deletes an employee from the system using the provided ID.
-     * @param id The ID of the employee to be deleted.
+     * @param employeeId The ID of the employee to be deleted.
+     * @return The number of deleted records.
      */
-    fun delete(id: Int) {
-        repository.delete(id)
+    fun delete(employeeId: Int): Int {
+        return repository.delete(employeeId)
     }
 
     /**
      * Deletes all employees from the system.
+     * @return The number of deleted records.
      */
-    fun deleteAll() {
-        repository.deleteAll()
+    fun deleteAll(): Int {
+        return repository.deleteAll()
     }
 }

@@ -8,10 +8,7 @@ package com.kcrud.data.graphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.Employee
-import com.kcrud.data.repositories.IEmployeeRepository
-import kotlinx.datetime.LocalDate
-import java.time.DayOfWeek
-import java.time.Month
+import com.kcrud.services.EmployeeService
 
 /**
  * Demonstrates modularization of GraphQL schemas for scalability.
@@ -21,34 +18,14 @@ import java.time.Month
  * files for better maintainability.
  *
  * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
- * @param repository The data repository used in mutation resolvers.
+ * @param service The service used in mutation resolvers.
  */
-class GraphQLSchemas(private val schemaBuilder: SchemaBuilder, private val repository: IEmployeeRepository) {
-
-    /**
-     * Configures common types like enums and scalars that are used in both queries and mutations.
-     */
-    fun configureCommonTypes(): GraphQLSchemas {
-        schemaBuilder.apply {
-            enum<DayOfWeek> {
-                description = "Day of week."
-            }
-            enum<Month> {
-                description = "Month in a year."
-            }
-            stringScalar<LocalDate> {
-                serialize = { date -> date.toString() }
-                deserialize = { str -> LocalDate.parse(str) }
-            }
-        }
-
-        return this
-    }
+class GraphQLEmployeeSchema(private val schemaBuilder: SchemaBuilder, private val service: EmployeeService) {
 
     /**
      * Configures query types specifically.
      */
-    fun configureQueryTypes(): GraphQLSchemas {
+    fun configureQueryTypes(): GraphQLEmployeeSchema {
         schemaBuilder.apply {
             type<Employee> {
                 description = "Query type definition for employee."
@@ -61,15 +38,15 @@ class GraphQLSchemas(private val schemaBuilder: SchemaBuilder, private val repos
     /**
      * Configures query resolvers to fetch data.
      */
-    fun configureQueries(): GraphQLSchemas {
+    fun configureQueries(): GraphQLEmployeeSchema {
         schemaBuilder.apply {
             query("employee") {
                 description = "Returns a single employee given its id."
-                resolver { id: Int -> repository.findById(id = id) }
+                resolver { employeeId: Int -> service.findById(employeeId = employeeId) }
             }
             query("employees") {
                 description = "Returns all existing employees."
-                resolver { -> repository.findAll() }
+                resolver { -> service.findAll() }
             }
         }
 
@@ -79,7 +56,7 @@ class GraphQLSchemas(private val schemaBuilder: SchemaBuilder, private val repos
     /**
      * Configures input types for mutations.
      */
-    fun configureMutationInputs(): GraphQLSchemas {
+    fun configureMutationInputs(): GraphQLEmployeeSchema {
         schemaBuilder.apply {
             inputType<Employee> {
                 name = "Input type definition for Employee."
@@ -92,26 +69,26 @@ class GraphQLSchemas(private val schemaBuilder: SchemaBuilder, private val repos
     /**
      * Configures mutation resolvers to modify data.
      */
-    fun configureMutations(): GraphQLSchemas {
+    fun configureMutations(): GraphQLEmployeeSchema {
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."
-                resolver { employee: Employee -> repository.create(employee = employee) }
+                resolver { employee: Employee -> service.create(employee = employee) }
             }
 
             mutation("updateEmployee") {
                 description = "Updates an existing employee."
-                resolver { id: Int, employee: Employee -> repository.update(id = id, employee = employee) }
+                resolver { employeeId: Int, employee: Employee -> service.update(employeeId = employeeId, employee = employee) }
             }
 
             mutation("deleteEmployee") {
                 description = "Deletes an existing employee."
-                resolver { id: Int -> repository.delete(id = id) }
+                resolver { employeeId: Int -> service.delete(employeeId = employeeId) }
             }
 
             mutation("deleteAllEmployees") {
                 description = "Deletes all existing employees."
-                resolver { -> repository.deleteAll() }
+                resolver { -> service.deleteAll() }
             }
         }
 

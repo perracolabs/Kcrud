@@ -4,12 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.repositories
+package com.kcrud.data.repositories.employee
 
-import com.kcrud.data.models.Contact
-import com.kcrud.data.models.Employee
 import com.kcrud.data.database.tables.Contacts
 import com.kcrud.data.database.tables.Employees
+import com.kcrud.data.models.Employee
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -17,17 +16,17 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class EmployeeRepository : IEmployeeRepository {
 
-    override fun findById(id: Int): Employee? {
+    override fun findById(employeeId: Int): Employee? {
         return transaction {
             val query = Employees.join(
                 otherTable = Contacts,
                 joinType = JoinType.INNER,
                 onColumn = Employees.contactId,
                 otherColumn = Contacts.id
-            ).select { Employees.id eq id }
+            ).select { Employees.id eq employeeId }
 
-            query.map { row ->
-                rowToEmployeeModel(row = row)
+            query.map { resultRow ->
+                Employee.fromTable(row = resultRow)
             }.singleOrNull()
         }
     }
@@ -41,55 +40,55 @@ class EmployeeRepository : IEmployeeRepository {
                 otherColumn = Contacts.id
             ).selectAll()
 
-            query.map { row ->
-                rowToEmployeeModel(row = row)
+            query.map { resultRow ->
+                Employee.fromTable(row = resultRow)
             }
         }
     }
 
     override fun create(employee: Employee): Employee {
         return transaction {
-            val newContactId = Contacts.insert { dbContact ->
-                dbContact[email] = employee.contact.email.trim()
-                dbContact[phone] = employee.contact.phone.trim()
+            val newContactId = Contacts.insert { contactRow ->
+                contactRow[email] = employee.contact.email.trim()
+                contactRow[phone] = employee.contact.phone.trim()
             } get Contacts.id
 
             employee.contact.id = newContactId
 
-            val newEmployeeId = Employees.insert { dbEmployee ->
-                employeeModelToStatement(employee = employee, dbStatement = dbEmployee)
-                dbEmployee[contactId] = newContactId
+            val newEmployeeId = Employees.insert { employeeRow ->
+                employeeModelToTable(employee = employee, target = employeeRow)
+                employeeRow[contactId] = newContactId
             } get Employees.id
 
-            findById(id = newEmployeeId)!!
+            findById(newEmployeeId)!!
         }
     }
 
-    override fun update(id: Int, employee: Employee): Employee? {
+    override fun update(employeeId: Int, employee: Employee): Employee? {
         return transaction {
             // First, find the existing employee to get the contact id.
-            val currentEmployee = findById(id) ?: return@transaction null
-            val dbContactId = currentEmployee.contact.id!!
+            val targetEmployee = findById(employeeId) ?: return@transaction null
+            val dbContactId = targetEmployee.contact.id!!
             employee.contact.id = dbContactId
 
             // Update the Contacts table.
-            Contacts.update(where = { Contacts.id eq dbContactId }) { dbContact ->
-                dbContact[email] = employee.contact.email.trim()
-                dbContact[phone] = employee.contact.phone.trim()
+            Contacts.update(where = { Contacts.id eq dbContactId }) { contactRow ->
+                contactRow[email] = employee.contact.email.trim()
+                contactRow[phone] = employee.contact.phone.trim()
             }
 
             // Update the Employees table.
-            Employees.update(where = { Employees.id eq id }) { dbEmployee ->
-                employeeModelToStatement(employee = employee, dbStatement = dbEmployee)
+            Employees.update(where = { Employees.id eq employeeId }) { employeeRow ->
+                employeeModelToTable(employee = employee, target = employeeRow)
             }
 
-            findById(id = id)
+            findById(employeeId)
         }
     }
 
-    override fun delete(id: Int): Int {
+    override fun delete(employeeId: Int): Int {
         return transaction {
-            Employees.deleteWhere { Employees.id eq id }
+            Employees.deleteWhere { id eq employeeId }
         }
     }
 
@@ -100,27 +99,10 @@ class EmployeeRepository : IEmployeeRepository {
     }
 
     /**
-     * Converts a database [ResultRow] to an [Employee] model instance.
-     */
-    private fun rowToEmployeeModel(row: ResultRow): Employee {
-        return Employee(
-            id = row[Employees.id],
-            firstName = row[Employees.firstName],
-            lastName = row[Employees.lastName],
-            dob = row[Employees.dob],
-            contact = Contact(
-                id = row[Contacts.id],
-                email = row[Contacts.email],
-                phone = row[Contacts.phone]
-            )
-        )
-    }
-
-    /**
      * Populates an SQL [UpdateBuilder] with data from an [Employee] model instance.
      */
-    private fun employeeModelToStatement(employee: Employee, dbStatement: UpdateBuilder<Int>) {
-        with(dbStatement) {
+    private fun employeeModelToTable(employee: Employee, target: UpdateBuilder<Int>) {
+        target.apply {
             this[Employees.firstName] = employee.firstName.trim()
             this[Employees.lastName] = employee.lastName.trim()
             this[Employees.dob] = employee.dob

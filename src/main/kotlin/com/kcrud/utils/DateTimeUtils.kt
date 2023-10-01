@@ -37,4 +37,3 @@ object DateTimeUtils {
                 .compare(dob, currentDate) > 0) age - 1 else age
     }
 }
-

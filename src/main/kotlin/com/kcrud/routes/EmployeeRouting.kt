@@ -34,35 +34,30 @@ class EmployeeRouting(private val routingNode: Route) {
         node.apply {
             val controller by inject<EmployeeController>()
 
-            employeeRoutes(node = this, controller = controller)
-            employeesRoutes(node = this, controller = controller)
-        }
-    }
+            route(EMPLOYEE_ROUTE) {
 
-    private fun employeeRoutes(node: Route, controller: EmployeeController) {
-        node.route(EMPLOYEE_ROUTE) {
+                // For operations related to all employees.
 
-            post { controller.create(call) }
+                get { controller.getAll(call) }
+                delete { controller.deleteAll(call) }
 
-            route("{id}") {
-                get { controller.get(call) }
-                put { controller.update(call) }
-                delete { controller.delete(call) }
+                // For operations related to a single employee.
+
+                post { controller.create(call) }
+
+                route("{$EMPLOYEE_PATH_PARAMETER}") {
+                    get { controller.get(call) }
+                    put { controller.update(call) }
+                    delete { controller.delete(call) }
+                }
             }
-        }
-    }
-
-    private fun employeesRoutes(node: Route, controller: EmployeeController) {
-        node.route(EMPLOYEES_ROUTE) {
-            get { controller.getAll(call) }
-            delete { controller.deleteAll(call) }
         }
     }
 
     companion object {
         private const val API_VERSION = "v1"
-        private const val EMPLOYEE_ROUTE = "employee"
-        private const val EMPLOYEES_ROUTE = "employees"
+        const val EMPLOYEE_ROUTE = "employees"
+        const val EMPLOYEE_PATH_PARAMETER = "employee_id"
     }
 }
 

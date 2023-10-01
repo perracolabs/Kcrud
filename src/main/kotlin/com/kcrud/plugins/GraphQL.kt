@@ -7,9 +7,12 @@
 package com.kcrud.plugins
 
 import com.apurebase.kgraphql.GraphQL
-import com.kcrud.data.graphql.GraphQLSchemas
-import com.kcrud.data.repositories.IEmployeeRepository
+import com.kcrud.data.graphql.GraphQLCommonSchema
+import com.kcrud.data.graphql.GraphQLEmployeeSchema
+import com.kcrud.data.graphql.GraphQLEmploymentSchema
 import com.kcrud.security.AuthenticationToken
+import com.kcrud.services.EmployeeService
+import com.kcrud.services.EmploymentService
 import io.ktor.server.application.*
 import org.koin.ktor.ext.inject
 
@@ -28,12 +31,21 @@ fun Application.configureGraphQL() {
             AuthenticationToken.verify(call)
         }
 
-        val employeeRepository by inject<IEmployeeRepository>()
+        val employeeService by inject<EmployeeService>()
+        val employmentService by inject<EmploymentService>()
 
         // Define the GraphQL schema.
         schema {
-            GraphQLSchemas(schemaBuilder = this, repository = employeeRepository)
+            GraphQLCommonSchema(schemaBuilder = this)
                 .configureCommonTypes()
+
+            GraphQLEmployeeSchema(schemaBuilder = this, service = employeeService)
+                .configureQueryTypes()
+                .configureQueries()
+                .configureMutationInputs()
+                .configureMutations()
+
+            GraphQLEmploymentSchema(schemaBuilder = this, service = employmentService)
                 .configureQueryTypes()
                 .configureQueries()
                 .configureMutationInputs()

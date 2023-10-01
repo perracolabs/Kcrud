@@ -7,6 +7,7 @@
 package com.kcrud.controllers
 
 import com.kcrud.data.models.Employee
+import com.kcrud.routes.EmployeeRouting
 import com.kcrud.services.EmployeeService
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -22,11 +23,11 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
      * Responds with the employee details if found, otherwise appropriate error messages.
      */
     suspend fun get(call: ApplicationCall) {
-        call.parameters["id"]?.toIntOrNull()?.let { employeeId ->
+        call.parameters[EmployeeRouting.EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()?.let { employeeId ->
             service.findById(employeeId)?.also { employee ->
                 call.respond(employee)
-            } ?: call.respond(HttpStatusCode.NotFound, "Employee ID not found: $employeeId")
-        } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employee ID.")
+            } ?: call.respond(status = HttpStatusCode.NotFound, message = "Employee ID not found: $employeeId")
+        } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employee ID.")
     }
 
     /**
@@ -46,7 +47,7 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
     suspend fun create(call: ApplicationCall) {
         call.receive<Employee>()
             .run { service.create(this) }
-            .also { newEmployee -> call.respond(HttpStatusCode.Created, newEmployee) }
+            .also { newEmployee -> call.respond(status = HttpStatusCode.Created, message = newEmployee) }
     }
 
     /**
@@ -55,16 +56,16 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
      * Reads the updated employee details from the request, updates the employee, and responds with the updated employee details.
      */
     suspend fun update(call: ApplicationCall) {
-        call.parameters["id"]?.toIntOrNull()?.let { employeeId ->
+        call.parameters[EmployeeRouting.EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()?.let { employeeId ->
             val updatedEmployee = call.receive<Employee>().run {
-                service.update(employeeId, this)
+                service.update(employeeId = employeeId, employee = this)
             }
 
             updatedEmployee?.also { employee ->
-                call.respond(HttpStatusCode.OK, employee)
-            } ?: call.respond(HttpStatusCode.NotFound, "Employee ID not found: $employeeId")
+                call.respond(status = HttpStatusCode.OK, message = employee)
+            } ?: call.respond(status = HttpStatusCode.NotFound, message = "Employee ID not found: $employeeId")
 
-        } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employee ID.")
+        } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employee ID argument.")
     }
 
     /**
@@ -73,10 +74,10 @@ class EmployeeController(private val service: EmployeeService) : KoinComponent {
      * Deletes the employee if found and responds with appropriate status code.
      */
     suspend fun delete(call: ApplicationCall) {
-        call.parameters["id"]?.toIntOrNull()?.let { employeeId ->
+        call.parameters[EmployeeRouting.EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()?.let { employeeId ->
             service.delete(employeeId)
             call.respond(HttpStatusCode.NoContent)
-        } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employee ID.")
+        } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employee ID argument.")
     }
 
     /**

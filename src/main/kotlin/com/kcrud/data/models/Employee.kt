@@ -6,9 +6,11 @@
 
 package com.kcrud.data.models
 
+import com.kcrud.data.database.tables.Employees
 import com.kcrud.utils.AgeDelegate
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.sql.ResultRow
 
 @Serializable
 data class Employee(
@@ -33,4 +35,16 @@ data class Employee(
     // 'age' serializable while still using the logic contained in AgeDelegate.
     private val ageDelegate: Int by AgeDelegate(dob)
     val age = ageDelegate
+
+    companion object {
+        fun fromTable(row: ResultRow): Employee {
+            return Employee(
+                id = row[Employees.id],
+                firstName = row[Employees.firstName],
+                lastName = row[Employees.lastName],
+                dob = row[Employees.dob],
+                contact = Contact.fromTable(row)
+            )
+        }
+    }
 }

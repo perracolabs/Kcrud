@@ -9,7 +9,7 @@ package com.kcrud
 import com.kcrud.controllers.EmployeeController
 import com.kcrud.data.models.Contact
 import com.kcrud.data.models.Employee
-import com.kcrud.data.repositories.IEmployeeRepository
+import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.services.EmployeeService
 import io.ktor.server.application.*
 import io.ktor.server.response.*

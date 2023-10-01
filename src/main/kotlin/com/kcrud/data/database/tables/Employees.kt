@@ -12,12 +12,12 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
 /**
  * Database model for employees.
  */
-internal object Employees : Table(name = "employee") {
+internal object Employees : Table(name = "employees") {
     val id = integer(name = "employee_id").autoIncrement()
     val firstName = varchar(name = "first_name", length = 64)
     val lastName = varchar(name = "last_name", length = 64)
     val dob = date(name = "dob")
-    val contactId = integer("contact_id") references Contacts.id
+    val contactId = integer(name = "contact_id") references Contacts.id
 
     override val primaryKey = PrimaryKey(firstColumn = id, name = "PK_Employee_ID")
 }

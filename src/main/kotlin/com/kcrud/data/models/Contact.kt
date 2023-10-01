@@ -6,7 +6,9 @@
 
 package com.kcrud.data.models
 
+import com.kcrud.data.database.tables.Contacts
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.sql.ResultRow
 
 @Serializable
 data class Contact(
@@ -17,5 +19,15 @@ data class Contact(
     init {
         require(email.isNotBlank()) { "Email can't be empty." }
         require(email.isNotBlank()) { "Phone can't be empty." }
+    }
+
+    companion object {
+        fun fromTable(row: ResultRow): Contact {
+            return Contact(
+                id = row[Contacts.id],
+                email = row[Contacts.email],
+                phone = row[Contacts.phone]
+            )
+        }
     }
 }

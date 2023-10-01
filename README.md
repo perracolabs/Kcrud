@@ -43,12 +43,13 @@ http://localhost:8080/auth/token/refresh
 
 ### **REST** endpoints:
 
-* Create an employee: `POST` http://localhost:8080/v1/employee
-* Update an employee: `PUT` http://localhost:8080/v1/employee/{id}
-* Get an employee: `GET` http://localhost:8080/v1/employee/{id}
-* Delete an employee: `DELETE` http://localhost:8080/v1/employee/{id}
-* Get all employees: `GET` http://localhost:8080/v1/employees
-* Delete all employees: `DELETE` http://localhost:8080/v1/employees
+#### Employee & Contact
+* `POST` http://localhost:8080/v1/employees
+* `PUT` http://localhost:8080/v1/employees/{employee_id}
+* `GET` http://localhost:8080/v1/employees/{employee_id}
+* `DELETE` http://localhost:8080/v1/employees/{employee_id}
+* Get all: `GET` http://localhost:8080/v1/employees
+* Delete all: `DELETE` http://localhost:8080/v1/employees
 
 `json`
 ```json
@@ -60,6 +61,26 @@ http://localhost:8080/auth/token/refresh
         "email": "saco.paco@email.com",
         "phone": "123-456-7890"
     }
+}
+```
+
+#### Employment & Period
+* `POST` http://localhost:8080/v1/employees/{employee_id}/employments
+* `PUT` http://localhost:8080/v1/employees/{employee_id}/employments/{employment_id}
+* `GET` http://localhost:8080/v1/employees/{employee_id}/employments/{employment_id}
+* `DELETE` http://localhost:8080/v1/employees/{employee_id}/employments/{employment_id}
+* Get all: `GET` http://localhost:8080/v1/employees/{employee_id}/employments/
+
+`json`
+```json
+{
+   "period": {
+      "isActive": true,
+      "startDate": "2023-01-01",
+      "endDate": null,
+      "comments": null
+   },
+   "probationEndDate": "2023-09-30"
 }
 ```
 ---
@@ -74,7 +95,7 @@ http://localhost:8080/auth/token/refresh
 - Return a single employee
 ```graphql
 query {
-    employee(id: 1) {
+    employee(employeeId: 1) {
         id
         firstName
         lastName
@@ -106,6 +127,23 @@ query {
    }
 }
 ```
+
+- Return all employments for a specific employee
+```graphql
+query {
+    employments(employeeId: 1) {
+        id
+        probationEndDate
+        period {
+            isActive
+            startDate
+            endDate
+            comments
+        }
+   }
+}
+```
+
 #### Mutations:
 
 - Create a new employee
@@ -137,7 +175,7 @@ mutation {
 - Update an existing employee
 ```graphql
 mutation {
-    updateEmployee(id: 1, employee: {
+    updateEmployee(employeeId: 1, employee: {
         firstName: "NewSaco",
         lastName: "NewPaco",
         dob: "2000-01-01",
@@ -163,7 +201,7 @@ mutation {
 - Delete a single employee
 ```graphql
 mutation {
-    deleteEmployee(id: 1)
+    deleteEmployee(employeeId: 1)
 }
 ```
 
@@ -171,6 +209,31 @@ mutation {
 ```graphql
 mutation {
     deleteAllEmployees
+}
+```
+
+- Create a new employment for a specific employee
+```graphql
+mutation {
+    createEmployment(employeeId: 1, mployment: {
+         probationEndDate: "2023-04-01",
+         period: {
+             isActive: true,
+             startDate: "2023-01-01",
+             endDate: null,
+             comments: null
+         }
+     }
+    ) {
+        id
+        probationEndDate
+        period {
+            isActive
+            startDate
+            endDate
+            comments
+        }
+    }
 }
 ```
 

@@ -30,7 +30,7 @@ class AccessTokenRouting(private val routingNode: Route) {
 
             // Example for new token generation rate limit.
             rateLimit(RateLimitName(RateLimitSetup.SCOPE_NEW_AUTH_TOKEN)) {
-                createTokenRoute(node = this)
+                newTokenRoute(node = this)
             }
 
             refreshTokenRoute(node = this)
@@ -40,7 +40,7 @@ class AccessTokenRouting(private val routingNode: Route) {
     /**
      * Endpoint for initial token generation; requires Basic Authentication.
      */
-    private fun createTokenRoute(node: Route) {
+    private fun newTokenRoute(node: Route) {
         node.authenticate(SettingsProvider.get.basicAuth.providerName) {
             post("create") {
                 val jwtToken = AuthenticationToken.generate()

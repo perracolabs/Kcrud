@@ -6,7 +6,9 @@
 
 package com.kcrud.data.database
 
+import com.kcrud.data.database.tables.Contacts
 import com.kcrud.data.database.tables.Employees
+import com.kcrud.data.database.tables.Employments
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -73,7 +75,13 @@ object DatabaseFactory {
         val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
 
         transaction(database) {
+            logger.info("Setting schema.")
+            // Note that creating only the Employment table would automatically also
+            // create Employees and Contacts due to the fields references between the tables.
+            // Placing them all anyway, for consistency.
+            SchemaUtils.create(Contacts)
             SchemaUtils.create(Employees)
+            SchemaUtils.create(Employments)
             logger.info("Database ready.")
         }
     }

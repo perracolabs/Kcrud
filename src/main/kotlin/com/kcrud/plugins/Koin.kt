@@ -7,9 +7,13 @@
 package com.kcrud.plugins
 
 import com.kcrud.controllers.EmployeeController
-import com.kcrud.data.repositories.EmployeeRepository
-import com.kcrud.data.repositories.IEmployeeRepository
+import com.kcrud.controllers.EmploymentController
+import com.kcrud.data.repositories.employee.EmployeeRepository
+import com.kcrud.data.repositories.employee.IEmployeeRepository
+import com.kcrud.data.repositories.employment.EmploymentRepository
+import com.kcrud.data.repositories.employment.IEmploymentRepository
 import com.kcrud.services.EmployeeService
+import com.kcrud.services.EmploymentService
 import io.ktor.server.application.*
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -26,14 +30,13 @@ fun Application.configureDependencyInjection() {
     // Declare a Koin module to manage application-level dependencies.
     val appModule = module {
 
-        // Provide a singleton instance of EmployeeRepository for any IEmployeeRepository requests.
         singleOf(::EmployeeRepository) { bind<IEmployeeRepository>() }
-
-        // Instantiate a singleton EmployeeService, injecting the required EmployeeRepository.
         singleOf(::EmployeeService)
-
-        // Instantiate a singleton EmployeeController, injecting the required EmployeeService.
         singleOf(::EmployeeController)
+
+        singleOf(::EmploymentRepository) { bind<IEmploymentRepository>() }
+        singleOf(::EmploymentService)
+        singleOf(::EmploymentController)
     }
 
     // Initialize Koin dependency injection with the defined module.
