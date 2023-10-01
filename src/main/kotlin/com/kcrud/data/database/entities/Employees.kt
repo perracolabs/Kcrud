@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 /**
- * Database model for employees.
+ * Database entity for employees.
  */
 internal object Employees : Table(name = "employees") {
     val id = integer(name = "employee_id").autoIncrement()

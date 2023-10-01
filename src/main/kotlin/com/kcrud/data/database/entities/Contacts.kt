@@ -9,7 +9,7 @@ package com.kcrud.data.database.entities
 import org.jetbrains.exposed.sql.Table
 
 /**
- * Database model for employee contact details.
+ * Database entity for employee contact details.
  */
 internal object Contacts : Table(name = "contacts") {
     val id = integer(name = "contact_id").autoIncrement()

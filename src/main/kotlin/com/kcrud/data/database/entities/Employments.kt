@@ -9,6 +9,10 @@ package com.kcrud.data.database.entities
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
+/**
+ * Database entity for employments.
+ * An employee may have multiple employments, which indicates re-hiring.
+ */
 internal object Employments : Table(name ="employments") {
     val id = integer(name = "employment_id").autoIncrement()
     val employeeId = integer(name = "employee_id") references Employees.id
