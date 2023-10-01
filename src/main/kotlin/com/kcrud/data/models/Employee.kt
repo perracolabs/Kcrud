@@ -37,13 +37,13 @@ data class Employee(
     val age = ageDelegate
 
     companion object {
-        fun fromTable(row: ResultRow): Employee {
+        fun fromTableRow(row: ResultRow): Employee {
             return Employee(
                 id = row[Employees.id],
                 firstName = row[Employees.firstName],
                 lastName = row[Employees.lastName],
                 dob = row[Employees.dob],
-                contact = Contact.fromTable(row)
+                contact = Contact.fromTableRow(row)
             )
         }
     }

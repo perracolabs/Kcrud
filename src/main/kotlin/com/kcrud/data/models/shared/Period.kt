@@ -30,7 +30,7 @@ data class Period(
     }
 
     companion object {
-        fun fromTable(row: ResultRow, table: Table): Period {
+        fun fromTableRow(row: ResultRow, table: Table): Period {
             val isActiveCol = table.columns.single { it.name == "is_active" }
             val startDateCol = table.columns.single { it.name == "start_date" }
             val endDateCol = table.columns.single { it.name == "end_date" }

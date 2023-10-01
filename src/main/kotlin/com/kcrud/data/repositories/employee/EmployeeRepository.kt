@@ -26,7 +26,7 @@ class EmployeeRepository : IEmployeeRepository {
             ).select { Employees.id eq employeeId }
 
             query.map { resultRow ->
-                Employee.fromTable(row = resultRow)
+                Employee.fromTableRow(row = resultRow)
             }.singleOrNull()
         }
     }
@@ -41,7 +41,7 @@ class EmployeeRepository : IEmployeeRepository {
             ).selectAll()
 
             query.map { resultRow ->
-                Employee.fromTable(row = resultRow)
+                Employee.fromTableRow(row = resultRow)
             }
         }
     }

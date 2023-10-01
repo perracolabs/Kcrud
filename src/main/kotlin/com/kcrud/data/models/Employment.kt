@@ -25,10 +25,10 @@ data class Employment(
     }
 
     companion object {
-        fun fromTable(row: ResultRow): Employment {
+        fun fromTableRow(row: ResultRow): Employment {
             return Employment(
                 id = row[Employments.id],
-                period = Period.fromTable(row = row, table = Employments),
+                period = Period.fromTableRow(row = row, table = Employments),
                 probationEndDate = row[Employments.probationEndDate]
             )
         }

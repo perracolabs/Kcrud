@@ -19,7 +19,7 @@ class EmploymentRepository : IEmploymentRepository {
     override fun findById(employmentId: Int): Employment? {
         return transaction {
             Employments.select { Employments.id eq employmentId }.singleOrNull()?.let { resultRow ->
-                Employment.fromTable(row = resultRow)
+                Employment.fromTableRow(row = resultRow)
             }
         }
     }
@@ -29,7 +29,7 @@ class EmploymentRepository : IEmploymentRepository {
             (Employments innerJoin Employees innerJoin Contacts)
                 .select { Employments.employeeId eq employeeId and (Employees.contactId eq Contacts.id) }
                 .map { resultRow ->
-                    Employment.fromTable(row = resultRow)
+                    Employment.fromTableRow(row = resultRow)
                 }
         }
     }

@@ -22,7 +22,7 @@ data class Contact(
     }
 
     companion object {
-        fun fromTable(row: ResultRow): Contact {
+        fun fromTableRow(row: ResultRow): Contact {
             return Contact(
                 id = row[Contacts.id],
                 email = row[Contacts.email],
