@@ -6,9 +6,9 @@
 
 package com.kcrud.data.database
 
-import com.kcrud.data.database.tables.Contacts
-import com.kcrud.data.database.tables.Employees
-import com.kcrud.data.database.tables.Employments
+import com.kcrud.data.database.entities.Contacts
+import com.kcrud.data.database.entities.Employees
+import com.kcrud.data.database.entities.Employments
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction

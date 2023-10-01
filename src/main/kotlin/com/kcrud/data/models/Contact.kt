@@ -6,7 +6,7 @@
 
 package com.kcrud.data.models
 
-import com.kcrud.data.database.tables.Contacts
+import com.kcrud.data.database.entities.Contacts
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 

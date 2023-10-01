@@ -6,7 +6,7 @@
 
 package com.kcrud.data.models
 
-import com.kcrud.data.database.tables.Employees
+import com.kcrud.data.database.entities.Employees
 import com.kcrud.utils.AgeDelegate
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable

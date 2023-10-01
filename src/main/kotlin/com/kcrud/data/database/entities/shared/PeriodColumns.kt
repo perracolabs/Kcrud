@@ -4,9 +4,9 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.database.tables.shared
+package com.kcrud.data.database.entities.shared
 
-import com.kcrud.data.database.tables.Contacts.nullable
+import com.kcrud.data.database.entities.Contacts.nullable
 import com.kcrud.data.models.shared.Period
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date

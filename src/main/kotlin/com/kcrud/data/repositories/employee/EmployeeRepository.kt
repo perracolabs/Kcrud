@@ -6,8 +6,8 @@
 
 package com.kcrud.data.repositories.employee
 
-import com.kcrud.data.database.tables.Contacts
-import com.kcrud.data.database.tables.Employees
+import com.kcrud.data.database.entities.Contacts
+import com.kcrud.data.database.entities.Employees
 import com.kcrud.data.models.Employee
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
