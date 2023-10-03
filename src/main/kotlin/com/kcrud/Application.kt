@@ -6,7 +6,7 @@
 
 package com.kcrud
 
-import com.kcrud.data.database.DatabaseFactory
+import com.kcrud.data.database.shared.DatabaseManager
 import com.kcrud.plugins.*
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
@@ -53,5 +53,8 @@ fun Application.module() {
 
     configureGraphQL()
 
-    DatabaseFactory.init(mode = DatabaseFactory.Mode.PERSISTENT, type = DatabaseFactory.DBType.H2)
+    DatabaseManager.init(
+        mode = DatabaseManager.Mode.PERSISTENT,
+        type = DatabaseManager.DBType.H2
+    )
 }

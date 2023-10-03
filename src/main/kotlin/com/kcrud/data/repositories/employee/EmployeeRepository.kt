@@ -6,8 +6,8 @@
 
 package com.kcrud.data.repositories.employee
 
-import com.kcrud.data.database.entities.Contacts
-import com.kcrud.data.database.entities.Employees
+import com.kcrud.data.database.tables.ContactTable
+import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.models.Employee
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -18,12 +18,12 @@ class EmployeeRepository : IEmployeeRepository {
 
     override fun findById(employeeId: Int): Employee? {
         return transaction {
-            val query = Employees.join(
-                otherTable = Contacts,
+            val query = EmployeeTable.join(
+                otherTable = ContactTable,
                 joinType = JoinType.INNER,
-                onColumn = Employees.contactId,
-                otherColumn = Contacts.id
-            ).select { Employees.id eq employeeId }
+                onColumn = EmployeeTable.contactId,
+                otherColumn = ContactTable.id
+            ).select { EmployeeTable.id eq employeeId }
 
             query.map { resultRow ->
                 Employee.fromTableRow(row = resultRow)
@@ -33,11 +33,11 @@ class EmployeeRepository : IEmployeeRepository {
 
     override fun findAll(): List<Employee> {
         return transaction {
-            val query = Employees.join(
-                otherTable = Contacts,
+            val query = EmployeeTable.join(
+                otherTable = ContactTable,
                 joinType = JoinType.INNER,
-                onColumn = Employees.contactId,
-                otherColumn = Contacts.id
+                onColumn = EmployeeTable.contactId,
+                otherColumn = ContactTable.id
             ).selectAll()
 
             query.map { resultRow ->
@@ -48,17 +48,17 @@ class EmployeeRepository : IEmployeeRepository {
 
     override fun create(employee: Employee): Employee {
         return transaction {
-            val newContactId = Contacts.insert { contactRow ->
+            val newContactId = ContactTable.insert { contactRow ->
                 contactRow[email] = employee.contact.email.trim()
                 contactRow[phone] = employee.contact.phone.trim()
-            } get Contacts.id
+            } get ContactTable.id
 
             employee.contact.id = newContactId
 
-            val newEmployeeId = Employees.insert { employeeRow ->
+            val newEmployeeId = EmployeeTable.insert { employeeRow ->
                 employeeModelToTable(employee = employee, target = employeeRow)
                 employeeRow[contactId] = newContactId
-            } get Employees.id
+            } get EmployeeTable.id
 
             findById(newEmployeeId)!!
         }
@@ -72,13 +72,13 @@ class EmployeeRepository : IEmployeeRepository {
             employee.contact.id = dbContactId
 
             // Update the Contacts table.
-            Contacts.update(where = { Contacts.id eq dbContactId }) { contactRow ->
+            ContactTable.update(where = { ContactTable.id eq dbContactId }) { contactRow ->
                 contactRow[email] = employee.contact.email.trim()
                 contactRow[phone] = employee.contact.phone.trim()
             }
 
             // Update the Employees table.
-            Employees.update(where = { Employees.id eq employeeId }) { employeeRow ->
+            EmployeeTable.update(where = { EmployeeTable.id eq employeeId }) { employeeRow ->
                 employeeModelToTable(employee = employee, target = employeeRow)
             }
 
@@ -88,13 +88,13 @@ class EmployeeRepository : IEmployeeRepository {
 
     override fun delete(employeeId: Int): Int {
         return transaction {
-            Employees.deleteWhere { id eq employeeId }
+            EmployeeTable.deleteWhere { id eq employeeId }
         }
     }
 
     override fun deleteAll(): Int {
         return transaction {
-            Employees.deleteAll()
+            EmployeeTable.deleteAll()
         }
     }
 
@@ -103,10 +103,10 @@ class EmployeeRepository : IEmployeeRepository {
      */
     private fun employeeModelToTable(employee: Employee, target: UpdateBuilder<Int>) {
         target.apply {
-            this[Employees.firstName] = employee.firstName.trim()
-            this[Employees.lastName] = employee.lastName.trim()
-            this[Employees.dob] = employee.dob
-            this[Employees.contactId] = employee.contact.id!!
+            this[EmployeeTable.firstName] = employee.firstName.trim()
+            this[EmployeeTable.lastName] = employee.lastName.trim()
+            this[EmployeeTable.dob] = employee.dob
+            this[EmployeeTable.contactId] = employee.contact.id!!
         }
     }
 }

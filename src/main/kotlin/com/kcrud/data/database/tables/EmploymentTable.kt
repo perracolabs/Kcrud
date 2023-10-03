@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.database.entities
+package com.kcrud.data.database.tables
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
@@ -13,9 +13,9 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
  * Database entity for employments.
  * An employee may have multiple employments, which indicates re-hiring.
  */
-internal object Employments : Table(name ="employments") {
+internal object EmploymentTable : Table(name ="employment") {
     val id = integer(name = "employment_id").autoIncrement()
-    val employeeId = integer(name = "employee_id") references Employees.id
+    val employeeId = integer(name = "employee_id") references EmployeeTable.id
     val probationEndDate = date(name = "probation_end_date").nullable()
     val isActive = bool(name = "is_active")
     val startDate = date(name = "start_date")

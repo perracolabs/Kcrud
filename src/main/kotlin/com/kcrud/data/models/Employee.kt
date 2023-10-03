@@ -6,7 +6,7 @@
 
 package com.kcrud.data.models
 
-import com.kcrud.data.database.entities.Employees
+import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.utils.AgeDelegate
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
@@ -39,10 +39,10 @@ data class Employee(
     companion object {
         fun fromTableRow(row: ResultRow): Employee {
             return Employee(
-                id = row[Employees.id],
-                firstName = row[Employees.firstName],
-                lastName = row[Employees.lastName],
-                dob = row[Employees.dob],
+                id = row[EmployeeTable.id],
+                firstName = row[EmployeeTable.firstName],
+                lastName = row[EmployeeTable.lastName],
+                dob = row[EmployeeTable.dob],
                 contact = Contact.fromTableRow(row)
             )
         }

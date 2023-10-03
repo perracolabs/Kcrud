@@ -6,7 +6,7 @@
 
 package com.kcrud.data.models
 
-import com.kcrud.data.database.entities.Contacts
+import com.kcrud.data.database.tables.ContactTable
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -24,9 +24,9 @@ data class Contact(
     companion object {
         fun fromTableRow(row: ResultRow): Contact {
             return Contact(
-                id = row[Contacts.id],
-                email = row[Contacts.email],
-                phone = row[Contacts.phone]
+                id = row[ContactTable.id],
+                email = row[ContactTable.email],
+                phone = row[ContactTable.phone]
             )
         }
     }

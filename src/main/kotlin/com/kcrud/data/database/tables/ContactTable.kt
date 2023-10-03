@@ -4,14 +4,14 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.database.entities
+package com.kcrud.data.database.tables
 
 import org.jetbrains.exposed.sql.Table
 
 /**
  * Database entity for employee contact details.
  */
-internal object Contacts : Table(name = "contacts") {
+internal object ContactTable : Table(name = "contact") {
     val id = integer(name = "contact_id").autoIncrement()
     val email = varchar(name = "email", length = 128)
     val phone = varchar(name = "phone", length = 16)

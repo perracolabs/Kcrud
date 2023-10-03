@@ -4,11 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.database
+package com.kcrud.data.database.shared
 
-import com.kcrud.data.database.entities.Contacts
-import com.kcrud.data.database.entities.Employees
-import com.kcrud.data.database.entities.Employments
+import com.kcrud.data.database.tables.ContactTable
+import com.kcrud.data.database.tables.EmployeeTable
+import com.kcrud.data.database.tables.EmploymentTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -18,11 +18,16 @@ import java.nio.file.Paths
 import java.sql.DriverManager
 
 /**
- * Provides functionality to initialize and manage a connection to the database.
+ * Manages database configurations and provides utility methods for database operations,
+ * serving as a centralized point for setting up database connections, transactions,
+ * and other database-related configurations.
  *
- * H2 and SQLite are supported, for both in-memory and file based.
+ * Example usage:
+ * ```
+ * DatabaseManager.init(Mode.PERSISTENT, DBType.H2)
+ * ```
  */
-object DatabaseFactory {
+object DatabaseManager {
     private val logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     enum class Mode {
@@ -47,12 +52,32 @@ object DatabaseFactory {
     /**
      * Initializes the database connection based on the provided mode and database type.
      *
-     * @param mode The mode in which the database should be initialized.
-     * @param type The type of the database to use.
+     * @param mode The [Mode] in which the database should be initialized.
+     * @param type The [DBType] defining the database to use.
      */
     fun init(mode: Mode, type: DBType) {
         val connectionDetails = getConnectionDetails(mode, type)
 
+        setDatabaseHooks(mode, type, connectionDetails)
+
+        logger.info("Setting database schema.")
+        configureExposed(connectionDetails)
+        logger.info("Database ready.")
+    }
+
+    private fun configureExposed(connectionDetails: ConnectionDetails) {
+        val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
+
+        transaction(database) {
+            SchemaUtils.create(
+                ContactTable,
+                EmployeeTable,
+                EmploymentTable
+            )
+        }
+    }
+
+    private fun setDatabaseHooks(mode: Mode, type: DBType, connectionDetails: ConnectionDetails) {
         if (mode == Mode.IN_MEMORY && type == DBType.SQLite) {
             // In-memory sqlite databases get destroyed between transactions.
             // Getting a connection will preserve the in-memory database unless explicitly closed.
@@ -71,27 +96,12 @@ object DatabaseFactory {
                 }
             })
         }
-
-        val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
-
-        transaction(database) {
-            logger.info("Setting schema.")
-            // Note that creating only the Employment table would automatically also
-            // create Employees and Contacts due to the fields references between the tables.
-            // Placing them all anyway, for consistency.
-            SchemaUtils.create(Contacts)
-            SchemaUtils.create(Employees)
-            SchemaUtils.create(Employments)
-            logger.info("Database ready.")
-        }
     }
 
     /**
      * Returns the JDBC URL and Driver class name corresponding to the provided database mode and type.
      *
-     * @param mode The mode for which the JDBC URL is needed.
-     * @param type The type of the database to use.
-     * @return The resolved JDBC URL and Driver class name.
+     * Ideally all these settings would be read from a configuration file.
      */
     private fun getConnectionDetails(mode: Mode, type: DBType): ConnectionDetails {
         val path = "$DB_PATH${type.name}"
@@ -101,16 +111,31 @@ object DatabaseFactory {
 
         return when (type) {
             DBType.H2 -> when (mode) {
-                Mode.IN_MEMORY -> ConnectionDetails(jdbcUrl = "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver")
-                Mode.PERSISTENT -> ConnectionDetails(jdbcUrl = "jdbc:h2:file:$dbName", driver = "org.h2.Driver")
+                Mode.IN_MEMORY -> ConnectionDetails(
+                    jdbcUrl = "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;",
+                    driver = "org.h2.Driver"
+                )
+
+                Mode.PERSISTENT -> ConnectionDetails(
+                    jdbcUrl = "jdbc:h2:file:$dbName",
+                    driver = "org.h2.Driver",
+                )
             }
 
             DBType.SQLite -> when (mode) {
-                Mode.IN_MEMORY -> ConnectionDetails(jdbcUrl = "jdbc:sqlite:file:test?mode=memory&cache=shared", driver = "org.sqlite.JDBC")
-                Mode.PERSISTENT -> ConnectionDetails(jdbcUrl = "jdbc:sqlite:$dbName.db", driver = "org.sqlite.JDBC")
+                Mode.IN_MEMORY -> ConnectionDetails(
+                    jdbcUrl = "jdbc:sqlite:file:test?mode=memory&cache=shared",
+                    driver = "org.sqlite.JDBC"
+                )
+
+                Mode.PERSISTENT -> ConnectionDetails(
+                    jdbcUrl = "jdbc:sqlite:$dbName.db",
+                    driver = "org.sqlite.JDBC"
+                )
             }
         }
     }
 
     private data class ConnectionDetails(val jdbcUrl: String, val driver: String)
 }
+

@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.database.entities
+package com.kcrud.data.database.tables
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
@@ -12,12 +12,12 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
 /**
  * Database entity for employees.
  */
-internal object Employees : Table(name = "employees") {
+internal object EmployeeTable : Table(name = "employee") {
     val id = integer(name = "employee_id").autoIncrement()
     val firstName = varchar(name = "first_name", length = 64)
     val lastName = varchar(name = "last_name", length = 64)
     val dob = date(name = "dob")
-    val contactId = integer(name = "contact_id") references Contacts.id
+    val contactId = integer(name = "contact_id") references ContactTable.id
 
     override val primaryKey = PrimaryKey(firstColumn = id, name = "PK_Employee_ID")
 }

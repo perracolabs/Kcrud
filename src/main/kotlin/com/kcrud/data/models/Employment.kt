@@ -6,7 +6,7 @@
 
 package com.kcrud.data.models
 
-import com.kcrud.data.database.entities.Employments
+import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.models.shared.Period
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
@@ -27,9 +27,9 @@ data class Employment(
     companion object {
         fun fromTableRow(row: ResultRow): Employment {
             return Employment(
-                id = row[Employments.id],
-                period = Period.fromTableRow(row = row, table = Employments),
-                probationEndDate = row[Employments.probationEndDate]
+                id = row[EmploymentTable.id],
+                period = Period.fromTableRow(row = row, table = EmploymentTable),
+                probationEndDate = row[EmploymentTable.probationEndDate]
             )
         }
     }
