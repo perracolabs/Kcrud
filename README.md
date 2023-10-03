@@ -14,6 +14,8 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 
 ---
 
+For convenience find in the project a *[Postman](https://www.postman.com/)* collection: **`kcrud.postman_collection`**.
+
 ## Handling Security
 
 The enabling or disabling of security is managed through the `hconf` configuration file.
