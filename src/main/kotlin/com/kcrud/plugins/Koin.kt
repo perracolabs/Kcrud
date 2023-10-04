@@ -6,8 +6,6 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.controllers.EmployeeController
-import com.kcrud.controllers.EmploymentController
 import com.kcrud.data.repositories.employee.EmployeeRepository
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.data.repositories.employment.EmploymentRepository
@@ -32,11 +30,9 @@ fun Application.configureDependencyInjection() {
 
         singleOf(::EmployeeRepository) { bind<IEmployeeRepository>() }
         singleOf(::EmployeeService)
-        singleOf(::EmployeeController)
 
         singleOf(::EmploymentRepository) { bind<IEmploymentRepository>() }
         singleOf(::EmploymentService)
-        singleOf(::EmploymentController)
     }
 
     // Initialize Koin dependency injection with the defined module.

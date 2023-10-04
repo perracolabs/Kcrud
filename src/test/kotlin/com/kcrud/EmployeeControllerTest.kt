@@ -6,28 +6,21 @@
 
 package com.kcrud
 
-import com.kcrud.controllers.EmployeeController
 import com.kcrud.data.models.Contact
 import com.kcrud.data.models.Employee
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.services.EmployeeService
-import io.ktor.server.application.*
-import io.ktor.server.response.*
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.slot
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
-import org.koin.test.KoinTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class EmployeeControllerTest : KoinTest {
+class EmployeeServiceTest {
 
-    // Mock dependencies.
     private val mockRepository = mockk<IEmployeeRepository>()
     private val employeeService = EmployeeService(mockRepository)
-    private val employeeController = EmployeeController(employeeService)
 
     @Test
     fun testGetEmployee() = runBlocking {
@@ -52,25 +45,8 @@ class EmployeeControllerTest : KoinTest {
 
         coEvery { mockRepository.findById(employeeId) } returns mockEmployee
 
-        // Simulate the call.
-        val call = mockk<ApplicationCall>(relaxed = true)
-        coEvery { call.parameters["id"] } returns employeeId.toString()
-
-        // Capture the response.
-        val slot = slot<Any>()
-        coEvery { call.respond(capture(slot)) } answers {}
-
-        // Invoke the method.
-        employeeController.get(call)
-
-        // Print the response
-        println("Response: ${slot.captured}")
-
-        // Verify interactions.
-        coVerify {
-            mockRepository.findById(employeeId)
-            call.respond(mockEmployee)
-        }
+        val result = employeeService.findById(employeeId)
+        assertEquals(mockEmployee, result)
 
         println("testGetEmployee completed successfully.")
     }

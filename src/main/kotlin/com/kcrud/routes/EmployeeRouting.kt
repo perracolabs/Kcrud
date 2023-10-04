@@ -6,10 +6,14 @@
 
 package com.kcrud.routes
 
-import com.kcrud.controllers.EmployeeController
+import com.kcrud.data.models.Employee
+import com.kcrud.services.EmployeeService
 import com.kcrud.utils.SettingsProvider
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
@@ -32,24 +36,88 @@ class EmployeeRouting(private val routingNode: Route) {
 
     private fun setupRoutes(node: Route) {
         node.apply {
-            val controller by inject<EmployeeController>()
+            val service by inject<EmployeeService>()
 
             route(EMPLOYEE_ROUTE) {
-
-                // For operations related to all employees.
-
-                get { controller.getAll(call) }
-                delete { controller.deleteAll(call) }
-
-                // For operations related to a single employee.
-
-                post { controller.create(call) }
+                findAll(node = this, service = service)
+                create(node = this, service = service)
+                deleteAll(node = this, service = service)
 
                 route("{$EMPLOYEE_PATH_PARAMETER}") {
-                    get { controller.get(call) }
-                    put { controller.update(call) }
-                    delete { controller.delete(call) }
+                    findById(node = this, service = service)
+                    update(node = this, service = service)
+                    delete(node = this, service = service)
                 }
+            }
+        }
+    }
+
+    private fun findAll(node: Route, service: EmployeeService) {
+        node.apply {
+            get {
+                val employees = service.findAll()
+                call.respond(employees)
+            }
+        }
+    }
+
+    private fun create(node: Route, service: EmployeeService) {
+        node.apply {
+            post {
+                val newEmployee = call.receive<Employee>()
+                val createdEmployee = service.create(newEmployee)
+                call.respond(HttpStatusCode.Created, createdEmployee)
+            }
+        }
+    }
+
+    private fun deleteAll(node: Route, service: EmployeeService) {
+        node.apply {
+            delete {
+                service.deleteAll().also {
+                    call.respond(HttpStatusCode.NoContent)
+                }
+            }
+        }
+    }
+
+    private fun findById(node: Route, service: EmployeeService) {
+        node.apply {
+            get {
+                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()
+                val employee = employeeId?.let { service.findById(it) }
+
+                if (employee != null) {
+                    call.respond(employee)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Employee not found.")
+                }
+            }
+        }
+    }
+
+    private fun update(node: Route, service: EmployeeService) {
+        node.apply {
+            put {
+                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()
+                val updatedInfo = call.receive<Employee>()
+                val updatedEmployee = employeeId?.let { service.update(it, updatedInfo) }
+
+                if (updatedEmployee != null) {
+                    call.respond(HttpStatusCode.OK, updatedEmployee)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Employee not found.")
+                }
+            }
+        }
+    }
+
+    private fun delete(node: Route, service: EmployeeService) {
+        node.apply {
+            delete {
+                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()
+                employeeId?.let { service.delete(it) }
+                call.respond(HttpStatusCode.NoContent)
             }
         }
     }
@@ -60,4 +128,5 @@ class EmployeeRouting(private val routingNode: Route) {
         const val EMPLOYEE_PATH_PARAMETER = "employee_id"
     }
 }
+
 

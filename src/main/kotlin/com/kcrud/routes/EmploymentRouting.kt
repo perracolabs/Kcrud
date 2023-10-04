@@ -6,10 +6,14 @@
 
 package com.kcrud.routes
 
-import com.kcrud.controllers.EmploymentController
+import com.kcrud.data.models.Employment
+import com.kcrud.services.EmploymentService
 import com.kcrud.utils.SettingsProvider
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
@@ -32,31 +36,96 @@ class EmploymentRouting(private val routingNode: Route) {
 
     private fun setupRoutes(node: Route) {
         node.apply {
-            val controller by inject<EmploymentController>()
+            val service by inject<EmploymentService>()
 
-            // Base route for "employee".
-            node.route(EmployeeRouting.EMPLOYEE_ROUTE) {
+            route(EmployeeRouting.EMPLOYEE_ROUTE) {
 
-                // Nested route to specify an employee by ID.
                 route("{${EmployeeRouting.EMPLOYEE_PATH_PARAMETER}}") {
 
-                    // Nested route for Employments related to a specific employee.
                     route(EMPLOYMENTS_ROUTE) {
 
-                        // For operations related to all employments associated with an employee.
-
-                        post { controller.create(call) }
-                        get { controller.getByEmployeeId(call) }
-
-                        // For operations related to a single employment.
+                        create(node = this, service = service)
+                        findByEmployeeId(node = this, service = service)
 
                         route("{$EMPLOYMENT_PATH_PARAMETER}") {
-                            get { controller.get(call) }
-                            put { controller.update(call) }
-                            delete { controller.delete(call) }
+
+                            findById(node = this, service = service)
+                            update(node = this, service = service)
+                            delete(node = this, service = service)
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun create(node: Route, service: EmploymentService) {
+        node.apply {
+            post {
+                val employeeId = call.parameters[EmployeeRouting.EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()
+
+                employeeId?.let {
+                    val employment = call.receive<Employment>()
+                    val newEmployment = service.create(employeeId, employment)
+                    call.respond(HttpStatusCode.Created, newEmployment)
+                } ?: call.respond(HttpStatusCode.NotFound, "Employee not found.")
+            }
+        }
+    }
+
+    private fun findByEmployeeId(node: Route, service: EmploymentService) {
+        node.apply {
+            get {
+                val employeeId = call.parameters[EmployeeRouting.EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()
+
+                employeeId?.let {
+                    val employments = service.findByEmployeeId(employeeId)
+                    call.respond(employments)
+                } ?: call.respond(HttpStatusCode.NotFound, "Employee not found.")
+            }
+        }
+    }
+
+    private fun findById(node: Route, service: EmploymentService) {
+        node.apply {
+            get {
+                call.parameters[EMPLOYMENT_PATH_PARAMETER]?.toIntOrNull()?.let { employmentId ->
+                    service.findById(employmentId)?.also { employment ->
+                        call.respond(employment)
+                    } ?: call.respond(HttpStatusCode.NotFound, "Employment ID not found: $employmentId")
+                } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employment ID argument.")
+            }
+        }
+    }
+
+    private fun update(node: Route, service: EmploymentService) {
+        node.apply {
+            put {
+                call.parameters[EmployeeRouting.EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()?.let { employeeId ->
+
+                    call.parameters[EMPLOYMENT_PATH_PARAMETER]?.toIntOrNull()?.let { employmentId ->
+
+                        val updatedEmployment = call.receive<Employment>().run {
+                            service.update(employeeId = employeeId, employmentId = employmentId, employment = this)
+                        }
+
+                        updatedEmployment?.also { employment ->
+                            call.respond(status = HttpStatusCode.OK, message = employment)
+                        } ?: call.respond(status = HttpStatusCode.NotFound, message = "Employment ID not found: $employmentId")
+
+                    } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employment ID argument.")
+                } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employee ID argument.")
+            }
+        }
+    }
+
+    private fun delete(node: Route, service: EmploymentService) {
+        node.apply {
+            delete {
+                call.parameters[EMPLOYMENT_PATH_PARAMETER]?.toIntOrNull()?.let { employmentId ->
+                    service.delete(employmentId)
+                    call.respond(HttpStatusCode.NoContent)
+                } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employment ID.")
             }
         }
     }
@@ -67,4 +136,3 @@ class EmploymentRouting(private val routingNode: Route) {
         const val EMPLOYMENT_PATH_PARAMETER = "employment_id"
     }
 }
-
