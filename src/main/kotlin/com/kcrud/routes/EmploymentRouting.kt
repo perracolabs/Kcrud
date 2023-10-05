@@ -23,7 +23,7 @@ import org.koin.ktor.ext.inject
 class EmploymentRouting(private val routingNode: Route) {
 
     fun configure() {
-        routingNode.route(API_VERSION) {
+        routingNode.route(EmployeeRouting.API_VERSION) {
             if (SettingsProvider.get.jwt.isEnabled) {
                 authenticate {
                     setupRoutes(node = this)
@@ -131,7 +131,6 @@ class EmploymentRouting(private val routingNode: Route) {
     }
 
     companion object {
-        private const val API_VERSION = "v1"
         private const val EMPLOYMENTS_ROUTE = "employments"
         const val EMPLOYMENT_PATH_PARAMETER = "employment_id"
     }

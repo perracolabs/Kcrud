@@ -123,7 +123,7 @@ class EmployeeRouting(private val routingNode: Route) {
     }
 
     companion object {
-        private const val API_VERSION = "v1"
+        const val API_VERSION = "v1"
         const val EMPLOYEE_ROUTE = "employees"
         const val EMPLOYEE_PATH_PARAMETER = "employee_id"
     }
