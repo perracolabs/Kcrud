@@ -6,7 +6,7 @@
 
 plugins {
     kotlin("jvm") version "1.9.10"
-    id("io.ktor.plugin") version "2.3.4"
+    id("io.ktor.plugin") version "2.3.5"
     kotlin("plugin.serialization") version "1.9.10"
 }
 
@@ -39,7 +39,7 @@ dependencies {
 
     // Ktor.
     // https://github.com/ktorio/ktor
-    val ktorVersion = "2.3.4"
+    val ktorVersion = "2.3.5"
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
@@ -96,7 +96,7 @@ dependencies {
 
     // SQLite database.
     // https://github.com/sqlite/sqlite
-    implementation("org.xerial:sqlite-jdbc:3.43.0.0")
+    implementation("org.xerial:sqlite-jdbc:3.43.2.0")
 
     // GraphQL.
     // https://github.com/aPureBase/KGraphQL
