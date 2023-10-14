@@ -23,8 +23,8 @@ class RootRouting(private val routingNode: Route) {
         routingNode {
             if (appSettings.basicAuth.isEnabled) {
                 // Basic Authentication for the root endpoint.
-                if (appSettings.basicAuth.customLogin) {
-                    // Use the custom login form to handle authentication.
+                if (appSettings.basicAuth.loginForm) {
+                    // Use the login form to handle authentication.
                     get("/") {
                         SimpleLogin().generateForm(call)
                     }

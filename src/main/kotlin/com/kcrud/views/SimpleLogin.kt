@@ -27,7 +27,7 @@ class SimpleLogin {
 
         call.respondHtml {
             body {
-                h1 { +"Simple Login Page" }
+                h1 { +"Kcrud Login" }
 
                 form(action = LOGIN_PATH, method = FormMethod.post) {
                     p {
