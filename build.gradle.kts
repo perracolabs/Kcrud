@@ -71,7 +71,7 @@ dependencies {
 
     // 'Conf' type safety.
     // https://github.com/lightbend/config
-    implementation("com.typesafe:config:1.4.2")
+    implementation("com.typesafe:config:1.4.3")
 
     // Exposed ORM.
     // https://github.com/JetBrains/Exposed
@@ -96,7 +96,7 @@ dependencies {
 
     // SQLite database.
     // https://github.com/sqlite/sqlite
-    implementation("org.xerial:sqlite-jdbc:3.43.2.0")
+    implementation("org.xerial:sqlite-jdbc:3.43.2.1")
 
     // GraphQL.
     // https://github.com/aPureBase/KGraphQL
