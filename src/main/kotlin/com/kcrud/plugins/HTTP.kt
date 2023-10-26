@@ -36,6 +36,20 @@ fun Application.configureHTTP() {
 
         // Allow requests from any host. Not recommended for production.
         anyHost()
+        // Host production examples:
+        //
+        // Allow requests from both http and https, so "http://example.com" and "https://example.com".
+        // allowHost(host="example.com")
+        //
+        // Allow requests from "http://example.com:8081" and "https://example.com:8081".
+        // allowHost(host="example.com:8081")
+        //
+        // Allow requests from "http://api.example.com" and "https://api.example.com".
+        // allowHost(host="example.com", subDomains = listOf("api"))
+        //
+        // Allows requests from "http://example.com" and "https://example.com" specifically,
+        // though this is redundant with the first allowHost invocation in this example.
+        // allowHost(host="example.com", schemes = listOf("http", "https"))
 
         // Enable inclusion of credentials in CORS requests.
         allowCredentials = true
