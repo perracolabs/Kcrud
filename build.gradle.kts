@@ -75,7 +75,8 @@ dependencies {
 
     // Exposed ORM.
     // https://github.com/JetBrains/Exposed
-    val exposedVersion = "0.44.0"
+    // https://github.com/JetBrains/Exposed/blob/main/docs/ChangeLog.md
+    val exposedVersion = "0.44.1"
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
