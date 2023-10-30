@@ -5,9 +5,9 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
     id("io.ktor.plugin") version "2.3.5"
-    kotlin("plugin.serialization") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.20"
 }
 
 group = "com.kcrud"
@@ -97,7 +97,7 @@ dependencies {
 
     // SQLite database.
     // https://github.com/sqlite/sqlite
-    implementation("org.xerial:sqlite-jdbc:3.43.2.1")
+    implementation("org.xerial:sqlite-jdbc:3.43.2.2")
 
     // GraphQL.
     // https://github.com/aPureBase/KGraphQL
@@ -106,7 +106,7 @@ dependencies {
 
     implementation("io.mockk:mockk:1.13.8")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.10")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.20")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     testImplementation("org.slf4j:slf4j-api:2.0.9")
