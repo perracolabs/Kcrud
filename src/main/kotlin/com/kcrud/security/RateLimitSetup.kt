@@ -26,26 +26,23 @@ import kotlin.time.Duration.Companion.seconds
  */
 class RateLimitSetup {
 
+    enum class Scope(val key: String) {
+        NEW_AUTH_TOKEN("new_auth_token"), // Scope key for authorization tokens.
+        PUBLIC_API("public_api") // Scope key for the public API.
+    }
+
     fun configure(rateLimitConfig: RateLimitConfig) {
         rateLimitConfig.apply {
 
             // Example scope for new token generation rate limit.
-            register(RateLimitName(SCOPE_NEW_AUTH_TOKEN)) {
+            register(RateLimitName(Scope.NEW_AUTH_TOKEN.key)) {
                 rateLimiter(limit = 100, refillPeriod = 10.seconds)
             }
 
             // Example scope for the public API rate limit.
-            register(RateLimitName(SCOPE_PUBLIC_API)) {
+            register(RateLimitName(Scope.PUBLIC_API.key)) {
                 rateLimiter(limit = 1_000, refillPeriod = 1.seconds)
             }
         }
-    }
-
-    companion object {
-        // Scope key for authorization tokens.
-        const val SCOPE_NEW_AUTH_TOKEN = "new_auth_token"
-
-        // Scope key for the public API.
-        const val SCOPE_PUBLIC_API = "public_api"
     }
 }
