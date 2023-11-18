@@ -97,7 +97,7 @@ dependencies {
 
     // SQLite database.
     // https://github.com/sqlite/sqlite
-    implementation("org.xerial:sqlite-jdbc:3.44.0.2")
+    implementation("org.xerial:sqlite-jdbc:3.43.2.2")
 
     // GraphQL.
     // https://github.com/aPureBase/KGraphQL

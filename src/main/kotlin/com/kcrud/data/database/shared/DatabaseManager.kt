@@ -54,20 +54,38 @@ object DatabaseManager {
      *
      * @param mode The [Mode] in which the database should be initialized.
      * @param type The [DBType] defining the database to use.
+     * @param createSchema Whether to create the database schema if such does not exist.
      */
-    fun init(mode: Mode, type: DBType) {
+    fun init(mode: Mode, type: DBType, createSchema: Boolean = true) {
         val connectionDetails = getConnectionDetails(mode, type)
 
         setDatabaseHooks(mode, type, connectionDetails)
 
-        logger.info("Setting database schema.")
-        configureExposed(connectionDetails)
+        // Establish the database connection using Database.connect from the 'Exposed' framework.
+        // This method not only establishes a connection but also registers it in a global registry within Exposed.
+        // As a result, this connection becomes available application-wide without the need for a global variable.
+        // Exposed manages this connection, utilizing a connection pool for efficiency and performance.
+        // The connection pool reuses connections where possible and handles their lifecycle,
+        // facilitating implicit and consistent database access throughout the application.
+        val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
+
+        if (createSchema) {
+            logger.info("Setting database schema.")
+            setupDatabase(database)
+        }
+
         logger.info("Database ready.")
     }
 
-    private fun configureExposed(connectionDetails: ConnectionDetails) {
-        val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
-
+    /**
+     * Creates the database schema if such does not exist.
+     *
+     * Database migrations are not supported, so altering the database tables
+     * will make this method fail if the database has been previously crated.
+     *
+     * For migrations should use external libraries such as Flyway or Liquibase.
+     */
+    private fun setupDatabase(database: Database) {
         transaction(database) {
             SchemaUtils.create(
                 ContactTable,
