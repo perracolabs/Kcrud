@@ -5,9 +5,9 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "1.9.21"
     id("io.ktor.plugin") version "2.3.6"
-    kotlin("plugin.serialization") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.21"
 }
 
 group = "com.kcrud"
@@ -57,7 +57,7 @@ dependencies {
 
     // Logging.
     // https://github.com/qos-ch/logback
-    implementation("ch.qos.logback:logback-classic:1.4.11")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
 
     // Kotlinx Serialization.
     // https://github.com/Kotlin/kotlinx.serialization
@@ -67,7 +67,7 @@ dependencies {
 
     // Serializable Date Time.
     // https://github.com/Kotlin/kotlinx-datetime
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 
     // 'Conf' type safety.
     // https://github.com/lightbend/config
@@ -76,7 +76,7 @@ dependencies {
     // Exposed ORM.
     // https://github.com/JetBrains/Exposed
     // https://github.com/JetBrains/Exposed/blob/main/docs/ChangeLog.md
-    val exposedVersion = "0.44.1"
+    val exposedVersion = "0.45.0"
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
@@ -101,14 +101,15 @@ dependencies {
 
     // GraphQL.
     // https://github.com/aPureBase/KGraphQL
-    implementation("com.apurebase:kgraphql:0.19.0")
-    implementation("com.apurebase:kgraphql-ktor:0.19.0")
+    val apureBaseVersion = "0.19.0"
+    implementation("com.apurebase:kgraphql:$apureBaseVersion")
+    implementation("com.apurebase:kgraphql-ktor:$apureBaseVersion")
 
     implementation("io.mockk:mockk:1.13.8")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.20")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
     testImplementation("org.slf4j:slf4j-api:2.0.9")
     testImplementation("ch.qos.logback:logback-classic:1.2.11")
     testImplementation("io.insert-koin:koin-test:3.5.0")
