@@ -18,7 +18,7 @@ data class Contact(
 ) {
     init {
         require(email.isNotBlank()) { "Email can't be empty." }
-        require(email.isNotBlank()) { "Phone can't be empty." }
+        require(phone.isNotBlank()) { "Phone can't be empty." }
     }
 
     companion object {
