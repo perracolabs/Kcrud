@@ -15,19 +15,6 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) embeddable databases, both in-memory and file-based.
 * [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing.
 
-
-Characteristics:
-Most common REST operations.
-GraphQL queries and mutations.
-Koin dependency injection.
-Rate limit examples.
-JWT authentication for both REST and GraphQL.
-Basic authentication example.
-HTML DSL example.
-Exposed data layer.
-H2 and SQLite databases, for both in-memory or file based.
-
-
 ---
 
 For convenience find in the project a *[Postman](https://www.postman.com/)* collection: **`kcrud.postman_collection`**.
