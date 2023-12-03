@@ -3,14 +3,30 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 
 ### Characteristics:
 * Most common **REST** operations.
+* [Netty](https://ktor.io/docs/engines.html) async web server.
+* [JWT](https://ktor.io/docs/jwt.html) authentication for both REST and GraphQL.
+* [Basic](https://ktor.io/docs/basic.html) authentication example.
+* [Kotlin JSON](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md) serialization / deserialization
 * [GraphQL](https://graphql.org/) queries and mutations.
 * [Koin](https://insert-koin.io/) dependency injection.
 * [Rate limit](https://ktor.io/docs/rate-limit.html) examples.
-* [JWT](https://ktor.io/docs/jwt.html) authentication for both REST and GraphQL.
-* [Basic](https://ktor.io/docs/basic.html) authentication example.
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
-* [Exposed](https://github.com/JetBrains/Exposed) data layer.
-* [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) databases, for both in-memory or file based.
+* [Exposed](https://github.com/JetBrains/Exposed) database framework.
+* [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) embeddable databases, both in-memory and file-based.
+* [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing.
+
+
+Characteristics:
+Most common REST operations.
+GraphQL queries and mutations.
+Koin dependency injection.
+Rate limit examples.
+JWT authentication for both REST and GraphQL.
+Basic authentication example.
+HTML DSL example.
+Exposed data layer.
+H2 and SQLite databases, for both in-memory or file based.
+
 
 ---
 
