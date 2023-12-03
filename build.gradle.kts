@@ -92,12 +92,11 @@ dependencies {
 
     // H2 database.
     // https://github.com/h2database/h2database
-    // TODO: update once IntelliJ supports the latest driver.
-    implementation("com.h2database:h2:2.1.210")
+    implementation("com.h2database:h2:2.2.224")
 
     // SQLite database.
     // https://github.com/sqlite/sqlite
-    implementation("org.xerial:sqlite-jdbc:3.43.2.2")
+    implementation("org.xerial:sqlite-jdbc:3.44.1.0")
 
     // GraphQL.
     // https://github.com/aPureBase/KGraphQL
