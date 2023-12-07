@@ -8,13 +8,14 @@ package com.kcrud.data.models
 
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.models.shared.Period
+import com.kcrud.utils.SUUID
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 @Serializable
 data class Employment(
-    val id: Int? = null,
+    val id: SUUID? = null,
     val period: Period,
     val probationEndDate: LocalDate? = null
 ) {

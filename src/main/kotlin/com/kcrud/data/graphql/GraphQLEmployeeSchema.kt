@@ -9,6 +9,8 @@ package com.kcrud.data.graphql
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.Employee
 import com.kcrud.services.EmployeeService
+import com.kcrud.utils.toUUID
+
 
 /**
  * Demonstrates modularization of GraphQL schemas for scalability.
@@ -42,7 +44,7 @@ class GraphQLEmployeeSchema(private val schemaBuilder: SchemaBuilder, private va
         schemaBuilder.apply {
             query("employee") {
                 description = "Returns a single employee given its id."
-                resolver { employeeId: Int -> service.findById(employeeId = employeeId) }
+                resolver { employeeId: String -> service.findById(employeeId = employeeId.toUUID()) }
             }
             query("employees") {
                 description = "Returns all existing employees."
@@ -78,12 +80,14 @@ class GraphQLEmployeeSchema(private val schemaBuilder: SchemaBuilder, private va
 
             mutation("updateEmployee") {
                 description = "Updates an existing employee."
-                resolver { employeeId: Int, employee: Employee -> service.update(employeeId = employeeId, employee = employee) }
+                resolver { employeeId: String, employee: Employee ->
+                    service.update(employeeId = employeeId.toUUID(), employee = employee)
+                }
             }
 
             mutation("deleteEmployee") {
                 description = "Deletes an existing employee."
-                resolver { employeeId: Int -> service.delete(employeeId = employeeId) }
+                resolver { employeeId: String -> service.delete(employeeId = employeeId.toUUID()) }
             }
 
             mutation("deleteAllEmployees") {

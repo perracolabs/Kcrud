@@ -14,8 +14,8 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
  * An employee may have multiple employments, which indicates re-hiring.
  */
 internal object EmploymentTable : Table(name ="employment") {
-    val id = integer(name = "employment_id").autoIncrement()
-    val employeeId = integer(name = "employee_id") references EmployeeTable.id
+    val id = uuid(name = "employment_id").autoGenerate()
+    val employeeId = uuid(name = "employee_id") references EmployeeTable.id
     val probationEndDate = date(name = "probation_end_date").nullable()
     val isActive = bool(name = "is_active")
     val startDate = date(name = "start_date")

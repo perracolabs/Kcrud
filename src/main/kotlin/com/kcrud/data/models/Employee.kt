@@ -8,13 +8,14 @@ package com.kcrud.data.models
 
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.utils.AgeDelegate
+import com.kcrud.utils.SUUID
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 @Serializable
 data class Employee(
-    val id: Int? = null,
+    val id: SUUID? = null,
     val firstName: String,
     val lastName: String,
     val dob: LocalDate,

@@ -88,6 +88,9 @@
 						},
 						{
 							"name": "get",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
 							"request": {
 								"method": "GET",
 								"header": [
@@ -97,8 +100,15 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "",
+										"variables": ""
+									}
+								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/1",
+									"raw": "http://localhost:8080/v1/employees/5d1411b9-7bcc-4d34-b58c-312dad658c6b",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -107,7 +117,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"1"
+										"5d1411b9-7bcc-4d34-b58c-312dad658c6b"
 									]
 								}
 							},
@@ -200,7 +210,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/1/employments",
+									"raw": "http://localhost:8080/v1/employees/5d1411b9-7bcc-4d34-b58c-312dad658c6b/employments",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -209,7 +219,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"1",
+										"5d1411b9-7bcc-4d34-b58c-312dad658c6b",
 										"employments"
 									]
 								}
@@ -241,7 +251,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/1/employments/14",
+									"raw": "http://localhost:8080/v1/employees/355b24cc-0684-483c-98a7-34a58b74b06c/employments/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -250,9 +260,9 @@
 									"path": [
 										"v1",
 										"employees",
-										"1",
+										"355b24cc-0684-483c-98a7-34a58b74b06c",
 										"employments",
-										"14"
+										""
 									]
 								}
 							},
@@ -283,7 +293,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/1/employments",
+									"raw": "http://localhost:8080/v1/employees/5d1411b9-7bcc-4d34-b58c-312dad658c6b/employments",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -292,7 +302,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"1",
+										"5d1411b9-7bcc-4d34-b58c-312dad658c6b",
 										"employments"
 									]
 								}
@@ -323,7 +333,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/1/employments/13",
+									"raw": "http://localhost:8080/v1/employees/355b24cc-0684-483c-98a7-34a58b74b06c/employments/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -332,9 +342,9 @@
 									"path": [
 										"v1",
 										"employees",
-										"1",
+										"355b24cc-0684-483c-98a7-34a58b74b06c",
 										"employments",
-										"13"
+										""
 									]
 								}
 							},
@@ -401,7 +411,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\r\n    employments(employeeId: 1) {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n   }\r\n}",
+										"query": "query {\r\n    employments(employeeId: \"5d1411b9-7bcc-4d34-b58c-312dad658c6b\") {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},
@@ -433,7 +443,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation {\r\n    createEmployment(employeeId: 1,\r\n                     employment: {\r\n                        probationEndDate: \"2023-04-01\",\r\n                        period: {\r\n                            isActive: true,\r\n                            startDate: \"2023-01-01\",\r\n                            endDate: null,\r\n                            comments: null\r\n                        }\r\n                    }\r\n    ) {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n    }\r\n}\r\n",
+										"query": "mutation {\r\n    createEmployment(employeeId: \"5d1411b9-7bcc-4d34-b58c-312dad658c6b\",\r\n                     employment: {\r\n                        probationEndDate: \"2023-04-01\",\r\n                        period: {\r\n                            isActive: true,\r\n                            startDate: \"2023-01-01\",\r\n                            endDate: null,\r\n                            comments: null\r\n                        }\r\n                    }\r\n    ) {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n    }\r\n}\r\n",
 										"variables": ""
 									}
 								},

@@ -13,11 +13,11 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
  * Database entity for employees.
  */
 internal object EmployeeTable : Table(name = "employee") {
-    val id = integer(name = "employee_id").autoIncrement()
+    val id = uuid(name = "employee_id").autoGenerate()
     val firstName = varchar(name = "first_name", length = 64)
     val lastName = varchar(name = "last_name", length = 64)
     val dob = date(name = "dob")
-    val contactId = integer(name = "contact_id") references ContactTable.id
+    val contactId = uuid(name = "contact_id") references ContactTable.id
 
     override val primaryKey = PrimaryKey(firstColumn = id, name = "PK_Employee_ID")
 }

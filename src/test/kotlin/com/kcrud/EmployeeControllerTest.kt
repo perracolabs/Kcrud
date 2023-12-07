@@ -16,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import java.util.UUID
 
 class EmployeeServiceTest {
 
@@ -27,14 +28,14 @@ class EmployeeServiceTest {
         println("Running testGetEmployee...")
 
         // Given
-        val employeeId = 1
+        val employeeId = UUID.randomUUID()
         val mockEmployee = Employee(
             id = employeeId,
             firstName = "Pepito",
             lastName = "Paquito",
             dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
             contact = Contact(
-                id = 1,
+                id = UUID.randomUUID(),
                 email = "saco.paco@email.com",
                 phone = "123-456-789"
             )

@@ -7,6 +7,7 @@
 package com.kcrud.data.repositories.employee
 
 import com.kcrud.data.models.Employee
+import java.util.*
 
 interface IEmployeeRepository {
 
@@ -15,7 +16,7 @@ interface IEmployeeRepository {
      * @param employeeId The ID of the employee to be retrieved.
      * @return The employee model if found, null otherwise.
      */
-    fun findById(employeeId: Int): Employee?
+    fun findById(employeeId: UUID): Employee?
 
     /**
      * Retrieves all employee models.
@@ -36,14 +37,14 @@ interface IEmployeeRepository {
      * @param employee The new details for the employee.
      * @return The updated employee model if the update was successful, null otherwise.
      */
-    fun update(employeeId: Int, employee: Employee): Employee?
+    fun update(employeeId: UUID, employee: Employee): Employee?
 
     /**
      * Deletes an employee using the provided ID.
      * @param employeeId The ID of the employee to be deleted.
      * @return The number of deleted records.
      */
-    fun delete(employeeId: Int): Int
+    fun delete(employeeId: UUID): Int
 
     /**
      * Deletes all employees.

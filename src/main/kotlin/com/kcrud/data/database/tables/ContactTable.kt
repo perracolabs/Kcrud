@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.Table
  * Database entity for employee contact details.
  */
 internal object ContactTable : Table(name = "contact") {
-    val id = integer(name = "contact_id").autoIncrement()
+    val id = uuid(name = "contact_id").autoGenerate()
     val email = varchar(name = "email", length = 128)
     val phone = varchar(name = "phone", length = 16)
 

@@ -9,6 +9,7 @@ package com.kcrud.services
 import com.kcrud.data.models.Employment
 import com.kcrud.data.repositories.employment.IEmploymentRepository
 import org.koin.core.component.KoinComponent
+import java.util.*
 
 class EmploymentService(private val repository: IEmploymentRepository) : KoinComponent {
 
@@ -17,7 +18,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employmentId The ID of the employment to be retrieved.
      * @return The employment model if found, null otherwise.
      */
-    fun findById(employmentId: Int): Employment? {
+    fun findById(employmentId: UUID): Employment? {
         return repository.findById(employmentId)
     }
 
@@ -26,7 +27,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employeeId The ID of the employee associated with the employment.
      * @return List of all employment models.
      */
-    fun findByEmployeeId(employeeId: Int): List<Employment> {
+    fun findByEmployeeId(employeeId: UUID): List<Employment> {
         return repository.findByEmployeeId(employeeId = employeeId)
     }
 
@@ -36,7 +37,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employment The employment to be created.
      * @return The created employment model with generated ID.
      */
-    fun create(employeeId: Int, employment: Employment): Employment {
+    fun create(employeeId: UUID, employment: Employment): Employment {
         return repository.create(employeeId = employeeId, employment = employment)
     }
 
@@ -47,7 +48,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employment The new details for the employment.
      * @return The updated employment model if the update was successful, null otherwise.
      */
-    fun update(employeeId: Int, employmentId: Int, employment: Employment): Employment? {
+    fun update(employeeId: UUID, employmentId: UUID, employment: Employment): Employment? {
         return repository.update(employeeId = employeeId, employmentId = employmentId, employment = employment)
     }
 
@@ -56,7 +57,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employmentId The ID of the employment to be deleted.
      * @return The number of deleted records.
      */
-    fun delete(employmentId: Int): Int {
+    fun delete(employmentId: UUID): Int {
         return repository.delete(employmentId)
     }
 }

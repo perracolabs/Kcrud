@@ -7,6 +7,7 @@
 package com.kcrud.data.repositories.employment
 
 import com.kcrud.data.models.Employment
+import java.util.*
 
 interface IEmploymentRepository {
 
@@ -15,14 +16,14 @@ interface IEmploymentRepository {
      * @param employmentId The ID of the employment to be retrieved.
      * @return The employment model if found, null otherwise.
      */
-    fun findById(employmentId: Int): Employment?
+    fun findById(employmentId: UUID): Employment?
 
     /**
      * Retrieves all employment models for a given employee.
      * @param employeeId The ID of the employee associated with the employment.
      * @return List of all employment models.
      */
-    fun findByEmployeeId(employeeId: Int): List<Employment>
+    fun findByEmployeeId(employeeId: UUID): List<Employment>
 
     /**
      * Creates a new employment and returns the created employment model.
@@ -30,7 +31,7 @@ interface IEmploymentRepository {
      * @param employment The employment to be created.
      * @return The created employment model with generated ID.
      */
-    fun create(employeeId: Int, employment: Employment): Employment
+    fun create(employeeId: UUID, employment: Employment): Employment
 
     /**
      * Updates an employment's details using the provided ID and employment model.
@@ -39,13 +40,13 @@ interface IEmploymentRepository {
      * @param employment The new details for the employment.
      * @return The updated employment model if the update was successful, null otherwise.
      */
-    fun update(employeeId: Int, employmentId: Int, employment: Employment): Employment?
+    fun update(employeeId: UUID, employmentId: UUID, employment: Employment): Employment?
 
     /**
      * Deletes an employment using the provided ID.
      * @param employmentId The ID of the employment to be deleted.
      * @return The number of deleted records.
      */
-    fun delete(employmentId: Int): Int
+    fun delete(employmentId: UUID): Int
 }
 

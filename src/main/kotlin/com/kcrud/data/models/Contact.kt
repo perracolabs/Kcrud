@@ -7,12 +7,13 @@
 package com.kcrud.data.models
 
 import com.kcrud.data.database.tables.ContactTable
+import com.kcrud.utils.SUUID
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 @Serializable
 data class Contact(
-    var id: Int? = null,
+    var id: SUUID? = null,
     val email: String,
     val phone: String
 ) {

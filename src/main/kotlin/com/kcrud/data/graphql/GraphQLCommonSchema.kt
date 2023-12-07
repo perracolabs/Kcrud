@@ -7,9 +7,11 @@
 package com.kcrud.data.graphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
+import com.kcrud.utils.toUUID
 import kotlinx.datetime.LocalDate
 import java.time.DayOfWeek
 import java.time.Month
+import java.util.*
 
 /**
  * Demonstrates modularization of GraphQL schemas for scalability.
@@ -36,6 +38,11 @@ class GraphQLCommonSchema(private val schemaBuilder: SchemaBuilder) {
             stringScalar<LocalDate> {
                 serialize = { date -> date.toString() }
                 deserialize = { str -> LocalDate.parse(str) }
+            }
+            stringScalar<UUID> {
+                description = "Unique identifier"
+                serialize = { uuid -> uuid.toString() }
+                deserialize = { str -> str.toUUID() }
             }
         }
 

@@ -9,6 +9,7 @@ package com.kcrud.services
 import com.kcrud.data.models.Employee
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import org.koin.core.component.KoinComponent
+import java.util.*
 
 class EmployeeService(private val repository: IEmployeeRepository) : KoinComponent {
 
@@ -17,7 +18,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employeeId The ID of the employee to be retrieved.
      * @return The employee model if found, null otherwise.
      */
-    fun findById(employeeId: Int): Employee? {
+    fun findById(employeeId: UUID): Employee? {
         return repository.findById(employeeId)
     }
 
@@ -44,7 +45,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employee The new details for the employee.
      * @return The updated employee model if the update was successful, null otherwise.
      */
-    fun update(employeeId: Int, employee: Employee): Employee? {
+    fun update(employeeId: UUID, employee: Employee): Employee? {
         return repository.update(employeeId = employeeId, employee = employee)
     }
 
@@ -53,7 +54,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employeeId The ID of the employee to be deleted.
      * @return The number of deleted records.
      */
-    fun delete(employeeId: Int): Int {
+    fun delete(employeeId: UUID): Int {
         return repository.delete(employeeId)
     }
 

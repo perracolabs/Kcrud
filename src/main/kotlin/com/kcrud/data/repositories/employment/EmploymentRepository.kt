@@ -14,9 +14,10 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 
 class EmploymentRepository : IEmploymentRepository {
-    override fun findById(employmentId: Int): Employment? {
+    override fun findById(employmentId: UUID): Employment? {
         return transaction {
             EmploymentTable.select { EmploymentTable.id eq employmentId }.singleOrNull()?.let { resultRow ->
                 Employment.fromTableRow(row = resultRow)
@@ -24,7 +25,7 @@ class EmploymentRepository : IEmploymentRepository {
         }
     }
 
-    override fun findByEmployeeId(employeeId: Int): List<Employment> {
+    override fun findByEmployeeId(employeeId: UUID): List<Employment> {
         return transaction {
             (EmploymentTable innerJoin EmployeeTable innerJoin ContactTable)
                 .select { EmploymentTable.employeeId eq employeeId and (EmployeeTable.contactId eq ContactTable.id) }
@@ -34,7 +35,7 @@ class EmploymentRepository : IEmploymentRepository {
         }
     }
 
-    override fun create(employeeId: Int, employment: Employment): Employment {
+    override fun create(employeeId: UUID, employment: Employment): Employment {
         return transaction {
             val newEmploymentId = EmploymentTable.insert { employmentRow ->
                 employmentModelToTable(employeeId = employeeId, employment = employment, target = employmentRow)
@@ -44,7 +45,7 @@ class EmploymentRepository : IEmploymentRepository {
         }
     }
 
-    override fun update(employeeId: Int, employmentId: Int, employment: Employment): Employment? {
+    override fun update(employeeId: UUID, employmentId: UUID, employment: Employment): Employment? {
         return transaction {
             EmploymentTable.update(where = { EmploymentTable.id eq employmentId }) { employmentRow ->
                 employmentModelToTable(employeeId = employeeId, employment = employment, target = employmentRow)
@@ -54,7 +55,7 @@ class EmploymentRepository : IEmploymentRepository {
         }
     }
 
-    override fun delete(employmentId: Int): Int {
+    override fun delete(employmentId: UUID): Int {
         return transaction {
             EmploymentTable.deleteWhere { id eq employmentId }
         }
@@ -63,7 +64,7 @@ class EmploymentRepository : IEmploymentRepository {
     /**
      * Populates an SQL [UpdateBuilder] with data from an [Employment] model instance.
      */
-    private fun employmentModelToTable(employeeId: Int, employment: Employment, target: UpdateBuilder<Int>) {
+    private fun employmentModelToTable(employeeId: UUID, employment: Employment, target: UpdateBuilder<Int>) {
         target.apply {
             this[EmploymentTable.employeeId] = employeeId
             this[EmploymentTable.probationEndDate] = employment.probationEndDate

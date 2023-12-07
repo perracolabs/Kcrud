@@ -13,10 +13,11 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 
 class EmployeeRepository : IEmployeeRepository {
 
-    override fun findById(employeeId: Int): Employee? {
+    override fun findById(employeeId: UUID): Employee? {
         return transaction {
             val query = EmployeeTable.join(
                 otherTable = ContactTable,
@@ -64,7 +65,7 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun update(employeeId: Int, employee: Employee): Employee? {
+    override fun update(employeeId: UUID, employee: Employee): Employee? {
         return transaction {
             // First, find the existing employee to get the contact id.
             val targetEmployee = findById(employeeId) ?: return@transaction null
@@ -86,7 +87,7 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun delete(employeeId: Int): Int {
+    override fun delete(employeeId: UUID): Int {
         return transaction {
             EmployeeTable.deleteWhere { id eq employeeId }
         }

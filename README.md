@@ -14,6 +14,7 @@ A simple **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https:
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) embeddable databases, both in-memory and file-based.
 * [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing.
+* [UUID](https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html) serialization / deserialization examples for both REST and GraphQL.
 
 ---
 
@@ -101,7 +102,7 @@ http://localhost:8080/auth/token/refresh
 - Return a single employee
 ```graphql
 query {
-    employee(employeeId: 1) {
+    employee(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a") {
         id
         firstName
         lastName
@@ -137,7 +138,7 @@ query {
 - Return all employments for a specific employee
 ```graphql
 query {
-    employments(employeeId: 1) {
+    employments(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a") {
         id
         probationEndDate
         period {
@@ -181,7 +182,7 @@ mutation {
 - Update an existing employee
 ```graphql
 mutation {
-    updateEmployee(employeeId: 1, employee: {
+    updateEmployee(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a", employee: {
         firstName: "NewSaco",
         lastName: "NewPaco",
         dob: "2000-01-01",
@@ -207,7 +208,7 @@ mutation {
 - Delete a single employee
 ```graphql
 mutation {
-    deleteEmployee(employeeId: 1)
+    deleteEmployee(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a")
 }
 ```
 
@@ -221,7 +222,7 @@ mutation {
 - Create a new employment for a specific employee
 ```graphql
 mutation {
-    createEmployment(employeeId: 1, mployment: {
+    createEmployment(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a", mployment: {
          probationEndDate: "2023-04-01",
          period: {
              isActive: true,

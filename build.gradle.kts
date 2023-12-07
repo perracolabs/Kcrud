@@ -6,7 +6,7 @@
 
 plugins {
     kotlin("jvm") version "1.9.21"
-    id("io.ktor.plugin") version "2.3.6"
+    id("io.ktor.plugin") version "2.3.7"
     kotlin("plugin.serialization") version "1.9.21"
 }
 
@@ -39,7 +39,7 @@ dependencies {
 
     // Ktor.
     // https://github.com/ktorio/ktor
-    val ktorVersion = "2.3.6"
+    val ktorVersion = "2.3.7"
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
@@ -103,6 +103,11 @@ dependencies {
     val apureBaseVersion = "0.19.0"
     implementation("com.apurebase:kgraphql:$apureBaseVersion")
     implementation("com.apurebase:kgraphql-ktor:$apureBaseVersion")
+
+    // GraphQL.
+    // https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview
+    // https://github.com/ExpediaGroup/graphql-kotlin/tree/master/servers/graphql-kotlin-ktor-server
+    implementation("com.expediagroup:graphql-kotlin-ktor-server:7.0.2")
 
     implementation("io.mockk:mockk:1.13.8")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")

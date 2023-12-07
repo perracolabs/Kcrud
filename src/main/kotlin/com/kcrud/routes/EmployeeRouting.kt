@@ -9,6 +9,7 @@ package com.kcrud.routes
 import com.kcrud.data.models.Employee
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.SettingsProvider
+import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -84,7 +85,7 @@ class EmployeeRouting(private val routingNode: Route) {
     private fun findById(node: Route, service: EmployeeService) {
         node.apply {
             get {
-                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()
+                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
                 val employee = employeeId?.let { service.findById(it) }
 
                 if (employee != null) {
@@ -99,7 +100,7 @@ class EmployeeRouting(private val routingNode: Route) {
     private fun update(node: Route, service: EmployeeService) {
         node.apply {
             put {
-                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()
+                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
                 val updatedInfo = call.receive<Employee>()
                 val updatedEmployee = employeeId?.let { service.update(it, updatedInfo) }
 
@@ -115,7 +116,7 @@ class EmployeeRouting(private val routingNode: Route) {
     private fun delete(node: Route, service: EmployeeService) {
         node.apply {
             delete {
-                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toIntOrNull()
+                val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
                 employeeId?.let { service.delete(it) }
                 call.respond(HttpStatusCode.NoContent)
             }

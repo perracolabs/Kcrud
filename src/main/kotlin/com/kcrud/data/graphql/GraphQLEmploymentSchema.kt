@@ -9,6 +9,8 @@ package com.kcrud.data.graphql
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.Employment
 import com.kcrud.services.EmploymentService
+import com.kcrud.utils.toUUID
+
 
 /**
  * Demonstrates modularization of GraphQL schemas for scalability.
@@ -42,11 +44,11 @@ class GraphQLEmploymentSchema(private val schemaBuilder: SchemaBuilder, private 
         schemaBuilder.apply {
             query("employment") {
                 description = "Returns a single employment given its id."
-                resolver { employmentId: Int -> service.findById(employmentId = employmentId) }
+                resolver { employmentId: String -> service.findById(employmentId = employmentId.toUUID()) }
             }
             query("employments") {
                 description = "Returns all employments for a given employee."
-                resolver { employeeId: Int -> service.findByEmployeeId(employeeId = employeeId) }
+                resolver { employeeId: String -> service.findByEmployeeId(employeeId = employeeId.toUUID()) }
             }
         }
 
@@ -70,17 +72,17 @@ class GraphQLEmploymentSchema(private val schemaBuilder: SchemaBuilder, private 
         schemaBuilder.apply {
             mutation("createEmployment") {
                 description = "Creates a new employment."
-                resolver { employeeId: Int, employment: Employment ->
-                    service.create(employeeId = employeeId, employment = employment)
+                resolver { employeeId: String, employment: Employment ->
+                    service.create(employeeId = employeeId.toUUID(), employment = employment)
                 }
             }
 
             mutation("updateEmployment") {
                 description = "Updates an existing employment."
-                resolver { employeeId: Int, employmentId: Int, employment: Employment ->
+                resolver { employeeId: String, employmentId: String, employment: Employment ->
                     service.update(
-                        employeeId = employeeId,
-                        employmentId = employmentId,
+                        employeeId = employeeId.toUUID(),
+                        employmentId = employmentId.toUUID(),
                         employment = employment
                     )
                 }
@@ -88,7 +90,7 @@ class GraphQLEmploymentSchema(private val schemaBuilder: SchemaBuilder, private 
 
             mutation("deleteEmployment") {
                 description = "Deletes an existing employment."
-                resolver { employmentId: Int -> service.delete(employmentId = employmentId) }
+                resolver { employmentId: String -> service.delete(employmentId = employmentId.toUUID()) }
             }
         }
 
