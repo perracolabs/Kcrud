@@ -20,7 +20,7 @@ import java.util.*
  *
  * @return The [UUID] representation of the string, or null if the string is not a valid UUID.
  */
-fun String?.toUUIDOrNull(): SUUID? {
+fun String?.toUUIDOrNull(): UUID? {
     return try {
         UUID.fromString(this)
     } catch (e: IllegalArgumentException) {
@@ -34,7 +34,7 @@ fun String?.toUUIDOrNull(): SUUID? {
  * @return a UUID object converted from the string representation.
  * @throws IllegalArgumentException if the string is not a valid UUID.
  */
-fun String?.toUUID(): SUUID {
+fun String?.toUUID(): UUID {
     return try {
         UUID.fromString(this)
     } catch (e: IllegalArgumentException) {
