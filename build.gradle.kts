@@ -100,9 +100,9 @@ dependencies {
 
     // GraphQL with KGraphQL.
     // https://github.com/aPureBase/KGraphQL
-    val apureBaseVersion = "0.19.0"
-    implementation("com.apurebase:kgraphql:$apureBaseVersion")
-    implementation("com.apurebase:kgraphql-ktor:$apureBaseVersion")
+    val kgraphqlVersion = "0.19.0"
+    implementation("com.apurebase:kgraphql:$kgraphqlVersion")
+    implementation("com.apurebase:kgraphql-ktor:$kgraphqlVersion")
 
     // GraphQL with ExpediaGroup.
     // https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview
