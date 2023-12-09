@@ -51,6 +51,21 @@ http://localhost:8080/auth/token/refresh
 
 ---
 
+### About Entities:
+
+The application defined Entities, function both as requests and responses.
+Jackson's JSON annotations control the fields permissible in requests, ignoring any input value that is annotated as readonly.
+This approach simplifies the DTO structure for entities where the distinction between request and response data is minimal.
+
+The ```Employment``` entity on the other hand demonstrates a distinct pattern for requests and responses:
+
+* ```EmploymentRequest``` - for creating new employment records.
+* ```EmploymentResponse``` - for outputting employment data.
+
+This separation provides clearer API endpoints, tailored validation in the request, and precise control
+over the data exposed in the response, showcasing an alternative and effective way to manage DTOs in RESTful services.
+
+
 ### **REST** endpoints:
 
 #### Employee & Contact
@@ -246,4 +261,3 @@ mutation {
     }
 }
 ```
-

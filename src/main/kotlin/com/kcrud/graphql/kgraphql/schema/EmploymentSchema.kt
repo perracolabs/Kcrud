@@ -7,7 +7,8 @@
 package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.models.Employment
+import com.kcrud.data.models.employment.EmploymentRequest
+import com.kcrud.data.models.employment.EmploymentResponse
 import com.kcrud.services.EmploymentService
 import com.kcrud.utils.toUUID
 
@@ -29,7 +30,7 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
      */
     fun configureQueryTypes(): EmploymentSchema {
         schemaBuilder.apply {
-            type<Employment> {
+            type<EmploymentResponse> {
                 description = "Query type definition for employments."
             }
         }
@@ -60,7 +61,7 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
      */
     fun configureMutationInputs(): EmploymentSchema {
         schemaBuilder.apply {
-            inputType<Employment> {
+            inputType<EmploymentRequest> {
                 name = "Input type definition for Employments."
             }
         }
@@ -72,14 +73,14 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
         schemaBuilder.apply {
             mutation("createEmployment") {
                 description = "Creates a new employment."
-                resolver { employeeId: String, employment: Employment ->
+                resolver { employeeId: String, employment: EmploymentRequest ->
                     service.create(employeeId = employeeId.toUUID(), employment = employment)
                 }
             }
 
             mutation("updateEmployment") {
                 description = "Updates an existing employment."
-                resolver { employeeId: String, employmentId: String, employment: Employment ->
+                resolver { employeeId: String, employmentId: String, employment: EmploymentRequest ->
                     service.update(
                         employeeId = employeeId.toUUID(),
                         employmentId = employmentId.toUUID(),

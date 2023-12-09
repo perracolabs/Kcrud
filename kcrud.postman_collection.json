@@ -202,7 +202,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"id\": \"5d1411b9-7bcc-4d34-b58c-312dad658c6b\",\r\n    \"period\": {\r\n        \"isActive\": true,\r\n        \"startDate\": \"2023-01-01\",\r\n        \"endDate\": null,\r\n        \"comments\": null\r\n    },\r\n    \"probationEndDate\": \"2023-09-30\"\r\n}\r\n\r\n",
+									"raw": "{\r\n    \"period\": {\r\n        \"isActive\": true,\r\n        \"startDate\": \"2023-01-01\",\r\n        \"endDate\": null,\r\n        \"comments\": null\r\n    },\r\n    \"probationEndDate\": \"2023-09-30\"\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -443,7 +443,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation {\r\n    createEmployment(employeeId: \"5d22daa6-68a7-4775-a535-784ff1adc931\",\r\n                     employment: {\r\n                        probationEndDate: \"2023-04-01\",\r\n                        period: {\r\n                            isActive: true,\r\n                            startDate: \"2023-01-01\",\r\n                            endDate: null,\r\n                            comments: null\r\n                        }\r\n                    }\r\n    ) {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            fullName\r\n        }\r\n    }\r\n}\r\n",
+										"query": "mutation {\r\n    createEmployment(employeeId: \"5d22daa6-68a7-4775-a535-784ff1adc931\",\r\n                     employment: {\r\n                        probationEndDate: \"2023-04-01\",\r\n                        period: {\r\n                            isActive: true,\r\n                            startDate: \"2023-01-01\",\r\n                            endDate: null,\r\n                            comments: null\r\n                        }\r\n                    }\r\n    ) {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            fullName\r\n            contact {\r\n                email\r\n            }\r\n        }\r\n    }\r\n}\r\n",
 										"variables": ""
 									}
 								},

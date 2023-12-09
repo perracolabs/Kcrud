@@ -6,7 +6,8 @@
 
 package com.kcrud.services
 
-import com.kcrud.data.models.Employment
+import com.kcrud.data.models.employment.EmploymentRequest
+import com.kcrud.data.models.employment.EmploymentResponse
 import com.kcrud.data.repositories.employment.IEmploymentRepository
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -18,7 +19,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employmentId The ID of the employment to be retrieved.
      * @return The employment model if found, null otherwise.
      */
-    fun findById(employmentId: UUID): Employment? {
+    fun findById(employmentId: UUID): EmploymentResponse? {
         return repository.findById(employmentId)
     }
 
@@ -27,7 +28,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employeeId The ID of the employee associated with the employment.
      * @return List of all employment models.
      */
-    fun findByEmployeeId(employeeId: UUID): List<Employment> {
+    fun findByEmployeeId(employeeId: UUID): List<EmploymentResponse> {
         return repository.findByEmployeeId(employeeId = employeeId)
     }
 
@@ -37,7 +38,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employment The employment to be created.
      * @return The created employment model with generated ID.
      */
-    fun create(employeeId: UUID, employment: Employment): Employment {
+    fun create(employeeId: UUID, employment: EmploymentRequest): EmploymentResponse {
         return repository.create(employeeId = employeeId, employment = employment)
     }
 
@@ -48,7 +49,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employment The new details for the employment.
      * @return The updated employment model if the update was successful, null otherwise.
      */
-    fun update(employeeId: UUID, employmentId: UUID, employment: Employment): Employment? {
+    fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentRequest): EmploymentResponse? {
         return repository.update(employeeId = employeeId, employmentId = employmentId, employment = employment)
     }
 

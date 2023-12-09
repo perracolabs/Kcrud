@@ -15,6 +15,11 @@ import com.kcrud.services.EmployeeService
 import com.kcrud.services.EmploymentService
 import io.ktor.server.application.*
 
+/**
+ * Sets up the GraphQL engine. Currently, using KGraphQL.
+ *
+ * See: [KGraphQL Documentation](https://kgraphql.io/)
+ */
 object KGraphQLSetup {
     fun configure(application: Application, employeeService: EmployeeService, employmentService: EmploymentService) {
         application.install(GraphQL) {

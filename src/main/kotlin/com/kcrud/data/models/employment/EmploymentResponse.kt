@@ -4,32 +4,32 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models
+package com.kcrud.data.models.employment
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.kcrud.data.database.tables.EmploymentTable
+import com.kcrud.data.models.Employee
 import com.kcrud.data.models.shared.Period
 import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.ResultRow
 import java.util.*
 
-data class Employment(
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    val id: UUID? = null,
+/**
+ * This class represents the response model for an employment.
+ *
+ * @property id The employment's id.
+ * @property period The employment's period.
+ * @property probationEndDate The employment's probation end date.
+ * @property employee The employment's employee.
+ */
+data class EmploymentResponse(
+    val id: UUID,
     val period: Period,
     val probationEndDate: LocalDate? = null,
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    val employee: Employee? = null
+    val employee: Employee
 ) {
-    init {
-        probationEndDate?.let { date ->
-            require(date >= period.startDate) { "Employment probation end date cannot be earlier than period start date." }
-        }
-    }
-
     companion object {
-        fun fromTableRow(row: ResultRow): Employment {
-            return Employment(
+        fun fromTableRow(row: ResultRow): EmploymentResponse {
+            return EmploymentResponse(
                 id = row[EmploymentTable.id],
                 period = Period.fromTableRow(row = row, table = EmploymentTable),
                 probationEndDate = row[EmploymentTable.probationEndDate],
