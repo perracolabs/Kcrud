@@ -98,13 +98,13 @@ dependencies {
     // https://github.com/sqlite/sqlite
     implementation("org.xerial:sqlite-jdbc:3.44.1.0")
 
-    // GraphQL.
+    // GraphQL with KGraphQL.
     // https://github.com/aPureBase/KGraphQL
     val apureBaseVersion = "0.19.0"
     implementation("com.apurebase:kgraphql:$apureBaseVersion")
     implementation("com.apurebase:kgraphql-ktor:$apureBaseVersion")
 
-    // GraphQL.
+    // GraphQL with ExpediaGroup.
     // https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview
     // https://github.com/ExpediaGroup/graphql-kotlin/tree/master/servers/graphql-kotlin-ktor-server
     implementation("com.expediagroup:graphql-kotlin-ktor-server:7.0.2")
