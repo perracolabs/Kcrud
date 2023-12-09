@@ -6,17 +6,17 @@
 
 package com.kcrud
 
-import com.kcrud.data.models.Contact
-import com.kcrud.data.models.Employee
+import com.kcrud.data.models.contact.Contact
+import com.kcrud.data.models.employee.Employee
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.services.EmployeeService
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import java.util.UUID
 
 class EmployeeServiceTest {
 

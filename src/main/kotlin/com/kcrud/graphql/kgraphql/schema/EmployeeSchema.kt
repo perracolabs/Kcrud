@@ -7,7 +7,8 @@
 package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.models.Employee
+import com.kcrud.data.models.employee.EmployeeInput
+import com.kcrud.data.models.employee.Employee
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.toUUID
 
@@ -60,7 +61,7 @@ class EmployeeSchema(private val schemaBuilder: SchemaBuilder, private val servi
      */
     fun configureMutationInputs(): EmployeeSchema {
         schemaBuilder.apply {
-            inputType<Employee> {
+            inputType<EmployeeInput> {
                 name = "Input type definition for Employee."
             }
         }
@@ -75,12 +76,12 @@ class EmployeeSchema(private val schemaBuilder: SchemaBuilder, private val servi
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."
-                resolver { employee: Employee -> service.create(employee = employee) }
+                resolver { employee: EmployeeInput -> service.create(employee = employee) }
             }
 
             mutation("updateEmployee") {
                 description = "Updates an existing employee."
-                resolver { employeeId: String, employee: Employee ->
+                resolver { employeeId: String, employee: EmployeeInput ->
                     service.update(employeeId = employeeId.toUUID(), employee = employee)
                 }
             }

@@ -7,6 +7,7 @@
 plugins {
     kotlin("jvm") version "1.9.21"
     id("io.ktor.plugin") version "2.3.7"
+    kotlin("plugin.serialization") version "1.9.21"
 }
 
 group = "com.kcrud"
@@ -59,9 +60,14 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.14")
 
     // Serialization.
-    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
+    // https://github.com/Kotlin/kotlinx.serialization
+    // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
+
+    // Serializable DateTime.
+    // https://github.com/Kotlin/kotlinx-datetime
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 
     // 'Conf' type safety.
     // https://github.com/lightbend/config

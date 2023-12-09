@@ -7,8 +7,8 @@
 package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.models.employment.EmploymentRequest
-import com.kcrud.data.models.employment.EmploymentResponse
+import com.kcrud.data.models.employment.EmploymentInput
+import com.kcrud.data.models.employment.Employment
 import com.kcrud.services.EmploymentService
 import com.kcrud.utils.toUUID
 
@@ -30,7 +30,7 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
      */
     fun configureQueryTypes(): EmploymentSchema {
         schemaBuilder.apply {
-            type<EmploymentResponse> {
+            type<Employment> {
                 description = "Query type definition for employments."
             }
         }
@@ -61,7 +61,7 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
      */
     fun configureMutationInputs(): EmploymentSchema {
         schemaBuilder.apply {
-            inputType<EmploymentRequest> {
+            inputType<EmploymentInput> {
                 name = "Input type definition for Employments."
             }
         }
@@ -73,14 +73,14 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
         schemaBuilder.apply {
             mutation("createEmployment") {
                 description = "Creates a new employment."
-                resolver { employeeId: String, employment: EmploymentRequest ->
+                resolver { employeeId: String, employment: EmploymentInput ->
                     service.create(employeeId = employeeId.toUUID(), employment = employment)
                 }
             }
 
             mutation("updateEmployment") {
                 description = "Updates an existing employment."
-                resolver { employeeId: String, employmentId: String, employment: EmploymentRequest ->
+                resolver { employeeId: String, employmentId: String, employment: EmploymentInput ->
                     service.update(
                         employeeId = employeeId.toUUID(),
                         employmentId = employmentId.toUUID(),

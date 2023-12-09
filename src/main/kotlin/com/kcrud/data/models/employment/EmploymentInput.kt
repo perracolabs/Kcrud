@@ -8,14 +8,16 @@ package com.kcrud.data.models.employment
 
 import com.kcrud.data.models.shared.Period
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Serializable
 
 /**
- * This class represents the request to create an employment.
+ * Represents the request to create/update an employment.
  *
  * @property period The employment's period.
  * @property probationEndDate The employment's probation end date.
  */
-data class EmploymentRequest(
+@Serializable
+data class EmploymentInput(
     val period: Period,
     val probationEndDate: LocalDate? = null,
 ) {

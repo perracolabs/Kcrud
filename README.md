@@ -10,7 +10,7 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 * [Rate limit](https://ktor.io/docs/rate-limit.html) examples.
 * [JWT](https://ktor.io/docs/jwt.html) authentication for both REST and GraphQL.
 * [Basic](https://ktor.io/docs/basic.html) authentication example.
-* [Kotlin JSON](https://ktor.io/docs/serialization.html) serialization with Jackson.
+* [JSON](https://ktor.io/docs/serialization.html) serialization with [Kotlinx](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) embeddable databases, both in-memory and file-based.
 * [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing.
@@ -52,22 +52,6 @@ http://localhost:8080/auth/token/refresh
 2. Add a new key-value pair:
    - Key: `Authorization`
    - Value: `Bearer <The-token-with-no-quotes>`
-
----
-
-### About Entities:
-
-The application defined Entities ```Employee``` and ```Contact```, function both as requests and responses.
-Jackson's JSON annotations control the fields permissible in requests, ignoring any input value that is annotated as readonly.
-This approach simplifies the DTO structure for entities where the distinction between request and response data is minimal.
-
-The ```Employment``` entity on the other hand demonstrates a distinct pattern for requests and responses:
-
-* ```EmploymentRequest``` - for creating new employment records.
-* ```EmploymentResponse``` - for outputting employment data.
-
-This separation provides clearer API endpoints, tailored validation in the request, and precise control
-over the data exposed in the response, showcasing an alternative and effective way to manage DTOs in RESTful services.
 
 ---
 

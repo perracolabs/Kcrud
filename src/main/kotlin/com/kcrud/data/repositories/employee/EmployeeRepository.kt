@@ -8,7 +8,8 @@ package com.kcrud.data.repositories.employee
 
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
-import com.kcrud.data.models.Employee
+import com.kcrud.data.models.employee.EmployeeInput
+import com.kcrud.data.models.employee.Employee
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -47,17 +48,15 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun create(employee: Employee): Employee {
+    override fun create(employee: EmployeeInput): Employee {
         return transaction {
             val newContactId = ContactTable.insert { contactRow ->
                 contactRow[email] = employee.contact.email.trim()
                 contactRow[phone] = employee.contact.phone.trim()
             } get ContactTable.id
 
-            employee.contact.id = newContactId
-
             val newEmployeeId = EmployeeTable.insert { employeeRow ->
-                employeeModelToTable(employee = employee, target = employeeRow)
+                employeeModelToTable(employee = employee, target = employeeRow, contactId=newContactId)
                 employeeRow[contactId] = newContactId
             } get EmployeeTable.id
 
@@ -65,12 +64,11 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun update(employeeId: UUID, employee: Employee): Employee? {
+    override fun update(employeeId: UUID, employee: EmployeeInput): Employee? {
         return transaction {
             // First, find the existing employee to get the contact id.
             val targetEmployee = findById(employeeId) ?: return@transaction null
-            val dbContactId = targetEmployee.contact.id!!
-            employee.contact.id = dbContactId
+            val dbContactId = targetEmployee.contact.id
 
             // Update the Contacts table.
             ContactTable.update(where = { ContactTable.id eq dbContactId }) { contactRow ->
@@ -80,7 +78,7 @@ class EmployeeRepository : IEmployeeRepository {
 
             // Update the Employees table.
             EmployeeTable.update(where = { EmployeeTable.id eq employeeId }) { employeeRow ->
-                employeeModelToTable(employee = employee, target = employeeRow)
+                employeeModelToTable(employee = employee, target = employeeRow, contactId = dbContactId)
             }
 
             findById(employeeId)
@@ -100,14 +98,14 @@ class EmployeeRepository : IEmployeeRepository {
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [Employee] model instance.
+     * Populates an SQL [UpdateBuilder] with data from an [EmployeeInput] model instance.
      */
-    private fun employeeModelToTable(employee: Employee, target: UpdateBuilder<Int>) {
+    private fun employeeModelToTable(employee: EmployeeInput, target: UpdateBuilder<Int>, contactId: UUID) {
         target.apply {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()
             this[EmployeeTable.dob] = employee.dob
-            this[EmployeeTable.contactId] = employee.contact.id!!
+            this[EmployeeTable.contactId] = contactId
         }
     }
 }

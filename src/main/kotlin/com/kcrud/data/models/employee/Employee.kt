@@ -4,28 +4,33 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models
+package com.kcrud.data.models.employee
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.kcrud.data.database.tables.EmployeeTable
+import com.kcrud.data.models.contact.Contact
 import com.kcrud.utils.AgeDelegate
+import com.kcrud.utils.SUUID
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import java.util.*
 
+/**
+ * Represents the model for an employee.
+ *
+ * @property id The employee's id.
+ * @property firstName The employee's first name.
+ * @property lastName The employee's last name.
+ * @property dob The employee's date of birth.
+ * @property contact The employee's contact details.
+ */
+@Serializable
 data class Employee(
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    val id: UUID? = null,
+    val id: SUUID,
     val firstName: String,
     val lastName: String,
     val dob: LocalDate,
     val contact: Contact
 ) {
-    init {
-        require(firstName.isNotBlank()) { "First name can't be empty." }
-        require(lastName.isNotBlank()) { "Last name can't be empty." }
-    }
-
     // To serialize default values 'encodeDefaults' in the json configuration must be set to True.
     val fullName: String = "$firstName $lastName"
 

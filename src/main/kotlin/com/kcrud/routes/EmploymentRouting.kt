@@ -6,7 +6,7 @@
 
 package com.kcrud.routes
 
-import com.kcrud.data.models.employment.EmploymentRequest
+import com.kcrud.data.models.employment.EmploymentInput
 import com.kcrud.services.EmploymentService
 import com.kcrud.utils.SettingsProvider
 import com.kcrud.utils.toUUIDOrNull
@@ -67,7 +67,7 @@ class EmploymentRouting(private val routingNode: Route) {
                 val employeeId = call.parameters[EmployeeRouting.EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
 
                 employeeId?.let {
-                    val employment = call.receive<EmploymentRequest>()
+                    val employment = call.receive<EmploymentInput>()
                     val newEmployment = service.create(employeeId, employment)
                     call.respond(HttpStatusCode.Created, newEmployment)
                 } ?: call.respond(HttpStatusCode.NotFound, "Employee not found.")
@@ -107,7 +107,7 @@ class EmploymentRouting(private val routingNode: Route) {
 
                     call.parameters[EMPLOYMENT_PATH_PARAMETER]?.toUUIDOrNull()?.let { employmentId ->
 
-                        val updatedEmployment = call.receive<EmploymentRequest>().run {
+                        val updatedEmployment = call.receive<EmploymentInput>().run {
                             service.update(employeeId = employeeId, employmentId = employmentId, employment = this)
                         }
 

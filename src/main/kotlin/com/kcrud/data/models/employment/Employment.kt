@@ -7,29 +7,31 @@
 package com.kcrud.data.models.employment
 
 import com.kcrud.data.database.tables.EmploymentTable
-import com.kcrud.data.models.Employee
+import com.kcrud.data.models.employee.Employee
 import com.kcrud.data.models.shared.Period
+import com.kcrud.utils.SUUID
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import java.util.*
 
 /**
- * This class represents the response model for an employment.
+ * Represents the model for an employment.
  *
  * @property id The employment's id.
  * @property period The employment's period.
  * @property probationEndDate The employment's probation end date.
  * @property employee The employment's employee.
  */
-data class EmploymentResponse(
-    val id: UUID,
+@Serializable
+data class Employment(
+    val id: SUUID,
     val period: Period,
     val probationEndDate: LocalDate? = null,
     val employee: Employee
 ) {
     companion object {
-        fun fromTableRow(row: ResultRow): EmploymentResponse {
-            return EmploymentResponse(
+        fun fromTableRow(row: ResultRow): Employment {
+            return Employment(
                 id = row[EmploymentTable.id],
                 period = Period.fromTableRow(row = row, table = EmploymentTable),
                 probationEndDate = row[EmploymentTable.probationEndDate],

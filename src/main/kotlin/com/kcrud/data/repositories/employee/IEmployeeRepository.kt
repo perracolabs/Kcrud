@@ -6,7 +6,8 @@
 
 package com.kcrud.data.repositories.employee
 
-import com.kcrud.data.models.Employee
+import com.kcrud.data.models.employee.EmployeeInput
+import com.kcrud.data.models.employee.Employee
 import java.util.*
 
 interface IEmployeeRepository {
@@ -29,7 +30,7 @@ interface IEmployeeRepository {
      * @param employee The employee to be created.
      * @return The created employee model with generated ID.
      */
-    fun create(employee: Employee): Employee
+    fun create(employee: EmployeeInput): Employee
 
     /**
      * Updates an employee's details using the provided ID and employee model.
@@ -37,7 +38,7 @@ interface IEmployeeRepository {
      * @param employee The new details for the employee.
      * @return The updated employee model if the update was successful, null otherwise.
      */
-    fun update(employeeId: UUID, employee: Employee): Employee?
+    fun update(employeeId: UUID, employee: EmployeeInput): Employee?
 
     /**
      * Deletes an employee using the provided ID.

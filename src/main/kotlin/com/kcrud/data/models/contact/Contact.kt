@@ -4,24 +4,26 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models
+package com.kcrud.data.models.contact
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.kcrud.data.database.tables.ContactTable
+import com.kcrud.utils.SUUID
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import java.util.*
 
+/**
+ * Represents the model for an employee's contact details.
+ *
+ * @property id The contact's id.
+ * @property email The contact's email.
+ * @property phone The contact's phone.
+ */
+@Serializable
 data class Contact(
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var id: UUID? = null,
+    var id: SUUID,
     val email: String,
     val phone: String
 ) {
-    init {
-        require(email.isNotBlank()) { "Email can't be empty." }
-        require(phone.isNotBlank()) { "Phone can't be empty." }
-    }
-
     companion object {
         fun fromTableRow(row: ResultRow): Contact {
             return Contact(

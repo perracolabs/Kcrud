@@ -6,7 +6,7 @@
 
 package com.kcrud.routes
 
-import com.kcrud.data.models.Employee
+import com.kcrud.data.models.employee.EmployeeInput
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.SettingsProvider
 import com.kcrud.utils.toUUIDOrNull
@@ -65,7 +65,7 @@ class EmployeeRouting(private val routingNode: Route) {
     private fun create(node: Route, service: EmployeeService) {
         node.apply {
             post {
-                val newEmployee = call.receive<Employee>()
+                val newEmployee = call.receive<EmployeeInput>()
                 val createdEmployee = service.create(newEmployee)
                 call.respond(HttpStatusCode.Created, createdEmployee)
             }
@@ -101,7 +101,7 @@ class EmployeeRouting(private val routingNode: Route) {
         node.apply {
             put {
                 val employeeId = call.parameters[EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
-                val updatedInfo = call.receive<Employee>()
+                val updatedInfo = call.receive<EmployeeInput>()
                 val updatedEmployee = employeeId?.let { service.update(it, updatedInfo) }
 
                 if (updatedEmployee != null) {
