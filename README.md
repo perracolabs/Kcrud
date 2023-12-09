@@ -16,12 +16,16 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 * [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing.
 * [UUID](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/utils/UuidUtils.kt) serialization / deserialization examples for both REST and GraphQL.
 
+---
+
 #### TODO:
 * Example using the [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) library.
 * Add database migrations example. 
 ---
 
 For convenience find in the project a *[Postman](https://www.postman.com/)* collection: **`kcrud.postman_collection`**.
+
+---
 
 ## Handling Security
 
@@ -53,7 +57,7 @@ http://localhost:8080/auth/token/refresh
 
 ### About Entities:
 
-The application defined Entities, function both as requests and responses.
+The application defined Entities ```Employee``` and ```Contact```, function both as requests and responses.
 Jackson's JSON annotations control the fields permissible in requests, ignoring any input value that is annotated as readonly.
 This approach simplifies the DTO structure for entities where the distinction between request and response data is minimal.
 
@@ -65,6 +69,7 @@ The ```Employment``` entity on the other hand demonstrates a distinct pattern fo
 This separation provides clearer API endpoints, tailored validation in the request, and precise control
 over the data exposed in the response, showcasing an alternative and effective way to manage DTOs in RESTful services.
 
+---
 
 ### **REST** endpoints:
 
