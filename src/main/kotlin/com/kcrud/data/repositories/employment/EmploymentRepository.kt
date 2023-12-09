@@ -19,16 +19,21 @@ import java.util.*
 class EmploymentRepository : IEmploymentRepository {
     override fun findById(employmentId: UUID): Employment? {
         return transaction {
-            EmploymentTable.select { EmploymentTable.id eq employmentId }.singleOrNull()?.let { resultRow ->
-                Employment.fromTableRow(row = resultRow)
-            }
+            (EmploymentTable innerJoin EmployeeTable innerJoin ContactTable)
+                .select {
+                    (EmploymentTable.id eq employmentId) and
+                            (EmployeeTable.id eq EmploymentTable.employeeId) and
+                            (EmployeeTable.contactId eq ContactTable.id)
+                }.singleOrNull()?.let { resultRow ->
+                    Employment.fromTableRow(row = resultRow)
+                }
         }
     }
 
     override fun findByEmployeeId(employeeId: UUID): List<Employment> {
         return transaction {
             (EmploymentTable innerJoin EmployeeTable innerJoin ContactTable)
-                .select { EmploymentTable.employeeId eq employeeId and (EmployeeTable.contactId eq ContactTable.id) }
+                .select { (EmploymentTable.employeeId eq employeeId) and (EmployeeTable.contactId eq ContactTable.id) }
                 .map { resultRow ->
                     Employment.fromTableRow(row = resultRow)
                 }
@@ -73,7 +78,7 @@ class EmploymentRepository : IEmploymentRepository {
             this[EmploymentTable.endDate] = employment.period.endDate
             this[EmploymentTable.comments] = employment.period.comments?.trim()
 
-           // PeriodColumns.fromPeriodModel(target = this, period = employment.period, columns = Employments.period)
+            // PeriodColumns.fromPeriodModel(target = this, period = employment.period, columns = Employments.period)
         }
     }
 }

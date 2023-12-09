@@ -6,18 +6,20 @@
 
 package com.kcrud.data.models
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.models.shared.Period
-import com.kcrud.utils.SUUID
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import java.util.*
 
-@Serializable
 data class Employment(
-    val id: SUUID? = null,
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    val id: UUID? = null,
     val period: Period,
-    val probationEndDate: LocalDate? = null
+    val probationEndDate: LocalDate? = null,
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    val employee: Employee? = null
 ) {
     init {
         probationEndDate?.let { date ->
@@ -30,7 +32,8 @@ data class Employment(
             return Employment(
                 id = row[EmploymentTable.id],
                 period = Period.fromTableRow(row = row, table = EmploymentTable),
-                probationEndDate = row[EmploymentTable.probationEndDate]
+                probationEndDate = row[EmploymentTable.probationEndDate],
+                employee = Employee.fromTableRow(row)
             )
         }
     }

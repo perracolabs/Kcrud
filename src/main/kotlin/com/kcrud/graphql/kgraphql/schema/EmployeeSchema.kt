@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.graphql
+package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.Employee
@@ -22,12 +22,12 @@ import com.kcrud.utils.toUUID
  * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
  * @param service The service used in mutation resolvers.
  */
-class GraphQLEmployeeSchema(private val schemaBuilder: SchemaBuilder, private val service: EmployeeService) {
+class EmployeeSchema(private val schemaBuilder: SchemaBuilder, private val service: EmployeeService) {
 
     /**
      * Configures query types specifically.
      */
-    fun configureQueryTypes(): GraphQLEmployeeSchema {
+    fun configureQueryTypes(): EmployeeSchema {
         schemaBuilder.apply {
             type<Employee> {
                 description = "Query type definition for employee."
@@ -40,7 +40,7 @@ class GraphQLEmployeeSchema(private val schemaBuilder: SchemaBuilder, private va
     /**
      * Configures query resolvers to fetch data.
      */
-    fun configureQueries(): GraphQLEmployeeSchema {
+    fun configureQueries(): EmployeeSchema {
         schemaBuilder.apply {
             query("employee") {
                 description = "Returns a single employee given its id."
@@ -58,7 +58,7 @@ class GraphQLEmployeeSchema(private val schemaBuilder: SchemaBuilder, private va
     /**
      * Configures input types for mutations.
      */
-    fun configureMutationInputs(): GraphQLEmployeeSchema {
+    fun configureMutationInputs(): EmployeeSchema {
         schemaBuilder.apply {
             inputType<Employee> {
                 name = "Input type definition for Employee."
@@ -71,7 +71,7 @@ class GraphQLEmployeeSchema(private val schemaBuilder: SchemaBuilder, private va
     /**
      * Configures mutation resolvers to modify data.
      */
-    fun configureMutations(): GraphQLEmployeeSchema {
+    fun configureMutations(): EmployeeSchema {
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."

@@ -6,14 +6,14 @@
 
 package com.kcrud.data.models
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.kcrud.data.database.tables.ContactTable
-import com.kcrud.utils.SUUID
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import java.util.*
 
-@Serializable
 data class Contact(
-    var id: SUUID? = null,
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    var id: UUID? = null,
     val email: String,
     val phone: String
 ) {

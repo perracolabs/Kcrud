@@ -7,7 +7,6 @@
 package com.kcrud.data.models.shared
 
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 
@@ -16,7 +15,6 @@ import org.jetbrains.exposed.sql.Table
  * to enable sharing of common period-related properties,
  * as Kotlin data classes do not support inheritance.
  */
-@Serializable
 data class Period(
     val isActive: Boolean,
     val startDate: LocalDate,

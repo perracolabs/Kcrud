@@ -5,17 +5,20 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 * Most common **REST** operations.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
 * [Netty](https://ktor.io/docs/engines.html) async web server.
-* [GraphQL](https://graphql.org/) queries and mutations.
+* [GraphQL](https://graphql.org/) queries and mutations using the [KGraphQL](https://github.com/aPureBase/KGraphQL) library.
 * [Koin](https://insert-koin.io/) dependency injection.
 * [Rate limit](https://ktor.io/docs/rate-limit.html) examples.
 * [JWT](https://ktor.io/docs/jwt.html) authentication for both REST and GraphQL.
 * [Basic](https://ktor.io/docs/basic.html) authentication example.
-* [Kotlin JSON](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md) serialization / deserialization
+* [Kotlin JSON](https://ktor.io/docs/serialization.html) serialization with Jackson.
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) embeddable databases, both in-memory and file-based.
 * [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing.
 * [UUID](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/utils/UuidUtils.kt) serialization / deserialization examples for both REST and GraphQL.
 
+#### TODO:
+* Example using the [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) library.
+* Add database migrations example. 
 ---
 
 For convenience find in the project a *[Postman](https://www.postman.com/)* collection: **`kcrud.postman_collection`**.

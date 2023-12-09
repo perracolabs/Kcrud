@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.graphql
+package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.utils.toUUID
@@ -22,12 +22,12 @@ import java.util.*
  *
  * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
  */
-class GraphQLCommonSchema(private val schemaBuilder: SchemaBuilder) {
+class CommonSchema(private val schemaBuilder: SchemaBuilder) {
 
     /**
      * Configures common types like enums and scalars that are used in both queries and mutations.
      */
-    fun configureCommonTypes(): GraphQLCommonSchema {
+    fun configureCommonTypes(): CommonSchema {
         schemaBuilder.apply {
             enum<DayOfWeek> {
                 description = "Day of week."
