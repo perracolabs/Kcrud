@@ -4,7 +4,7 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 ### Characteristics:
 * Most common **REST** operations.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
-* [Encryption](https://github.com/JetBrains/Exposed/tree/aff82167165d4e35481a74aaa9c4ede3139aedbf/exposed-crypt) at field level.
+* [Encryption](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/data/database/tables/ContactTable.kt) at field level.
 * [Netty](https://ktor.io/docs/engines.html) async web server.
 * [GraphQL](https://graphql.org/) queries and mutations using the [KGraphQL](https://github.com/aPureBase/KGraphQL) library.
 * [Koin](https://insert-koin.io/) dependency injection.
