@@ -8,6 +8,8 @@ package com.kcrud.settings
 
 import io.ktor.server.config.*
 import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.KParameter
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
 
@@ -23,9 +25,9 @@ object SettingsParser {
      * @return A new AppSettings object populated with the parsed configuration data.
      */
     fun parse(config: ApplicationConfig): AppSettings {
-        val global = instantiateConfig(config, "ktor", AppSettings.Global::class)
-        val deployment = instantiateConfig(config, "ktor.deployment", AppSettings.Deployment::class)
-        val security = instantiateConfig(config, "ktor.security", AppSettings.Security::class)
+        val global = instantiateConfig(config = config, keyPath = "ktor", kClass = AppSettings.Global::class)
+        val deployment = instantiateConfig(config = config, keyPath = "ktor.deployment", kClass = AppSettings.Deployment::class)
+        val security = instantiateConfig(config = config, keyPath = "ktor.security", kClass = AppSettings.Security::class)
         return AppSettings(global = global, deployment = deployment, security = security)
     }
 
@@ -34,8 +36,7 @@ object SettingsParser {
      * Supports both simple and nested data class types. For each constructor parameter,
      * fetches the corresponding configuration value from the specified key path.
      *
-     * Data class constructor parameters and setting key names must match exactly.
-     * Same for nested data classes, the nested settings and data class names must also match exactly.
+     * Data classes constructor parameters and setting key names must match exactly.
      *
      * @param config The application configuration object.
      * @param keyPath The base path in the configuration for fetching values.
@@ -44,13 +45,13 @@ object SettingsParser {
      * @throws IllegalArgumentException If a required configuration key is missing or if there is a type mismatch.
      */
     private fun <T : Any> instantiateConfig(config: ApplicationConfig, keyPath: String, kClass: KClass<T>): T {
-        val constructor = kClass.primaryConstructor!!
+        val constructor: KFunction<T> = kClass.primaryConstructor!!
 
-        val arguments = constructor.parameters.associateWith { parameter ->
+        val arguments: Map<KParameter, Any?> = constructor.parameters.associateWith { parameter ->
             // Extracts the Kotlin Class (KClass) from the parameter's type using jvmErasure,
             // which resolves the Kotlin type to its JVM representation. This is crucial for
             // determining the correct class at runtime, particularly for handling complex data structures.
-            val parameterType = parameter.type.jvmErasure
+            val parameterType: KClass<*> = parameter.type.jvmErasure
 
             // Constructs the specific key path for this parameter by appending the parameter's name
             // to the base key path, used to locate the corresponding value in the configuration
@@ -59,10 +60,10 @@ object SettingsParser {
 
             if (parameterType.isData) {
                 // For nested data classes.
-                instantiateConfig(config, parameterKeyPath, parameterType)
+                instantiateConfig(config = config, keyPath = parameterKeyPath, kClass = parameterType)
             } else {
                 // For simple types convert the value to the correct type.
-                convertToType(config, parameterKeyPath, parameterType)
+                convertToType(config = config, keyPath = parameterKeyPath, type = parameterType)
             }
         }
 
@@ -84,11 +85,11 @@ object SettingsParser {
     private fun convertToType(config: ApplicationConfig, keyPath: String, type: KClass<*>): Any? {
         if (type.isData) {
             // Recurse for nested data classes, like Security.SecretKey, etc.
-            return instantiateConfig(config, keyPath, type)
+            return instantiateConfig(config = config, keyPath = keyPath, kClass = type)
         }
 
         // Resolve simple types.
-        val stringValue = config.propertyOrNull(keyPath)?.getString() ?: return null
+        val stringValue: String = config.propertyOrNull(path = keyPath)?.getString() ?: return null
         return when (type) {
             String::class -> stringValue
             Int::class -> stringValue.toIntOrNull()
