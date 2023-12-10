@@ -6,8 +6,8 @@
 
 package com.kcrud.data.repositories.employment
 
-import com.kcrud.data.models.employment.EmploymentInput
 import com.kcrud.data.models.employment.Employment
+import com.kcrud.data.models.employment.EmploymentInput
 import java.util.*
 
 interface IEmploymentRepository {

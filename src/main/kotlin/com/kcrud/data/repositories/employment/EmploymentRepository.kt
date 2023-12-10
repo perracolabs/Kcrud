@@ -9,8 +9,8 @@ package com.kcrud.data.repositories.employment
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
-import com.kcrud.data.models.employment.EmploymentInput
 import com.kcrud.data.models.employment.Employment
+import com.kcrud.data.models.employment.EmploymentInput
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder

@@ -9,6 +9,7 @@ package com.kcrud.data.database.tables
 import com.kcrud.data.models.employee.Honorific
 import com.kcrud.data.models.employee.MaritalStatus
 import com.kcrud.data.utils.enumById
+import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
@@ -27,7 +28,7 @@ internal object EmployeeTable : Table(name = "employee") {
     // Example of an enum that is stored as an integer in the database.
     val honorific = enumById(name = "honorific", fromId = Honorific::fromId)
 
-    val contactId = uuid(name = "contact_id") references ContactTable.id
+    val contactId = uuid(name = "contact_id").references(ref = ContactTable.id, onDelete = ReferenceOption.CASCADE)
 
     override val primaryKey = PrimaryKey(firstColumn = id, name = "PK_Employee_ID")
 }

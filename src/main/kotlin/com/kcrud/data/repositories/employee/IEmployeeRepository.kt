@@ -6,8 +6,8 @@
 
 package com.kcrud.data.repositories.employee
 
-import com.kcrud.data.models.employee.EmployeeInput
 import com.kcrud.data.models.employee.Employee
+import com.kcrud.data.models.employee.EmployeeInput
 import java.util.*
 
 interface IEmployeeRepository {

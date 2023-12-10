@@ -7,8 +7,8 @@
 package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.models.employee.EmployeeInput
 import com.kcrud.data.models.employee.Employee
+import com.kcrud.data.models.employee.EmployeeInput
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.toUUID
 
