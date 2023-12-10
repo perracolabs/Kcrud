@@ -22,7 +22,7 @@ class EmployeeRepository : IEmployeeRepository {
         return transaction {
             val query = EmployeeTable.join(
                 otherTable = ContactTable,
-                joinType = JoinType.INNER,
+                joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.contactId,
                 otherColumn = ContactTable.id
             ).select { EmployeeTable.id eq employeeId }
@@ -37,7 +37,7 @@ class EmployeeRepository : IEmployeeRepository {
         return transaction {
             val query = EmployeeTable.join(
                 otherTable = ContactTable,
-                joinType = JoinType.INNER,
+                joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.contactId,
                 otherColumn = ContactTable.id
             ).selectAll()
@@ -50,10 +50,12 @@ class EmployeeRepository : IEmployeeRepository {
 
     override fun create(employee: EmployeeInput): Employee {
         return transaction {
-            val newContactId = ContactTable.insert { contactRow ->
-                contactRow[email] = employee.contact.email.trim()
-                contactRow[phone] = employee.contact.phone.trim()
-            } get ContactTable.id
+            val newContactId: UUID? = employee.contact?.let {
+                ContactTable.insert { contactRow ->
+                    contactRow[email] = employee.contact.email.trim()
+                    contactRow[phone] = employee.contact.phone.trim()
+                } get ContactTable.id
+            }
 
             val newEmployeeId = EmployeeTable.insert { employeeRow ->
                 employeeModelToTable(employee = employee, target = employeeRow, contactId = newContactId)
@@ -68,12 +70,14 @@ class EmployeeRepository : IEmployeeRepository {
         return transaction {
             // First, find the existing employee to get the contact id.
             val targetEmployee = findById(employeeId) ?: return@transaction null
-            val dbContactId = targetEmployee.contact.id
 
             // Update the Contacts table.
-            ContactTable.update(where = { ContactTable.id eq dbContactId }) { contactRow ->
-                contactRow[email] = employee.contact.email.trim()
-                contactRow[phone] = employee.contact.phone.trim()
+            val dbContactId: UUID? = targetEmployee.contact?.let { contact ->
+                ContactTable.update(where = { ContactTable.id eq contact.id }) { contactRow ->
+                    contactRow[email] = contact.email.trim()
+                    contactRow[phone] = contact.phone.trim()
+                }
+                contact.id
             }
 
             // Update the Employees table.
@@ -100,7 +104,7 @@ class EmployeeRepository : IEmployeeRepository {
     /**
      * Populates an SQL [UpdateBuilder] with data from an [EmployeeInput] model instance.
      */
-    private fun employeeModelToTable(employee: EmployeeInput, target: UpdateBuilder<Int>, contactId: UUID) {
+    private fun employeeModelToTable(employee: EmployeeInput, target: UpdateBuilder<Int>, contactId: UUID?) {
         target.apply {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()

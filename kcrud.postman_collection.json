@@ -51,6 +51,44 @@
 							"response": []
 						},
 						{
+							"name": "create (no contact)",
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTY5ODEzMTQyNn0.2AXd4AVrTRmpUcmPfNwssKJYuI6mJaKTTQEYsnRIEvU",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Saco\",\r\n    \"lastName\": \"Paco\",\r\n    \"dob\": \"1988-01-01\",\r\n    \"maritalStatus\": \"SINGLE\",\r\n    \"honorific\": \"MR\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "update by employee id",
 							"request": {
 								"method": "PUT",

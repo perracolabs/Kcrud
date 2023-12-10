@@ -32,7 +32,7 @@ data class Employee(
     val dob: LocalDate,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
-    val contact: Contact
+    val contact: Contact? = null
 ) {
     // To serialize default values 'encodeDefaults' in the json configuration must be set to True.
     val fullName: String = "$firstName $lastName"
@@ -54,7 +54,7 @@ data class Employee(
                 dob = row[EmployeeTable.dob],
                 maritalStatus = row[EmployeeTable.maritalStatus],
                 honorific = row[EmployeeTable.honorific],
-                contact = Contact.fromTableRow(row)
+                contact = row[EmployeeTable.contactId]?.let { Contact.fromTableRow(row) }
             )
         }
     }

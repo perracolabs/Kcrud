@@ -26,7 +26,7 @@ data class EmployeeInput(
     val dob: LocalDate,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
-    val contact: ContactInput
+    val contact: ContactInput? = null
 ) {
     init {
         require(firstName.isNotBlank()) { "First name can't be empty." }

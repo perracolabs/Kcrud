@@ -28,7 +28,7 @@ internal object EmployeeTable : Table(name = "employee") {
     // Example of an enum that is stored as an integer in the database.
     val honorific = enumById(name = "honorific", fromId = Honorific::fromId)
 
-    val contactId = uuid(name = "contact_id").references(ref = ContactTable.id, onDelete = ReferenceOption.CASCADE)
+    val contactId = uuid(name = "contact_id").references(ref = ContactTable.id, onDelete = ReferenceOption.CASCADE).nullable()
 
     override val primaryKey = PrimaryKey(firstColumn = id, name = "PK_Employee_ID")
 }
