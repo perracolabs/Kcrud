@@ -17,57 +17,45 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 /**
- * Access-token related endpoint configurations.
+ * Access-token endpoints.
  *
  * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
  *
  * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
  */
-class AccessTokenRouting(private val routingNode: Route) {
+fun Route.accessTokenRouting() {
 
-    fun configure() {
-        routingNode.route(AUTH_TOKEN_PATH) {
+    val authTokenOath = "auth/token"
+    val keyToken = "token"
 
-            // Example for new token generation rate limit.
-            rateLimit(RateLimitName(RateLimitSetup.Scope.NEW_AUTH_TOKEN.key)) {
-                newTokenRoute(node = this)
-            }
+    route(authTokenOath) {
 
-            refreshTokenRoute(node = this)
-        }
-    }
-
-    /**
-     * Endpoint for initial token generation; requires Basic Authentication.
-     */
-    private fun newTokenRoute(node: Route) {
-        node.authenticate(SettingsProvider.get.basicAuth.providerName) {
-            post("create") {
-                val jwtToken = AuthenticationToken.generate()
-                call.respond(hashMapOf(KEY_TOKEN to jwtToken))
+        // Endpoint for initial token generation; requires Basic Authentication.
+        rateLimit(RateLimitName(RateLimitSetup.Scope.NEW_AUTH_TOKEN.key)) {
+            authenticate(SettingsProvider.get.basicAuth.providerName) {
+                post("create") {
+                    val jwtToken = AuthenticationToken.generate()
+                    call.respond(hashMapOf(keyToken to jwtToken))
+                }
             }
         }
-    }
 
-    /**
-     * Endpoint for token refresh.
-     * No Basic Authentication is required here, but an existing token's validity will be checked.
-     */
-    private fun refreshTokenRoute(node: Route) {
-        node.post("refresh") {
+        // Endpoint for token refresh.
+        // No Basic Authentication is required here, but an existing token's validity will be checked.
+        post("refresh") {
             val tokenState = AuthenticationToken.getState(call)
 
             when (tokenState) {
                 AuthenticationToken.TokenState.Valid -> {
                     // Token is still valid; return the same token to the client.
                     val jwtToken = AuthenticationToken.fromHeader(call)
-                    call.respond(hashMapOf(KEY_TOKEN to jwtToken))
+                    call.respond(hashMapOf(keyToken to jwtToken))
                 }
 
                 AuthenticationToken.TokenState.Expired -> {
                     // Token has expired; generate a new token and respond with it.
                     val jwtToken = AuthenticationToken.generate()
-                    call.respond(hashMapOf(KEY_TOKEN to jwtToken))
+                    call.respond(hashMapOf(keyToken to jwtToken))
                 }
 
                 AuthenticationToken.TokenState.Invalid -> {
@@ -76,10 +64,5 @@ class AccessTokenRouting(private val routingNode: Route) {
                 }
             }
         }
-    }
-
-    companion object {
-        private const val AUTH_TOKEN_PATH = "auth/token"
-        private const val KEY_TOKEN = "token"
     }
 }

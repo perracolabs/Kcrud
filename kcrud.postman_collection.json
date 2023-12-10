@@ -51,7 +51,7 @@
 							"response": []
 						},
 						{
-							"name": "update",
+							"name": "update by employee id",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -68,10 +68,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"Saco1\",\r\n    \"lastName\": \"Pago122\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"contact\": {\r\n        \"email\": \"1saco.pago@email.com\",\r\n        \"phone\": \"1123-456-7890\"\r\n    }\r\n}"
+									"raw": "{\r\n    \"firstName\": \"Saco1\",\r\n    \"lastName\": \"Pago122\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"contact\": {\r\n        \"email\": \"1saco.pago@email.com\",\r\n        \"phone\": \"1123-456-7\"\r\n    }\r\n}"
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/9db1b846-1158-4235-8e88-c7893cc64757",
+									"raw": "http://localhost:8080/v1/employees/8bfe99b8-c441-4018-a893-5372e47a3c75",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -80,14 +80,14 @@
 									"path": [
 										"v1",
 										"employees",
-										"9db1b846-1158-4235-8e88-c7893cc64757"
+										"8bfe99b8-c441-4018-a893-5372e47a3c75"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "get",
+							"name": "get  by employee id",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -108,7 +108,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/5d1411b9-7bcc-4d34-b58c-312dad658c6b",
+									"raw": "http://localhost:8080/v1/employees/8bfe99b8-c441-4018-a893-5372e47a3c75",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -117,7 +117,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"5d1411b9-7bcc-4d34-b58c-312dad658c6b"
+										"8bfe99b8-c441-4018-a893-5372e47a3c75"
 									]
 								}
 							},
@@ -187,7 +187,7 @@
 					"name": "Employment",
 					"item": [
 						{
-							"name": "create",
+							"name": "create by employee id",
 							"protocolProfileBehavior": {
 								"strictSSL": false
 							},
@@ -210,7 +210,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/5d1411b9-7bcc-4d34-b58c-312dad658c6b/employments",
+									"raw": "http://localhost:8080/v1/employees/0e0fbc4c-daac-4f22-9920-e3458072f07b/employments",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -219,7 +219,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"5d1411b9-7bcc-4d34-b58c-312dad658c6b",
+										"0e0fbc4c-daac-4f22-9920-e3458072f07b",
 										"employments"
 									]
 								}
@@ -227,7 +227,7 @@
 							"response": []
 						},
 						{
-							"name": "get",
+							"name": "get by employment id",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true,
 								"strictSSL": false
@@ -251,7 +251,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/5d1411b9-7bcc-4d34-b58c-312dad658c6b/employments/fb114530-b219-44b5-a091-95bd98b74857",
+									"raw": "http://localhost:8080/v1/employees/8bfe99b8-c441-4018-a893-5372e47a3c75/employments/ecfab1ce-4d2c-4ae2-aa18-ffe92d818c4b",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -260,16 +260,16 @@
 									"path": [
 										"v1",
 										"employees",
-										"5d1411b9-7bcc-4d34-b58c-312dad658c6b",
+										"8bfe99b8-c441-4018-a893-5372e47a3c75",
 										"employments",
-										"fb114530-b219-44b5-a091-95bd98b74857"
+										"ecfab1ce-4d2c-4ae2-aa18-ffe92d818c4b"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "get all",
+							"name": "get all by employee id",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true,
 								"strictSSL": false
@@ -293,7 +293,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/5d1411b9-7bcc-4d34-b58c-312dad658c6b/employments",
+									"raw": "http://localhost:8080/v1/employees/8bfe99b8-c441-4018-a893-5372e47a3c75/employments",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -302,7 +302,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"5d1411b9-7bcc-4d34-b58c-312dad658c6b",
+										"8bfe99b8-c441-4018-a893-5372e47a3c75",
 										"employments"
 									]
 								}
@@ -310,7 +310,7 @@
 							"response": []
 						},
 						{
-							"name": "delete",
+							"name": "delete by employment id",
 							"protocolProfileBehavior": {
 								"strictSSL": false
 							},
@@ -333,7 +333,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/355b24cc-0684-483c-98a7-34a58b74b06c/employments/",
+									"raw": "http://localhost:8080/v1/employees/5d22daa6-68a7-4775-a535-784ff1adc931/employments/ecfab1ce-4d2c-4ae2-aa18-ffe92d818c4b",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -342,9 +342,49 @@
 									"path": [
 										"v1",
 										"employees",
-										"355b24cc-0684-483c-98a7-34a58b74b06c",
+										"5d22daa6-68a7-4775-a535-784ff1adc931",
 										"employments",
-										""
+										"ecfab1ce-4d2c-4ae2-aa18-ffe92d818c4b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete all by employee id",
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTY5ODEzMTQyNn0.2AXd4AVrTRmpUcmPfNwssKJYuI6mJaKTTQEYsnRIEvU",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"period\": {\r\n        \"isActive\": true,\r\n        \"startDate\": \"2023-01-01\",\r\n        \"endDate\": null,\r\n        \"comments\": null\r\n    },\r\n    \"probationEndDate\": \"2023-09-30\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees/5d22daa6-68a7-4775-a535-784ff1adc931/employments",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees",
+										"5d22daa6-68a7-4775-a535-784ff1adc931",
+										"employments"
 									]
 								}
 							},

@@ -6,14 +6,17 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.routes.AccessTokenRouting
-import com.kcrud.routes.EmployeeRouting
-import com.kcrud.routes.EmploymentRouting
-import com.kcrud.routes.RootRouting
+import com.kcrud.routes.accessTokenRouting
+import com.kcrud.routes.employeeRouting
+import com.kcrud.routes.employmentRouting
+import com.kcrud.routes.rootRouting
 import com.kcrud.security.RateLimitSetup
 import io.ktor.server.application.*
+import io.ktor.server.plugins.openapi.*
 import io.ktor.server.plugins.ratelimit.*
+import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
+import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 
 /**
  * Initializes and sets up routing for the application.
@@ -27,11 +30,19 @@ fun Application.configureRouting() {
 
     routing {
         rateLimit(RateLimitName(RateLimitSetup.Scope.PUBLIC_API.key)) {
-            RootRouting(routingNode = this).configure()
-            EmployeeRouting(routingNode = this).configure()
-            EmploymentRouting(routingNode = this).configure()
+            rootRouting()
+            employeeRouting()
+            employmentRouting()
         }
 
-        AccessTokenRouting(routingNode = this).configure()
+        accessTokenRouting()
+
+        // Swagger UI.
+        // URL: http://localhost:8080/swagger
+        // WIth JetBrains Ultimate Edition, the documentation can be auto-generated following the next steps:
+        // 1. Place the caret over the 'routing' instruction defined above at the start of this function.
+        // 2. Press Alt+Enter, and select 'Generate Swagger/OpenAPI Documentation'.
+        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml") { version = "4.15.5" }
+        openAPI(path = "openapi", swaggerFile = "openapi/documentation.yaml") { codegen = StaticHtmlCodegen() }
     }
 }

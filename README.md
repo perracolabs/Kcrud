@@ -14,6 +14,8 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) embeddable databases, both in-memory and file-based.
 * [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing.
+* [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger) generation.
+* [Routing](https://ktor.io/docs/routing-in-ktor.html) organization examples.
 * [UUID](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/utils/UuidUtils.kt) serialization / deserialization examples for both REST and GraphQL.
 
 ---

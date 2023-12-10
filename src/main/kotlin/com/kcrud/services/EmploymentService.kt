@@ -61,4 +61,13 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
     fun delete(employmentId: UUID): Int {
         return repository.delete(employmentId)
     }
+
+    /**
+     * Deletes all an employments for the given employee ID.
+     * @param employeeId The ID of the employee to delete all its employments.
+     * @return The number of deleted records.
+     */
+    fun deleteAll(employeeId: UUID): Int {
+        return repository.deleteAll(employeeId)
+    }
 }

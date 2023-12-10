@@ -109,6 +109,18 @@ dependencies {
     // https://github.com/ExpediaGroup/graphql-kotlin/tree/master/servers/graphql-kotlin-ktor-server
     implementation("com.expediagroup:graphql-kotlin-ktor-server:7.0.2")
 
+    // SwaggerUI.
+    // https://ktor.io/docs/swagger-ui.html#configure-swagger
+    // https://github.com/swagger-api/swagger-codegen-generators
+    implementation("io.ktor:ktor-server-swagger:$ktorVersion")
+    implementation("io.ktor:ktor-server-openapi:$ktorVersion")
+    implementation("io.ktor:ktor-server-swagger-jvm:$ktorVersion")
+    implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.45")
+
+    // Type safe routing.
+    // https://ktor.io/docs/type-safe-routing.html
+    implementation("io.ktor:ktor-server-resources:$ktorVersion")
+
     implementation("io.mockk:mockk:1.13.8")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")

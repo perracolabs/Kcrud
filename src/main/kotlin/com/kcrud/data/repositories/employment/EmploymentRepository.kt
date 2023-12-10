@@ -67,6 +67,12 @@ class EmploymentRepository : IEmploymentRepository {
         }
     }
 
+    override fun deleteAll(employeeId: UUID): Int {
+        return transaction {
+            EmploymentTable.deleteWhere { EmploymentTable.employeeId eq employeeId }
+        }
+    }
+
     /**
      * Populates an SQL [UpdateBuilder] with data from an [EmploymentInput] model instance.
      */

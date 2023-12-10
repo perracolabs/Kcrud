@@ -44,3 +44,8 @@ bin/
 ### Custom ###
 /.database/
 /.idea/
+
+### Swagger ###
+/docs/
+/docs/.swagger-codegen
+

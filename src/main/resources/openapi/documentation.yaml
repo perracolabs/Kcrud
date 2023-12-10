@@ -1,0 +1,476 @@
+openapi: "3.0.3"
+info:
+  title: "Kcrud API"
+  description: "Kcrud API"
+  version: "1.0.0"
+servers:
+- url: "https://Kcrud"
+paths:
+  /:
+    delete:
+      description: "Delete All"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      description: "Use the login form to handle authentication."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1_? super HTML"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+    post:
+      description: "Create"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/EmployeeInput"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Employee"
+  /{employee_id}:
+    delete:
+      description: "Delete by employee ID"
+      parameters:
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      description: "Find by employee ID"
+      parameters:
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Employee"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Employee not found."
+    put:
+      description: "Update by employee ID"
+      parameters:
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/EmployeeInput"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Employee"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Employee not found."
+  /auth/token/create:
+    post:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HashMap_String"
+  /auth/token/refresh:
+    post:
+      description: "Endpoint for token refresh. <br> No Basic Authentication is required\
+        \ here, but an existing token's validity will be checked."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HashMap_String"
+        "401":
+          description: "Unauthorized <br> Token is invalid; respond with an Unauthorized\
+            \ status."
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid token."
+  /login:
+    post:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Authentication failed"
+                Example#2:
+                  value: "Authentication successful"
+  /v1/employees/{employee_id}/employments:
+    delete:
+      description: ""
+      parameters:
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid employeeId ID."
+    get:
+      description: ""
+      parameters:
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Employment"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Employee not found."
+    post:
+      description: ""
+      parameters:
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/EmploymentInput"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Employment"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Employee not found."
+  /v1/employees/{employee_id}/employments/{employment_id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "employment_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid employment ID."
+    get:
+      description: ""
+      parameters:
+      - name: "employment_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Function1_? super Employment"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid employment ID argument."
+    put:
+      description: ""
+      parameters:
+      - name: "employee_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      - name: "employment_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/EmploymentInput"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Function1_? super Employment"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid employee ID argument."
+                Example#2:
+                  value: "Invalid employment ID argument."
+components:
+  schemas:
+    Function1:
+      type: "object"
+      properties: {}
+    Function1_? super HTML:
+      type: "object"
+    LocalDate:
+      type: "object"
+      properties: {}
+    ContactInput:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        phone:
+          type: "string"
+      required:
+      - "email"
+      - "phone"
+    EmployeeInput:
+      type: "object"
+      properties:
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        dob:
+          $ref: "#/components/schemas/LocalDate"
+        contact:
+          $ref: "#/components/schemas/ContactInput"
+      required:
+      - "firstName"
+      - "lastName"
+      - "dob"
+      - "contact"
+    Contact:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        email:
+          type: "string"
+        phone:
+          type: "string"
+      required:
+      - "id"
+      - "email"
+      - "phone"
+    Employee:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        dob:
+          $ref: "#/components/schemas/LocalDate"
+        contact:
+          $ref: "#/components/schemas/Contact"
+        fullName:
+          type: "string"
+        age:
+          type: "integer"
+          format: "int32"
+      required:
+      - "id"
+      - "firstName"
+      - "lastName"
+      - "dob"
+      - "contact"
+      - "fullName"
+    HashMap:
+      type: "object"
+      properties: {}
+    HashMap_String:
+      type: "string"
+    Period:
+      type: "object"
+      properties:
+        startDate:
+          $ref: "#/components/schemas/LocalDate"
+        endDate:
+          $ref: "#/components/schemas/LocalDate"
+        comments:
+          type: "string"
+      required:
+      - "startDate"
+    Employment:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        period:
+          $ref: "#/components/schemas/Period"
+        probationEndDate:
+          $ref: "#/components/schemas/LocalDate"
+        employee:
+          $ref: "#/components/schemas/Employee"
+      required:
+      - "id"
+      - "period"
+      - "employee"
+    EmploymentInput:
+      type: "object"
+      properties:
+        period:
+          $ref: "#/components/schemas/Period"
+        probationEndDate:
+          $ref: "#/components/schemas/LocalDate"
+      required:
+      - "period"
+    Function1_? super Employment:
+      type: "object"

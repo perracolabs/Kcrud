@@ -49,5 +49,12 @@ interface IEmploymentRepository {
      * @return The number of deleted records.
      */
     fun delete(employmentId: UUID): Int
+
+    /**
+     * Deletes all an employments for the given employee ID.
+     * @param employeeId The ID of the employee to delete all its employments.
+     * @return The number of deleted records.
+     */
+    fun deleteAll(employeeId: UUID): Int
 }
 
