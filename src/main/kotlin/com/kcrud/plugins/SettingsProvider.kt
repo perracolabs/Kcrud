@@ -6,7 +6,7 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.utils.SettingsProvider
+import com.kcrud.settings.SettingsProvider
 import io.ktor.server.application.*
 
 /**

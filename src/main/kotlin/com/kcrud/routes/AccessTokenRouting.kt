@@ -8,7 +8,7 @@ package com.kcrud.routes
 
 import com.kcrud.security.AuthenticationToken
 import com.kcrud.security.RateLimitSetup
-import com.kcrud.utils.SettingsProvider
+import com.kcrud.settings.SettingsProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -32,7 +32,7 @@ fun Route.accessTokenRouting() {
 
         // Endpoint for initial token generation; requires Basic Authentication.
         rateLimit(RateLimitName(RateLimitSetup.Scope.NEW_AUTH_TOKEN.key)) {
-            authenticate(SettingsProvider.get.basicAuth.providerName) {
+            authenticate(SettingsProvider.get.security.basicAuth.providerName) {
                 post("create") {
                     val jwtToken = AuthenticationToken.generate()
                     call.respond(hashMapOf(keyToken to jwtToken))

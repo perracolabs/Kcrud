@@ -6,15 +6,24 @@
 
 package com.kcrud.data.database.tables
 
+import com.kcrud.data.utils.EncryptionUtils
+import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Table
 
 /**
  * Database entity for employee contact details.
+ *
+ * Demonstrates how to encrypt data in the database.
+ *
+ * For encrypted fields, the lengths is larger than the actual length of the data,
+ * since the encrypted data will be larger than the original value.
  */
 internal object ContactTable : Table(name = "contact") {
+    private val encryptor = EncryptionUtils.getEncryptor()
+
     val id = uuid(name = "contact_id").autoGenerate()
-    val email = varchar(name = "email", length = 128)
-    val phone = varchar(name = "phone", length = 16)
+    val email = encryptedVarchar(name = "email", cipherTextLength = encryptor.maxColLength(64), encryptor = encryptor)
+    val phone = encryptedVarchar(name = "phone", cipherTextLength = encryptor.maxColLength(12), encryptor = encryptor)
 
     override val primaryKey = PrimaryKey(firstColumn = id, name = "PK_Contact_ID")
 }

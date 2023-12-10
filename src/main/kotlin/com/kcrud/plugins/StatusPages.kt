@@ -6,7 +6,7 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.utils.SettingsProvider
+import com.kcrud.settings.SettingsProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -27,7 +27,8 @@ fun Application.configureStatusPages() {
         status(HttpStatusCode.Unauthorized) { call: ApplicationCall, status: HttpStatusCode ->
             // Add WWW-Authenticate header to the response, indicating Basic Authentication is required.
             // This is specific to Basic Authentication, doesn't affect JWT.
-            call.response.header(name = HttpHeaders.WWWAuthenticate, value = "Basic realm=\"${appSettings.basicAuth.realm}\"")
+            val realm = appSettings.security.basicAuth.realm
+            call.response.header(name = HttpHeaders.WWWAuthenticate, value = "Basic realm=\"${realm}\"")
 
             // Respond with 401 Unauthorized status code.
             call.respond(status = HttpStatusCode.Unauthorized, message = "$status")

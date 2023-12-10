@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.utils
+package com.kcrud.data.utils
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
@@ -19,12 +19,11 @@ interface EnumWithId {
 }
 
 /**
- * Creates a column in an Exposed Table to store enum values by their integer IDs.
- *
- * This function simplifies the process of defining a column in an Exposed table
- * that corresponds to an enum type, where the enum values are stored in the database
- * as integers. It uses a custom enumeration column type in Exposed to map between
- * the enum values in Kotlin and their integer IDs in the database.
+ * Creates a column in an Exposed Table to store enum values by their integer IDs,
+ * simplifying the process of defining a column in an Exposed table that corresponds
+ * to an enum type, where the enum values are stored in the database as integers.
+ * It uses a custom enumeration column type in Exposed to map between the enum values
+ * in Kotlin and their integer IDs in the database.
  *
  * @param T The enum class type. This class must implement the EnumWithId interface.
  * @param name The name of the column in the database.

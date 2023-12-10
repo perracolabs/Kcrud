@@ -8,7 +8,7 @@ package com.kcrud.routes
 
 import com.kcrud.data.models.employment.EmploymentInput
 import com.kcrud.services.EmploymentService
-import com.kcrud.utils.SettingsProvider
+import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -36,7 +36,7 @@ fun Route.employmentRouting() {
             route("{${RoutingParams.EMPLOYEE_PATH_PARAMETER}}") {
                 route(RoutingParams.EMPLOYMENTS_ROUTE) {
 
-                    if (SettingsProvider.get.jwt.isEnabled) {
+                    if (SettingsProvider.get.security.jwt.isEnabled) {
                         authenticate {
                             setupEmploymentRoutes(service)
                         }

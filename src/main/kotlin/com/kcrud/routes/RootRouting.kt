@@ -6,7 +6,7 @@
 
 package com.kcrud.routes
 
-import com.kcrud.utils.SettingsProvider
+import com.kcrud.settings.SettingsProvider
 import com.kcrud.views.SimpleLogin
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -19,10 +19,10 @@ import io.ktor.server.routing.*
 fun Route.rootRouting() {
     val appSettings = SettingsProvider.get
 
-    if (appSettings.basicAuth.isEnabled) {
+    if (appSettings.security.basicAuth.isEnabled) {
 
         // Basic Authentication for the root endpoint.
-        if (appSettings.basicAuth.loginForm) {
+        if (appSettings.security.basicAuth.loginForm) {
 
             // Use the login form to handle authentication.
             get("/") { SimpleLogin().generateForm(call) }
@@ -30,7 +30,7 @@ fun Route.rootRouting() {
 
         } else {
             // Use built-in browser-based basic authentication.
-            authenticate(appSettings.basicAuth.providerName) {
+            authenticate(appSettings.security.basicAuth.providerName) {
                 get("/") { call.respondText("Authentication successful") }
             }
         }

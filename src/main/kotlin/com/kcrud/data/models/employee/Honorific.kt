@@ -6,7 +6,7 @@
 
 package com.kcrud.data.models.employee
 
-import com.kcrud.utils.EnumWithId
+import com.kcrud.data.utils.EnumWithId
 
 /**
  * Example in which each item has an id,

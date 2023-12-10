@@ -6,7 +6,7 @@
 
 package com.kcrud.views
 
-import com.kcrud.utils.SettingsProvider
+import com.kcrud.settings.SettingsProvider
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
@@ -62,8 +62,9 @@ class SimpleLogin {
         val parameters = call.receiveParameters()
         val username = parameters[KEY_USERNAME]
         val password = parameters[KEY_PASSWORD]
+        val localCredentials = appSettings.security.basicAuth.credentials
 
-        if (username == appSettings.basicAuth.username && password == appSettings.basicAuth.password) {
+        if (username == localCredentials.username && password == localCredentials.password) {
             call.respondText("Authentication successful")
         } else {
             call.respondText("Authentication failed")

@@ -81,6 +81,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-crypt:$exposedVersion")
 
     // Koin.
     // https://insert-koin.io/docs/quickstart/ktor
@@ -117,9 +118,6 @@ dependencies {
     implementation("io.ktor:ktor-server-swagger-jvm:$ktorVersion")
     implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.45")
 
-    // Type safe routing.
-    // https://ktor.io/docs/type-safe-routing.html
-    implementation("io.ktor:ktor-server-resources:$ktorVersion")
 
     implementation("io.mockk:mockk:1.13.8")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")

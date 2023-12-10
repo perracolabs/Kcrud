@@ -8,7 +8,7 @@ package com.kcrud.data.database.tables
 
 import com.kcrud.data.models.employee.Honorific
 import com.kcrud.data.models.employee.MaritalStatus
-import com.kcrud.utils.enumById
+import com.kcrud.data.utils.enumById
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 

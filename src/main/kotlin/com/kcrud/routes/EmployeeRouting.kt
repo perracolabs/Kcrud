@@ -8,7 +8,7 @@ package com.kcrud.routes
 
 import com.kcrud.data.models.employee.EmployeeInput
 import com.kcrud.services.EmployeeService
-import com.kcrud.utils.SettingsProvider
+import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -92,7 +92,7 @@ fun Route.employeeRouting() {
     route(RoutingParams.API_VERSION) {
         route(RoutingParams.EMPLOYEE_ROUTE) {
 
-            if (SettingsProvider.get.jwt.isEnabled) {
+            if (SettingsProvider.get.security.jwt.isEnabled) {
                 authenticate {
                     routeSetup()
                 }

@@ -4,6 +4,7 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 ### Characteristics:
 * Most common **REST** operations.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
+* [Encryption](https://github.com/JetBrains/Exposed/tree/aff82167165d4e35481a74aaa9c4ede3139aedbf/exposed-crypt) at field level.
 * [Netty](https://ktor.io/docs/engines.html) async web server.
 * [GraphQL](https://graphql.org/) queries and mutations using the [KGraphQL](https://github.com/aPureBase/KGraphQL) library.
 * [Koin](https://insert-koin.io/) dependency injection.
@@ -13,11 +14,10 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 * [JSON](https://ktor.io/docs/serialization.html) serialization with [Kotlinx](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) embeddable databases, both in-memory and file-based.
-* [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing.
+* [HCONF](https://ktor.io/docs/configuration-file.html) configuration example, including preload / parsing for strongly typed settings.
 * [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger) generation.
 * [Routing](https://ktor.io/docs/routing-in-ktor.html) organization examples.
 * [UUID](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/utils/UuidUtils.kt) serialization / deserialization examples for both REST and GraphQL.
-
 ---
 
 #### TODO:
