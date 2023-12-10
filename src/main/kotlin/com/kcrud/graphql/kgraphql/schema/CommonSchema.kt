@@ -7,6 +7,7 @@
 package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
+import com.kcrud.data.models.employee.Honorific
 import com.kcrud.data.models.employee.MaritalStatus
 import com.kcrud.utils.toUUID
 import kotlinx.datetime.LocalDate
@@ -38,6 +39,9 @@ class CommonSchema(private val schemaBuilder: SchemaBuilder) {
             }
             enum<MaritalStatus> {
                 description = "The employee's marital status."
+            }
+            enum<Honorific> {
+                description = "The employee's honorific title."
             }
             stringScalar<LocalDate> {
                 serialize = { date -> date.toString() }

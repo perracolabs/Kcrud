@@ -25,6 +25,7 @@ data class EmployeeInput(
     val lastName: String,
     val dob: LocalDate,
     val maritalStatus: MaritalStatus,
+    val honorific: Honorific,
     val contact: ContactInput
 ) {
     init {

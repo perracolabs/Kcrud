@@ -106,6 +106,7 @@ class EmployeeRepository : IEmployeeRepository {
             this[EmployeeTable.lastName] = employee.lastName.trim()
             this[EmployeeTable.dob] = employee.dob
             this[EmployeeTable.maritalStatus] = employee.maritalStatus
+            this[EmployeeTable.honorific] = employee.honorific
             this[EmployeeTable.contactId] = contactId
         }
     }

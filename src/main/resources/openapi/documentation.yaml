@@ -391,6 +391,15 @@ components:
           - "SINGLE"
           - "DIVORCED"
           - "UNKNOWN"
+        honorific:
+          type: "string"
+          enum:
+          - "MR"
+          - "MRS"
+          - "MS"
+          - "DR"
+          - "MISS"
+          - "UNKNOWN"
         contact:
           $ref: "#/components/schemas/ContactInput"
       required:
@@ -398,6 +407,7 @@ components:
       - "lastName"
       - "dob"
       - "maritalStatus"
+      - "honorific"
       - "contact"
     Contact:
       type: "object"
@@ -432,6 +442,15 @@ components:
           - "SINGLE"
           - "DIVORCED"
           - "UNKNOWN"
+        honorific:
+          type: "string"
+          enum:
+          - "MR"
+          - "MRS"
+          - "MS"
+          - "DR"
+          - "MISS"
+          - "UNKNOWN"
         contact:
           $ref: "#/components/schemas/Contact"
         fullName:
@@ -445,6 +464,7 @@ components:
       - "lastName"
       - "dob"
       - "maritalStatus"
+      - "honorific"
       - "contact"
       - "fullName"
     HashMap:

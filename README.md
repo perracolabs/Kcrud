@@ -116,7 +116,9 @@ query {
         firstName
         lastName
         fullName
-        dob 
+        dob
+        maritalStatus
+        honorific
         contact {
             id
             email
@@ -135,6 +137,8 @@ query {
         lastName
         fullName
         dob
+        maritalStatus
+        honorific
         contact {
             id
             email
@@ -179,6 +183,8 @@ mutation {
         lastName
         fullName
         dob
+        maritalStatus
+        honorific
         contact {
             id
             email
@@ -205,6 +211,8 @@ mutation {
         lastName
         fullName
         dob
+        maritalStatus
+        honorific
         contact {
             id
             email
