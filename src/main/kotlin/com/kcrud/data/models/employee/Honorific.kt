@@ -23,6 +23,6 @@ enum class Honorific(override val id: Int) : EnumWithId {
 
     companion object {
         private val map = Honorific.entries.associateBy(Honorific::id)
-        fun fromId(id: Int) = map[id]
+        fun fromId(id: Int): Honorific? = map[id]
     }
 }
