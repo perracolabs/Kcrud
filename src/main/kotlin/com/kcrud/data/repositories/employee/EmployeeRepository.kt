@@ -8,8 +8,8 @@ package com.kcrud.data.repositories.employee
 
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
-import com.kcrud.data.models.employee.EmployeeInput
 import com.kcrud.data.models.employee.Employee
+import com.kcrud.data.models.employee.EmployeeInput
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -56,7 +56,7 @@ class EmployeeRepository : IEmployeeRepository {
             } get ContactTable.id
 
             val newEmployeeId = EmployeeTable.insert { employeeRow ->
-                employeeModelToTable(employee = employee, target = employeeRow, contactId=newContactId)
+                employeeModelToTable(employee = employee, target = employeeRow, contactId = newContactId)
                 employeeRow[contactId] = newContactId
             } get EmployeeTable.id
 
@@ -105,6 +105,7 @@ class EmployeeRepository : IEmployeeRepository {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()
             this[EmployeeTable.dob] = employee.dob
+            this[EmployeeTable.maritalStatus] = employee.maritalStatus
             this[EmployeeTable.contactId] = contactId
         }
     }

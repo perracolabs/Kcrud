@@ -16,6 +16,7 @@ import kotlinx.serialization.Serializable
  * @property firstName The employee's first name.
  * @property lastName The employee's last name.
  * @property dob The employee's date of birth.
+ * @property maritalStatus The employee's marital status.
  * @property contact The employee's contact details.
  */
 @Serializable
@@ -23,6 +24,7 @@ data class EmployeeInput(
     val firstName: String,
     val lastName: String,
     val dob: LocalDate,
+    val maritalStatus: MaritalStatus,
     val contact: ContactInput
 ) {
     init {

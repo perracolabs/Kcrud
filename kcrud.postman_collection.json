@@ -28,7 +28,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"Saco\",\r\n    \"lastName\": \"Paco\",\r\n    \"dob\": \"1988-01-01\",\r\n    \"contact\": {\r\n        \"email\": \"saco.pago@email.com\",\r\n        \"phone\": \"123-456-7890\"\r\n    }\r\n}\r\n",
+									"raw": "{\r\n    \"firstName\": \"Saco\",\r\n    \"lastName\": \"Paco\",\r\n    \"dob\": \"1988-01-01\",\r\n    \"maritalStatus\": \"SINGLE\",\r\n    \"contact\": {\r\n        \"email\": \"saco.pago@email.com\",\r\n        \"phone\": \"123-456-7890\"\r\n    }\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -68,10 +68,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"Saco1\",\r\n    \"lastName\": \"Pago122\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"contact\": {\r\n        \"email\": \"1saco.pago@email.com\",\r\n        \"phone\": \"1123-456-7\"\r\n    }\r\n}"
+									"raw": "{\r\n    \"firstName\": \"Saco1\",\r\n    \"lastName\": \"Pago122\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"maritalStatus\": \"MARRIED\",\r\n    \"contact\": {\r\n        \"email\": \"1saco.pago@email.com\",\r\n        \"phone\": \"1123-456-7\"\r\n    }\r\n}"
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/8bfe99b8-c441-4018-a893-5372e47a3c75",
+									"raw": "http://localhost:8080/v1/employees/f634b40a-2d03-4388-b2fe-b54e75bfcd32",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -80,7 +80,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"8bfe99b8-c441-4018-a893-5372e47a3c75"
+										"f634b40a-2d03-4388-b2fe-b54e75bfcd32"
 									]
 								}
 							},
@@ -414,7 +414,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\r\n    employees {\r\n        id\r\n        firstName\r\n        lastName\r\n        fullName\r\n        dob \r\n        contact {\r\n            id\r\n            email\r\n            phone\r\n        }\r\n   }\r\n}",
+										"query": "query {\r\n    employees {\r\n        id\r\n        firstName\r\n        lastName\r\n        fullName\r\n        dob \r\n        contact {\r\n            id\r\n            email\r\n            phone\r\n        }\r\n        status\r\n   }\r\n}",
 										"variables": ""
 									}
 								},
@@ -451,7 +451,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\r\n    employments(employeeId: \"5d1411b9-7bcc-4d34-b58c-312dad658c6b\") {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob \r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+										"query": "query {\r\n    employments(employeeId: \"5d1411b9-7bcc-4d34-b58c-312dad658c6b\") {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},
@@ -483,7 +483,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation {\r\n    createEmployment(employeeId: \"5d22daa6-68a7-4775-a535-784ff1adc931\",\r\n                     employment: {\r\n                        probationEndDate: \"2023-04-01\",\r\n                        period: {\r\n                            isActive: true,\r\n                            startDate: \"2023-01-01\",\r\n                            endDate: null,\r\n                            comments: null\r\n                        }\r\n                    }\r\n    ) {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            fullName\r\n            contact {\r\n                email\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+										"query": "mutation {\r\n    createEmployment(employeeId: \"5d22daa6-68a7-4775-a535-784ff1adc931\",\r\n                     employment: {\r\n                        probationEndDate: \"2023-04-01\",\r\n                        period: {\r\n                            isActive: true,\r\n                            startDate: \"2023-01-01\",\r\n                            endDate: null,\r\n                            comments: null\r\n                        }\r\n                    }\r\n    ) {\r\n        id\r\n        probationEndDate\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            fullName\r\n            maritalStatus\r\n            contact {\r\n                email\r\n            }\r\n        }\r\n    }\r\n}\r\n",
 										"variables": ""
 									}
 								},

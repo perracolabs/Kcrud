@@ -384,12 +384,20 @@ components:
           type: "string"
         dob:
           $ref: "#/components/schemas/LocalDate"
+        maritalStatus:
+          type: "string"
+          enum:
+          - "MARRIED"
+          - "SINGLE"
+          - "DIVORCED"
+          - "UNKNOWN"
         contact:
           $ref: "#/components/schemas/ContactInput"
       required:
       - "firstName"
       - "lastName"
       - "dob"
+      - "maritalStatus"
       - "contact"
     Contact:
       type: "object"
@@ -417,6 +425,13 @@ components:
           type: "string"
         dob:
           $ref: "#/components/schemas/LocalDate"
+        maritalStatus:
+          type: "string"
+          enum:
+          - "MARRIED"
+          - "SINGLE"
+          - "DIVORCED"
+          - "UNKNOWN"
         contact:
           $ref: "#/components/schemas/Contact"
         fullName:
@@ -429,6 +444,7 @@ components:
       - "firstName"
       - "lastName"
       - "dob"
+      - "maritalStatus"
       - "contact"
       - "fullName"
     HashMap:

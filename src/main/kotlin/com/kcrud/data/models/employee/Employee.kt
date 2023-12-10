@@ -21,6 +21,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property firstName The employee's first name.
  * @property lastName The employee's last name.
  * @property dob The employee's date of birth.
+ * @property maritalStatus The employee's marital status.
  * @property contact The employee's contact details.
  */
 @Serializable
@@ -29,6 +30,7 @@ data class Employee(
     val firstName: String,
     val lastName: String,
     val dob: LocalDate,
+    val maritalStatus: MaritalStatus,
     val contact: Contact
 ) {
     // To serialize default values 'encodeDefaults' in the json configuration must be set to True.
@@ -49,6 +51,7 @@ data class Employee(
                 firstName = row[EmployeeTable.firstName],
                 lastName = row[EmployeeTable.lastName],
                 dob = row[EmployeeTable.dob],
+                maritalStatus = row[EmployeeTable.maritalStatus],
                 contact = Contact.fromTableRow(row)
             )
         }
