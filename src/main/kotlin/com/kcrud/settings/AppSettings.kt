@@ -32,8 +32,9 @@ data class AppSettings(
      *
      * @property port The network port the server listens on.
      * @property host The network address the server is bound to.
+     * @property swagger Flag to enable/disable Swagger UI.
      */
-    data class Deployment(val port: Int, val host: String)
+    data class Deployment(val port: Int, val host: String, val swagger: Boolean)
 
     /**
      * Security class holds settings related to security.

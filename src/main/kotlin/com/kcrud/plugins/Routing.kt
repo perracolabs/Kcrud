@@ -11,6 +11,7 @@ import com.kcrud.routes.employeeRouting
 import com.kcrud.routes.employmentRouting
 import com.kcrud.routes.rootRouting
 import com.kcrud.security.RateLimitSetup
+import com.kcrud.settings.SettingsProvider
 import io.ktor.server.application.*
 import io.ktor.server.plugins.openapi.*
 import io.ktor.server.plugins.ratelimit.*
@@ -42,7 +43,9 @@ fun Application.configureRouting() {
         // WIth JetBrains Ultimate Edition, the documentation can be auto-generated following the next steps:
         // 1. Place the caret over the 'routing' instruction defined above at the start of this function.
         // 2. Press Alt+Enter, and select 'Generate Swagger/OpenAPI Documentation'.
-        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml") { version = "4.15.5" }
-        openAPI(path = "openapi", swaggerFile = "openapi/documentation.yaml") { codegen = StaticHtmlCodegen() }
+        if (SettingsProvider.get.deployment.swagger) {
+            swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml") { version = "4.15.5" }
+            openAPI(path = "openapi", swaggerFile = "openapi/documentation.yaml") { codegen = StaticHtmlCodegen() }
+        }
     }
 }
