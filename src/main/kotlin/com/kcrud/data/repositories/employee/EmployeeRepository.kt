@@ -9,7 +9,7 @@ package com.kcrud.data.repositories.employee
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.models.employee.Employee
-import com.kcrud.data.models.employee.EmployeeInput
+import com.kcrud.data.models.employee.EmployeeParams
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -48,7 +48,7 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun create(employee: EmployeeInput): Employee {
+    override fun create(employee: EmployeeParams): Employee {
         return transaction {
             val newContactId: UUID? = employee.contact?.let {
                 ContactTable.insert { contactRow ->
@@ -66,7 +66,7 @@ class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun update(employeeId: UUID, employee: EmployeeInput): Employee? {
+    override fun update(employeeId: UUID, employee: EmployeeParams): Employee? {
         return transaction {
             // First, find the existing employee to get the contact id.
             val targetEmployee = findById(employeeId) ?: return@transaction null
@@ -102,9 +102,9 @@ class EmployeeRepository : IEmployeeRepository {
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [EmployeeInput] model instance.
+     * Populates an SQL [UpdateBuilder] with data from an [EmployeeParams] model instance.
      */
-    private fun employeeModelToTable(employee: EmployeeInput, target: UpdateBuilder<Int>, contactId: UUID?) {
+    private fun employeeModelToTable(employee: EmployeeParams, target: UpdateBuilder<Int>, contactId: UUID?) {
         target.apply {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()

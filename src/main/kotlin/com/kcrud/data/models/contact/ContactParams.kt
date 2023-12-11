@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
 /**
  * Represents the request to create/update an employee's contact details.
  *
- * @property email The contact's email.
- * @property phone The contact's phone.
+ * @property email The contact's email. Must not be blank.
+ * @property phone The contact's phone. Must not be blank.
  */
 @Serializable
-data class ContactInput(
+data class ContactParams(
     val email: String,
     val phone: String
 ) {

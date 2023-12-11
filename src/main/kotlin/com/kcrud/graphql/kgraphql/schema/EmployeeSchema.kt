@@ -8,9 +8,9 @@ package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.employee.Employee
-import com.kcrud.data.models.employee.EmployeeInput
+import com.kcrud.data.models.employee.EmployeeParams
 import com.kcrud.services.EmployeeService
-import com.kcrud.utils.toUUID
+import java.util.*
 
 
 /**
@@ -45,7 +45,7 @@ class EmployeeSchema(private val schemaBuilder: SchemaBuilder, private val servi
         schemaBuilder.apply {
             query("employee") {
                 description = "Returns a single employee given its id."
-                resolver { employeeId: String -> service.findById(employeeId = employeeId.toUUID()) }
+                resolver { employeeId: UUID -> service.findById(employeeId = employeeId) }
             }
             query("employees") {
                 description = "Returns all existing employees."
@@ -61,7 +61,7 @@ class EmployeeSchema(private val schemaBuilder: SchemaBuilder, private val servi
      */
     fun configureMutationInputs(): EmployeeSchema {
         schemaBuilder.apply {
-            inputType<EmployeeInput> {
+            inputType<EmployeeParams> {
                 name = "Input type definition for Employee."
             }
         }
@@ -76,19 +76,19 @@ class EmployeeSchema(private val schemaBuilder: SchemaBuilder, private val servi
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."
-                resolver { employee: EmployeeInput -> service.create(employee = employee) }
+                resolver { employee: EmployeeParams -> service.create(employee = employee) }
             }
 
             mutation("updateEmployee") {
                 description = "Updates an existing employee."
-                resolver { employeeId: String, employee: EmployeeInput ->
-                    service.update(employeeId = employeeId.toUUID(), employee = employee)
+                resolver { employeeId: UUID, employee: EmployeeParams ->
+                    service.update(employeeId = employeeId, employee = employee)
                 }
             }
 
             mutation("deleteEmployee") {
                 description = "Deletes an existing employee."
-                resolver { employeeId: String -> service.delete(employeeId = employeeId.toUUID()) }
+                resolver { employeeId: UUID -> service.delete(employeeId = employeeId) }
             }
 
             mutation("deleteAllEmployees") {

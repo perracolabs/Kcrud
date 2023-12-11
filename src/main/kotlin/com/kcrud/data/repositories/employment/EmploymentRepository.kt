@@ -10,7 +10,7 @@ import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.models.employment.Employment
-import com.kcrud.data.models.employment.EmploymentInput
+import com.kcrud.data.models.employment.EmploymentParams
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -41,7 +41,7 @@ class EmploymentRepository : IEmploymentRepository {
         }
     }
 
-    override fun create(employeeId: UUID, employment: EmploymentInput): Employment {
+    override fun create(employeeId: UUID, employment: EmploymentParams): Employment {
         return transaction {
             val newEmploymentId = EmploymentTable.insert { employmentRow ->
                 employmentModelToTable(employeeId = employeeId, employment = employment, target = employmentRow)
@@ -51,7 +51,7 @@ class EmploymentRepository : IEmploymentRepository {
         }
     }
 
-    override fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentInput): Employment? {
+    override fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentParams): Employment? {
         return transaction {
             EmploymentTable.update(where = { EmploymentTable.id eq employmentId }) { employmentRow ->
                 employmentModelToTable(employeeId = employeeId, employment = employment, target = employmentRow)
@@ -74,9 +74,9 @@ class EmploymentRepository : IEmploymentRepository {
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [EmploymentInput] model instance.
+     * Populates an SQL [UpdateBuilder] with data from an [EmploymentParams] model instance.
      */
-    private fun employmentModelToTable(employeeId: UUID, employment: EmploymentInput, target: UpdateBuilder<Int>) {
+    private fun employmentModelToTable(employeeId: UUID, employment: EmploymentParams, target: UpdateBuilder<Int>) {
         target.apply {
             this[EmploymentTable.employeeId] = employeeId
             this[EmploymentTable.probationEndDate] = employment.probationEndDate

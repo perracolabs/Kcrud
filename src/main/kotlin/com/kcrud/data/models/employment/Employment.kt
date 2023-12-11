@@ -18,8 +18,8 @@ import org.jetbrains.exposed.sql.ResultRow
  * Represents the model for an employment.
  *
  * @property id The employment's id.
- * @property period The employment's period.
- * @property probationEndDate The employment's probation end date.
+ * @property period The employment's period details.
+ * @property probationEndDate Optional employment's probation end date.
  * @property employee The employment's employee.
  */
 @Serializable

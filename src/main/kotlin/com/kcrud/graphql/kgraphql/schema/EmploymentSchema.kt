@@ -8,9 +8,9 @@ package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.employment.Employment
-import com.kcrud.data.models.employment.EmploymentInput
+import com.kcrud.data.models.employment.EmploymentParams
 import com.kcrud.services.EmploymentService
-import com.kcrud.utils.toUUID
+import java.util.*
 
 
 /**
@@ -45,11 +45,11 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
         schemaBuilder.apply {
             query("employment") {
                 description = "Returns a single employment given its id."
-                resolver { employmentId: String -> service.findById(employmentId = employmentId.toUUID()) }
+                resolver { employmentId: UUID -> service.findById(employmentId = employmentId) }
             }
             query("employments") {
                 description = "Returns all employments for a given employee."
-                resolver { employeeId: String -> service.findByEmployeeId(employeeId = employeeId.toUUID()) }
+                resolver { employeeId: UUID -> service.findByEmployeeId(employeeId = employeeId) }
             }
         }
 
@@ -61,7 +61,7 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
      */
     fun configureMutationInputs(): EmploymentSchema {
         schemaBuilder.apply {
-            inputType<EmploymentInput> {
+            inputType<EmploymentParams> {
                 name = "Input type definition for Employments."
             }
         }
@@ -73,17 +73,17 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
         schemaBuilder.apply {
             mutation("createEmployment") {
                 description = "Creates a new employment."
-                resolver { employeeId: String, employment: EmploymentInput ->
-                    service.create(employeeId = employeeId.toUUID(), employment = employment)
+                resolver { employeeId: UUID, employment: EmploymentParams ->
+                    service.create(employeeId = employeeId, employment = employment)
                 }
             }
 
             mutation("updateEmployment") {
                 description = "Updates an existing employment."
-                resolver { employeeId: String, employmentId: String, employment: EmploymentInput ->
+                resolver { employeeId: UUID, employmentId: UUID, employment: EmploymentParams ->
                     service.update(
-                        employeeId = employeeId.toUUID(),
-                        employmentId = employmentId.toUUID(),
+                        employeeId = employeeId,
+                        employmentId = employmentId,
                         employment = employment
                     )
                 }
@@ -91,7 +91,7 @@ class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val ser
 
             mutation("deleteEmployment") {
                 description = "Deletes an existing employment."
-                resolver { employmentId: String -> service.delete(employmentId = employmentId.toUUID()) }
+                resolver { employmentId: UUID -> service.delete(employmentId = employmentId) }
             }
         }
 

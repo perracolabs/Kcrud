@@ -13,11 +13,11 @@ import kotlinx.serialization.Serializable
 /**
  * Represents the request to create/update an employment.
  *
- * @property period The employment's period.
- * @property probationEndDate The employment's probation end date.
+ * @property period The employment's period details.
+ * @property probationEndDate Optional employment's probation end date.
  */
 @Serializable
-data class EmploymentInput(
+data class EmploymentParams(
     val period: Period,
     val probationEndDate: LocalDate? = null,
 ) {

@@ -7,11 +7,15 @@
 package com.kcrud.services
 
 import com.kcrud.data.models.employee.Employee
-import com.kcrud.data.models.employee.EmployeeInput
+import com.kcrud.data.models.employee.EmployeeParams
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 import java.util.*
 
+/**
+ * Employee service, where all the employee business logic should be defined.
+ * Currently, this service is only used to delegate calls to the repository.
+ */
 class EmployeeService(private val repository: IEmployeeRepository) : KoinComponent {
 
     /**
@@ -36,7 +40,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employee The employee to be created.
      * @return The created employee model with generated ID.
      */
-    fun create(employee: EmployeeInput): Employee {
+    fun create(employee: EmployeeParams): Employee {
         return repository.create(employee)
     }
 
@@ -46,7 +50,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @param employee The new details for the employee.
      * @return The updated employee model if the update was successful, null otherwise.
      */
-    fun update(employeeId: UUID, employee: EmployeeInput): Employee? {
+    fun update(employeeId: UUID, employee: EmployeeParams): Employee? {
         return repository.update(employeeId = employeeId, employee = employee)
     }
 

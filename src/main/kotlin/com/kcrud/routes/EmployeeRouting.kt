@@ -6,7 +6,7 @@
 
 package com.kcrud.routes
 
-import com.kcrud.data.models.employee.EmployeeInput
+import com.kcrud.data.models.employee.EmployeeParams
 import com.kcrud.services.EmployeeService
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.toUUIDOrNull
@@ -41,8 +41,8 @@ fun Route.employeeRouting() {
 
         // Create
         post {
-            val newEmployee = call.receive<EmployeeInput>()
-            val createdEmployee = service.create(newEmployee)
+            val employeeParams = call.receive<EmployeeParams>()
+            val createdEmployee = service.create(employeeParams)
             call.respond(HttpStatusCode.Created, createdEmployee)
         }
 
@@ -53,11 +53,11 @@ fun Route.employeeRouting() {
             }
         }
 
-        route("{${RoutingParams.EMPLOYEE_PATH_PARAMETER}}") {
+        route(RouteSegment.Employee.EMPLOYEE_ID_PATH) {
 
             // Find by employee ID
             get {
-                val employeeId = call.parameters[RoutingParams.EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
+                val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
                 val employee = employeeId?.let { service.findById(it) }
 
                 if (employee != null) {
@@ -69,9 +69,9 @@ fun Route.employeeRouting() {
 
             // Update by employee ID
             put {
-                val employeeId = call.parameters[RoutingParams.EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
-                val updatedInfo = call.receive<EmployeeInput>()
-                val updatedEmployee = employeeId?.let { service.update(it, updatedInfo) }
+                val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
+                val employeeParams = call.receive<EmployeeParams>()
+                val updatedEmployee = employeeId?.let { service.update(it, employeeParams) }
 
                 if (updatedEmployee != null) {
                     call.respond(HttpStatusCode.OK, updatedEmployee)
@@ -82,15 +82,15 @@ fun Route.employeeRouting() {
 
             // Delete by employee ID
             delete {
-                val employeeId = call.parameters[RoutingParams.EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
+                val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
                 employeeId?.let { service.delete(it) }
                 call.respond(HttpStatusCode.NoContent)
             }
         }
     }
 
-    route(RoutingParams.API_VERSION) {
-        route(RoutingParams.EMPLOYEE_ROUTE) {
+    route(RouteSegment.API_VERSION) {
+        route(RouteSegment.Employee.ROUTE) {
 
             if (SettingsProvider.get.security.jwt.isEnabled) {
                 authenticate {

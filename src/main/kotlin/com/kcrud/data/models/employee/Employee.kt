@@ -18,11 +18,12 @@ import org.jetbrains.exposed.sql.ResultRow
  * Represents the model for an employee.
  *
  * @property id The employee's id.
- * @property firstName The employee's first name.
- * @property lastName The employee's last name.
- * @property dob The employee's date of birth.
- * @property maritalStatus The employee's marital status.
- * @property contact The employee's contact details.
+ * @property firstName The first name of the employee.
+ * @property lastName The last name of the employee.
+ * @property dob The date of birth of the employee.
+ * @property maritalStatus The marital status of the employee.
+ * @property honorific The honorific or title of the employee.
+ * @property contact Optional contact details of the employee.
  */
 @Serializable
 data class Employee(

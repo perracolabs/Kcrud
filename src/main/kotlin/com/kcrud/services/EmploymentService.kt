@@ -7,11 +7,15 @@
 package com.kcrud.services
 
 import com.kcrud.data.models.employment.Employment
-import com.kcrud.data.models.employment.EmploymentInput
+import com.kcrud.data.models.employment.EmploymentParams
 import com.kcrud.data.repositories.employment.IEmploymentRepository
 import org.koin.core.component.KoinComponent
 import java.util.*
 
+/**
+ * Employment service, where all the employment business logic should be defined.
+ * Currently, this service is only used to delegate calls to the repository.
+ */
 class EmploymentService(private val repository: IEmploymentRepository) : KoinComponent {
 
     /**
@@ -38,7 +42,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employment The employment to be created.
      * @return The created employment model with generated ID.
      */
-    fun create(employeeId: UUID, employment: EmploymentInput): Employment {
+    fun create(employeeId: UUID, employment: EmploymentParams): Employment {
         return repository.create(employeeId = employeeId, employment = employment)
     }
 
@@ -49,7 +53,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @param employment The new details for the employment.
      * @return The updated employment model if the update was successful, null otherwise.
      */
-    fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentInput): Employment? {
+    fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentParams): Employment? {
         return repository.update(employeeId = employeeId, employmentId = employmentId, employment = employment)
     }
 

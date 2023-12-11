@@ -7,7 +7,7 @@
 package com.kcrud.data.repositories.employment
 
 import com.kcrud.data.models.employment.Employment
-import com.kcrud.data.models.employment.EmploymentInput
+import com.kcrud.data.models.employment.EmploymentParams
 import java.util.*
 
 interface IEmploymentRepository {
@@ -32,7 +32,7 @@ interface IEmploymentRepository {
      * @param employment The employment to be created.
      * @return The created employment model with generated ID.
      */
-    fun create(employeeId: UUID, employment: EmploymentInput): Employment
+    fun create(employeeId: UUID, employment: EmploymentParams): Employment
 
     /**
      * Updates an employment's details using the provided ID and employment model.
@@ -41,7 +41,7 @@ interface IEmploymentRepository {
      * @param employment The new details for the employment.
      * @return The updated employment model if the update was successful, null otherwise.
      */
-    fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentInput): Employment?
+    fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentParams): Employment?
 
     /**
      * Deletes an employment using the provided ID.

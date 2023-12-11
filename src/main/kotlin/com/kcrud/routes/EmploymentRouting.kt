@@ -6,7 +6,7 @@
 
 package com.kcrud.routes
 
-import com.kcrud.data.models.employment.EmploymentInput
+import com.kcrud.data.models.employment.EmploymentParams
 import com.kcrud.services.EmploymentService
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.toUUIDOrNull
@@ -31,10 +31,10 @@ import org.koin.ktor.ext.inject
 fun Route.employmentRouting() {
     val service by inject<EmploymentService>()
 
-    route(RoutingParams.API_VERSION) {
-        route(RoutingParams.EMPLOYEE_ROUTE) {
-            route("{${RoutingParams.EMPLOYEE_PATH_PARAMETER}}") {
-                route(RoutingParams.EMPLOYMENTS_ROUTE) {
+    route(RouteSegment.API_VERSION) {
+        route(RouteSegment.Employee.ROUTE) {
+            route(RouteSegment.Employee.EMPLOYEE_ID_PATH) {
+                route(RouteSegment.Employment.ROUTE) {
 
                     if (SettingsProvider.get.security.jwt.isEnabled) {
                         authenticate {
@@ -59,7 +59,7 @@ private fun Route.setupEmploymentRoutes(service: EmploymentService) {
     findEmploymentByEmployeeId(service)
     deleteEmploymentByEmployeeId(service)
 
-    route("{${RoutingParams.EMPLOYMENT_PATH_PARAMETER}}") {
+    route(RouteSegment.Employment.EMPLOYMENT_ID_PATH) {
         findEmploymentById(service)
         updateEmploymentById(service)
         deleteEmploymentById(service)
@@ -68,11 +68,11 @@ private fun Route.setupEmploymentRoutes(service: EmploymentService) {
 
 private fun Route.createEmployment(service: EmploymentService) {
     post {
-        val employeeId = call.parameters[RoutingParams.EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
+        val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
 
         employeeId?.let {
-            val employment = call.receive<EmploymentInput>()
-            val newEmployment = service.create(employeeId, employment)
+            val employmentParams = call.receive<EmploymentParams>()
+            val newEmployment = service.create(employeeId, employmentParams)
             call.respond(HttpStatusCode.Created, newEmployment)
         } ?: call.respond(HttpStatusCode.NotFound, "Employee not found.")
     }
@@ -80,7 +80,7 @@ private fun Route.createEmployment(service: EmploymentService) {
 
 private fun Route.findEmploymentByEmployeeId(service: EmploymentService) {
     get {
-        val employeeId = call.parameters[RoutingParams.EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()
+        val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
 
         employeeId?.let {
             val employments = service.findByEmployeeId(employeeId)
@@ -91,7 +91,7 @@ private fun Route.findEmploymentByEmployeeId(service: EmploymentService) {
 
 private fun Route.findEmploymentById(service: EmploymentService) {
     get {
-        call.parameters[RoutingParams.EMPLOYMENT_PATH_PARAMETER]?.toUUIDOrNull()?.let { employmentId ->
+        call.parameters[RouteSegment.Employment.EMPLOYMENT_ID]?.toUUIDOrNull()?.let { employmentId ->
             service.findById(employmentId)?.also { employment ->
                 call.respond(employment)
             } ?: call.respond(HttpStatusCode.NotFound, "Employment ID not found: $employmentId")
@@ -101,12 +101,12 @@ private fun Route.findEmploymentById(service: EmploymentService) {
 
 private fun Route.updateEmploymentById(service: EmploymentService) {
     put {
-        call.parameters[RoutingParams.EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()?.let { employeeId ->
+        call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()?.let { employeeId ->
 
-            call.parameters[RoutingParams.EMPLOYMENT_PATH_PARAMETER]?.toUUIDOrNull()?.let { employmentId ->
+            call.parameters[RouteSegment.Employment.EMPLOYMENT_ID]?.toUUIDOrNull()?.let { employmentId ->
 
-                val updatedEmployment = call.receive<EmploymentInput>().run {
-                    service.update(employeeId = employeeId, employmentId = employmentId, employment = this)
+                val updatedEmployment = call.receive<EmploymentParams>().let { employmentParams ->
+                    service.update(employeeId = employeeId, employmentId = employmentId, employment = employmentParams)
                 }
 
                 updatedEmployment?.also { employment ->
@@ -120,7 +120,7 @@ private fun Route.updateEmploymentById(service: EmploymentService) {
 
 private fun Route.deleteEmploymentByEmployeeId(service: EmploymentService) {
     delete {
-        call.parameters[RoutingParams.EMPLOYEE_PATH_PARAMETER]?.toUUIDOrNull()?.let { employeeId ->
+        call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()?.let { employeeId ->
             service.deleteAll(employeeId)
             call.respond(HttpStatusCode.NoContent)
         } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employeeId ID.")
@@ -129,7 +129,7 @@ private fun Route.deleteEmploymentByEmployeeId(service: EmploymentService) {
 
 private fun Route.deleteEmploymentById(service: EmploymentService) {
     delete {
-        call.parameters[RoutingParams.EMPLOYMENT_PATH_PARAMETER]?.toUUIDOrNull()?.let { employmentId ->
+        call.parameters[RouteSegment.Employment.EMPLOYMENT_ID]?.toUUIDOrNull()?.let { employmentId ->
             service.delete(employmentId)
             call.respond(HttpStatusCode.NoContent)
         } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employment ID.")

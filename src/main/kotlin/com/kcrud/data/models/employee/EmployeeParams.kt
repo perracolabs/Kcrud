@@ -6,27 +6,28 @@
 
 package com.kcrud.data.models.employee
 
-import com.kcrud.data.models.contact.ContactInput
+import com.kcrud.data.models.contact.ContactParams
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 /**
  * Represents the request to create/update an employee.
  *
- * @property firstName The employee's first name.
- * @property lastName The employee's last name.
- * @property dob The employee's date of birth.
- * @property maritalStatus The employee's marital status.
- * @property contact The employee's contact details.
+ * @property firstName The first name of the employee. Must not be blank.
+ * @property lastName The last name of the employee. Must not be blank.
+ * @property dob The date of birth of the employee.
+ * @property maritalStatus The marital status of the employee.
+ * @property honorific The honorific or title of the employee.
+ * @property contact Optional contact details of the employee.
  */
 @Serializable
-data class EmployeeInput(
+data class EmployeeParams(
     val firstName: String,
     val lastName: String,
     val dob: LocalDate,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
-    val contact: ContactInput? = null
+    val contact: ContactParams? = null
 ) {
     init {
         require(firstName.isNotBlank()) { "First name can't be empty." }
