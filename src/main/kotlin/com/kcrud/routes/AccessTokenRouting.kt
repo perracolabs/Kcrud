@@ -28,14 +28,26 @@ fun Route.accessTokenRouting() {
     val authTokenOath = "auth/token"
     val keyToken = "token"
 
+    /**
+     * Generates a new JWT token and sends it as a response.
+     * If token generation fails, responds with an Internal Server Error status.
+     */
+    suspend fun ApplicationCall.respondWithToken() {
+        try {
+            val jwtToken = AuthenticationToken.generate()
+            respond(hashMapOf(keyToken to jwtToken))
+        } catch (e: Exception) {
+            respond(HttpStatusCode.InternalServerError, "Failed to generate token.")
+        }
+    }
+
     route(authTokenOath) {
 
         // Endpoint for initial token generation; requires Basic Authentication.
         rateLimit(RateLimitName(RateLimitSetup.Scope.NEW_AUTH_TOKEN.key)) {
             authenticate(SettingsProvider.get.security.basicAuth.providerName) {
                 post("create") {
-                    val jwtToken = AuthenticationToken.generate()
-                    call.respond(hashMapOf(keyToken to jwtToken))
+                    call.respondWithToken()
                 }
             }
         }
@@ -54,8 +66,7 @@ fun Route.accessTokenRouting() {
 
                 AuthenticationToken.TokenState.Expired -> {
                     // Token has expired; generate a new token and respond with it.
-                    val jwtToken = AuthenticationToken.generate()
-                    call.respond(hashMapOf(keyToken to jwtToken))
+                    call.respondWithToken()
                 }
 
                 AuthenticationToken.TokenState.Invalid -> {
