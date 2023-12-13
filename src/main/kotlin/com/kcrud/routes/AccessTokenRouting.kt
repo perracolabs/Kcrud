@@ -6,8 +6,8 @@
 
 package com.kcrud.routes
 
+import com.kcrud.plugins.RateLimitScope
 import com.kcrud.security.AuthenticationToken
-import com.kcrud.security.RateLimitSetup
 import com.kcrud.settings.SettingsProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -44,7 +44,7 @@ fun Route.accessTokenRouting() {
     route(authTokenOath) {
 
         // Endpoint for initial token generation; requires Basic Authentication.
-        rateLimit(RateLimitName(RateLimitSetup.Scope.NEW_AUTH_TOKEN.key)) {
+        rateLimit(RateLimitName(RateLimitScope.NEW_AUTH_TOKEN.key)) {
             authenticate(SettingsProvider.get.security.basicAuth.providerName) {
                 post("create") {
                     call.respondWithToken()

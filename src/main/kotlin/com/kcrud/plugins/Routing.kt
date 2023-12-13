@@ -10,7 +10,6 @@ import com.kcrud.routes.accessTokenRouting
 import com.kcrud.routes.employeeRouting
 import com.kcrud.routes.employmentRouting
 import com.kcrud.routes.rootRouting
-import com.kcrud.security.RateLimitSetup
 import com.kcrud.settings.SettingsProvider
 import io.ktor.server.application.*
 import io.ktor.server.plugins.openapi.*
@@ -30,7 +29,7 @@ import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 fun Application.configureRouting() {
 
     routing {
-        rateLimit(RateLimitName(RateLimitSetup.Scope.PUBLIC_API.key)) {
+        rateLimit(RateLimitName(RateLimitScope.PUBLIC_API.key)) {
             rootRouting()
             employeeRouting()
             employmentRouting()
