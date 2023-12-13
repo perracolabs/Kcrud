@@ -17,7 +17,7 @@ import kotlin.time.Duration.Companion.seconds
  *
  *```
  * routing {
- *      rateLimit(RateLimitName(RateLimitSetup.SCOPE_PUBLIC)) {
+ *      rateLimit(RateLimitName(RateLimitScope.PUBLIC_API)) {
  *           get("some_endpoint") { ... }
  *      }
  * }
