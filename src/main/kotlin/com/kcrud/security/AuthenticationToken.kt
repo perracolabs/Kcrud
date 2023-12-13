@@ -26,7 +26,7 @@ import kotlin.time.Duration.Companion.days
  * This class contains the logic for verifying JWT tokens using HMAC256 algorithm.
  * If the token is invalid or any exception occurs, an UnauthorizedException will be thrown.
  */
-object AuthenticationToken {
+internal object AuthenticationToken {
     private val logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     // Hardcoded expiration to 1 month, tweak as needed.

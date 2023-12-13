@@ -11,7 +11,7 @@ package com.kcrud.routes
  * centralizing the definition of the main routes and path parameters
  * used throughout the application, ensuring consistency and ease of maintenance.
  */
-object RouteSegment {
+internal object RouteSegment {
     /** The version segment of the API route. */
     const val API_VERSION = "v1"
 

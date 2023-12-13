@@ -20,7 +20,7 @@ import io.ktor.server.application.*
  *
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
-object KGraphQLSetup {
+internal object KGraphQLSetup {
     fun configure(application: Application, employeeService: EmployeeService, employmentService: EmploymentService) {
         application.install(GraphQL) {
 

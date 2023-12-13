@@ -16,7 +16,7 @@ import io.ktor.server.auth.jwt.*
  * Security class responsible for the configuration of the app authentication,
  * for both Basic and JWT.
  */
-object AuthenticationSetup {
+internal object AuthenticationSetup {
 
     /**
      * Configures JWT authentication.

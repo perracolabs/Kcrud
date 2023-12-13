@@ -18,7 +18,7 @@ import kotlinx.html.*
  *
  * See: [HTML DSL](https://ktor.io/docs/html-dsl.html)
  */
-class SimpleLogin {
+internal class SimpleLogin {
 
     /**
      * Generates and displays the login form when a GET request is made to the root path.

@@ -16,7 +16,7 @@ import java.util.*
  * Employment service, where all the employment business logic should be defined.
  * Currently, this service is only used to delegate calls to the repository.
  */
-class EmploymentService(private val repository: IEmploymentRepository) : KoinComponent {
+internal class EmploymentService(private val repository: IEmploymentRepository) : KoinComponent {
 
     /**
      * Retrieves an employment model by its ID.

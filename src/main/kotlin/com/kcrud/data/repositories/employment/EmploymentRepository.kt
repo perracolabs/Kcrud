@@ -17,7 +17,7 @@ import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
-class EmploymentRepository : IEmploymentRepository {
+internal class EmploymentRepository : IEmploymentRepository {
     override fun findById(employmentId: UUID): Employment? {
         return transaction {
             (EmploymentTable innerJoin EmployeeTable innerJoin ContactTable)

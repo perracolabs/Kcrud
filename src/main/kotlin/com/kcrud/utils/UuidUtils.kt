@@ -45,7 +45,7 @@ fun String?.toUUID(): SUUID {
 /**
  * Serializer for UUID objects.
  */
-object UUIDSerializer : KSerializer<UUID> {
+internal object UUIDSerializer : KSerializer<UUID> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: UUID) = encoder.encodeString(value.toString())

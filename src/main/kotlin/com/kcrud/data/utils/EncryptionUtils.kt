@@ -14,7 +14,7 @@ import org.jetbrains.exposed.crypt.Encryptor
 /**
  * Utility class for database field encryption.
  */
-object EncryptionUtils {
+internal object EncryptionUtils {
     private enum class AlgorithmName {
         AES_256_PBE_CBC,
         AES_256_PBE_GCM,

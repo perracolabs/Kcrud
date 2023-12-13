@@ -17,7 +17,7 @@ import kotlin.reflect.jvm.jvmErasure
  * Creates an AppSettings instance by parsing the application configuration data.
  * This ensures strongly typed access to the configuration data throughout the application.
  */
-object SettingsParser {
+internal object SettingsParser {
     /**
      * Performs the configuration file parsing.
      *

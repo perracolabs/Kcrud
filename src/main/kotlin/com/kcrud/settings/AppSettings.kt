@@ -15,7 +15,7 @@ import io.ktor.server.config.*
  * @property deployment Configurations for the server's deployment settings.
  * @property security Configurations for security settings.
  */
-data class AppSettings(
+internal data class AppSettings(
     val global: Global,
     val deployment: Deployment,
     val security: Security

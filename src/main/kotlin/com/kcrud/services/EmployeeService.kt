@@ -16,7 +16,7 @@ import java.util.*
  * Employee service, where all the employee business logic should be defined.
  * Currently, this service is only used to delegate calls to the repository.
  */
-class EmployeeService(private val repository: IEmployeeRepository) : KoinComponent {
+internal class EmployeeService(private val repository: IEmployeeRepository) : KoinComponent {
 
     /**
      * Retrieves as employee by its ID.

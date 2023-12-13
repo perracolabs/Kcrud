@@ -14,7 +14,7 @@ import io.ktor.server.application.*
  * After initializing the application with the `install` function,
  * the [AppSettings] can be accessed anywhere throughout the application.
  */
-object SettingsProvider {
+internal object SettingsProvider {
     private lateinit var settings: AppSettings
 
     val get: AppSettings

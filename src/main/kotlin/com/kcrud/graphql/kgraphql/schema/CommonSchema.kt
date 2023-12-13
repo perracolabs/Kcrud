@@ -24,7 +24,7 @@ import java.util.*
  *
  * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
  */
-class CommonSchema(private val schemaBuilder: SchemaBuilder) {
+internal class CommonSchema(private val schemaBuilder: SchemaBuilder) {
 
     /**
      * Configures common types like enums and scalars that are used in both queries and mutations.

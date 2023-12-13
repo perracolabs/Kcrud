@@ -15,7 +15,7 @@ import kotlin.reflect.KProperty
 /**
  * Delegate for calculating an Age based on a given date of birth (dob).
  */
-class AgeDelegate(private val dob: LocalDate) {
+internal class AgeDelegate(private val dob: LocalDate) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): Int {
         return DateTimeUtils.calculateAge(dob)
     }
@@ -24,7 +24,7 @@ class AgeDelegate(private val dob: LocalDate) {
 /**
  * Singleton providing time-related utility functions.
  */
-object DateTimeUtils {
+internal object DateTimeUtils {
     fun calculateAge(dob: LocalDate): Int {
         // Get today's date based on the system clock and timezone.
         val currentDate = Clock.System.todayIn(TimeZone.currentSystemDefault())

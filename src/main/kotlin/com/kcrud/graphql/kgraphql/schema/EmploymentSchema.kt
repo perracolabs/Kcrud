@@ -23,7 +23,7 @@ import java.util.*
  * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
  * @param service The service used in mutation resolvers.
  */
-class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val service: EmploymentService) {
+internal class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val service: EmploymentService) {
 
     /**
      * Configures query types specifically.

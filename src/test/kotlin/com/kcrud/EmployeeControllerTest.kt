@@ -8,6 +8,8 @@ package com.kcrud
 
 import com.kcrud.data.models.contact.Contact
 import com.kcrud.data.models.employee.Employee
+import com.kcrud.data.models.employee.Honorific
+import com.kcrud.data.models.employee.MaritalStatus
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.services.EmployeeService
 import io.mockk.coEvery
@@ -34,6 +36,8 @@ class EmployeeServiceTest {
             firstName = "Pepito",
             lastName = "Paquito",
             dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
+            honorific = Honorific.MR,
+            maritalStatus = MaritalStatus.SINGLE,
             contact = Contact(
                 id = UUID.randomUUID(),
                 email = "saco.paco@email.com",
