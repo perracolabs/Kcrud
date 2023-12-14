@@ -28,12 +28,12 @@ import kotlin.time.Duration.Companion.seconds
 fun Application.configureRateLimit() {
     install(RateLimit) {
         // Example scope for new token generation rate limit.
-        register(RateLimitName(RateLimitScope.NEW_AUTH_TOKEN.key)) {
+        register(RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
             rateLimiter(limit = 100, refillPeriod = 10.seconds)
         }
 
         // Example scope for the public API rate limit.
-        register(RateLimitName(RateLimitScope.PUBLIC_API.key)) {
+        register(RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
             rateLimiter(limit = 1_000, refillPeriod = 1.seconds)
         }
     }

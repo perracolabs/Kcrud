@@ -29,7 +29,7 @@ import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 fun Application.configureRouting() {
 
     routing {
-        rateLimit(RateLimitName(RateLimitScope.PUBLIC_API.key)) {
+        rateLimit(RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
             rootRouting()
             employeeRouting()
             employmentRouting()
