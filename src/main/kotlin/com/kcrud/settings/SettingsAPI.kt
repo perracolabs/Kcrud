@@ -4,12 +4,12 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.graphql.kgraphql
+package com.kcrud.settings
 
 /**
- * Annotation designed for controlled access to the KGraphQL management code,
+ * Annotation designed for controlled access to the Settings management code,
  * offering a workaround for the lack of package-private visibility in Kotlin.
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used in KGraphQL contexts.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used in Settings contexts.")
 @Retention(AnnotationRetention.BINARY)
-annotation class KGraphQLAPI
+annotation class SettingsAPI

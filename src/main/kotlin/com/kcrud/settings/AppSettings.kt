@@ -126,6 +126,7 @@ internal data class AppSettings(
          * @param config Configuration from which the application's settings must be parsed.
          * @return Singleton instance of AppSettings, populated with the parsed configuration data.
          */
+        @OptIn(SettingsAPI::class)
         operator fun invoke(config: ApplicationConfig): AppSettings {
             return instance ?: synchronized(this) {
                 instance ?: SettingsParser.parse(config = config).also { instance = it }

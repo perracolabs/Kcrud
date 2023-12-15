@@ -34,6 +34,8 @@ fun Application.module() {
 
     configureSettingsProvider()
 
+    configureKoin()
+
     configureHTTP()
 
     configureRateLimit()
@@ -43,8 +45,6 @@ fun Application.module() {
     configureStatusPages()
 
     configureSerialization()
-
-    configureDependencyInjection()
 
     configureGraphQL()
 

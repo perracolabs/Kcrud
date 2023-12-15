@@ -26,12 +26,12 @@ import java.util.*
  * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
  */
 @KGraphQLAPI
-internal class CommonSchema(private val schemaBuilder: SchemaBuilder) {
+internal class SharedTypesSchema(private val schemaBuilder: SchemaBuilder) {
 
     /**
      * Configures common types like enums and scalars that are used in both queries and mutations.
      */
-    fun configureCommonTypes(): CommonSchema {
+    fun configure(): SharedTypesSchema {
         schemaBuilder.apply {
             enum<DayOfWeek> {
                 description = "Day of week."

@@ -7,10 +7,12 @@
 package com.kcrud.graphql.kgraphql
 
 import com.apurebase.kgraphql.GraphQL
-import com.kcrud.graphql.kgraphql.schema.CommonSchema
 import com.kcrud.graphql.kgraphql.schema.EmployeeSchema
 import com.kcrud.graphql.kgraphql.schema.EmploymentSchema
+import com.kcrud.graphql.kgraphql.schema.SharedTypesSchema
 import com.kcrud.security.AuthenticationToken
+import com.kcrud.services.EmployeeService
+import com.kcrud.services.EmploymentService
 import io.ktor.server.application.*
 
 /**
@@ -20,7 +22,7 @@ import io.ktor.server.application.*
  */
 internal object KGraphQLSetup {
     @OptIn(KGraphQLAPI::class)
-    fun configure(application: Application) {
+    fun configure(application: Application, employeeService: EmployeeService, employmentService: EmploymentService) {
         application.install(GraphQL) {
 
             playground = true  // Enable GraphQL playground for easier development and testing.
@@ -32,16 +34,16 @@ internal object KGraphQLSetup {
 
             // Define the GraphQL schema.
             schema {
-                CommonSchema(schemaBuilder = this)
-                    .configureCommonTypes()
+                SharedTypesSchema(schemaBuilder = this)
+                    .configure()
 
-                EmployeeSchema(schemaBuilder = this)
+                EmployeeSchema(schemaBuilder = this, service = employeeService)
                     .configureQueryTypes()
                     .configureQueries()
                     .configureMutationInputs()
                     .configureMutations()
 
-                EmploymentSchema(schemaBuilder = this)
+                EmploymentSchema(schemaBuilder = this, service = employmentService)
                     .configureQueryTypes()
                     .configureQueries()
                     .configureMutationInputs()
