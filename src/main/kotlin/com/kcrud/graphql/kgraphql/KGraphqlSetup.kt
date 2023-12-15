@@ -11,8 +11,6 @@ import com.kcrud.graphql.kgraphql.schema.CommonSchema
 import com.kcrud.graphql.kgraphql.schema.EmployeeSchema
 import com.kcrud.graphql.kgraphql.schema.EmploymentSchema
 import com.kcrud.security.AuthenticationToken
-import com.kcrud.services.EmployeeService
-import com.kcrud.services.EmploymentService
 import io.ktor.server.application.*
 
 /**
@@ -21,7 +19,8 @@ import io.ktor.server.application.*
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
 internal object KGraphQLSetup {
-    fun configure(application: Application, employeeService: EmployeeService, employmentService: EmploymentService) {
+    @OptIn(KGraphQLAPI::class)
+    fun configure(application: Application) {
         application.install(GraphQL) {
 
             playground = true  // Enable GraphQL playground for easier development and testing.
@@ -36,13 +35,13 @@ internal object KGraphQLSetup {
                 CommonSchema(schemaBuilder = this)
                     .configureCommonTypes()
 
-                EmployeeSchema(schemaBuilder = this, service = employeeService)
+                EmployeeSchema(schemaBuilder = this)
                     .configureQueryTypes()
                     .configureQueries()
                     .configureMutationInputs()
                     .configureMutations()
 
-                EmploymentSchema(schemaBuilder = this, service = employmentService)
+                EmploymentSchema(schemaBuilder = this)
                     .configureQueryTypes()
                     .configureQueries()
                     .configureMutationInputs()

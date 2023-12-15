@@ -7,10 +7,7 @@
 package com.kcrud.plugins
 
 import com.kcrud.graphql.kgraphql.KGraphQLSetup
-import com.kcrud.services.EmployeeService
-import com.kcrud.services.EmploymentService
 import io.ktor.server.application.*
-import org.koin.ktor.ext.inject
 
 /**
  * Sets up the GraphQL engine. Currently, using KGraphQL.
@@ -18,14 +15,7 @@ import org.koin.ktor.ext.inject
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
 fun Application.configureGraphQL() {
-    val employeeService by inject<EmployeeService>()
-    val employmentService by inject<EmploymentService>()
-
-    KGraphQLSetup.configure(
-        application = this,
-        employeeService = employeeService,
-        employmentService = employmentService
-    )
+    KGraphQLSetup.configure(application = this)
 }
 
 

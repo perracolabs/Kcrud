@@ -46,9 +46,9 @@ fun Application.module() {
 
     configureDependencyInjection()
 
-    configureRouting()
-
     configureGraphQL()
+
+    configureRouting()
 
     DatabaseManager.init(
         mode = DatabaseManager.Mode.PERSISTENT,

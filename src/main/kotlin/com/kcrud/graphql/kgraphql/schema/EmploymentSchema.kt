@@ -9,7 +9,9 @@ package com.kcrud.graphql.kgraphql.schema
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.employment.Employment
 import com.kcrud.data.models.employment.EmploymentParams
+import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.services.EmploymentService
+import org.koin.java.KoinJavaComponent.inject
 import java.util.*
 
 
@@ -21,9 +23,11 @@ import java.util.*
  * files for better maintainability.
  *
  * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
- * @param service The service used in mutation resolvers.
  */
-internal class EmploymentSchema(private val schemaBuilder: SchemaBuilder, private val service: EmploymentService) {
+@KGraphQLAPI
+internal class EmploymentSchema(private val schemaBuilder: SchemaBuilder) {
+
+    private val service: EmploymentService by inject(EmploymentService::class.java)
 
     /**
      * Configures query types specifically.
