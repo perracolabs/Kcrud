@@ -6,6 +6,7 @@
 
 package com.kcrud.settings
 
+import com.kcrud.graphql.GraphQLFramework
 import io.ktor.server.config.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -28,8 +29,9 @@ internal object SettingsParser {
     fun parse(config: ApplicationConfig): AppSettings {
         val global = instantiateConfig(config = config, keyPath = "ktor", kClass = AppSettings.Global::class)
         val deployment = instantiateConfig(config = config, keyPath = "ktor.deployment", kClass = AppSettings.Deployment::class)
+        val graphql = instantiateConfig(config = config, keyPath = "ktor.graphql", kClass = AppSettings.GraphQL::class)
         val security = instantiateConfig(config = config, keyPath = "ktor.security", kClass = AppSettings.Security::class)
-        return AppSettings(global = global, deployment = deployment, security = security)
+        return AppSettings(global = global, deployment = deployment, security = security, graphql=graphql)
     }
 
     /**
@@ -97,6 +99,7 @@ internal object SettingsParser {
             Boolean::class -> stringValue.toBoolean()
             Long::class -> stringValue.toLongOrNull()
             Double::class -> stringValue.toDoubleOrNull()
+            GraphQLFramework::class -> GraphQLFramework.valueOf(stringValue)
             else -> throw IllegalArgumentException("Unsupported type: $type. Found in path: $keyPath")
         }
     }

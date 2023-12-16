@@ -44,8 +44,6 @@ fun Application.module() {
 
     statusPagesModule()
 
-    serializationModule()
-
     routingModule()
 
     graphQLModule()

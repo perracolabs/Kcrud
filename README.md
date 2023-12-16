@@ -6,7 +6,7 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
 * [Encryption](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/data/database/tables/ContactTable.kt) at field level example.
 * [Netty](https://ktor.io/docs/engines.html) async web server.
-* [GraphQL](https://graphql.org/) queries and mutations using the [KGraphQL](https://github.com/aPureBase/KGraphQL) library.
+* [GraphQL](https://graphql.org/) with the frameworks [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) and [KGraphQL](https://github.com/aPureBase/KGraphQL).
 * [Koin](https://insert-koin.io/) dependency injection.
 * [Rate limit](https://ktor.io/docs/rate-limit.html) examples.
 * [JWT](https://ktor.io/docs/jwt.html) authentication for both REST and GraphQL.
@@ -21,12 +21,7 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 ---
 
 #### TODO:
-* Example using the [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) library.
-* Add database migrations example. 
----
-
-For convenience find in the project a *[Postman](https://www.postman.com/)* collection: **`kcrud.postman_collection`**.
-
+* Add database migrations examples. 
 ---
 
 ## Handling Security
@@ -101,12 +96,16 @@ http://localhost:8080/auth/token/refresh
 ```
 ---
 
-### Postman **GraphQL** examples:
-- Endpoint: http://localhost:8080/graphql
+### Postman **GraphQL**:
 
-- Choose `GraphQL` under the `Body` option.
+Both most popular GraphQL frameworks are included in the project, ExpediaGroup GraphQL and KGraphQL.
+Once the project starts the console will display their endpoints, including the playground.
 
-#### Queries:
+- Data endpoint: http://localhost:8080/graphql
+
+The project includes a *[Postman Collection (kcrud.postman_collection)](https://github.com/perracolabs/Kcrud/blob/master/kcrud.postman_collection.json)* with all possible queries and mutations.
+
+#### Query Example:
 
 - Return a single employee
 ```graphql
@@ -128,43 +127,7 @@ query {
 }
 ```
 
-- Return all employees
-```graphql
-query {
-    employees {
-        id
-        firstName
-        lastName
-        fullName
-        dob
-        maritalStatus
-        honorific
-        contact {
-            id
-            email
-            phone
-        }
-   }
-}
-```
-
-- Return all employments for a specific employee
-```graphql
-query {
-    employments(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a") {
-        id
-        probationEndDate
-        period {
-            isActive
-            startDate
-            endDate
-            comments
-        }
-   }
-}
-```
-
-#### Mutations:
+#### Mutations Example:
 
 - Create a new employee
 ```graphql
@@ -194,69 +157,3 @@ mutation {
 }
 ```
 
-- Update an existing employee
-```graphql
-mutation {
-    updateEmployee(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a", employee: {
-        firstName: "NewSaco",
-        lastName: "NewPaco",
-        dob: "2000-01-01",
-        contact: {
-            email: "new.saco.paco@email.com"
-            phone: "987-654-321"
-        }
-    }) {
-        id
-        firstName
-        lastName
-        fullName
-        dob
-        maritalStatus
-        honorific
-        contact {
-            id
-            email
-            phone
-        }
-    }
-}
-```
-
-- Delete a single employee
-```graphql
-mutation {
-    deleteEmployee(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a")
-}
-```
-
-- Delete all employees
-```graphql
-mutation {
-    deleteAllEmployees
-}
-```
-
-- Create a new employment for a specific employee
-```graphql
-mutation {
-    createEmployment(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a", mployment: {
-         probationEndDate: "2023-04-01",
-         period: {
-             isActive: true,
-             startDate: "2023-01-01",
-             endDate: null,
-             comments: null
-         }
-     }
-    ) {
-        id
-        probationEndDate
-        period {
-            isActive
-            startDate
-            endDate
-            comments
-        }
-    }
-}
-```

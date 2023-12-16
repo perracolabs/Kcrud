@@ -7,12 +7,15 @@
 package com.kcrud.graphql.kgraphql
 
 import com.apurebase.kgraphql.GraphQL
-import com.kcrud.graphql.kgraphql.schema.EmployeeSchema
-import com.kcrud.graphql.kgraphql.schema.EmploymentSchema
-import com.kcrud.graphql.kgraphql.schema.SharedTypesSchema
+import com.kcrud.graphql.kgraphql.schema.SharedTypes
+import com.kcrud.graphql.kgraphql.schema.employee.EmployeeMutations
+import com.kcrud.graphql.kgraphql.schema.employee.EmployeeQueries
+import com.kcrud.graphql.kgraphql.schema.employment.EmploymentMutations
+import com.kcrud.graphql.kgraphql.schema.employment.EmploymentQueries
 import com.kcrud.security.AuthenticationToken
 import com.kcrud.services.EmployeeService
 import com.kcrud.services.EmploymentService
+import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
 
 /**
@@ -22,10 +25,16 @@ import io.ktor.server.application.*
  */
 internal object KGraphQLSetup {
     @OptIn(KGraphQLAPI::class)
-    fun configure(application: Application, employeeService: EmployeeService, employmentService: EmploymentService) {
+    fun configure(
+        application: Application,
+        withPlayground: Boolean,
+        employeeService: EmployeeService,
+        employmentService: EmploymentService
+    ) {
         application.install(GraphQL) {
 
-            playground = true  // Enable GraphQL playground for easier development and testing.
+            // Set GraphQL playground for development and testing.
+            playground = withPlayground
 
             // Set the security context to verify the JWT token for each incoming GraphQL request.
             context { call ->
@@ -34,20 +43,32 @@ internal object KGraphQLSetup {
 
             // Define the GraphQL schema.
             schema {
-                SharedTypesSchema(schemaBuilder = this)
+                SharedTypes(schemaBuilder = this)
                     .configure()
 
-                EmployeeSchema(schemaBuilder = this, service = employeeService)
-                    .configureQueryTypes()
+                EmployeeQueries(schemaBuilder = this, service = employeeService)
+                    .configureTypes()
                     .configureQueries()
-                    .configureMutationInputs()
+
+                EmployeeMutations(schemaBuilder = this, service = employeeService)
+                    .configureInputs()
                     .configureMutations()
 
-                EmploymentSchema(schemaBuilder = this, service = employmentService)
-                    .configureQueryTypes()
+                EmploymentQueries(schemaBuilder = this, service = employmentService)
+                    .configureTypes()
                     .configureQueries()
-                    .configureMutationInputs()
+
+                EmploymentMutations(schemaBuilder = this, service = employmentService)
+                    .configureInputs()
                     .configureMutations()
+            }
+
+            // Log the GraphQL endpoints.
+            if (withPlayground) {
+                NetworkUtils.logEndpoints(
+                    reason = "Configured GraphQL endpoints.",
+                    endpoints = listOf("graphql")
+                )
             }
         }
     }

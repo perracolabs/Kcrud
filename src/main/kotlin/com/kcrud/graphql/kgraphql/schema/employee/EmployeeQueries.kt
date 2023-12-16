@@ -1,0 +1,55 @@
+/*
+ * Copyright (c) 2023 Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
+package com.kcrud.graphql.kgraphql.schema.employee
+
+import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
+import com.kcrud.data.models.employee.Employee
+import com.kcrud.graphql.kgraphql.KGraphQLAPI
+import com.kcrud.services.EmployeeService
+import java.util.*
+
+
+/**
+ * Employee query definitions.
+ *
+ * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
+ * @param service The service used in query resolvers.
+ */
+@KGraphQLAPI
+internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder, private val service: EmployeeService) {
+
+    /**
+     * Configures query types specifically.
+     */
+    fun configureTypes(): EmployeeQueries {
+        schemaBuilder.apply {
+            type<Employee> {
+                description = "Query type definition for employee."
+            }
+        }
+
+        return this
+    }
+
+    /**
+     * Configures query resolvers to fetch data.
+     */
+    fun configureQueries(): EmployeeQueries {
+        schemaBuilder.apply {
+            query("employee") {
+                description = "Returns a single employee given its id."
+                resolver { employeeId: UUID -> service.findById(employeeId = employeeId) }
+            }
+            query("employees") {
+                description = "Returns all existing employees."
+                resolver { -> service.findAll() }
+            }
+        }
+
+        return this
+    }
+}

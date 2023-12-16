@@ -69,15 +69,23 @@ internal class EmployeeRepository : IEmployeeRepository {
     override fun update(employeeId: UUID, employee: EmployeeParams): Employee? {
         return transaction {
             // First, find the existing employee to get the contact id.
-            val targetEmployee = findById(employeeId) ?: return@transaction null
+            val dbEmployee = findById(employeeId) ?: return@transaction null
 
-            // Update the Contacts table.
-            val dbContactId: UUID? = targetEmployee.contact?.let { contact ->
-                ContactTable.update(where = { ContactTable.id eq contact.id }) { contactRow ->
-                    contactRow[email] = contact.email.trim()
-                    contactRow[phone] = contact.phone.trim()
+            val dbContactId: UUID? = employee.contact?.let {
+                if (dbEmployee.contact == null) {
+                    // If the employee doesn't have a contact, create a new one.
+                    ContactTable.insert { contactRow ->
+                        contactRow[email] = employee.contact.email.trim()
+                        contactRow[phone] = employee.contact.phone.trim()
+                    } get ContactTable.id
+                } else {
+                    // If the employee already has a contact, update it.
+                    ContactTable.update(where = { ContactTable.id eq dbEmployee.contact.id }) { contactRow ->
+                        contactRow[email] = employee.contact.email.trim()
+                        contactRow[phone] = employee.contact.phone.trim()
+                    }
+                    dbEmployee.contact.id
                 }
-                contact.id
             }
 
             // Update the Employees table.

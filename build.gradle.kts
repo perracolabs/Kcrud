@@ -63,8 +63,8 @@ dependencies {
     // Serialization.
     // https://github.com/Kotlin/kotlinx.serialization
     // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // Serializable DateTime.
     // https://github.com/Kotlin/kotlinx-datetime

@@ -13,8 +13,6 @@ import com.kcrud.data.repositories.employment.IEmploymentRepository
 import com.kcrud.services.EmployeeService
 import com.kcrud.services.EmploymentService
 import io.ktor.server.application.*
-import org.koin.core.module.dsl.bind
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 
@@ -27,11 +25,11 @@ fun Application.koinModule() {
 
     // Declare a Koin module to manage application-level dependencies.
     val moduleList = module {
-        singleOf(::EmployeeRepository) { bind<IEmployeeRepository>() }
-        singleOf(::EmployeeService)
+        single<IEmployeeRepository> { EmployeeRepository() }
+        single { EmployeeService(get()) }
 
-        singleOf(::EmploymentRepository) { bind<IEmploymentRepository>() }
-        singleOf(::EmploymentService)
+        single<IEmploymentRepository> { EmploymentRepository() }
+        single { EmploymentService(get()) }
     }
 
     // Initialize Koin dependency injection with the defined module.

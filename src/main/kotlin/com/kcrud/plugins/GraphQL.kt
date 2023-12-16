@@ -6,9 +6,12 @@
 
 package com.kcrud.plugins
 
+import com.kcrud.graphql.GraphQLFramework
+import com.kcrud.graphql.expedia.ExpediaGraphQLSetup
 import com.kcrud.graphql.kgraphql.KGraphQLSetup
 import com.kcrud.services.EmployeeService
 import com.kcrud.services.EmploymentService
+import com.kcrud.settings.SettingsProvider
 import io.ktor.server.application.*
 import org.koin.ktor.ext.inject
 
@@ -21,11 +24,28 @@ fun Application.graphQLModule() {
     val employeeService by inject<EmployeeService>()
     val employmentService by inject<EmploymentService>()
 
-    KGraphQLSetup.configure(
-        application = this,
-        employeeService = employeeService,
-        employmentService = employmentService
-    )
+    val framework = SettingsProvider.get.graphql.framework
+    val withPlayground = SettingsProvider.get.graphql.playground
+
+    when (framework) {
+        GraphQLFramework.EXPEDIA_GROUP -> {
+            ExpediaGraphQLSetup.configure(
+                application = this,
+                withPlayground = withPlayground,
+                employeeService = employeeService,
+                employmentService = employmentService
+            )
+        }
+
+        GraphQLFramework.K_GRAPHQL -> {
+            KGraphQLSetup.configure(
+                application = this,
+                withPlayground = withPlayground,
+                employeeService = employeeService,
+                employmentService = employmentService
+            )
+        }
+    }
 }
 
 

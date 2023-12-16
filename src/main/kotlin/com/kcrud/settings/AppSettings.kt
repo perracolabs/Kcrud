@@ -6,6 +6,7 @@
 
 package com.kcrud.settings
 
+import com.kcrud.graphql.GraphQLFramework
 import io.ktor.server.config.*
 
 /**
@@ -18,7 +19,8 @@ import io.ktor.server.config.*
 internal data class AppSettings(
     val global: Global,
     val deployment: Deployment,
-    val security: Security
+    val security: Security,
+    val graphql: GraphQL
 ) {
     /**
      * Contains the main global configuration settings.
@@ -35,6 +37,14 @@ internal data class AppSettings(
      * @property swagger Flag to enable/disable Swagger UI.
      */
     data class Deployment(val port: Int, val host: String, val swagger: Boolean)
+
+    /**
+     * GraphQL related settings.
+     *
+     * @property framework The GraphQL framework to use.
+     * @property playground Whether to enable the GraphQL Playground.
+     */
+    data class GraphQL(val framework: GraphQLFramework, val playground: Boolean)
 
     /**
      * Security class holds settings related to security.
