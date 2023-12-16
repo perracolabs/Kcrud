@@ -92,20 +92,26 @@ internal object SettingsParser {
 
         val stringValue: String = config.propertyOrNull(path = keyPath)?.getString() ?: return null
 
-        return when (type) {
-            String::class -> stringValue
-            Boolean::class -> stringValue.toBooleanStrictOrNull()
-            Int::class -> stringValue.toIntOrNull()
-            Long::class -> stringValue.toLongOrNull()
-            Double::class -> stringValue.toDoubleOrNull()
-            else -> if (type.java.isEnum) {
-                val enumConstants = type.java.enumConstants
-                val targetEnumName = stringValue.uppercase()
-                enumConstants.firstOrNull { (it as Enum<*>).name.uppercase() == targetEnumName }
-                    ?: throw IllegalArgumentException("Enum value '$stringValue' not found for type: $type. Found in path: $keyPath")
-            } else {
-                throw IllegalArgumentException("Unsupported type: $type. Found in path: $keyPath")
-            }
+        return when {
+            type == String::class -> stringValue
+            type == Boolean::class -> stringValue.toBooleanStrictOrNull()
+            type == Int::class -> stringValue.toIntOrNull()
+            type == Long::class -> stringValue.toLongOrNull()
+            type == Double::class -> stringValue.toDoubleOrNull()
+            type.java.isEnum -> convertToEnum(enumType = type, stringValue = stringValue, keyPath = keyPath)
+            else -> throw IllegalArgumentException("Unsupported type: $type. Found in path: $keyPath")
         }
+    }
+
+    private fun convertToEnum(enumType: KClass<*>, stringValue: String, keyPath: String): Enum<*>? {
+        if (stringValue.isBlank() || stringValue.lowercase() == "null") {
+            return null
+        }
+
+        val enumConstants = enumType.java.enumConstants
+        val targetEnumName = stringValue.uppercase()
+
+        return enumConstants.firstOrNull { (it as Enum<*>).name.uppercase() == targetEnumName } as Enum<*>?
+            ?: throw IllegalArgumentException("Enum value '$stringValue' not found for type: $enumType. Found in path: $keyPath")
     }
 }
