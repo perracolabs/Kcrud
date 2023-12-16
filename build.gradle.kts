@@ -43,10 +43,11 @@ dependencies {
     val ktorVersion = "2.3.7"
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
-    implementation("io.ktor:ktor-server-rate-limit:$ktorVersion")
+    implementation("io.ktor:ktor-server-default-headers-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-rate-limit:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
 
     // Basic Authentication.
     // https://ktor.io/docs/basic.html
@@ -79,10 +80,10 @@ dependencies {
     // https://github.com/JetBrains/Exposed/blob/main/docs/ChangeLog.md
     val exposedVersion = "0.45.0"
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-crypt:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-crypt:$exposedVersion")
 
     // Koin.
     // https://insert-koin.io/docs/quickstart/ktor
@@ -111,12 +112,11 @@ dependencies {
     // https://github.com/ExpediaGroup/graphql-kotlin/tree/master/servers/graphql-kotlin-ktor-server
     implementation("com.expediagroup:graphql-kotlin-ktor-server:7.0.2")
 
-    // SwaggerUI.
+    // OpenAPI / SwaggerUI.
     // https://ktor.io/docs/swagger-ui.html#configure-swagger
     // https://github.com/swagger-api/swagger-codegen-generators
-    implementation("io.ktor:ktor-server-swagger:$ktorVersion")
     implementation("io.ktor:ktor-server-openapi:$ktorVersion")
-    implementation("io.ktor:ktor-server-swagger-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-swagger:$ktorVersion")
     implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.45")
 
 

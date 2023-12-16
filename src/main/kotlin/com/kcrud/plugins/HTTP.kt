@@ -9,6 +9,7 @@ package com.kcrud.plugins
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.plugins.defaultheaders.*
 
 /**
  * Initializes CORS (Cross-Origin Resource Sharing) settings for the application.
@@ -19,6 +20,10 @@ import io.ktor.server.plugins.cors.routing.*
  * See: [CORS Documentation](https://ktor.io/docs/cors.html)
  */
 fun Application.httpModule() {
+
+    install(DefaultHeaders) {
+        header("X-Engine", "Kcrud")
+    }
 
     // Install and configure the CORS feature.
     install(CORS) {

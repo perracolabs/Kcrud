@@ -65,9 +65,9 @@ internal object KGraphQLSetup {
 
             // Log the GraphQL endpoints.
             if (withPlayground) {
-                NetworkUtils.logEndpoints(
-                    reason = "Configured GraphQL endpoints.",
-                    endpoints = listOf("graphql")
+                NetworkUtils.logEndpoint(
+                    reason = "GraphQL",
+                    endpoint = "graphql"
                 )
             }
         }

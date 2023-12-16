@@ -63,7 +63,7 @@ internal object ExpediaGraphQLSetup {
         // Log the GraphQL endpoints.
         val endpoints = if (withPlayground) listOf("graphiql", "sdl", "graphql") else listOf("sdl", "graphql")
         NetworkUtils.logEndpoints(
-            reason = "Configured GraphQL endpoints.",
+            reason = "GraphQL endpoints",
             endpoints = endpoints
         )
     }

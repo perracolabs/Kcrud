@@ -34,9 +34,10 @@ internal data class AppSettings(
      *
      * @property port The network port the server listens on.
      * @property host The network address the server is bound to.
-     * @property swagger Flag to enable/disable Swagger UI.
+     * @property swaggerPath The path to the Swagger UI. Null if Swagger is disabled.
+     * @property openApiPath The path to the OpenAPI specification. Null if OpenAPI is disabled.
      */
-    data class Deployment(val port: Int, val host: String, val swagger: Boolean)
+    data class Deployment(val port: Int, val host: String, val swaggerPath: String?, val openApiPath: String?)
 
     /**
      * GraphQL related settings.
