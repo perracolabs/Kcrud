@@ -85,8 +85,8 @@ internal object SettingsParser {
      * @throws IllegalArgumentException for unsupported types or conversion failures.
      */
     private fun convertToType(config: ApplicationConfig, keyPath: String, type: KClass<*>): Any? {
-        // Check if the type is a data class. If so, handle it recursively.
         if (type.isData) {
+            // If the type is a data class, handle it recursively.
             return instantiateConfig(config = config, keyPath = keyPath, kClass = type)
         }
 
