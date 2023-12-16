@@ -1,5 +1,5 @@
 # Kcrud
-A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
+A REST/GraphQL **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
 
 ### Characteristics:
 * Most common **REST** operations.
