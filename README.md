@@ -6,7 +6,7 @@ A **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
 * [Encryption](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/data/database/tables/ContactTable.kt) at field level example.
 * [Netty](https://ktor.io/docs/engines.html) async web server.
-* [GraphQL](https://graphql.org/) with the frameworks [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) and [KGraphQL](https://github.com/aPureBase/KGraphQL).
+* [GraphQL](https://graphql.org/) with both frameworks [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) and [KGraphQL](https://github.com/aPureBase/KGraphQL).
 * [Koin](https://insert-koin.io/) dependency injection.
 * [Rate limit](https://ktor.io/docs/rate-limit.html) examples.
 * [JWT](https://ktor.io/docs/jwt.html) authentication for both REST and GraphQL.
