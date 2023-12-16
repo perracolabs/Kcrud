@@ -18,7 +18,7 @@ import io.ktor.server.response.*
  *
  * See: [Ktor Status Pages Documentation](https://ktor.io/docs/status-pages.html)
  */
-fun Application.configureStatusPages() {
+fun Application.statusPagesModule() {
 
     val appSettings = SettingsProvider.get
 

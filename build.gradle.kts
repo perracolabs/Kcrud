@@ -8,6 +8,7 @@ plugins {
     kotlin("jvm") version "1.9.21"
     id("io.ktor.plugin") version "2.3.7"
     kotlin("plugin.serialization") version "1.9.21"
+    id("com.expediagroup.graphql") version "7.0.2"
 }
 
 group = "com.kcrud"

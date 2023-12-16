@@ -32,23 +32,23 @@ fun main(args: Array<String>) {
  */
 fun Application.module() {
 
-    configureSettingsProvider()
+    settingsProviderModule()
 
-    configureKoin()
+    koinModule()
 
-    configureHTTP()
+    httpModule()
 
-    configureRateLimit()
+    rateLimitModule()
 
-    configureAuthentication()
+    authenticationModule()
 
-    configureStatusPages()
+    statusPagesModule()
 
-    configureSerialization()
+    serializationModule()
 
-    configureGraphQL()
+    routingModule()
 
-    configureRouting()
+    graphQLModule()
 
     DatabaseManager.init(
         mode = DatabaseManager.Mode.PERSISTENT,

@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
  *
  * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
  */
-fun Application.configureSerialization() {
+fun Application.serializationModule() {
 
     install(ContentNegotiation) {
         // Define the behavior and characteristics of the JSON serializer.

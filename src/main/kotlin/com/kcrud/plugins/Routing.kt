@@ -26,7 +26,7 @@ import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
  *
  * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html)
  */
-fun Application.configureRouting() {
+fun Application.routingModule() {
 
     routing {
         rateLimit(RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {

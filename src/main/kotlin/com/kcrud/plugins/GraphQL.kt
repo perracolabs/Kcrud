@@ -17,7 +17,7 @@ import org.koin.ktor.ext.inject
  *
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
-fun Application.configureGraphQL() {
+fun Application.graphQLModule() {
     val employeeService by inject<EmployeeService>()
     val employmentService by inject<EmploymentService>()
 

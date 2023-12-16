@@ -18,7 +18,7 @@ import io.ktor.server.plugins.cors.routing.*
  *
  * See: [CORS Documentation](https://ktor.io/docs/cors.html)
  */
-fun Application.configureHTTP() {
+fun Application.httpModule() {
 
     // Install and configure the CORS feature.
     install(CORS) {
