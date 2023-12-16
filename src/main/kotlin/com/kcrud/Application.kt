@@ -8,9 +8,11 @@ package com.kcrud
 
 import com.kcrud.data.database.shared.DatabaseManager
 import com.kcrud.plugins.*
+import com.kcrud.settings.SettingsProvider
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import org.slf4j.LoggerFactory
 
 /**
  * Application main entry point.
@@ -52,4 +54,7 @@ fun Application.module() {
         mode = DatabaseManager.Mode.PERSISTENT,
         type = DatabaseManager.DBType.H2
     )
+
+    val logger = LoggerFactory.getLogger(javaClass.simpleName)
+    logger.info("Server configured. Development Mode: ${SettingsProvider.global.development}")
 }

@@ -66,7 +66,7 @@ fun Application.routingModule() {
         // WIth JetBrains Ultimate Edition, the documentation can be auto-generated following the next steps:
         // 1. Place the caret over the 'routing' instruction defined above at the start of this function.
         // 2. Press Alt+Enter, and select 'Generate Swagger/OpenAPI Documentation'.
-        if (SettingsProvider.get.deployment.swagger) {
+        if (SettingsProvider.deployment.swagger) {
             swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml") { version = "4.15.5" }
             openAPI(path = "openapi", swaggerFile = "openapi/documentation.yaml") { codegen = StaticHtmlCodegen() }
         }

@@ -92,7 +92,7 @@ fun Route.employeeRouting() {
     route(RouteSegment.API_VERSION) {
         route(RouteSegment.Employee.ROUTE) {
 
-            if (SettingsProvider.get.security.jwt.isEnabled) {
+            if (SettingsProvider.security.jwt.isEnabled) {
                 authenticate {
                     routeSetup()
                 }

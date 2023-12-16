@@ -41,9 +41,8 @@ internal object AuthenticationToken {
      * If invalid then the Unauthorized response is sent.
      */
     fun verify(call: ApplicationCall) {
-        val appSettings = SettingsProvider.get
 
-        if (appSettings.security.jwt.isEnabled) {
+        if (SettingsProvider.security.jwt.isEnabled) {
             val tokenState = getState(call)
             when (tokenState) {
                 TokenState.Valid -> {
@@ -69,11 +68,10 @@ internal object AuthenticationToken {
      * Returns the current [TokenState] from the header authorization token.
      */
     fun getState(call: ApplicationCall): TokenState {
-        val appSettings = SettingsProvider.get
 
         return try {
             val token = fromHeader(call)
-            val algorithm: Algorithm = Algorithm.HMAC256(appSettings.security.jwt.secretKey)
+            val algorithm: Algorithm = Algorithm.HMAC256(SettingsProvider.security.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             verifier.verify(JWT.decode(token))
             TokenState.Valid
@@ -104,7 +102,7 @@ internal object AuthenticationToken {
      * Generate a new authorization token.
      */
     fun generate(): String {
-        val jwtSettings = SettingsProvider.get.security.jwt
+        val jwtSettings = SettingsProvider.security.jwt
         val expirationDate = Date(System.currentTimeMillis() + expiration_ms)
 
         return JWT.create()

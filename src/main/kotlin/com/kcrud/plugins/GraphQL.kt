@@ -24,8 +24,8 @@ fun Application.graphQLModule() {
     val employeeService by inject<EmployeeService>()
     val employmentService by inject<EmploymentService>()
 
-    val framework = SettingsProvider.get.graphql.framework
-    val withPlayground = SettingsProvider.get.graphql.playground
+    val framework = SettingsProvider.graphql.framework
+    val withPlayground = SettingsProvider.graphql.playground
 
     when (framework) {
         GraphQLFramework.EXPEDIA_GROUP -> {

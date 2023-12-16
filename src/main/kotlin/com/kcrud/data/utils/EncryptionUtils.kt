@@ -23,7 +23,7 @@ internal object EncryptionUtils {
     }
 
     fun getEncryptor(): Encryptor {
-        val encryption = SettingsProvider.get.security.encryption
+        val encryption = SettingsProvider.security.encryption
         val algorithm: AlgorithmName = AlgorithmName.valueOf(encryption.algorithm)
 
         return when (algorithm) {

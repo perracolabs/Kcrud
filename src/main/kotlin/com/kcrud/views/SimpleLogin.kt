@@ -58,11 +58,10 @@ internal class SimpleLogin {
      * Handles the form submission for authentication when a POST request is made.
      */
     suspend fun manageResponse(call: ApplicationCall) {
-        val appSettings = SettingsProvider.get
         val parameters = call.receiveParameters()
         val username = parameters[KEY_USERNAME]
         val password = parameters[KEY_PASSWORD]
-        val localCredentials = appSettings.security.basicAuth.credentials
+        val localCredentials = SettingsProvider.security.basicAuth.credentials
 
         if (username == localCredentials.username && password == localCredentials.password) {
             call.respondText("Authentication successful")

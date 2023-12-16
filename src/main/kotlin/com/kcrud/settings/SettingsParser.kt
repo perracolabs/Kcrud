@@ -31,7 +31,7 @@ internal object SettingsParser {
         val deployment = instantiateConfig(config = config, keyPath = "ktor.deployment", kClass = AppSettings.Deployment::class)
         val graphql = instantiateConfig(config = config, keyPath = "ktor.graphql", kClass = AppSettings.GraphQL::class)
         val security = instantiateConfig(config = config, keyPath = "ktor.security", kClass = AppSettings.Security::class)
-        return AppSettings(global = global, deployment = deployment, security = security, graphql=graphql)
+        return AppSettings(global = global, deployment = deployment, security = security, graphql = graphql)
     }
 
     /**

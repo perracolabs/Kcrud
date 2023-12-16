@@ -17,12 +17,11 @@ import io.ktor.server.routing.*
  * Root endpoints.
  */
 fun Route.rootRouting() {
-    val appSettings = SettingsProvider.get
 
-    if (appSettings.security.basicAuth.isEnabled) {
+    if (SettingsProvider.security.basicAuth.isEnabled) {
 
         // Basic Authentication for the root endpoint.
-        if (appSettings.security.basicAuth.loginForm) {
+        if (SettingsProvider.security.basicAuth.loginForm) {
 
             // Use the login form to handle authentication.
             get("/") { SimpleLogin().generateForm(call) }
@@ -30,7 +29,7 @@ fun Route.rootRouting() {
 
         } else {
             // Use built-in browser-based basic authentication.
-            authenticate(appSettings.security.basicAuth.providerName) {
+            authenticate(SettingsProvider.security.basicAuth.providerName) {
                 get("/") { call.respondText("Authentication successful") }
             }
         }

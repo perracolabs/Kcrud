@@ -24,23 +24,22 @@ internal object AuthenticationSetup {
      * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
      */
     fun configureJwt(config: AuthenticationConfig) {
-        val appSettings = SettingsProvider.get
 
         config.jwt {
-            realm = appSettings.security.jwt.realm
+            realm = SettingsProvider.security.jwt.realm
 
             // Build and set the JWT verifier with the configured settings.
             verifier(
                 JWT
-                    .require(Algorithm.HMAC256(appSettings.security.jwt.secretKey))
-                    .withAudience(appSettings.security.jwt.audience)
-                    .withIssuer(appSettings.security.jwt.issuer)
+                    .require(Algorithm.HMAC256(SettingsProvider.security.jwt.secretKey))
+                    .withAudience(SettingsProvider.security.jwt.audience)
+                    .withIssuer(SettingsProvider.security.jwt.issuer)
                     .build()
             )
 
             // Validate the credentials; check if the audience in the token matches the expected audience.
             validate { credential ->
-                if (credential.payload.audience.contains(appSettings.security.jwt.audience)) {
+                if (credential.payload.audience.contains(SettingsProvider.security.jwt.audience)) {
                     JWTPrincipal(credential.payload)
                 } else {
                     null
@@ -55,13 +54,12 @@ internal object AuthenticationSetup {
      * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
      */
     fun configureBasicAuth(config: AuthenticationConfig) {
-        val appSettings = SettingsProvider.get
 
-        config.basic(appSettings.security.basicAuth.providerName) {
-            realm = appSettings.security.basicAuth.realm
+        config.basic(SettingsProvider.security.basicAuth.providerName) {
+            realm = SettingsProvider.security.basicAuth.realm
 
             validate { credentials ->
-                val localCredentials = appSettings.security.basicAuth.credentials
+                val localCredentials = SettingsProvider.security.basicAuth.credentials
 
                 if (credentials.name == localCredentials.username && credentials.password == localCredentials.password) {
                     UserIdPrincipal(credentials.name)

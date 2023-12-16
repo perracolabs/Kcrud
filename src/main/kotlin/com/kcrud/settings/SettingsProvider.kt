@@ -17,17 +17,21 @@ import io.ktor.server.application.*
 internal object SettingsProvider {
     private lateinit var settings: AppSettings
 
-    val get: AppSettings
-        get() {
-            if (!SettingsProvider::settings.isInitialized) {
-                throw UninitializedPropertyAccessException(
-                    "Uninitialized SettingsProvider. Call 'SettingsProvider.install()' in the application pipeline."
-                )
-            }
-            return settings
-        }
+    val global: AppSettings.Global get() = getSettings().global
+    val graphql: AppSettings.GraphQL get() = getSettings().graphql
+    val deployment: AppSettings.Deployment get() = getSettings().deployment
+    val security: AppSettings.Security get() = getSettings().security
 
     fun install(pipeline: Application) {
         settings = AppSettings(pipeline.environment.config)
+    }
+
+    private fun getSettings(): AppSettings {
+        if (!::settings.isInitialized) {
+            throw UninitializedPropertyAccessException(
+                "Uninitialized SettingsProvider. Call 'SettingsProvider.install()' in the application pipeline."
+            )
+        }
+        return settings
     }
 }

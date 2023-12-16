@@ -13,10 +13,10 @@ internal object NetworkUtils {
     private val logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     fun logEndpoints(reason: String? = null, endpoints: List<String>) {
-        var host = SettingsProvider.get.deployment.host
+        var host = SettingsProvider.deployment.host
         host = if (host == "0.0.0.0") "localhost" else host
 
-        val port = SettingsProvider.get.deployment.port
+        val port = SettingsProvider.deployment.port
         val protocol = if (port == 443) "https" else "http"
         val url = "$protocol://$host:$port"
 

@@ -45,7 +45,7 @@ fun Route.accessTokenRouting() {
 
         // Endpoint for initial token generation; requires Basic Authentication.
         rateLimit(RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
-            authenticate(SettingsProvider.get.security.basicAuth.providerName) {
+            authenticate(SettingsProvider.security.basicAuth.providerName) {
                 post("create") {
                     call.respondWithToken()
                 }

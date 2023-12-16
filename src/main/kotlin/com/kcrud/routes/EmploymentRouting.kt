@@ -36,7 +36,7 @@ fun Route.employmentRouting() {
             route(RouteSegment.Employee.EMPLOYEE_ID_PATH) {
                 route(RouteSegment.Employment.ROUTE) {
 
-                    if (SettingsProvider.get.security.jwt.isEnabled) {
+                    if (SettingsProvider.security.jwt.isEnabled) {
                         authenticate {
                             setupEmploymentRoutes(service)
                         }
