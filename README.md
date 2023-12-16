@@ -24,6 +24,10 @@ A REST/GraphQL **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](
 * Add database migrations examples. 
 ---
 
+For convenience the project includes a *[Postman Collection (kcrud.postman_collection)](https://github.com/perracolabs/Kcrud/blob/master/kcrud.postman_collection.json)* with all the available REST endpoints, including the GraphQL queries and mutations.
+
+---
+
 ## Handling Security
 
 The enabling or disabling of security is managed through the `hconf` configuration file.
@@ -98,12 +102,10 @@ http://localhost:8080/auth/token/refresh
 
 ### Postman **GraphQL**:
 
-Both most popular GraphQL frameworks are included in the project, ExpediaGroup GraphQL and KGraphQL.
+Both most popular GraphQL frameworks are included in the project, *ExpediaGroup GraphQL* and *KGraphQL*.
 Once the project starts the console will display their endpoints, including the playground.
 
-- Data endpoint: http://localhost:8080/graphql
-
-The project includes a *[Postman Collection (kcrud.postman_collection)](https://github.com/perracolabs/Kcrud/blob/master/kcrud.postman_collection.json)* with all possible queries and mutations.
+- Endpoint: http://localhost:8080/graphql
 
 #### Query Example:
 
