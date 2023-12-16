@@ -8,11 +8,9 @@ package com.kcrud.routes
 
 import com.kcrud.data.models.employment.EmploymentParams
 import com.kcrud.services.EmploymentService
-import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -35,15 +33,7 @@ fun Route.employmentRouting() {
         route(RouteSegment.Employee.ROUTE) {
             route(RouteSegment.Employee.EMPLOYEE_ID_PATH) {
                 route(RouteSegment.Employment.ROUTE) {
-
-                    if (SettingsProvider.security.jwt.isEnabled) {
-                        authenticate {
-                            setupEmploymentRoutes(service)
-                        }
-                    } else {
-                        setupEmploymentRoutes(service)
-                    }
-
+                    setupEmploymentRoutes(service)
                 }
             }
         }

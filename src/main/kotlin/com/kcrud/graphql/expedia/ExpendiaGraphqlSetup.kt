@@ -15,8 +15,10 @@ import com.kcrud.graphql.expedia.schema.employment.EmploymentQueries
 import com.kcrud.graphql.expedia.types.CustomSchemaGeneratorHooks
 import com.kcrud.services.EmployeeService
 import com.kcrud.services.EmploymentService
+import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 
 /**
@@ -50,8 +52,16 @@ internal object ExpediaGraphQLSetup {
         }
 
         application.routing {
-            graphQLGetRoute()
-            graphQLPostRoute()
+            if (SettingsProvider.security.jwt.isEnabled) {
+                authenticate {
+                    graphQLGetRoute()
+                    graphQLPostRoute()
+                }
+            } else {
+                graphQLGetRoute()
+                graphQLPostRoute()
+            }
+
             graphQLSDLRoute() // http://localhost:8080/sdl
 
             // Set GraphQL playground for development and testing.

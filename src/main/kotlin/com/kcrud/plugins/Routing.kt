@@ -7,8 +7,10 @@
 package com.kcrud.plugins
 
 import com.kcrud.routes.*
+import com.kcrud.settings.SettingsProvider
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
@@ -46,8 +48,15 @@ fun Application.routingModule() {
         // Define data endpoints.
         rateLimit(RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
             rootRouting()
-            employeeRouting()
-            employmentRouting()
+            if (SettingsProvider.security.jwt.isEnabled) {
+                authenticate {
+                    employeeRouting()
+                    employmentRouting()
+                }
+            } else {
+                employeeRouting()
+                employmentRouting()
+            }
         }
 
         // Define access-token endpoints.
