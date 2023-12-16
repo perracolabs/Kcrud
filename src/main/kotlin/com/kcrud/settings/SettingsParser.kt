@@ -6,7 +6,6 @@
 
 package com.kcrud.settings
 
-import com.kcrud.graphql.GraphQLFramework
 import io.ktor.server.config.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -86,21 +85,27 @@ internal object SettingsParser {
      * @throws IllegalArgumentException for unsupported types or conversion failures.
      */
     private fun convertToType(config: ApplicationConfig, keyPath: String, type: KClass<*>): Any? {
+        // Check if the type is a data class. If so, handle it recursively.
         if (type.isData) {
-            // Recurse for nested data classes, like Security.SecretKey, etc.
             return instantiateConfig(config = config, keyPath = keyPath, kClass = type)
         }
 
-        // Resolve simple types.
         val stringValue: String = config.propertyOrNull(path = keyPath)?.getString() ?: return null
+
         return when (type) {
             String::class -> stringValue
+            Boolean::class -> stringValue.toBooleanStrictOrNull()
             Int::class -> stringValue.toIntOrNull()
-            Boolean::class -> stringValue.toBoolean()
             Long::class -> stringValue.toLongOrNull()
             Double::class -> stringValue.toDoubleOrNull()
-            GraphQLFramework::class -> GraphQLFramework.valueOf(stringValue)
-            else -> throw IllegalArgumentException("Unsupported type: $type. Found in path: $keyPath")
+            else -> if (type.java.isEnum) {
+                val enumConstants = type.java.enumConstants
+                val targetEnumName = stringValue.uppercase()
+                enumConstants.firstOrNull { (it as Enum<*>).name.uppercase() == targetEnumName }
+                    ?: throw IllegalArgumentException("Enum value '$stringValue' not found for type: $type. Found in path: $keyPath")
+            } else {
+                throw IllegalArgumentException("Unsupported type: $type. Found in path: $keyPath")
+            }
         }
     }
 }
