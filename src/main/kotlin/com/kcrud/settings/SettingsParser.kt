@@ -108,10 +108,9 @@ internal object SettingsParser {
             return null
         }
 
-        val enumConstants = enumType.java.enumConstants
-        val targetEnumName = stringValue.uppercase()
-
-        return enumConstants.firstOrNull { (it as Enum<*>).name.uppercase() == targetEnumName } as Enum<*>?
+        return enumType.java.enumConstants.firstOrNull {
+            (it as Enum<*>).name.compareTo(stringValue, ignoreCase = true) == 0
+        } as Enum<*>?
             ?: throw IllegalArgumentException("Enum value '$stringValue' not found for type: $enumType. Found in path: $keyPath")
     }
 }
