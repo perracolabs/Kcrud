@@ -27,6 +27,7 @@ internal object NetworkUtils {
      * @param reason A description of why the endpoint is being logged, for context.
      * @param endpoint The endpoint to be logged.
      */
+    @Suppress("unused")
     fun logEndpoint(reason: String, endpoint: String) {
         logEndpoints(reason = reason, endpoints = listOf(endpoint))
     }
@@ -40,14 +41,7 @@ internal object NetworkUtils {
      * @param endpoints The list of endpoints to be logged.
      */
     fun logEndpoints(reason: String, endpoints: List<String>) {
-        val host = SettingsProvider.deployment.host
-        var url = ""
-
-        if (host != LISTEN_ALL_IPS) {
-            val port = SettingsProvider.deployment.port
-            val protocol = if (port == SECURE_PORT) SECURE_PROTOCOL else INSECURE_PROTOCOL
-            url = "$protocol://$host:$port"
-        }
+        val url = getServerUrl()
 
         if (endpoints.size == 1) {
             tracer.info("$reason: $url/${endpoints[0]}")
@@ -57,5 +51,22 @@ internal object NetworkUtils {
                 tracer.info("$url/$endpoint")
             }
         }
+    }
+
+    private fun getServerUrl(): String {
+        val host = SettingsProvider.deployment.host
+        var url = ""
+
+        if (host != LISTEN_ALL_IPS) {
+            val port = SettingsProvider.deployment.port
+            val protocol = getProtocol()
+            url = "$protocol://$host:$port"
+        }
+
+        return url
+    }
+
+    private fun getProtocol(): String {
+        return if (SettingsProvider.deployment.port == SECURE_PORT) SECURE_PROTOCOL else INSECURE_PROTOCOL
     }
 }

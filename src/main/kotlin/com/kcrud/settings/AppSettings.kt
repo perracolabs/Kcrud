@@ -19,8 +19,9 @@ import io.ktor.server.config.*
 internal data class AppSettings(
     val global: Global,
     val deployment: Deployment,
-    val security: Security,
-    val graphql: GraphQL
+    val docs: Docs,
+    val graphql: GraphQL,
+    val security: Security
 ) {
     /**
      * Contains the main global configuration settings.
@@ -34,10 +35,27 @@ internal data class AppSettings(
      *
      * @property port The network port the server listens on.
      * @property host The network address the server is bound to.
-     * @property swaggerPath The path to the Swagger UI. Null if Swagger is disabled.
-     * @property openApiPath The path to the OpenAPI specification. Null if OpenAPI is disabled.
      */
-    data class Deployment(val port: Int, val host: String, val swaggerPath: String?, val openApiPath: String?)
+    data class Deployment(val port: Int, val host: String)
+
+    /**
+     * Contains settings related to Swagger, OpenAPI, and Redoc.
+     *
+     * @property isEnabled Whether Swagger is enabled.
+     * @property yamlFile The documentation location file.
+     * @property rootPath The root URL path where the documentation is served.
+     * @property swaggerPath The path to the Swagger UI.
+     * @property openApiPath The path to the OpenAPI specification.
+     * @property redocPath The path to the Redoc file.
+     */
+    data class Docs(
+        val isEnabled: Boolean,
+        val yamlFile: String,
+        val rootPath: String,
+        val swaggerPath: String,
+        val openApiPath: String,
+        val redocPath: String
+    )
 
     /**
      * GraphQL related settings.

@@ -28,9 +28,17 @@ internal object SettingsParser {
     fun parse(config: ApplicationConfig): AppSettings {
         val global = instantiateConfig(config = config, keyPath = "ktor", kClass = AppSettings.Global::class)
         val deployment = instantiateConfig(config = config, keyPath = "ktor.deployment", kClass = AppSettings.Deployment::class)
+        val docs = instantiateConfig(config = config, keyPath = "ktor.docs", kClass = AppSettings.Docs::class)
         val graphql = instantiateConfig(config = config, keyPath = "ktor.graphql", kClass = AppSettings.GraphQL::class)
         val security = instantiateConfig(config = config, keyPath = "ktor.security", kClass = AppSettings.Security::class)
-        return AppSettings(global = global, deployment = deployment, security = security, graphql = graphql)
+
+        return AppSettings(
+            global = global,
+            deployment = deployment,
+            docs = docs,
+            security = security,
+            graphql = graphql
+        )
     }
 
     /**
@@ -69,7 +77,13 @@ internal object SettingsParser {
             }
         }
 
-        return constructor.callBy(args = arguments)
+        return runCatching {
+            constructor.callBy(args = arguments)
+        }.getOrElse {
+            throw IllegalArgumentException(
+                "Error instantiating settings class.\nClass: $kClass\nError: ${it.message}\nPath: $keyPath\nArguments:\n$arguments"
+            )
+        }
     }
 
     /**

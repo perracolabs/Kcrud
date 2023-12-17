@@ -18,8 +18,9 @@ internal object SettingsProvider {
     private lateinit var settings: AppSettings
 
     val global: AppSettings.Global get() = getSettings().global
-    val graphql: AppSettings.GraphQL get() = getSettings().graphql
     val deployment: AppSettings.Deployment get() = getSettings().deployment
+    val docs: AppSettings.Docs get() = getSettings().docs
+    val graphql: AppSettings.GraphQL get() = getSettings().graphql
     val security: AppSettings.Security get() = getSettings().security
 
     fun install(pipeline: Application) {
