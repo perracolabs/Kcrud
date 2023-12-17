@@ -67,7 +67,7 @@ internal object DatabaseManager {
             setupDatabase(database)
         }
 
-        tracer.info("Database ready.")
+        tracer.info("Database ready: $type - $mode.")
     }
 
     /**
