@@ -18,7 +18,6 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
-import kotlin.time.Duration.Companion.days
 
 /**
  * Security class responsible for verifying JWT tokens.
@@ -28,9 +27,6 @@ import kotlin.time.Duration.Companion.days
  */
 internal object AuthenticationToken {
     private val tracer = Tracer.create<AuthenticationToken>()
-
-    // Hardcoded expiration to 1 month, tweak as needed.
-    private val expiration_ms = 30.days.inWholeMilliseconds
 
     enum class TokenState {
         Valid, Expired, Invalid
@@ -103,7 +99,8 @@ internal object AuthenticationToken {
      */
     fun generate(): String {
         val jwtSettings = SettingsProvider.security.jwt
-        val expirationDate = Date(System.currentTimeMillis() + expiration_ms)
+        val expirationMs = jwtSettings.tokenLifetime
+        val expirationDate = Date(System.currentTimeMillis() + expirationMs)
 
         return JWT.create()
             .withAudience(jwtSettings.audience)
