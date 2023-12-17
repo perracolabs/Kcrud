@@ -13,7 +13,6 @@ import com.kcrud.graphql.kgraphql.schema.employee.EmployeeQueries
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentMutations
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentQueries
 import com.kcrud.security.AuthenticationToken
-import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
 
 /**
@@ -23,7 +22,7 @@ import io.ktor.server.application.*
  */
 internal object KGraphQLSetup {
     @OptIn(KGraphQLAPI::class)
-    fun configure(application: Application, withPlayground: Boolean) {
+    fun configure(application: Application, withPlayground: Boolean): List<String>? {
         application.install(GraphQL) {
 
             // Set GraphQL playground for development and testing.
@@ -55,14 +54,9 @@ internal object KGraphQLSetup {
                     .configureInputs()
                     .configureMutations()
             }
-
-            // Log the GraphQL endpoints.
-            if (withPlayground) {
-                NetworkUtils.logEndpoint(
-                    reason = "GraphQL",
-                    endpoint = "graphql"
-                )
-            }
         }
+
+        // Return the configured endpoints.
+        return if (withPlayground) listOf("graphql") else null
     }
 }

@@ -11,10 +11,12 @@ import com.kcrud.services.EmployeeService
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
+import java.util.*
 
 
 /**
@@ -46,8 +48,8 @@ fun Route.employeeRouting() {
 
         // Delete All
         delete {
-            service.deleteAll().also {
-                call.respond(HttpStatusCode.NoContent)
+            service.deleteAll().also { deletedCount ->
+                call.respond(HttpStatusCode.OK, deletedCount)
             }
         }
 
@@ -55,34 +57,31 @@ fun Route.employeeRouting() {
 
             // Find by employee ID
             get {
-                val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
-                val employee = employeeId?.let { service.findById(it) }
+                val employeeId = call.getEmployeeId()
+                val employee = service.findById(employeeId = employeeId)
 
-                if (employee != null) {
+                employee?.let {
                     call.respond(employee)
-                } else {
-                    call.respond(HttpStatusCode.NotFound, "Employee not found.")
-                }
+                } ?: call.respondNotFound(employeeId = employeeId)
             }
 
             // Update by employee ID
             put {
-                val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
+                val employeeId = call.getEmployeeId()
                 val employeeParams = call.receive<EmployeeParams>()
-                val updatedEmployee = employeeId?.let { service.update(it, employeeParams) }
+                val updatedEmployee = service.update(employeeId = employeeId, employee = employeeParams)
 
-                if (updatedEmployee != null) {
+                updatedEmployee?.let {
                     call.respond(HttpStatusCode.OK, updatedEmployee)
-                } else {
-                    call.respond(HttpStatusCode.NotFound, "Employee not found.")
-                }
+                } ?: call.respondNotFound(employeeId = employeeId)
             }
 
             // Delete by employee ID
             delete {
-                val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
-                employeeId?.let { service.delete(it) }
-                call.respond(HttpStatusCode.NoContent)
+                val employeeId = call.getEmployeeId()
+                service.delete(employeeId = employeeId).also { deletedCount ->
+                    call.respond(HttpStatusCode.OK, deletedCount)
+                }
             }
         }
     }
@@ -92,4 +91,16 @@ fun Route.employeeRouting() {
             routeSetup()
         }
     }
+}
+
+private fun ApplicationCall.getEmployeeId(): UUID {
+    return parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
+        ?: throw BadRequestException("Invalid employee ID argument.")
+}
+
+private suspend fun ApplicationCall.respondNotFound(employeeId: UUID) {
+    respond(
+        status = HttpStatusCode.NotFound,
+        message = "Employee ID not found '$employeeId'."
+    )
 }

@@ -11,10 +11,12 @@ import com.kcrud.services.EmploymentService
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
+import java.util.*
 
 
 /**
@@ -58,70 +60,78 @@ private fun Route.setupEmploymentRoutes(service: EmploymentService) {
 
 private fun Route.createEmployment(service: EmploymentService) {
     post {
-        val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
-
-        employeeId?.let {
-            val employmentParams = call.receive<EmploymentParams>()
-            val newEmployment = service.create(employeeId, employmentParams)
-            call.respond(HttpStatusCode.Created, newEmployment)
-        } ?: call.respond(HttpStatusCode.NotFound, "Employee not found.")
+        val employeeId = call.getEmployeeId()
+        val employmentParams = call.receive<EmploymentParams>()
+        val newEmployment = service.create(employeeId, employmentParams)
+        call.respond(HttpStatusCode.Created, newEmployment)
     }
 }
 
 private fun Route.findEmploymentByEmployeeId(service: EmploymentService) {
     get {
-        val employeeId = call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
-
-        employeeId?.let {
-            val employments = service.findByEmployeeId(employeeId)
-            call.respond(employments)
-        } ?: call.respond(HttpStatusCode.NotFound, "Employee not found.")
+        val employeeId = call.getEmployeeId()
+        val employments = service.findByEmployeeId(employeeId)
+        call.respond(employments)
     }
 }
 
 private fun Route.findEmploymentById(service: EmploymentService) {
     get {
-        call.parameters[RouteSegment.Employment.EMPLOYMENT_ID]?.toUUIDOrNull()?.let { employmentId ->
-            service.findById(employmentId)?.also { employment ->
-                call.respond(employment)
-            } ?: call.respond(HttpStatusCode.NotFound, "Employment ID not found: $employmentId")
-        } ?: call.respond(HttpStatusCode.BadRequest, "Invalid employment ID argument.")
+        val employeeId = call.getEmployeeId()
+        val employmentId = call.getEmploymentId()
+
+        service.findById(employeeId = employeeId, employmentId = employmentId)?.also { employment ->
+            call.respond(employment)
+        } ?: call.respondNotFound(employeeId = employeeId, employmentId = employmentId)
     }
 }
 
 private fun Route.updateEmploymentById(service: EmploymentService) {
     put {
-        call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()?.let { employeeId ->
+        val employeeId = call.getEmployeeId()
+        val employmentId = call.getEmploymentId()
 
-            call.parameters[RouteSegment.Employment.EMPLOYMENT_ID]?.toUUIDOrNull()?.let { employmentId ->
+        val updatedEmployment = call.receive<EmploymentParams>().let { employmentParams ->
+            service.update(employeeId = employeeId, employmentId = employmentId, employment = employmentParams)
+        }
 
-                val updatedEmployment = call.receive<EmploymentParams>().let { employmentParams ->
-                    service.update(employeeId = employeeId, employmentId = employmentId, employment = employmentParams)
-                }
-
-                updatedEmployment?.also { employment ->
-                    call.respond(status = HttpStatusCode.OK, message = employment)
-                } ?: call.respond(status = HttpStatusCode.NotFound, message = "Employment ID not found: $employmentId")
-
-            } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employment ID argument.")
-        } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employee ID argument.")
+        updatedEmployment?.also { employment ->
+            call.respond(status = HttpStatusCode.OK, message = employment)
+        } ?: call.respondNotFound(employeeId = employeeId, employmentId = employmentId)
     }
 }
 
 private fun Route.deleteEmploymentByEmployeeId(service: EmploymentService) {
     delete {
-        call.parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()?.let { employeeId ->
-            service.deleteAll(employeeId)
-            call.respond(HttpStatusCode.NoContent)
-        } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employeeId ID.")
+        val employeeId = call.getEmployeeId()
+        service.deleteAll(employeeId = employeeId).also { deletedCount ->
+            call.respond(HttpStatusCode.OK, deletedCount)
+        }
     }
 }
 
 private fun Route.deleteEmploymentById(service: EmploymentService) {
     delete {
-        call.parameters[RouteSegment.Employment.EMPLOYMENT_ID]?.toUUIDOrNull()?.let { employmentId ->
-            service.delete(employmentId)
-            call.respond(HttpStatusCode.NoContent)
-        } ?: call.respond(status = HttpStatusCode.BadRequest, message = "Invalid employment ID.")
+        val employmentId = call.getEmploymentId()
+        service.delete(employmentId = employmentId).also { deletedCount ->
+            call.respond(HttpStatusCode.OK, deletedCount)
+        }
     }
+}
+
+private fun ApplicationCall.getEmployeeId(): UUID {
+    return parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
+        ?: throw BadRequestException("Invalid employee ID argument.")
+}
+
+private fun ApplicationCall.getEmploymentId(): UUID {
+    return parameters[RouteSegment.Employment.EMPLOYMENT_ID]?.toUUIDOrNull()
+        ?: throw BadRequestException("Invalid employment ID argument.")
+}
+
+private suspend fun ApplicationCall.respondNotFound(employeeId: UUID, employmentId: UUID) {
+    respond(
+        status = HttpStatusCode.NotFound,
+        message = "Employment ID not found '$employmentId' for employee ID '$employeeId'."
+    )
 }

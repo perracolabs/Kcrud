@@ -21,8 +21,8 @@ class EmploymentQueries : Query {
 
     private val service: EmploymentService = getKoin().get()
 
-    fun employment(employmentId: UUID): Employment? {
-        return service.findById(employmentId = employmentId)
+    fun employment(employeeId: UUID, employmentId: UUID): Employment? {
+        return service.findById(employeeId = employeeId, employmentId = employmentId)
     }
 
     fun employments(employeeId: UUID): List<Employment> {

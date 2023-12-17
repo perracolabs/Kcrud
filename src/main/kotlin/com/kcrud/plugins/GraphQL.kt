@@ -10,6 +10,7 @@ import com.kcrud.graphql.GraphQLFramework
 import com.kcrud.graphql.expedia.ExpediaGraphQLSetup
 import com.kcrud.graphql.kgraphql.KGraphQLSetup
 import com.kcrud.settings.SettingsProvider
+import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
 
 /**
@@ -23,7 +24,7 @@ fun Application.graphQLModule() {
     val framework = SettingsProvider.graphql.framework
     val withPlayground = SettingsProvider.graphql.playground
 
-    when (framework) {
+    val endpoints: List<String>? = when (framework) {
         GraphQLFramework.EXPEDIA_GROUP -> {
             ExpediaGraphQLSetup.configure(
                 application = this,
@@ -37,6 +38,13 @@ fun Application.graphQLModule() {
                 withPlayground = withPlayground
             )
         }
+    }
+
+    endpoints?.let { list ->
+        NetworkUtils.logEndpoints(
+            reason = "GraphQL",
+            endpoints = list
+        )
     }
 }
 

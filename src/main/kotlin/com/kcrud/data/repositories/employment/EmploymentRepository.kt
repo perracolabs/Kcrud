@@ -18,11 +18,12 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 internal class EmploymentRepository : IEmploymentRepository {
-    override fun findById(employmentId: UUID): Employment? {
+    override fun findById(employeeId: UUID, employmentId: UUID): Employment? {
         return transaction {
             (EmploymentTable innerJoin EmployeeTable innerJoin ContactTable)
                 .select {
                     (EmploymentTable.id eq employmentId) and
+                            (EmploymentTable.employeeId eq employeeId) and
                             (EmployeeTable.id eq EmploymentTable.employeeId) and
                             (EmployeeTable.contactId eq ContactTable.id)
                 }.singleOrNull()?.let { resultRow ->
@@ -47,17 +48,19 @@ internal class EmploymentRepository : IEmploymentRepository {
                 employmentModelToTable(employeeId = employeeId, employment = employment, target = employmentRow)
             } get EmploymentTable.id
 
-            findById(newEmploymentId)!!
+            findById(employeeId = employeeId, employmentId = newEmploymentId)!!
         }
     }
 
     override fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentParams): Employment? {
         return transaction {
-            EmploymentTable.update(where = { EmploymentTable.id eq employmentId }) { employmentRow ->
+            EmploymentTable.update(where = {
+                EmploymentTable.id eq employmentId and (EmploymentTable.employeeId eq employeeId)
+            }) { employmentRow ->
                 employmentModelToTable(employeeId = employeeId, employment = employment, target = employmentRow)
             }
 
-            findById(employmentId)
+            findById(employeeId = employeeId, employmentId = employmentId)
         }
     }
 

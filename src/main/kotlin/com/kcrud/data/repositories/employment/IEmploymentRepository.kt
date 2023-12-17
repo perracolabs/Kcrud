@@ -14,10 +14,11 @@ interface IEmploymentRepository {
 
     /**
      * Retrieves an employment model by its ID.
+     * @param employeeId The ID of the employee associated with the employment.
      * @param employmentId The ID of the employment to be retrieved.
      * @return The employment model if found, null otherwise.
      */
-    fun findById(employmentId: UUID): Employment?
+    fun findById(employeeId: UUID, employmentId: UUID): Employment?
 
     /**
      * Retrieves all employment models for a given employee.

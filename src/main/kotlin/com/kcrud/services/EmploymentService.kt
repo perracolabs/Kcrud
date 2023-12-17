@@ -20,11 +20,12 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
 
     /**
      * Retrieves an employment model by its ID.
+     * @param employeeId The ID of the employee associated with the employment.
      * @param employmentId The ID of the employment to be retrieved.
      * @return The employment model if found, null otherwise.
      */
-    fun findById(employmentId: UUID): Employment? {
-        return repository.findById(employmentId)
+    fun findById(employeeId: UUID, employmentId: UUID): Employment? {
+        return repository.findById(employeeId = employeeId, employmentId = employmentId)
     }
 
     /**
@@ -48,7 +49,6 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
 
     /**
      * Updates an employment's details using the provided ID and employment model.
-     * @param employeeId The employee ID associated with the employment.
      * @param employmentId The ID of the employment to be updated.
      * @param employment The new details for the employment.
      * @return The updated employment model if the update was successful, null otherwise.

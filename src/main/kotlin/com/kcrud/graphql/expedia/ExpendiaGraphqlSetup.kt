@@ -14,7 +14,6 @@ import com.kcrud.graphql.expedia.schema.employment.EmploymentMutations
 import com.kcrud.graphql.expedia.schema.employment.EmploymentQueries
 import com.kcrud.graphql.expedia.types.CustomSchemaGeneratorHooks
 import com.kcrud.settings.SettingsProvider
-import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
@@ -26,7 +25,7 @@ import io.ktor.server.routing.*
  */
 internal object ExpediaGraphQLSetup {
     @OptIn(ExpediaAPI::class)
-    fun configure(application: Application, withPlayground: Boolean) {
+    fun configure(application: Application, withPlayground: Boolean): List<String> {
         application.install(GraphQL) {
 
             schema {
@@ -63,11 +62,7 @@ internal object ExpediaGraphQLSetup {
             }
         }
 
-        // Log the GraphQL endpoints.
-        val endpoints = if (withPlayground) listOf("graphiql", "sdl", "graphql") else listOf("sdl", "graphql")
-        NetworkUtils.logEndpoints(
-            reason = "GraphQL endpoints",
-            endpoints = endpoints
-        )
+        // Return the configured endpoints.
+        return if (withPlayground) listOf("graphiql", "sdl", "graphql") else listOf("sdl", "graphql")
     }
 }
