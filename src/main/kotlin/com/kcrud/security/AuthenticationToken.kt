@@ -99,8 +99,8 @@ internal object AuthenticationToken {
      */
     fun generate(): String {
         val jwtSettings = SettingsProvider.security.jwt
-        val expirationMs = jwtSettings.tokenLifetime
-        val expirationDate = Date(System.currentTimeMillis() + expirationMs)
+        val tokenLifetimeMs = jwtSettings.tokenLifetime
+        val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeMs)
 
         return JWT.create()
             .withAudience(jwtSettings.audience)
