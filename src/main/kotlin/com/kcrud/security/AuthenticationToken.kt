@@ -11,12 +11,12 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.kcrud.settings.SettingsProvider
+import com.kcrud.utils.Tracer
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
-import org.slf4j.LoggerFactory
 import java.util.*
 import kotlin.time.Duration.Companion.days
 
@@ -27,7 +27,7 @@ import kotlin.time.Duration.Companion.days
  * If the token is invalid or any exception occurs, an UnauthorizedException will be thrown.
  */
 internal object AuthenticationToken {
-    private val logger = LoggerFactory.getLogger(javaClass.simpleName)
+    private val tracer = Tracer.create<AuthenticationToken>()
 
     // Hardcoded expiration to 1 month, tweak as needed.
     private val expiration_ms = 30.days.inWholeMilliseconds
@@ -78,7 +78,7 @@ internal object AuthenticationToken {
         } catch (e: TokenExpiredException) {
             TokenState.Expired
         } catch (e: Exception) {
-            logger.error("Token verification failed: ${e.message}")
+            tracer.error("Token verification failed: ${e.message}")
             TokenState.Invalid
         }
     }

@@ -7,10 +7,9 @@
 package com.kcrud.utils
 
 import com.kcrud.settings.SettingsProvider
-import org.slf4j.LoggerFactory
 
 internal object NetworkUtils {
-    private val logger = LoggerFactory.getLogger(javaClass.simpleName)
+    private val tracer = Tracer.create<NetworkUtils>()
 
     fun logEndpoint(reason: String, endpoint: String) {
         logEndpoints(reason = reason, endpoints = listOf(endpoint))
@@ -25,11 +24,11 @@ internal object NetworkUtils {
         val url = "$protocol://$host:$port"
 
         if (endpoints.size == 1) {
-            logger.info("$reason: $url/${endpoints[0]}")
+            tracer.info("$reason: $url/${endpoints[0]}")
         } else {
-            logger.info("$reason:")
+            tracer.info("$reason:")
             endpoints.forEach { endpoint ->
-                logger.info("$url/$endpoint")
+                tracer.info("$url/$endpoint")
             }
         }
     }

@@ -9,10 +9,10 @@ package com.kcrud.data.database.shared
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
+import com.kcrud.utils.Tracer
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.slf4j.LoggerFactory
 import java.sql.DriverManager
 
 /**
@@ -26,7 +26,7 @@ import java.sql.DriverManager
  * ```
  */
 internal object DatabaseManager {
-    private val logger = LoggerFactory.getLogger(javaClass.simpleName)
+    private val tracer = Tracer.create<DatabaseManager>()
 
     enum class Mode {
         /** Represents an in-memory database mode. */
@@ -40,7 +40,6 @@ internal object DatabaseManager {
         H2,
         SQLite
     }
-
 
     /**
      * Initializes the database connection based on the provided mode and database type.
@@ -64,11 +63,11 @@ internal object DatabaseManager {
         val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
 
         if (createSchema) {
-            logger.info("Setting database schema.")
+            tracer.info("Setting database schema.")
             setupDatabase(database)
         }
 
-        logger.info("Database ready.")
+        tracer.info("Database ready.")
     }
 
     /**
@@ -102,9 +101,9 @@ internal object DatabaseManager {
             Runtime.getRuntime().addShutdownHook(Thread {
                 connection?.let {
                     if (!it.isClosed) {
-                        logger.info("Shutdown hook triggered. Closing database connection.")
+                        tracer.info("Shutdown hook triggered. Closing database connection.")
                         it.close()
-                        logger.info("Database connection closed.")
+                        tracer.info("Database connection closed.")
                     }
                 }
             })
