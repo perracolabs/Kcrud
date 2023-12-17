@@ -20,7 +20,7 @@ import io.ktor.server.application.*
  *
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
-fun Application.graphQLModule() {
+fun Application.configureGraphQL() {
 
     if (!SettingsProvider.graphql.isEnabled) {
         return

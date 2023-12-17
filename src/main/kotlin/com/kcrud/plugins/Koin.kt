@@ -22,7 +22,7 @@ import org.koin.ktor.plugin.Koin
  *
  * See: [Koin for Ktor Documentation](https://insert-koin.io/docs/quickstart/ktor)
  */
-fun Application.koinModule() {
+fun Application.configureKoin() {
 
     // Declare a Koin module to manage application-level dependencies.
     val moduleList = module {

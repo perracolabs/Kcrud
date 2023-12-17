@@ -25,7 +25,7 @@ import kotlin.time.Duration.Companion.seconds
  *
  * See: [Ktor Rate Limit](https://ktor.io/docs/rate-limit.html)
  */
-fun Application.rateLimitModule() {
+fun Application.configureRateLimit() {
     install(RateLimit) {
         // Example scope for new token generation rate limit.
         register(RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {

@@ -14,6 +14,6 @@ import io.ktor.server.application.*
  *
  * This should be called before any other plugin.
  */
-fun Application.settingsProviderModule() {
+fun Application.configureSettingsProvider() {
     SettingsProvider.install(pipeline = this)
 }

@@ -17,7 +17,7 @@ import io.ktor.server.auth.*
  *
  * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
  */
-fun Application.authenticationModule() {
+fun Application.configureAuthentication() {
 
     authentication {
         AuthenticationSetup.configureJwt(config = this)

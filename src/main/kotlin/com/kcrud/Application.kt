@@ -35,21 +35,23 @@ fun main(args: Array<String>) {
  */
 fun Application.module() {
 
-    settingsProviderModule()
+    // The settings provider must be the first plugin to be installed
+    // so that other plugins can access the configuration settings.
+    configureSettingsProvider()
 
-    koinModule()
+    configureKoin()
 
-    httpModule()
+    configureHttp()
 
-    rateLimitModule()
+    configureRateLimit()
 
-    authenticationModule()
+    configureAuthentication()
 
-    statusPagesModule()
+    configureStatusPages()
 
-    routingModule()
+    configureRouting()
 
-    graphQLModule()
+    configureGraphQL()
 
     DatabaseManager.init(
         mode = DatabaseManager.Mode.PERSISTENT,

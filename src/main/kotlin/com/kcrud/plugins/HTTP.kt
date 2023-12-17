@@ -19,7 +19,7 @@ import io.ktor.server.plugins.defaultheaders.*
  *
  * See: [CORS Documentation](https://ktor.io/docs/cors.html)
  */
-fun Application.httpModule() {
+fun Application.configureHttp() {
 
     install(DefaultHeaders) {
         header("X-Engine", "Kcrud")

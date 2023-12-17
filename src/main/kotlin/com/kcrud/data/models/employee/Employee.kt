@@ -38,11 +38,12 @@ data class Employee(
     // To serialize default values 'encodeDefaults' in the json configuration must be set to True.
     val fullName: String = "$firstName $lastName"
 
-    // This is an example of how to circumvent the limitation that
-    // kotlinx.serialization does not support delegated properties.
-    // The regular, serializable property 'age' is manually assigned
-    // the value of the delegated property 'ageDelegate'. This makes
-    // 'age' serializable while still using the logic contained in AgeDelegate.
+    // Although 'age' could be simply assigned by calling 'DateTimeUtils.calculateAge(dob)',
+    // this example demonstrates a workaround for kotlinx.serialization's limitation with
+    // delegated properties, as such cannot serialize delegated properties.
+    // The regular serializable property 'age' is manually assigned the value from the
+    // delegated property 'ageDelegate'. This approach ensures 'age' remains serializable
+    // while incorporating the logic within AgeDelegate.
     private val ageDelegate: Int by AgeDelegate(dob)
     val age = ageDelegate
 

@@ -28,7 +28,7 @@ import kotlinx.serialization.json.Json
  *
  * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
  */
-fun Application.routingModule() {
+fun Application.configureRouting() {
 
     routing {
 

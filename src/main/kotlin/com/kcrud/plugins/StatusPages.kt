@@ -18,7 +18,7 @@ import io.ktor.server.response.*
  *
  * See: [Ktor Status Pages Documentation](https://ktor.io/docs/status-pages.html)
  */
-fun Application.statusPagesModule() {
+fun Application.configureStatusPages() {
 
     install(StatusPages) {
         // Handle 401 Unauthorized status.
