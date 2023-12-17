@@ -40,6 +40,8 @@ dependencies {
 
     // Ktor.
     // https://github.com/ktorio/ktor
+    // https://github.com/ktorio/ktor/releases
+    // https://api.ktor.io
     val ktorVersion = "2.3.7"
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
