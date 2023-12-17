@@ -35,15 +35,15 @@ internal data class AppSettings(
      *
      * @property port The network port the server listens on.
      * @property host The network address the server is bound to.
+     * @property apiVersion The API version.
      */
-    data class Deployment(val port: Int, val host: String)
+    data class Deployment(val port: Int, val host: String, val apiVersion: String)
 
     /**
      * Contains settings related to Swagger, OpenAPI, and Redoc.
      *
      * @property isEnabled Whether Swagger is enabled.
      * @property yamlFile The documentation location file.
-     * @property rootPath The root URL path where the documentation is served.
      * @property swaggerPath The path to the Swagger UI.
      * @property openApiPath The path to the OpenAPI specification.
      * @property redocPath The path to the Redoc file.
@@ -51,7 +51,6 @@ internal data class AppSettings(
     data class Docs(
         val isEnabled: Boolean,
         val yamlFile: String,
-        val rootPath: String,
         val swaggerPath: String,
         val openApiPath: String,
         val redocPath: String

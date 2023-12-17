@@ -33,7 +33,7 @@ fun Route.documentationRouting() {
 
     if (SettingsProvider.docs.isEnabled) {
         val yamlFile = SettingsProvider.docs.yamlFile
-        val rootPath = SettingsProvider.docs.rootPath
+        val rootPath = SettingsProvider.deployment.apiVersion
 
         // Root path.
         staticResources(remotePath = rootPath, basePackage = "openapi")

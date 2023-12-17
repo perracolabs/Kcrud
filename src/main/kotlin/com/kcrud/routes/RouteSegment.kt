@@ -6,6 +6,8 @@
 
 package com.kcrud.routes
 
+import com.kcrud.settings.SettingsProvider
+
 /**
  * Defines the routing segments and path parameters for the API,
  * centralizing the definition of the main routes and path parameters
@@ -13,7 +15,7 @@ package com.kcrud.routes
  */
 internal object RouteSegment {
     /** The version segment of the API route. */
-    const val API_VERSION = "v1"
+    val API_VERSION by lazy { SettingsProvider.deployment.apiVersion }
 
     /** Contains constants related to employee routing. */
     object Employee {
