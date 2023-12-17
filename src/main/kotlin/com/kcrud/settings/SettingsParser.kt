@@ -6,6 +6,7 @@
 
 package com.kcrud.settings
 
+import com.kcrud.utils.Tracer
 import io.ktor.server.config.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -19,6 +20,8 @@ import kotlin.reflect.jvm.jvmErasure
  */
 @SettingsAPI
 internal object SettingsParser {
+    private val tracer = Tracer.create<SettingsParser>()
+
     /**
      * Performs the configuration file parsing.
      *
@@ -55,6 +58,8 @@ internal object SettingsParser {
      * @throws IllegalArgumentException If a required configuration key is missing or if there is a type mismatch.
      */
     private fun <T : Any> instantiateConfig(config: ApplicationConfig, keyPath: String, kClass: KClass<T>): T {
+        tracer.debug("Loading configuration: ${kClass.simpleName}")
+
         val constructor: KFunction<T> = kClass.primaryConstructor!!
 
         val arguments: Map<KParameter, Any?> = constructor.parameters.associateWith { parameter ->

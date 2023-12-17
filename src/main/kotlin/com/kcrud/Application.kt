@@ -57,5 +57,5 @@ fun Application.module() {
     )
 
     val tracerTag = ::module.nameWithClass<Application>()
-    Tracer.create(tracerTag).info("Server configured. Development Mode: ${SettingsProvider.global.development}")
+    Tracer.createForTag(tracerTag).info("Server configured. Development Mode: ${SettingsProvider.global.development}")
 }

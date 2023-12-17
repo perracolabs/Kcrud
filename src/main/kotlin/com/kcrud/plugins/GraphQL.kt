@@ -21,6 +21,11 @@ import io.ktor.server.application.*
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
 fun Application.graphQLModule() {
+
+    if (!SettingsProvider.graphql.isEnabled) {
+        return
+    }
+
     val framework = SettingsProvider.graphql.framework
     val withPlayground = SettingsProvider.graphql.playground
 

@@ -50,6 +50,6 @@ fun Route.documentationRouting() {
         val redocPath = "$rootPath/docs${SettingsProvider.docs.redocPath}"
 
         val endpoints = listOf(redocPath, swaggerPath, openApiPath)
-        NetworkUtils.logEndpoints(reason = "Redoc / Swagger-UI / OpenApi", endpoints = endpoints)
+        NetworkUtils.logEndpoints(reason = "Redoc - Swagger-UI - OpenApi", endpoints = endpoints)
     }
 }
