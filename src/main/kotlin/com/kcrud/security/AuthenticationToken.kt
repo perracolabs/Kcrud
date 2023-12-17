@@ -102,6 +102,8 @@ internal object AuthenticationToken {
         val tokenLifetimeMs = jwtSettings.tokenLifetime
         val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeMs)
 
+        tracer.debug("Generating new authorization token. Expiration: $expirationDate.")
+
         return JWT.create()
             .withAudience(jwtSettings.audience)
             .withIssuer(jwtSettings.issuer)
