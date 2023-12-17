@@ -35,9 +35,9 @@ fun main(args: Array<String>) {
  */
 fun Application.module() {
 
-    // The settings provider must be the first plugin to be installed
-    // so that other plugins can access the configuration settings.
-    configureSettingsProvider()
+    // The settings provider must be the first step in the pipeline,
+    // so that the plugins can access the configuration settings.
+    SettingsProvider.configure(context = this)
 
     configureKoin()
 

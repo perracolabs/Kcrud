@@ -23,8 +23,8 @@ internal object SettingsProvider {
     val graphql: AppSettings.GraphQL get() = getSettings().graphql
     val security: AppSettings.Security get() = getSettings().security
 
-    fun install(pipeline: Application) {
-        settings = AppSettings(pipeline.environment.config)
+    fun configure(context: Application) {
+        settings = AppSettings(context.environment.config)
     }
 
     private fun getSettings(): AppSettings {
