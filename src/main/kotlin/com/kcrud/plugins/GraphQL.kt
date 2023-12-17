@@ -9,21 +9,17 @@ package com.kcrud.plugins
 import com.kcrud.graphql.GraphQLFramework
 import com.kcrud.graphql.expedia.ExpediaGraphQLSetup
 import com.kcrud.graphql.kgraphql.KGraphQLSetup
-import com.kcrud.services.EmployeeService
-import com.kcrud.services.EmploymentService
 import com.kcrud.settings.SettingsProvider
 import io.ktor.server.application.*
-import org.koin.ktor.ext.inject
 
 /**
  * Sets up the GraphQL engine. Currently, using KGraphQL.
  *
+ * See: [Expedia GraphQL Documentation](https://opensource.expediagroup.com/graphql-kotlin/docs/)
+ *
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
 fun Application.graphQLModule() {
-    val employeeService by inject<EmployeeService>()
-    val employmentService by inject<EmploymentService>()
-
     val framework = SettingsProvider.graphql.framework
     val withPlayground = SettingsProvider.graphql.playground
 
@@ -31,18 +27,14 @@ fun Application.graphQLModule() {
         GraphQLFramework.EXPEDIA_GROUP -> {
             ExpediaGraphQLSetup.configure(
                 application = this,
-                withPlayground = withPlayground,
-                employeeService = employeeService,
-                employmentService = employmentService
+                withPlayground = withPlayground
             )
         }
 
         GraphQLFramework.K_GRAPHQL -> {
             KGraphQLSetup.configure(
                 application = this,
-                withPlayground = withPlayground,
-                employeeService = employeeService,
-                employmentService = employmentService
+                withPlayground = withPlayground
             )
         }
     }

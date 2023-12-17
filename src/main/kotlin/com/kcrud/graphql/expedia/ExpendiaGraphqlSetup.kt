@@ -13,8 +13,6 @@ import com.kcrud.graphql.expedia.schema.employee.EmployeeQueries
 import com.kcrud.graphql.expedia.schema.employment.EmploymentMutations
 import com.kcrud.graphql.expedia.schema.employment.EmploymentQueries
 import com.kcrud.graphql.expedia.types.CustomSchemaGeneratorHooks
-import com.kcrud.services.EmployeeService
-import com.kcrud.services.EmploymentService
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
@@ -28,23 +26,18 @@ import io.ktor.server.routing.*
  */
 internal object ExpediaGraphQLSetup {
     @OptIn(ExpediaAPI::class)
-    fun configure(
-        application: Application,
-        withPlayground: Boolean,
-        employeeService: EmployeeService,
-        employmentService: EmploymentService
-    ) {
+    fun configure(application: Application, withPlayground: Boolean) {
         application.install(GraphQL) {
 
             schema {
                 this.packages = listOf("com.kcrud")
                 queries = listOf(
-                    EmployeeQueries(service = employeeService),
-                    EmploymentQueries(service = employmentService)
+                    EmployeeQueries(),
+                    EmploymentQueries()
                 )
                 mutations = listOf(
-                    EmployeeMutations(service = employeeService),
-                    EmploymentMutations(service = employmentService)
+                    EmployeeMutations(),
+                    EmploymentMutations()
                 )
                 schemaObject = KcrudSchema()
                 hooks = CustomSchemaGeneratorHooks()

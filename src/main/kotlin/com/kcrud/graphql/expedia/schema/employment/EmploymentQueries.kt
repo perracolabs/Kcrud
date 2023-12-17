@@ -10,15 +10,16 @@ import com.expediagroup.graphql.server.operations.Query
 import com.kcrud.data.models.employment.Employment
 import com.kcrud.graphql.expedia.ExpediaAPI
 import com.kcrud.services.EmploymentService
+import org.koin.mp.KoinPlatform.getKoin
 import java.util.*
 
 /**
  * Employment query definitions.
- *
- * @param service The service used in query resolvers.
  */
 @ExpediaAPI
-class EmploymentQueries(private val service: EmploymentService) : Query {
+class EmploymentQueries : Query {
+
+    private val service: EmploymentService = getKoin().get()
 
     fun employment(employmentId: UUID): Employment? {
         return service.findById(employmentId = employmentId)

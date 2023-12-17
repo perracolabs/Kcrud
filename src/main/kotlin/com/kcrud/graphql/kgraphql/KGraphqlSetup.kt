@@ -13,8 +13,6 @@ import com.kcrud.graphql.kgraphql.schema.employee.EmployeeQueries
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentMutations
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentQueries
 import com.kcrud.security.AuthenticationToken
-import com.kcrud.services.EmployeeService
-import com.kcrud.services.EmploymentService
 import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
 
@@ -25,12 +23,7 @@ import io.ktor.server.application.*
  */
 internal object KGraphQLSetup {
     @OptIn(KGraphQLAPI::class)
-    fun configure(
-        application: Application,
-        withPlayground: Boolean,
-        employeeService: EmployeeService,
-        employmentService: EmploymentService
-    ) {
+    fun configure(application: Application, withPlayground: Boolean) {
         application.install(GraphQL) {
 
             // Set GraphQL playground for development and testing.
@@ -46,19 +39,19 @@ internal object KGraphQLSetup {
                 SharedTypes(schemaBuilder = this)
                     .configure()
 
-                EmployeeQueries(schemaBuilder = this, service = employeeService)
+                EmployeeQueries(schemaBuilder = this)
                     .configureTypes()
                     .configureQueries()
 
-                EmployeeMutations(schemaBuilder = this, service = employeeService)
+                EmployeeMutations(schemaBuilder = this)
                     .configureInputs()
                     .configureMutations()
 
-                EmploymentQueries(schemaBuilder = this, service = employmentService)
+                EmploymentQueries(schemaBuilder = this)
                     .configureTypes()
                     .configureQueries()
 
-                EmploymentMutations(schemaBuilder = this, service = employmentService)
+                EmploymentMutations(schemaBuilder = this)
                     .configureInputs()
                     .configureMutations()
             }

@@ -11,16 +11,17 @@ import com.kcrud.data.models.employee.Employee
 import com.kcrud.data.models.employee.EmployeeParams
 import com.kcrud.graphql.expedia.ExpediaAPI
 import com.kcrud.services.EmployeeService
+import org.koin.mp.KoinPlatform.getKoin
 import java.util.*
 
 /**
  * Employee mutation definitions.
- *
- * @param service The service used in mutation resolvers.
  */
 @Suppress("unused")
 @ExpediaAPI
-class EmployeeMutations(private val service: EmployeeService) : Mutation {
+class EmployeeMutations : Mutation {
+
+    private val service: EmployeeService = getKoin().get()
 
     fun createEmployee(employee: EmployeeParams): Employee {
         return service.create(employee = employee)

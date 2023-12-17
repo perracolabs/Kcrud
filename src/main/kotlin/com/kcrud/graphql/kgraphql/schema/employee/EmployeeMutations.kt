@@ -10,16 +10,19 @@ import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.models.employee.EmployeeParams
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.services.EmployeeService
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
 /**
  * Employee mutation definitions.
  *
  * @param schemaBuilder The SchemaBuilder instance for configuring the schema.
- * @param service The service used in mutation resolvers.
  */
 @KGraphQLAPI
-internal class EmployeeMutations(private val schemaBuilder: SchemaBuilder, private val service: EmployeeService) {
+internal class EmployeeMutations(private val schemaBuilder: SchemaBuilder) : KoinComponent {
+
+    private val service: EmployeeService by inject()
 
     /**
      * Configures input types for mutations.
