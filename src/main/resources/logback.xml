@@ -15,4 +15,5 @@
     <logger name="io.netty" level="WARN"/>
     <logger name="io.swagger" level="ERROR"/>
     <logger name="com.github.jknack" level="OFF"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
 </configuration>

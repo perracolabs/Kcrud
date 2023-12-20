@@ -50,6 +50,8 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-rate-limit:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
 
     // Basic Authentication.
     // https://ktor.io/docs/basic.html
@@ -62,6 +64,7 @@ dependencies {
     // Logging.
     // https://github.com/qos-ch/logback
     implementation("ch.qos.logback:logback-classic:1.4.14")
+    testImplementation("ch.qos.logback:logback-classic:1.2.11")
 
     // Serialization.
     // https://github.com/Kotlin/kotlinx.serialization
@@ -96,9 +99,10 @@ dependencies {
     // https://insert-koin.io/docs/quickstart/ktor
     // https://github.com/InsertKoinIO/koin
     // https://github.com/InsertKoinIO/koin-getting-started
-    val koinVersion = "3.5.1"
+    val koinVersion = "3.5.3"
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+    testImplementation("io.insert-koin:koin-test:$koinVersion")
 
     // H2 database.
     // https://github.com/h2database/h2database
@@ -125,14 +129,9 @@ dependencies {
     implementation("io.ktor:ktor-server-openapi:$ktorVersion")
     implementation("io.ktor:ktor-server-swagger:$ktorVersion")
     implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.45")
-
+    implementation("commons-codec:commons-codec:1.16.0")
 
     implementation("io.mockk:mockk:1.13.8")
-    testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
-    testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.21")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
-    testImplementation("org.slf4j:slf4j-api:2.0.9")
-    testImplementation("ch.qos.logback:logback-classic:1.2.11")
-    testImplementation("io.insert-koin:koin-test:3.5.0")
 }

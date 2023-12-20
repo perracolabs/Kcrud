@@ -13,7 +13,6 @@ import com.kcrud.data.repositories.employment.IEmploymentRepository
 import com.kcrud.services.EmployeeService
 import com.kcrud.services.EmploymentService
 import io.ktor.server.application.*
-import org.koin.core.context.GlobalContext
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 
@@ -36,6 +35,5 @@ fun Application.configureKoin() {
     // Initialize Koin dependency injection with the defined module.
     install(Koin) {
         modules(moduleList)
-        GlobalContext.startKoin(this)
     }
 }
