@@ -21,29 +21,27 @@ internal class EmployeeRepository : IEmployeeRepository {
 
     override fun findById(employeeId: UUID): Employee? {
         return transaction {
-            val query = EmployeeTable.join(
+            EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
-            ).select { EmployeeTable.id eq employeeId }
-
-            query.map { resultRow ->
+            ).select {
+                EmployeeTable.id eq employeeId
+            }.singleOrNull()?.let { resultRow ->
                 Employee.fromTableRow(row = resultRow)
-            }.singleOrNull()
+            }
         }
     }
 
     override fun findAll(): List<Employee> {
         return transaction {
-            val query = EmployeeTable.join(
+            EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
-            ).selectAll()
-
-            query.map { resultRow ->
+            ).selectAll().map { resultRow ->
                 Employee.fromTableRow(row = resultRow)
             }
         }
