@@ -7,9 +7,8 @@
 package com.kcrud.graphql.expedia
 
 /**
- * Annotation designed for controlled access to the Expedia GraphQL management code,
- * offering a workaround for the lack of package-private visibility in Kotlin.
+ * Annotation for controlled access to the Expedia GraphQL API code,
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used in Expedia GraphQL contexts.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within Expedia GraphQL contexts.")
 @Retention(AnnotationRetention.BINARY)
 annotation class ExpediaAPI

@@ -7,9 +7,8 @@
 package com.kcrud.settings
 
 /**
- * Annotation designed for controlled access to the Settings management code,
- * offering a workaround for the lack of package-private visibility in Kotlin.
+ * Annotation for controlled access to the Settings Management code,
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used in Settings contexts.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within Settings Management contexts.")
 @Retention(AnnotationRetention.BINARY)
 annotation class SettingsAPI

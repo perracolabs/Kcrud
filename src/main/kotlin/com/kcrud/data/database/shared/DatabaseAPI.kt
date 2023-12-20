@@ -7,11 +7,8 @@
 package com.kcrud.data.database.shared
 
 /**
- * Annotation designed for controlled access in database management code,
- * offering a workaround for the lack of package-private visibility in Kotlin.
- * It enables selective access for classes, even across different packages,
- * but restricts this to database management contexts.
+ * Annotation for controlled access to the Database Management code,
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used in database-management contexts.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within Database Management contexts.")
 @Retention(AnnotationRetention.BINARY)
 annotation class DatabaseAPI
