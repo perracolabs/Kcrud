@@ -21,12 +21,7 @@ internal class EmployeeRepository : IEmployeeRepository {
 
     override fun findById(employeeId: UUID): Employee? {
         return transaction {
-            EmployeeTable.join(
-                otherTable = ContactTable,
-                joinType = JoinType.LEFT,
-                onColumn = EmployeeTable.id,
-                otherColumn = ContactTable.employeeId
-            ).select {
+            getFindEmployeeJoin().select {
                 EmployeeTable.id eq employeeId
             }.singleOrNull()?.let { resultRow ->
                 Employee.fromTableRow(row = resultRow)
@@ -36,15 +31,19 @@ internal class EmployeeRepository : IEmployeeRepository {
 
     override fun findAll(): List<Employee> {
         return transaction {
-            EmployeeTable.join(
-                otherTable = ContactTable,
-                joinType = JoinType.LEFT,
-                onColumn = EmployeeTable.id,
-                otherColumn = ContactTable.employeeId
-            ).selectAll().map { resultRow ->
+            getFindEmployeeJoin().selectAll().map { resultRow ->
                 Employee.fromTableRow(row = resultRow)
             }
         }
+    }
+
+    private fun getFindEmployeeJoin(): Join {
+        return EmployeeTable.join(
+            otherTable = ContactTable,
+            joinType = JoinType.LEFT,
+            onColumn = EmployeeTable.id,
+            otherColumn = ContactTable.employeeId
+        )
     }
 
     override fun create(employee: EmployeeParams): Employee {
