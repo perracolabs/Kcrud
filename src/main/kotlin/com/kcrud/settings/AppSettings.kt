@@ -49,13 +49,15 @@ internal data class AppSettings(
      * @property name The name of the database.
      * @property path The database file location.
      * @property jdbcUrl The JDBC url database connection.
+     * @property connectionPoolSize The database connection pool size. 0 for no connection pooling.
      */
     data class Database(
         val mode: DatabaseManager.Mode,
         val dbType: DatabaseManager.DBType,
         val name: String,
         val path: String,
-        val jdbcUrl: String
+        val jdbcUrl: String,
+        val connectionPoolSize: Int
     )
 
     /**

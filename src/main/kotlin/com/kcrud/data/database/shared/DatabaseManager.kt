@@ -10,6 +10,8 @@ import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.utils.Tracer
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -60,7 +62,17 @@ internal object DatabaseManager {
         // Exposed manages this connection, utilizing a connection pool for efficiency and performance.
         // The connection pool reuses connections where possible and handles their lifecycle,
         // facilitating implicit and consistent database access throughout the application.
-        val database = Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
+
+        val database: Database = if (connectionDetails.connectionPoolSize > 0) {
+            val dataSource = createHikariDataSource(
+                poolSize = connectionDetails.connectionPoolSize,
+                url = connectionDetails.jdbcUrl,
+                driver = connectionDetails.driver
+            )
+            Database.connect(datasource = dataSource)
+        } else {
+            Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
+        }
 
         if (createSchema) {
             tracer.info("Setting database schema.")
@@ -108,5 +120,23 @@ internal object DatabaseManager {
                 }
             })
         }
+    }
+
+    /**
+     * Create a HikariDataSource to enable database connection pooling.
+     *
+     * See: [Database Pooling](https://ktor.io/docs/connection-pooling-caching.html#connection-pooling)
+     */
+    private fun createHikariDataSource(poolSize: Int, url: String, driver: String): HikariDataSource {
+        require(poolSize > 0) { "Database connection pooling must be at >= 1." }
+
+        return HikariDataSource(HikariConfig().apply {
+            driverClassName = driver
+            jdbcUrl = url
+            maximumPoolSize = poolSize
+            isAutoCommit = false
+            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+            validate()
+        })
     }
 }

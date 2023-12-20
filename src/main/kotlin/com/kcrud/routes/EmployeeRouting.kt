@@ -42,7 +42,7 @@ fun Route.employeeRouting() {
         // Create
         post {
             val employeeParams = call.receive<EmployeeParams>()
-            val createdEmployee = service.create(employeeParams)
+            val createdEmployee = service.create(employee = employeeParams)
             call.respond(HttpStatusCode.Created, createdEmployee)
         }
 

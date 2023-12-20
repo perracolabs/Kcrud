@@ -87,6 +87,11 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
 
+    // HikariCP (Database connection pooling)
+    // https://github.com/brettwooldridge/HikariCP
+    // https://ktor.io/docs/connection-pooling-caching.html
+    implementation("com.zaxxer:HikariCP:5.1.0")
+
     // Koin.
     // https://insert-koin.io/docs/quickstart/ktor
     // https://github.com/InsertKoinIO/koin

@@ -63,7 +63,7 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @return The number of deleted records.
      */
     fun delete(employmentId: UUID): Int {
-        return repository.delete(employmentId)
+        return repository.delete(employmentId = employmentId)
     }
 
     /**
@@ -72,6 +72,6 @@ class EmploymentService(private val repository: IEmploymentRepository) : KoinCom
      * @return The number of deleted records.
      */
     fun deleteAll(employeeId: UUID): Int {
-        return repository.deleteAll(employeeId)
+        return repository.deleteAll(employeeId = employeeId)
     }
 }

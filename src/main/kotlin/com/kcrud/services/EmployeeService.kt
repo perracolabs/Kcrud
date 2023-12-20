@@ -24,7 +24,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @return The employee model if found, null otherwise.
      */
     fun findById(employeeId: UUID): Employee? {
-        return repository.findById(employeeId)
+        return repository.findById(employeeId = employeeId)
     }
 
     /**
@@ -41,7 +41,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @return The created employee model with generated ID.
      */
     fun create(employee: EmployeeParams): Employee {
-        return repository.create(employee)
+        return repository.create(employee = employee)
     }
 
     /**
@@ -60,7 +60,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * @return The number of deleted records.
      */
     fun delete(employeeId: UUID): Int {
-        return repository.delete(employeeId)
+        return repository.delete(employeeId = employeeId)
     }
 
     /**

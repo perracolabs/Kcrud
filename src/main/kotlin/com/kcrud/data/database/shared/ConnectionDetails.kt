@@ -19,8 +19,10 @@ internal data class ConnectionDetails(
     val jdbcUrl: String,
     val driver: String,
     val mode: DatabaseManager.Mode,
-    val dbType: DatabaseManager.DBType
+    val dbType: DatabaseManager.DBType,
+    val connectionPoolSize: Int
 ) {
+
     companion object {
         fun build(): ConnectionDetails {
             val dbType = SettingsProvider.database.dbType
@@ -32,7 +34,8 @@ internal data class ConnectionDetails(
                 jdbcUrl = SettingsProvider.database.jdbcUrl,
                 driver = dbType.driver,
                 mode = SettingsProvider.database.mode,
-                dbType = SettingsProvider.database.dbType
+                dbType = SettingsProvider.database.dbType,
+                connectionPoolSize = SettingsProvider.database.connectionPoolSize
             )
         }
     }

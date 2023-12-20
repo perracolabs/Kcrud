@@ -62,7 +62,7 @@ private fun Route.createEmployment(service: EmploymentService) {
     post {
         val employeeId = call.getEmployeeId()
         val employmentParams = call.receive<EmploymentParams>()
-        val newEmployment = service.create(employeeId, employmentParams)
+        val newEmployment = service.create(employeeId = employeeId, employment = employmentParams)
         call.respond(HttpStatusCode.Created, newEmployment)
     }
 }
@@ -70,7 +70,7 @@ private fun Route.createEmployment(service: EmploymentService) {
 private fun Route.findEmploymentByEmployeeId(service: EmploymentService) {
     get {
         val employeeId = call.getEmployeeId()
-        val employments = service.findByEmployeeId(employeeId)
+        val employments = service.findByEmployeeId(employeeId = employeeId)
         call.respond(employments)
     }
 }
