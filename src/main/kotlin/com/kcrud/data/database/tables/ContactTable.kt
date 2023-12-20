@@ -8,6 +8,7 @@ package com.kcrud.data.database.tables
 
 import com.kcrud.data.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.encryptedVarchar
+import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 
 /**
@@ -22,6 +23,7 @@ internal object ContactTable : Table(name = "contact") {
     private val encryptor = EncryptionUtils.getEncryptor()
 
     val id = uuid(name = "contact_id").autoGenerate()
+    val employeeId = uuid(name = "employee_id").references(ref = EmployeeTable.id, onDelete = ReferenceOption.CASCADE)
     val email = encryptedVarchar(name = "email", cipherTextLength = encryptor.maxColLength(64), encryptor = encryptor)
     val phone = encryptedVarchar(name = "phone", cipherTextLength = encryptor.maxColLength(12), encryptor = encryptor)
 

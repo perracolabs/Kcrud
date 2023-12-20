@@ -20,12 +20,12 @@ import java.util.*
 internal class EmploymentRepository : IEmploymentRepository {
     override fun findById(employeeId: UUID, employmentId: UUID): Employment? {
         return transaction {
-            (EmploymentTable innerJoin EmployeeTable innerJoin ContactTable)
+            (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .select {
                     (EmploymentTable.id eq employmentId) and
                             (EmploymentTable.employeeId eq employeeId) and
-                            (EmployeeTable.id eq EmploymentTable.employeeId) and
-                            (EmployeeTable.contactId eq ContactTable.id)
+                            (EmployeeTable.id eq employeeId) and
+                            (ContactTable.employeeId eq employeeId)
                 }.singleOrNull()?.let { resultRow ->
                     Employment.fromTableRow(row = resultRow)
                 }
@@ -34,8 +34,8 @@ internal class EmploymentRepository : IEmploymentRepository {
 
     override fun findByEmployeeId(employeeId: UUID): List<Employment> {
         return transaction {
-            (EmploymentTable innerJoin EmployeeTable innerJoin ContactTable)
-                .select { (EmploymentTable.employeeId eq employeeId) and (EmployeeTable.contactId eq ContactTable.id) }
+            (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
+                .select { (EmploymentTable.employeeId eq employeeId) and (ContactTable.employeeId eq employeeId) }
                 .map { resultRow ->
                     Employment.fromTableRow(row = resultRow)
                 }

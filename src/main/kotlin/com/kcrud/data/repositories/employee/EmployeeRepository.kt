@@ -8,6 +8,7 @@ package com.kcrud.data.repositories.employee
 
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
+import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.models.employee.Employee
 import com.kcrud.data.models.employee.EmployeeParams
 import org.jetbrains.exposed.sql.*
@@ -23,8 +24,8 @@ internal class EmployeeRepository : IEmployeeRepository {
             val query = EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
-                onColumn = EmployeeTable.contactId,
-                otherColumn = ContactTable.id
+                onColumn = EmployeeTable.id,
+                otherColumn = ContactTable.employeeId
             ).select { EmployeeTable.id eq employeeId }
 
             query.map { resultRow ->
@@ -38,8 +39,8 @@ internal class EmployeeRepository : IEmployeeRepository {
             val query = EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
-                onColumn = EmployeeTable.contactId,
-                otherColumn = ContactTable.id
+                onColumn = EmployeeTable.id,
+                otherColumn = ContactTable.employeeId
             ).selectAll()
 
             query.map { resultRow ->
@@ -50,17 +51,17 @@ internal class EmployeeRepository : IEmployeeRepository {
 
     override fun create(employee: EmployeeParams): Employee {
         return transaction {
-            val newContactId: UUID? = employee.contact?.let {
+            val newEmployeeId = EmployeeTable.insert { employeeRow ->
+                employeeModelToTable(employee = employee, target = employeeRow)
+            } get EmployeeTable.id
+
+            employee.contact?.let {
                 ContactTable.insert { contactRow ->
+                    contactRow[employeeId] = newEmployeeId
                     contactRow[email] = employee.contact.email.trim()
                     contactRow[phone] = employee.contact.phone.trim()
                 } get ContactTable.id
             }
-
-            val newEmployeeId = EmployeeTable.insert { employeeRow ->
-                employeeModelToTable(employee = employee, target = employeeRow, contactId = newContactId)
-                employeeRow[contactId] = newContactId
-            } get EmployeeTable.id
 
             findById(newEmployeeId)!!
         }
@@ -71,7 +72,7 @@ internal class EmployeeRepository : IEmployeeRepository {
             // First, find the existing employee to get the contact id.
             val dbEmployee = findById(employeeId) ?: return@transaction null
 
-            val dbContactId: UUID? = employee.contact?.let {
+            employee.contact?.let {
                 if (dbEmployee.contact == null) {
                     // If the employee doesn't have a contact, create a new one.
                     ContactTable.insert { contactRow ->
@@ -90,7 +91,7 @@ internal class EmployeeRepository : IEmployeeRepository {
 
             // Update the Employees table.
             EmployeeTable.update(where = { EmployeeTable.id eq employeeId }) { employeeRow ->
-                employeeModelToTable(employee = employee, target = employeeRow, contactId = dbContactId)
+                employeeModelToTable(employee = employee, target = employeeRow)
             }
 
             findById(employeeId)
@@ -99,27 +100,44 @@ internal class EmployeeRepository : IEmployeeRepository {
 
     override fun delete(employeeId: UUID): Int {
         return transaction {
+            deleteRelatedRecords(employeeId)
             EmployeeTable.deleteWhere { id eq employeeId }
         }
     }
 
     override fun deleteAll(): Int {
         return transaction {
+            deleteRelatedRecords()
             EmployeeTable.deleteAll()
+        }
+    }
+
+    /**
+     * Although related tables are configured for cascade deletion,
+     * seems H2 and Sqlite don't support it, so delete related records manually.
+     *
+     * Passing a null employee id means to delete all records.
+     */
+    private fun deleteRelatedRecords(employeeId: UUID? = null) {
+        if (employeeId == null) {
+            EmploymentTable.deleteAll()
+            ContactTable.deleteAll()
+        } else {
+            EmploymentTable.deleteWhere { EmploymentTable.employeeId eq employeeId }
+            ContactTable.deleteWhere { ContactTable.employeeId eq employeeId }
         }
     }
 
     /**
      * Populates an SQL [UpdateBuilder] with data from an [EmployeeParams] model instance.
      */
-    private fun employeeModelToTable(employee: EmployeeParams, target: UpdateBuilder<Int>, contactId: UUID?) {
+    private fun employeeModelToTable(employee: EmployeeParams, target: UpdateBuilder<Int>) {
         target.apply {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()
             this[EmployeeTable.dob] = employee.dob
             this[EmployeeTable.maritalStatus] = employee.maritalStatus
             this[EmployeeTable.honorific] = employee.honorific
-            this[EmployeeTable.contactId] = contactId
         }
     }
 }

@@ -6,6 +6,7 @@
 
 package com.kcrud.data.models.employee
 
+import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.models.contact.Contact
 import com.kcrud.utils.AgeDelegate
@@ -56,7 +57,7 @@ data class Employee(
                 dob = row[EmployeeTable.dob],
                 maritalStatus = row[EmployeeTable.maritalStatus],
                 honorific = row[EmployeeTable.honorific],
-                contact = row[EmployeeTable.contactId]?.let { Contact.fromTableRow(row) }
+                contact = row.getOrNull(ContactTable.id)?.let { Contact.fromTableRow(row) }
             )
         }
     }
