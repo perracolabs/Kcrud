@@ -6,6 +6,7 @@
 
 package com.kcrud.data.database.shared
 
+import com.kcrud.settings.SettingsProvider
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -14,51 +15,25 @@ import java.nio.file.Paths
  * Provides the JDBC URL and Driver class name for the database.
  */
 @DatabaseAPI
-internal object ConnectionDetails {
+internal data class ConnectionDetails(
+    val jdbcUrl: String,
+    val driver: String,
+    val mode: DatabaseManager.Mode,
+    val dbType: DatabaseManager.DBType
+) {
+    companion object {
+        fun build(): ConnectionDetails {
+            val dbType = SettingsProvider.database.dbType
 
-    data class Profile(val jdbcUrl: String, val driver: String)
+            val path = "${SettingsProvider.database.path}${dbType.name}"
+            Files.createDirectories(Paths.get(path))
 
-    // Prefix for the database name.
-    private const val DB_NAME = "dbv1"
-
-    // The path for persistent database storage.
-    private const val DB_PATH = "./.database/"
-
-    /**
-     * Returns the JDBC URL and Driver class name corresponding to the provided database mode and type.
-     *
-     * Ideally all these settings would be read from a configuration file.
-     */
-    fun get(mode: DatabaseManager.Mode, type: DatabaseManager.DBType): Profile {
-        val path = "$DB_PATH${type.name}"
-        Files.createDirectories(Paths.get(path))
-
-        val dbName = "$path/${DB_NAME}"
-
-        return when (type) {
-            DatabaseManager.DBType.H2 -> when (mode) {
-                DatabaseManager.Mode.IN_MEMORY -> Profile(
-                    jdbcUrl = "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;",
-                    driver = "org.h2.Driver"
-                )
-
-                DatabaseManager.Mode.PERSISTENT -> Profile(
-                    jdbcUrl = "jdbc:h2:file:$dbName",
-                    driver = "org.h2.Driver",
-                )
-            }
-
-            DatabaseManager.DBType.SQLite -> when (mode) {
-                DatabaseManager.Mode.IN_MEMORY -> Profile(
-                    jdbcUrl = "jdbc:sqlite:file:test?mode=memory&cache=shared",
-                    driver = "org.sqlite.JDBC"
-                )
-
-                DatabaseManager.Mode.PERSISTENT -> Profile(
-                    jdbcUrl = "jdbc:sqlite:$dbName.db",
-                    driver = "org.sqlite.JDBC"
-                )
-            }
+            return ConnectionDetails(
+                jdbcUrl = SettingsProvider.database.jdbcUrl,
+                driver = dbType.driver,
+                mode = SettingsProvider.database.mode,
+                dbType = SettingsProvider.database.dbType
+            )
         }
     }
 }

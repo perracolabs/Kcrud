@@ -6,6 +6,7 @@
 
 package com.kcrud.settings
 
+import com.kcrud.data.database.shared.DatabaseManager
 import com.kcrud.graphql.GraphQLFramework
 import io.ktor.server.config.*
 
@@ -19,6 +20,7 @@ import io.ktor.server.config.*
 internal data class AppSettings(
     val global: Global,
     val deployment: Deployment,
+    val database: Database,
     val docs: Docs,
     val graphql: GraphQL,
     val security: Security
@@ -38,6 +40,23 @@ internal data class AppSettings(
      * @property apiVersion The API version.
      */
     data class Deployment(val port: Int, val host: String, val apiVersion: String)
+
+    /**
+     * Database related settings.
+     *
+     * @property mode The database mode, either in-memory or persistent.
+     * @property dbType The target database type.
+     * @property name The name of the database.
+     * @property path The database file location.
+     * @property jdbcUrl The JDBC url database connection.
+     */
+    data class Database(
+        val mode: DatabaseManager.Mode,
+        val dbType: DatabaseManager.DBType,
+        val name: String,
+        val path: String,
+        val jdbcUrl: String
+    )
 
     /**
      * Contains settings related to Swagger, OpenAPI, and Redoc.

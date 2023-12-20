@@ -53,10 +53,7 @@ fun Application.module() {
 
     configureGraphQL()
 
-    DatabaseManager.init(
-        mode = DatabaseManager.Mode.PERSISTENT,
-        type = DatabaseManager.DBType.H2
-    )
+    DatabaseManager.init()
 
     val tracerTag = ::module.nameWithClass<Application>()
     Tracer.createForTag(tracerTag).info("Server configured. Development Mode: ${SettingsProvider.global.development}.")

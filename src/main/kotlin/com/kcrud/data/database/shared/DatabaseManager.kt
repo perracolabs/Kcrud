@@ -28,6 +28,7 @@ import java.sql.DriverManager
 internal object DatabaseManager {
     private val tracer = Tracer.create<DatabaseManager>()
 
+    @Suppress("unused")
     enum class Mode {
         /** Represents an in-memory database mode. */
         IN_MEMORY,
@@ -36,23 +37,22 @@ internal object DatabaseManager {
         PERSISTENT
     }
 
-    enum class DBType {
-        H2,
-        SQLite
+    @Suppress("unused")
+    enum class DBType(val driver: String) {
+        H2(driver = "org.h2.Driver"),
+        SQLITE(driver = "org.sqlite.JDBC")
     }
 
     /**
      * Initializes the database connection based on the provided mode and database type.
      *
-     * @param mode The [Mode] in which the database should be initialized.
-     * @param type The [DBType] defining the database to use.
      * @param createSchema Whether to create the database schema if such does not exist.
      */
     @OptIn(DatabaseAPI::class)
-    fun init(mode: Mode, type: DBType, createSchema: Boolean = true) {
-        val connectionDetails: ConnectionDetails.Profile = ConnectionDetails.get(mode, type)
+    fun init(createSchema: Boolean = true) {
+        val connectionDetails: ConnectionDetails = ConnectionDetails.build()
 
-        setDatabaseHooks(mode, type, connectionDetails)
+        setDatabaseHooks(connectionDetails)
 
         // Establish the database connection using Database.connect from the 'Exposed' framework.
         // This method not only establishes a connection but also registers it in a global registry within Exposed.
@@ -67,7 +67,7 @@ internal object DatabaseManager {
             setupDatabase(database)
         }
 
-        tracer.info("Database ready: $type - $mode.")
+        tracer.info("Database ready: $connectionDetails.")
     }
 
     /**
@@ -89,8 +89,8 @@ internal object DatabaseManager {
     }
 
     @OptIn(DatabaseAPI::class)
-    private fun setDatabaseHooks(mode: Mode, type: DBType, connectionDetails: ConnectionDetails.Profile) {
-        if (mode == Mode.IN_MEMORY && type == DBType.SQLite) {
+    private fun setDatabaseHooks(connectionDetails: ConnectionDetails) {
+        if (connectionDetails.mode == Mode.IN_MEMORY && connectionDetails.dbType == DBType.SQLITE) {
             // In-memory sqlite databases get destroyed between transactions.
             // Getting a connection will preserve the in-memory database unless explicitly closed.
             // See: https://github.com/JetBrains/Exposed/issues/726#issuecomment-932202379
