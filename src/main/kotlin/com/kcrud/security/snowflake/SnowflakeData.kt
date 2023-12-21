@@ -9,9 +9,9 @@ package com.kcrud.security.snowflake
 import kotlinx.datetime.LocalDateTime
 
 /**
- * Represents the segments that compose a machine unique ID.
+ * Represents the segments that compose a snowflake unique ID.
  */
-data class SnowflakeId(
+data class SnowflakeData(
     val timestamp: LocalDateTime,
     val machineId: Int,
     val increment: Int

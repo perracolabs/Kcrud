@@ -94,10 +94,10 @@ internal object SnowflakeFactory {
      * Parses a unique ID back into its constituent parts.
      *
      * @param id The unique ID to parse.
-     * @return A [SnowflakeId] object containing the parsed segments.
+     * @return A [SnowflakeData] object containing the parsed segments.
      */
     @Suppress("unused")
-    fun parse(id: String): SnowflakeId {
+    fun parse(id: String): SnowflakeData {
         // Parsing the alphanumeric ID back to a numeric value for processing.
         val numericId: Long = java.lang.Long.parseLong(id.lowercase(), ALPHA_NUMERIC_BASE)
 
@@ -118,7 +118,7 @@ internal object SnowflakeFactory {
         // Extracting the increment part from the ID. The bitmask isolates the increment bits from the ID.
         val increment: Long = numericId and lowerBitsMask
 
-        return SnowflakeId(
+        return SnowflakeData(
             timestamp = timestamp,
             machineId = machineId.toInt(),
             increment = increment.toInt()
