@@ -6,7 +6,6 @@ A REST/GraphQL **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
 * [Database Connection Pooling](https://ktor.io/docs/connection-pooling-caching.html#connection-pooling) with [HikariCP ](https://github.com/brettwooldridge/HikariCP).
 * [Encryption](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/data/database/tables/ContactTable.kt) at field level example.
-* [Netty](https://ktor.io/docs/engines.html) async web server.
 * [GraphQL](https://graphql.org/) with both frameworks [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) or [KGraphQL](https://github.com/aPureBase/KGraphQL).
 * [Koin](https://insert-koin.io/) dependency injection.
 * [Connection Rate limit](https://ktor.io/docs/rate-limit.html) examples.
@@ -20,7 +19,6 @@ A REST/GraphQL **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](
 * [Routing](https://ktor.io/docs/routing-in-ktor.html) organization examples.
 * [Call Logging](https://ktor.io/docs/call-logging.html) and [Call ID](https://ktor.io/docs/call-id.html) examples for events traceability.
 * [Snowflake](https://en.wikipedia.org/wiki/Snowflake_ID) unique IDs for logging purposes.
-* [UUID](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/utils/UuidUtils.kt) serialization / deserialization examples for both REST and GraphQL.
 ---
 
 #### TODO:
