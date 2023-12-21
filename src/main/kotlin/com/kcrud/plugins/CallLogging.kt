@@ -38,7 +38,7 @@ fun Application.configureCallLogging() {
         callIdMdc(name = "id")
 
         format {
-            val durationMs = it.processingTimeMillis().toString()
+            val durationMs = it.processingTimeMillis()
             "Call Metric: [${it.request.origin.remoteHost}] ${it.request.httpMethod.value} - ${it.request.path()} - ${durationMs}ms"
         }
     }
