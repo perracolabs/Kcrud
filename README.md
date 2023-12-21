@@ -18,7 +18,7 @@ A REST/GraphQL **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](
 * [HCONF configuration](https://ktor.io/docs/configuration-file.html) example, including preload / parsing for strongly typed settings.
 * [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger), [OpenAPI](https://ktor.io/docs/openapi.html) and [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/) integration.
 * [Routing](https://ktor.io/docs/routing-in-ktor.html) organization examples.
-* [Call Logging](https://ktor.io/docs/logging.html) examples, with [SnowFlake](https://en.wikipedia.org/wiki/Snowflake_ID) Ids.
+* [Call Logging](https://ktor.io/docs/logging.html) examples with [Snowflake](https://en.wikipedia.org/wiki/Snowflake_ID) IDs.
 * [UUID](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/utils/UuidUtils.kt) serialization / deserialization examples for both REST and GraphQL.
 ---
 
