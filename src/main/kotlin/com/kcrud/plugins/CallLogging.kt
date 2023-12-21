@@ -7,6 +7,7 @@
 package com.kcrud.plugins
 
 import com.kcrud.security.snowflake.SnowflakeFactory
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.callid.*
@@ -49,5 +50,7 @@ fun Application.configureCallLogging() {
         generate {
             "id-${SnowflakeFactory.nextId()}"
         }
+
+        replyToHeader(headerName = HttpHeaders.XRequestId)
     }
 }
