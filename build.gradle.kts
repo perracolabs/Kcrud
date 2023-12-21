@@ -130,6 +130,7 @@ dependencies {
     implementation("io.ktor:ktor-server-swagger:$ktorVersion")
     implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.45")
     implementation("commons-codec:commons-codec:1.16.0")
+    implementation("com.google.code.gson:gson:2.8.9")
 
     implementation("io.mockk:mockk:1.13.8")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.21")

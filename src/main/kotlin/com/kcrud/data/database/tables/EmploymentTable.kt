@@ -6,6 +6,8 @@
 
 package com.kcrud.data.database.tables
 
+import com.kcrud.data.models.employment.types.WorkModality
+import com.kcrud.data.utils.enumById
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
@@ -18,6 +20,7 @@ internal object EmploymentTable : Table(name = "employment") {
     val id = uuid(name = "employment_id").autoGenerate()
     val employeeId = uuid(name = "employee_id").references(ref = EmployeeTable.id, onDelete = ReferenceOption.CASCADE)
     val probationEndDate = date(name = "probation_end_date").nullable()
+    val workModality = enumById(name = "work_modality", fromId = WorkModality::fromId)
     val isActive = bool(name = "is_active")
     val startDate = date(name = "start_date")
     val endDate = date(name = "end_date").nullable()

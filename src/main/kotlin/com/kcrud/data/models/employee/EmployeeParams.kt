@@ -7,6 +7,8 @@
 package com.kcrud.data.models.employee
 
 import com.kcrud.data.models.contact.ContactParams
+import com.kcrud.data.models.employee.types.Honorific
+import com.kcrud.data.models.employee.types.MaritalStatus
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 

@@ -8,8 +8,8 @@ package com.kcrud
 
 import com.kcrud.data.models.contact.Contact
 import com.kcrud.data.models.employee.Employee
-import com.kcrud.data.models.employee.Honorific
-import com.kcrud.data.models.employee.MaritalStatus
+import com.kcrud.data.models.employee.types.Honorific
+import com.kcrud.data.models.employee.types.MaritalStatus
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.services.EmployeeService
 import io.mockk.coEvery

@@ -9,6 +9,8 @@ package com.kcrud.data.models.employee
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.models.contact.Contact
+import com.kcrud.data.models.employee.types.Honorific
+import com.kcrud.data.models.employee.types.MaritalStatus
 import com.kcrud.utils.AgeDelegate
 import com.kcrud.utils.SUUID
 import kotlinx.datetime.LocalDate

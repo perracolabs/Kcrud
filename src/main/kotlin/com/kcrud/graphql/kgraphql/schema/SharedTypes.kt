@@ -7,8 +7,9 @@
 package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.models.employee.Honorific
-import com.kcrud.data.models.employee.MaritalStatus
+import com.kcrud.data.models.employee.types.Honorific
+import com.kcrud.data.models.employee.types.MaritalStatus
+import com.kcrud.data.models.employment.types.WorkModality
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.utils.toUUID
 import kotlinx.datetime.LocalDate
@@ -44,6 +45,9 @@ internal class SharedTypes(private val schemaBuilder: SchemaBuilder) {
             }
             enum<Honorific> {
                 description = "The employee's honorific title."
+            }
+            enum<WorkModality> {
+                description = "The employment's work modality."
             }
             stringScalar<LocalDate> {
                 serialize = { date -> date.toString() }

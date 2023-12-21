@@ -83,6 +83,7 @@ internal class EmploymentRepository : IEmploymentRepository {
         target.apply {
             this[EmploymentTable.employeeId] = employeeId
             this[EmploymentTable.probationEndDate] = employment.probationEndDate
+            this[EmploymentTable.workModality] = employment.workModality
             this[EmploymentTable.isActive] = employment.period.isActive
             this[EmploymentTable.startDate] = employment.period.startDate
             this[EmploymentTable.endDate] = employment.period.endDate

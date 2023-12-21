@@ -6,6 +6,7 @@
 
 package com.kcrud.data.models.employment
 
+import com.kcrud.data.models.employment.types.WorkModality
 import com.kcrud.data.models.shared.Period
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
@@ -20,6 +21,7 @@ import kotlinx.serialization.Serializable
 data class EmploymentParams(
     val period: Period,
     val probationEndDate: LocalDate? = null,
+    val workModality: WorkModality
 ) {
     init {
         probationEndDate?.let { date ->
