@@ -6,10 +6,10 @@
 
 package com.kcrud
 
-import com.kcrud.data.models.contact.Contact
-import com.kcrud.data.models.employee.Employee
-import com.kcrud.data.models.employee.types.Honorific
-import com.kcrud.data.models.employee.types.MaritalStatus
+import com.kcrud.data.entities.contact.Contact
+import com.kcrud.data.entities.employee.Employee
+import com.kcrud.data.entities.employee.types.Honorific
+import com.kcrud.data.entities.employee.types.MaritalStatus
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.services.EmployeeService
 import io.mockk.coEvery

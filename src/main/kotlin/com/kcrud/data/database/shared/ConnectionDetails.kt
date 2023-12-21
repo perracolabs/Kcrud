@@ -17,7 +17,7 @@ import java.nio.file.Paths
 @DatabaseAPI
 internal data class ConnectionDetails(
     val jdbcUrl: String,
-    val driver: String,
+    val jdbcDriver: String,
     val mode: DatabaseManager.Mode,
     val dbType: DatabaseManager.DBType,
     val connectionPoolSize: Int
@@ -32,7 +32,7 @@ internal data class ConnectionDetails(
 
             return ConnectionDetails(
                 jdbcUrl = SettingsProvider.database.jdbcUrl,
-                driver = dbType.driver,
+                jdbcDriver = SettingsProvider.database.jdbcDriver,
                 mode = SettingsProvider.database.mode,
                 dbType = SettingsProvider.database.dbType,
                 connectionPoolSize = SettingsProvider.database.connectionPoolSize

@@ -12,7 +12,7 @@ import com.kcrud.graphql.kgraphql.schema.employee.EmployeeMutations
 import com.kcrud.graphql.kgraphql.schema.employee.EmployeeQueries
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentMutations
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentQueries
-import com.kcrud.security.AuthenticationToken
+import com.kcrud.security.authentication.AuthenticationToken
 import io.ktor.server.application.*
 
 /**

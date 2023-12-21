@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models.contact
+package com.kcrud.data.entities.contact
 
 import kotlinx.serialization.Serializable
 

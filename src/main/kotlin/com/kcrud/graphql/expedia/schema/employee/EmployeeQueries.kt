@@ -7,7 +7,7 @@
 package com.kcrud.graphql.expedia.schema.employee
 
 import com.expediagroup.graphql.server.operations.Query
-import com.kcrud.data.models.employee.Employee
+import com.kcrud.data.entities.employee.Employee
 import com.kcrud.graphql.expedia.ExpediaAPI
 import com.kcrud.services.EmployeeService
 import org.koin.mp.KoinPlatform.getKoin

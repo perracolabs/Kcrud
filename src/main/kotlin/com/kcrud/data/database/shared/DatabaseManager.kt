@@ -10,12 +10,9 @@ import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.utils.Tracer
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.sql.DriverManager
 
 /**
  * Manages database configurations and provides utility methods for database operations,
@@ -40,9 +37,9 @@ internal object DatabaseManager {
     }
 
     @Suppress("unused")
-    enum class DBType(val driver: String) {
-        H2(driver = "org.h2.Driver"),
-        SQLITE(driver = "org.sqlite.JDBC")
+    enum class DBType {
+        H2,
+        SQLITE
     }
 
     /**
@@ -54,29 +51,26 @@ internal object DatabaseManager {
     fun init(createSchema: Boolean = true) {
         val connectionDetails: ConnectionDetails = ConnectionDetails.build()
 
-        setDatabaseHooks(connectionDetails)
+        DatabaseUtils.setDatabaseHooks(connectionDetails = connectionDetails)
 
-        // Establish the database connection using Database.connect from the 'Exposed' framework.
-        // This method not only establishes a connection but also registers it in a global registry within Exposed.
-        // As a result, this connection becomes available application-wide without the need for a global variable.
-        // Exposed manages this connection, utilizing a connection pool for efficiency and performance.
-        // The connection pool reuses connections where possible and handles their lifecycle,
-        // facilitating implicit and consistent database access throughout the application.
-
+        // Establishes a database connection using the 'Exposed' framework.
+        // If a connection pool size is specified, a HikariCP DataSource is configured to manage
+        // the pool which optimizes resource usage by reusing connections and managing their lifecycle.
+        // This setup enables application-wide database access without global variables.
         val database: Database = if (connectionDetails.connectionPoolSize > 0) {
-            val dataSource = createHikariDataSource(
+            val dataSource = DatabaseUtils.createHikariDataSource(
                 poolSize = connectionDetails.connectionPoolSize,
                 url = connectionDetails.jdbcUrl,
-                driver = connectionDetails.driver
+                driver = connectionDetails.jdbcDriver
             )
             Database.connect(datasource = dataSource)
         } else {
-            Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.driver)
+            Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.jdbcDriver)
         }
 
         if (createSchema) {
             tracer.info("Setting database schema.")
-            setupDatabase(database)
+            setupDatabase(database = database)
         }
 
         tracer.info("Database ready: $connectionDetails.")
@@ -98,45 +92,5 @@ internal object DatabaseManager {
                 EmploymentTable
             )
         }
-    }
-
-    @OptIn(DatabaseAPI::class)
-    private fun setDatabaseHooks(connectionDetails: ConnectionDetails) {
-        if (connectionDetails.mode == Mode.IN_MEMORY && connectionDetails.dbType == DBType.SQLITE) {
-            // In-memory sqlite databases get destroyed between transactions.
-            // Getting a connection will preserve the in-memory database unless explicitly closed.
-            // See: https://github.com/JetBrains/Exposed/issues/726#issuecomment-932202379
-            val connection = DriverManager.getConnection(connectionDetails.jdbcUrl)
-
-            // Add shutdown hook to close the connection.
-            // This is not really needed for in-memory databases. Added just as a simple show-how exercise.
-            Runtime.getRuntime().addShutdownHook(Thread {
-                connection?.let {
-                    if (!it.isClosed) {
-                        tracer.info("Shutdown hook triggered. Closing database connection.")
-                        it.close()
-                        tracer.info("Database connection closed.")
-                    }
-                }
-            })
-        }
-    }
-
-    /**
-     * Create a HikariDataSource to enable database connection pooling.
-     *
-     * See: [Database Pooling](https://ktor.io/docs/connection-pooling-caching.html#connection-pooling)
-     */
-    private fun createHikariDataSource(poolSize: Int, url: String, driver: String): HikariDataSource {
-        require(poolSize > 0) { "Database connection pooling must be at >= 1." }
-
-        return HikariDataSource(HikariConfig().apply {
-            driverClassName = driver
-            jdbcUrl = url
-            maximumPoolSize = poolSize
-            isAutoCommit = false
-            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-            validate()
-        })
     }
 }

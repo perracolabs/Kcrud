@@ -4,10 +4,10 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models.employment
+package com.kcrud.data.entities.employment
 
-import com.kcrud.data.models.employment.types.WorkModality
-import com.kcrud.data.models.shared.Period
+import com.kcrud.data.entities.employment.types.WorkModality
+import com.kcrud.data.entities.shared.Period
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 

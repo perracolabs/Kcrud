@@ -7,9 +7,9 @@
 package com.kcrud.graphql.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.models.employee.types.Honorific
-import com.kcrud.data.models.employee.types.MaritalStatus
-import com.kcrud.data.models.employment.types.WorkModality
+import com.kcrud.data.entities.employee.types.Honorific
+import com.kcrud.data.entities.employee.types.MaritalStatus
+import com.kcrud.data.entities.employment.types.WorkModality
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.utils.toUUID
 import kotlinx.datetime.LocalDate

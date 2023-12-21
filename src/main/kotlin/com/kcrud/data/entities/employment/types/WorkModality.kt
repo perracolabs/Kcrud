@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models.employee.types
+package com.kcrud.data.entities.employment.types
 
 import com.kcrud.data.utils.EnumWithId
 
@@ -13,16 +13,13 @@ import com.kcrud.data.utils.EnumWithId
  * which is the actual value that will be stored in the database,
  * instead of the name of the enum item.
  */
-enum class Honorific(override val id: Int) : EnumWithId {
-    MR(100),
-    MRS(101),
-    MS(102),
-    DR(103),
-    MISS(104),
-    UNKNOWN(105);
+enum class WorkModality(override val id: Int) : EnumWithId {
+    ON_SITE(100),
+    REMOTE(101),
+    HYBRID(102);
 
     companion object {
-        private val map = Honorific.entries.associateBy(Honorific::id)
-        fun fromId(id: Int): Honorific? = map[id]
+        private val map = WorkModality.entries.associateBy(WorkModality::id)
+        fun fromId(id: Int): WorkModality? = map[id]
     }
 }

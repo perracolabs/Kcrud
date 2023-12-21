@@ -43,13 +43,15 @@ fun Application.module() {
 
     configureHttp()
 
+    configureLogging()
+
     configureRateLimit()
 
     configureAuthentication()
 
     configureStatusPages()
 
-    configureRouting()
+    configureRoutes()
 
     configureGraphQL()
 

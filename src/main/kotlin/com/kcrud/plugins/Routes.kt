@@ -6,7 +6,12 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.routes.*
+import com.kcrud.routes.data.employeeRoute
+import com.kcrud.routes.data.employmentRoute
+import com.kcrud.routes.main.rootRoute
+import com.kcrud.routes.system.accessTokenRoute
+import com.kcrud.routes.system.documentationRoute
+import com.kcrud.routes.main.healthCheckRoute
 import com.kcrud.settings.SettingsProvider
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -28,7 +33,7 @@ import kotlinx.serialization.json.Json
  *
  * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
  */
-fun Application.configureRouting() {
+fun Application.configureRoutes() {
 
     routing {
 
@@ -47,22 +52,25 @@ fun Application.configureRouting() {
 
         // Define data endpoints.
         rateLimit(RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
-            rootRouting()
+            rootRoute()
             if (SettingsProvider.security.jwt.isEnabled) {
                 authenticate {
-                    employeeRouting()
-                    employmentRouting()
+                    employeeRoute()
+                    employmentRoute()
                 }
             } else {
-                employeeRouting()
-                employmentRouting()
+                employeeRoute()
+                employmentRoute()
             }
         }
 
         // Define access-token endpoints.
-        accessTokenRouting()
+        accessTokenRoute()
 
         // Swagger UI / OpenAPI Documentation.
-        documentationRouting()
+        documentationRoute()
+
+        // Health-Check endpoint.
+        healthCheckRoute()
     }
 }

@@ -4,10 +4,10 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.routes
+package com.kcrud.routes.system
 
 import com.kcrud.plugins.RateLimitScope
-import com.kcrud.security.AuthenticationToken
+import com.kcrud.security.authentication.AuthenticationToken
 import com.kcrud.settings.SettingsProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -23,7 +23,7 @@ import io.ktor.server.routing.*
  *
  * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
  */
-fun Route.accessTokenRouting() {
+fun Route.accessTokenRoute() {
 
     val authTokenOath = "auth/token"
     val keyToken = "token"

@@ -53,6 +53,12 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
 
+    // Call Logging, Call Id.
+    // https://ktor.io/docs/call-logging.html
+    // https://ktor.io/docs/call-id.html
+    implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-id:$ktorVersion")
+
     // Basic Authentication.
     // https://ktor.io/docs/basic.html
     implementation("io.ktor:ktor-server-auth:$ktorVersion")

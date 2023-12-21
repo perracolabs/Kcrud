@@ -6,7 +6,7 @@
 
 package com.kcrud
 
-import com.kcrud.plugins.configureRouting
+import com.kcrud.plugins.configureRoutes
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -18,7 +18,7 @@ class ApplicationTest {
     @Test
     fun testRoot() = testApplication {
         application {
-            configureRouting()
+            configureRoutes()
         }
         client.get("/").apply {
             assertEquals(HttpStatusCode.OK, status)

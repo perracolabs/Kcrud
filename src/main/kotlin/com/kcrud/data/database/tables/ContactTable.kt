@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 
 /**
- * Database entity for employee contact details.
+ * Database table definition for employee contact details.
  *
  * Demonstrates how to encrypt data in the database.
  *

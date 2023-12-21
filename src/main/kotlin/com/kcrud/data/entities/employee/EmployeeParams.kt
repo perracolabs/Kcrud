@@ -4,11 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models.employee
+package com.kcrud.data.entities.employee
 
-import com.kcrud.data.models.contact.ContactParams
-import com.kcrud.data.models.employee.types.Honorific
-import com.kcrud.data.models.employee.types.MaritalStatus
+import com.kcrud.data.entities.contact.ContactParams
+import com.kcrud.data.entities.employee.types.Honorific
+import com.kcrud.data.entities.employee.types.MaritalStatus
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 

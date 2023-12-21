@@ -7,7 +7,7 @@
 package com.kcrud.graphql.kgraphql.schema.employee
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.models.employee.Employee
+import com.kcrud.data.entities.employee.Employee
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.services.EmployeeService
 import org.koin.core.component.KoinComponent

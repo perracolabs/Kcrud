@@ -4,9 +4,10 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.routes
+package com.kcrud.routes.data
 
-import com.kcrud.data.models.employment.EmploymentParams
+import com.kcrud.data.entities.employment.EmploymentParams
+import com.kcrud.routes.RouteSegment
 import com.kcrud.services.EmploymentService
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
@@ -26,9 +27,9 @@ import java.util.*
  * to demonstrate how to organize routes separately
  * and potentially in multiple files.
  *
- * See [Route.employeeRouting] for an example of how to define multiple routes in a single function.
+ * See [Route.employeeRoute] for an example of how to define multiple routes in a single function.
  */
-fun Route.employmentRouting() {
+fun Route.employmentRoute() {
     val service by inject<EmploymentService>()
 
     route(RouteSegment.API_VERSION) {

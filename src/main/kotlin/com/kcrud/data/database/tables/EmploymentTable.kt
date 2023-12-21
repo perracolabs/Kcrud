@@ -6,14 +6,14 @@
 
 package com.kcrud.data.database.tables
 
-import com.kcrud.data.models.employment.types.WorkModality
+import com.kcrud.data.entities.employment.types.WorkModality
 import com.kcrud.data.utils.enumById
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 /**
- * Database entity for employments.
+ * Database table definition for employments.
  * An employee may have multiple employments, which indicates re-hiring.
  */
 internal object EmploymentTable : Table(name = "employment") {

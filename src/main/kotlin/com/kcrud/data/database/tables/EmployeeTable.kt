@@ -6,14 +6,14 @@
 
 package com.kcrud.data.database.tables
 
-import com.kcrud.data.models.employee.types.Honorific
-import com.kcrud.data.models.employee.types.MaritalStatus
+import com.kcrud.data.entities.employee.types.Honorific
+import com.kcrud.data.entities.employee.types.MaritalStatus
 import com.kcrud.data.utils.enumById
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 /**
- * Database entity for employees.
+ * Database table definition for employees.
  */
 internal object EmployeeTable : Table(name = "employee") {
     val id = uuid(name = "employee_id").autoGenerate()

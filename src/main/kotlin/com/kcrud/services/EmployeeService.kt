@@ -6,8 +6,8 @@
 
 package com.kcrud.services
 
-import com.kcrud.data.models.employee.Employee
-import com.kcrud.data.models.employee.EmployeeParams
+import com.kcrud.data.entities.employee.Employee
+import com.kcrud.data.entities.employee.EmployeeParams
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -21,7 +21,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
     /**
      * Retrieves as employee by its ID.
      * @param employeeId The ID of the employee to be retrieved.
-     * @return The employee model if found, null otherwise.
+     * @return The employee entity if found, null otherwise.
      */
     fun findById(employeeId: UUID): Employee? {
         return repository.findById(employeeId = employeeId)
@@ -29,7 +29,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
 
     /**
      * Retrieves all employees in the system.
-     * @return List of all employee models.
+     * @return List of all employee entities.
      */
     fun findAll(): List<Employee> {
         return repository.findAll()
@@ -38,7 +38,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
     /**
      * Creates a new employee in the system.
      * @param employee The employee to be created.
-     * @return The created employee model with generated ID.
+     * @return The created employee entity with generated ID.
      */
     fun create(employee: EmployeeParams): Employee {
         return repository.create(employee = employee)
@@ -48,7 +48,7 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * Updates an employee's details in the system.
      * @param employeeId The ID of the employee to be updated.
      * @param employee The new details for the employee.
-     * @return The updated employee model if the update was successful, null otherwise.
+     * @return The updated employee entity if the update was successful, null otherwise.
      */
     fun update(employeeId: UUID, employee: EmployeeParams): Employee? {
         return repository.update(employeeId = employeeId, employee = employee)

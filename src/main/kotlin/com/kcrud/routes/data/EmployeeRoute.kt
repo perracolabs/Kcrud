@@ -4,9 +4,10 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.routes
+package com.kcrud.routes.data
 
-import com.kcrud.data.models.employee.EmployeeParams
+import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.routes.RouteSegment
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
@@ -25,9 +26,9 @@ import java.util.*
  * These end points are defined in a single function
  * to demonstrate how to encapsulate routes in a single function.
  *
- * See [Route.employmentRouting] for an example of how to define multiple routes in multiple functions.
+ * See [Route.employmentRoute] for an example of how to define multiple routes in multiple functions.
  */
-fun Route.employeeRouting() {
+fun Route.employeeRoute() {
 
     val routeSetup: Route.() -> Unit = {
 

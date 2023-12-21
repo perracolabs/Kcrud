@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models.shared
+package com.kcrud.data.entities.shared
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
@@ -30,7 +30,7 @@ data class Period(
     }
 
     companion object {
-        fun fromTableRow(row: ResultRow, table: Table): Period {
+        fun toEntity(row: ResultRow, table: Table): Period {
             val isActiveCol = table.columns.single { it.name == "is_active" }
             val startDateCol = table.columns.single { it.name == "start_date" }
             val endDateCol = table.columns.single { it.name == "end_date" }

@@ -9,8 +9,8 @@ package com.kcrud.data.repositories.employment
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
-import com.kcrud.data.models.employment.Employment
-import com.kcrud.data.models.employment.EmploymentParams
+import com.kcrud.data.entities.employment.Employment
+import com.kcrud.data.entities.employment.EmploymentParams
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -27,7 +27,7 @@ internal class EmploymentRepository : IEmploymentRepository {
                             (EmployeeTable.id eq employeeId) and
                             (ContactTable.employeeId eq employeeId)
                 }.singleOrNull()?.let { resultRow ->
-                    Employment.fromTableRow(row = resultRow)
+                    Employment.toEntity(row = resultRow)
                 }
         }
     }
@@ -37,7 +37,7 @@ internal class EmploymentRepository : IEmploymentRepository {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .select { (EmploymentTable.employeeId eq employeeId) and (ContactTable.employeeId eq employeeId) }
                 .map { resultRow ->
-                    Employment.fromTableRow(row = resultRow)
+                    Employment.toEntity(row = resultRow)
                 }
         }
     }
@@ -45,7 +45,7 @@ internal class EmploymentRepository : IEmploymentRepository {
     override fun create(employeeId: UUID, employment: EmploymentParams): Employment {
         return transaction {
             val newEmploymentId = EmploymentTable.insert { employmentRow ->
-                employmentModelToTable(employeeId = employeeId, employment = employment, target = employmentRow)
+                employmentParamsToTable(employeeId = employeeId, employment = employment, target = employmentRow)
             } get EmploymentTable.id
 
             findById(employeeId = employeeId, employmentId = newEmploymentId)!!
@@ -57,7 +57,7 @@ internal class EmploymentRepository : IEmploymentRepository {
             EmploymentTable.update(where = {
                 EmploymentTable.id eq employmentId and (EmploymentTable.employeeId eq employeeId)
             }) { employmentRow ->
-                employmentModelToTable(employeeId = employeeId, employment = employment, target = employmentRow)
+                employmentParamsToTable(employeeId = employeeId, employment = employment, target = employmentRow)
             }
 
             findById(employeeId = employeeId, employmentId = employmentId)
@@ -77,9 +77,9 @@ internal class EmploymentRepository : IEmploymentRepository {
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [EmploymentParams] model instance.
+     * Populates an SQL [UpdateBuilder] with data from an [EmploymentParams] instance.
      */
-    private fun employmentModelToTable(employeeId: UUID, employment: EmploymentParams, target: UpdateBuilder<Int>) {
+    private fun employmentParamsToTable(employeeId: UUID, employment: EmploymentParams, target: UpdateBuilder<Int>) {
         target.apply {
             this[EmploymentTable.employeeId] = employeeId
             this[EmploymentTable.probationEndDate] = employment.probationEndDate
@@ -88,8 +88,6 @@ internal class EmploymentRepository : IEmploymentRepository {
             this[EmploymentTable.startDate] = employment.period.startDate
             this[EmploymentTable.endDate] = employment.period.endDate
             this[EmploymentTable.comments] = employment.period.comments?.trim()
-
-            // PeriodColumns.fromPeriodModel(target = this, period = employment.period, columns = Employments.period)
         }
     }
 }

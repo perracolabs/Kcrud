@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models.employee.types
+package com.kcrud.data.entities.employee.types
 
 @Suppress("unused")
 enum class MaritalStatus {

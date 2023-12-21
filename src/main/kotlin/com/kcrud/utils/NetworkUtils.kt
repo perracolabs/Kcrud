@@ -27,7 +27,6 @@ internal object NetworkUtils {
      * @param reason A description of why the endpoint is being logged, for context.
      * @param endpoint The endpoint to be logged.
      */
-    @Suppress("unused")
     fun logEndpoint(reason: String, endpoint: String) {
         logEndpoints(reason = reason, endpoints = listOf(endpoint))
     }

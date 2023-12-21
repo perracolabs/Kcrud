@@ -7,6 +7,7 @@
 package com.kcrud.plugins
 
 import com.kcrud.settings.SettingsProvider
+import com.kcrud.utils.Tracer
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -19,6 +20,7 @@ import io.ktor.server.response.*
  * See: [Ktor Status Pages Documentation](https://ktor.io/docs/status-pages.html)
  */
 fun Application.configureStatusPages() {
+    val tracer = Tracer.create<Application>()
 
     install(StatusPages) {
         // Handle 401 Unauthorized status.
@@ -34,13 +36,20 @@ fun Application.configureStatusPages() {
 
         // Additional exception handling.
         exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
+            tracer.error(message = formatErrorMessage(cause), throwable = cause)
             call.respond(status = HttpStatusCode.BadRequest, message = cause.localizedMessage)
         }
         exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
+            tracer.error(message = formatErrorMessage(cause=cause), throwable = cause)
             call.respond(status = HttpStatusCode.NotFound, message = cause.localizedMessage)
         }
         exception<Throwable> { call: ApplicationCall, cause: Throwable ->
+            tracer.error(message = formatErrorMessage(cause=cause), throwable = cause)
             call.respond(status = HttpStatusCode.InternalServerError, message = "Internal server error. ${cause.localizedMessage}")
         }
     }
+}
+
+private fun formatErrorMessage(cause: Throwable): String {
+    return "\n----\nCaught ${cause.javaClass.simpleName} by Status Page plugin:"
 }

@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.routes
+package com.kcrud.routes.system
 
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.NetworkUtils
@@ -29,7 +29,7 @@ import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
  *
  * See [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/)
  */
-fun Route.documentationRouting() {
+fun Route.documentationRoute() {
 
     if (SettingsProvider.docs.isEnabled) {
         val yamlFile = SettingsProvider.docs.yamlFile

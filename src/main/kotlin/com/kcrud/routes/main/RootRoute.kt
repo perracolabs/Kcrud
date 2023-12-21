@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.routes
+package com.kcrud.routes.main
 
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.views.SimpleLogin
@@ -16,7 +16,7 @@ import io.ktor.server.routing.*
 /**
  * Root endpoints.
  */
-fun Route.rootRouting() {
+fun Route.rootRoute() {
 
     if (SettingsProvider.security.basicAuth.isEnabled) {
 

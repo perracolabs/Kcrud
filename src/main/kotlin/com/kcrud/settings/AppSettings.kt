@@ -30,7 +30,7 @@ internal data class AppSettings(
      *
      * @property development Indicates whether development mode is active.
      */
-    data class Global(val development: Boolean)
+    data class Global(val development: Boolean, val machineId: Int)
 
     /**
      * Contains settings related to how the application is deployed.
@@ -49,6 +49,7 @@ internal data class AppSettings(
      * @property name The name of the database.
      * @property path The database file location.
      * @property jdbcUrl The JDBC url database connection.
+     * @property jdbcDriver The JDBC driver class name.
      * @property connectionPoolSize The database connection pool size. 0 for no connection pooling.
      */
     data class Database(
@@ -57,6 +58,7 @@ internal data class AppSettings(
         val name: String,
         val path: String,
         val jdbcUrl: String,
+        val jdbcDriver: String,
         val connectionPoolSize: Int
     )
 
@@ -118,7 +120,7 @@ internal data class AppSettings(
          * @property isEnabled Flag to enable/disable JWT authentication.
          * @property tokenLifetime Authentication token lifetime, in milliseconds.
          * @property audience Intended recipients of the JWT.
-         * @property issuer Entity that issues the JWT.
+         * @property issuer Provider that issues the JWT.
          * @property realm Security realm for the JWT authentication.
          * @property secretKey Secret key for signing the JWT.
          */

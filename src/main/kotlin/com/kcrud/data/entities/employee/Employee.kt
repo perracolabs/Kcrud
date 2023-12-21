@@ -4,13 +4,13 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models.employee
+package com.kcrud.data.entities.employee
 
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
-import com.kcrud.data.models.contact.Contact
-import com.kcrud.data.models.employee.types.Honorific
-import com.kcrud.data.models.employee.types.MaritalStatus
+import com.kcrud.data.entities.contact.Contact
+import com.kcrud.data.entities.employee.types.Honorific
+import com.kcrud.data.entities.employee.types.MaritalStatus
 import com.kcrud.utils.AgeDelegate
 import com.kcrud.utils.SUUID
 import kotlinx.datetime.LocalDate
@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
- * Represents the model for an employee.
+ * Represents the entity for an employee.
  *
  * @property id The employee's id.
  * @property firstName The first name of the employee.
@@ -51,7 +51,7 @@ data class Employee(
     val age = ageDelegate
 
     companion object {
-        fun fromTableRow(row: ResultRow): Employee {
+        fun toEntity(row: ResultRow): Employee {
             return Employee(
                 id = row[EmployeeTable.id],
                 firstName = row[EmployeeTable.firstName],
@@ -59,7 +59,7 @@ data class Employee(
                 dob = row[EmployeeTable.dob],
                 maritalStatus = row[EmployeeTable.maritalStatus],
                 honorific = row[EmployeeTable.honorific],
-                contact = row.getOrNull(ContactTable.id)?.let { Contact.fromTableRow(row) }
+                contact = row.getOrNull(ContactTable.id)?.let { Contact.toEntity(row = row) }
             )
         }
     }

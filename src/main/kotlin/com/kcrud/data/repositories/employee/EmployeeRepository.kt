@@ -9,8 +9,8 @@ package com.kcrud.data.repositories.employee
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
-import com.kcrud.data.models.employee.Employee
-import com.kcrud.data.models.employee.EmployeeParams
+import com.kcrud.data.entities.employee.Employee
+import com.kcrud.data.entities.employee.EmployeeParams
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -24,7 +24,7 @@ internal class EmployeeRepository : IEmployeeRepository {
             getFindEmployeeJoin().select {
                 EmployeeTable.id eq employeeId
             }.singleOrNull()?.let { resultRow ->
-                Employee.fromTableRow(row = resultRow)
+                Employee.toEntity(row = resultRow)
             }
         }
     }
@@ -32,7 +32,7 @@ internal class EmployeeRepository : IEmployeeRepository {
     override fun findAll(): List<Employee> {
         return transaction {
             getFindEmployeeJoin().selectAll().map { resultRow ->
-                Employee.fromTableRow(row = resultRow)
+                Employee.toEntity(row = resultRow)
             }
         }
     }
@@ -49,7 +49,7 @@ internal class EmployeeRepository : IEmployeeRepository {
     override fun create(employee: EmployeeParams): Employee {
         return transaction {
             val newEmployeeId = EmployeeTable.insert { employeeRow ->
-                employeeModelToTable(employee = employee, target = employeeRow)
+                employeeParamsToTable(employee = employee, target = employeeRow)
             } get EmployeeTable.id
 
             employee.contact?.let {
@@ -88,7 +88,7 @@ internal class EmployeeRepository : IEmployeeRepository {
 
             // Update the Employees table.
             EmployeeTable.update(where = { EmployeeTable.id eq employeeId }) { employeeRow ->
-                employeeModelToTable(employee = employee, target = employeeRow)
+                employeeParamsToTable(employee = employee, target = employeeRow)
             }
 
             findById(employeeId)
@@ -126,9 +126,9 @@ internal class EmployeeRepository : IEmployeeRepository {
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [EmployeeParams] model instance.
+     * Populates an SQL [UpdateBuilder] with data from an [EmployeeParams] instance.
      */
-    private fun employeeModelToTable(employee: EmployeeParams, target: UpdateBuilder<Int>) {
+    private fun employeeParamsToTable(employee: EmployeeParams, target: UpdateBuilder<Int>) {
         target.apply {
             this[EmployeeTable.firstName] = employee.firstName.trim()
             this[EmployeeTable.lastName] = employee.lastName.trim()

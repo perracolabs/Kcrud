@@ -4,19 +4,19 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.models.employment
+package com.kcrud.data.entities.employment
 
 import com.kcrud.data.database.tables.EmploymentTable
-import com.kcrud.data.models.employee.Employee
-import com.kcrud.data.models.employment.types.WorkModality
-import com.kcrud.data.models.shared.Period
+import com.kcrud.data.entities.employee.Employee
+import com.kcrud.data.entities.employment.types.WorkModality
+import com.kcrud.data.entities.shared.Period
 import com.kcrud.utils.SUUID
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
- * Represents the model for an employment.
+ * Represents the entity for an employment.
  *
  * @property id The employment's id.
  * @property period The employment's period details.
@@ -33,13 +33,13 @@ data class Employment(
     val employee: Employee
 ) {
     companion object {
-        fun fromTableRow(row: ResultRow): Employment {
+        fun toEntity(row: ResultRow): Employment {
             return Employment(
                 id = row[EmploymentTable.id],
-                period = Period.fromTableRow(row = row, table = EmploymentTable),
+                period = Period.toEntity(row = row, table = EmploymentTable),
                 probationEndDate = row[EmploymentTable.probationEndDate],
                 workModality = row[EmploymentTable.workModality],
-                employee = Employee.fromTableRow(row)
+                employee = Employee.toEntity(row = row)
             )
         }
     }
