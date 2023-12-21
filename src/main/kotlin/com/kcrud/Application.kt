@@ -57,6 +57,7 @@ fun Application.module() {
 
     DatabaseManager.init()
 
-    val tracerTag = ::module.nameWithClass<Application>()
-    Tracer.createForTag(tracerTag).info("Server configured. Development Mode: ${SettingsProvider.global.development}.")
+    Tracer.createForTag(
+        tag = ::module.nameWithClass<Application>()
+    ).info("Server configured. Development Mode: ${SettingsProvider.global.development}.")
 }
