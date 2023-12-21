@@ -6,10 +6,12 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.security.snowflake.Snowflake
+import com.kcrud.security.snowflake.SnowflakeFactory
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.callloging.*
+import io.ktor.server.request.*
 import org.slf4j.event.Level
 
 /**
@@ -26,20 +28,26 @@ import org.slf4j.event.Level
  *
  * See: [CallId Documentation](https://ktor.io/docs/call-id.html)
  */
-fun Application.configureLogging() {
+fun Application.configureCallLogging() {
 
     install(CallLogging) {
         level = Level.INFO
+
         // Integrates the unique call ID into the Mapped Diagnostic Context (MDC) for logging.
         // This allows the call ID to be included in each log entry, linking logs to specific requests.
-        callIdMdc("id")
+        callIdMdc(name = "id")
+
+        format {
+            val durationMs = it.processingTimeMillis().toString()
+            "Call Duration: [${it.request.origin.remoteHost}] ${it.request.httpMethod.value} - ${it.request.path()} - ${durationMs}ms"
+        }
     }
 
     install(CallId) {
         // Generates a unique ID for each call. This ID is used for request tracing and logging.
         // Must be added to the logback.xml file to be included in logs. See %X{id} in logback.xml.
         generate {
-            "id-${Snowflake.nextId()}"
+            "id-${SnowflakeFactory.nextId()}"
         }
     }
 }

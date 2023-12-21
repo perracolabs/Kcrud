@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger
  *
  * See: [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
-internal object Snowflake {
+internal object SnowflakeFactory {
 
     // The maximum allowed machine ID.
     // This constraint ensures that machine IDs are within a safe range.

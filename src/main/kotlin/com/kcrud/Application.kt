@@ -43,7 +43,7 @@ fun Application.module() {
 
     configureHttp()
 
-    configureLogging()
+    configureCallLogging()
 
     configureRateLimit()
 
