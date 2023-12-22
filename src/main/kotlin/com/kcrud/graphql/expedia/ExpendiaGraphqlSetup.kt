@@ -23,6 +23,8 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 
 /**
  * Sets up the GraphQL engine. Currently, using Expedia GraphQL.
@@ -102,8 +104,13 @@ internal object ExpediaGraphQLSetup {
         )
 
         val sdl = schema.print()
-        File("schema.graphql").writeText(sdl)
-        Tracer.create<ExpediaGraphQLSetup>().info("Dumped GraphQL schema to file: schema.graphql")
+        val directoryPath = Files.createDirectories(Paths.get(".graphql"))
+        val file = File(directoryPath.resolve("schema.graphql").toUri())
+        file.writeText(text = sdl)
+
+        val tracer = Tracer.create<ExpediaGraphQLSetup>()
+        tracer.info("Dumped GraphQL schema file:")
+        tracer.info(file.absolutePath)
     }
 }
 

@@ -44,8 +44,8 @@ bin/
 ### Custom ###
 /.database/
 /.idea/
+/.graphql/
 
 ### Swagger ###
 /docs/
 /docs/.swagger-codegen
-
