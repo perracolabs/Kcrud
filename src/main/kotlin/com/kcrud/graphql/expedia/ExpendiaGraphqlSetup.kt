@@ -36,11 +36,9 @@ internal object ExpediaGraphQLSetup {
     private val graphqlPackages = listOf("com.kcrud")
 
     fun configure(application: Application, withPlayground: Boolean): List<String> {
-
         installGraphQL(application = application)
         dumpSchema()
         setEndpoints(application = application, withPlayground = withPlayground)
-
         return if (withPlayground) listOf("graphiql", "sdl", "graphql") else listOf("sdl", "graphql")
     }
 
@@ -63,7 +61,6 @@ internal object ExpediaGraphQLSetup {
     }
 
     private fun setEndpoints(application: Application, withPlayground: Boolean) {
-        // Configure the GraphQL endpoints.
         application.routing {
             if (SettingsProvider.security.jwt.isEnabled) {
                 authenticate {
@@ -113,4 +110,3 @@ internal object ExpediaGraphQLSetup {
         tracer.info(file.absolutePath)
     }
 }
-
