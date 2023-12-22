@@ -7,10 +7,11 @@
 package com.kcrud.security.snowflake
 
 import com.kcrud.settings.SettingsProvider
+import com.kcrud.utils.Tracer
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.TimeUnit
 
 /**
  * Generates unique identifiers suitable for distributed systems based
@@ -22,106 +23,137 @@ import java.util.concurrent.atomic.AtomicInteger
  * See: [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
 internal object SnowflakeFactory {
-
-    // The maximum allowed machine ID.
-    // This constraint ensures that machine IDs are within a safe range.
-    // To be considered when defining the machine ID in the configuration.
-    private const val MAX_MACHINE_ID = 128
-
-    // The epoch timestamp, used as a base to calculate the unique timestamp part of the ID.
-    private const val EPOCH = 1420045200000L
-
-    // Base for converting the numeric ID to an alphanumeric string.
-    private const val ALPHA_NUMERIC_BASE = 36
-
-    // Bit shifts for timestamp and machine ID to create a unique ID.
-    private const val TIME_STAMP_SHIFT = 22
-    private const val MACHINE_ID_SHIFT = 16
-
-    // Maximum value for the increment part of the ID.
-    // 16384 (2^14) is chosen to allocate 14 bits for the increment part,
-    // allowing for 16384 unique IDs per millisecond per machine.
-    private const val MAX_INCREMENT = 16384
-
-    // Atomic counter to ensure uniqueness for IDs generated in the same millisecond.
-    private val atomicIncrement = AtomicInteger(0)
+    private val tracer = Tracer.create<SnowflakeFactory>()
 
     // Lazy-loaded machine ID, configured per-machine.
     private val machineId by lazy { SettingsProvider.global.machineId }
 
+    // Tracks the last timestamp in milliseconds when an ID was generated.
+    // Initialized to -1 to indicate no IDs have been generated yet.
+    private var lastTimestampMs = -1L
+
+    // Tracks the sequence number within the same millisecond.
+    // This is used to generate multiple unique IDs within the same millisecond.
+    // Initialized to 0, as it gets incremented for each ID generated within the same millisecond.
+    // If IDs are not generated at a frequency higher than one per millisecond, this value
+    // will typically be 0.
+    private var sequence = 0L
+
+    // Number of bits allocated for the machine ID. Determines the maximum number of unique machine IDs.
+    private const val MACHINE_ID_BITS = 10
+
+    // Number of bits allocated for the sequence number.
+    // Controls the maximum number of IDs that can be generated per millisecond for each machine.
+    private const val SEQUENCE_BITS = 12
+
+    // The base used for converting the generated ID to an alphanumeric string.
+    // Base 36 combines 0-9 and a-z for a compact representation.
+    private const val ALPHA_NUMERIC_BASE = 36
+
+    // Maximum possible value for machine ID, derived from the number of bits allocated.
+    // This value is 2^MACHINE_ID_BITS - 1.
+    private const val MAX_MACHINE_ID = (1 shl MACHINE_ID_BITS) - 1L
+
+    // Maximum possible value for the sequence number, based on the allocated bits.
+    // Equals 2^SEQUENCE_BITS - 1, ensuring a unique ID sequence within a millisecond.
+    private const val MAX_SEQUENCE = (1 shl SEQUENCE_BITS) - 1L
+
+    // Wall-clock reference time for Snowflake IDs.
+    private val timestampEpoch = System.currentTimeMillis()
+
+    // Starting point for elapsed time measurement with System.nanoTime().
+    private val nanoTimeStart = System.nanoTime()
+
     init {
-        require(machineId in 0..<MAX_MACHINE_ID) {
-            "Machine ID must between 0 and ${MAX_MACHINE_ID - 1}. Got: $machineId."
-        }
+        // Ensures that the machine ID is within the allowable range.
+        require(machineId in 0..MAX_MACHINE_ID) { "The Machine ID must be between 0 and $MAX_MACHINE_ID" }
     }
 
     /**
-     * Generates the next unique ID as a String.
-     *
-     * @return The generated unique alphanumeric ID.
+     * Generates the next unique Snowflake ID.
+     * @return The generated Snowflake ID as a base-36 alphanumeric string.
+     * @throws IllegalStateException If the system clock has moved backwards, breaking the ID sequence.
      */
+    @Synchronized
     fun nextId(): String {
-        synchronized(this) {
-            val currentTimestamp: Long = System.currentTimeMillis()
-            val timestamp: Long = currentTimestamp - EPOCH
+        var currentTimestampMs = newTimestamp()
 
-            // The maximum value for the increment part is set to MAX_INCREMENT - 2 to provide a safety margin.
-            // This margin helps prevent the atomic increment value from reaching its upper limit, which
-            // could potentially cause an overflow or interfere with reserved values at the high end of the range.
-            val safeIncrementThreshold: Int = MAX_INCREMENT - 2
-
-            // Resetting the atomic increment to 0 if it reaches or exceeds the maximum limit.
-            // This ensures that the increment part of the ID stays within the safe, predefined range
-            // and prevents the possibility of generating duplicate IDs or encountering an overflow.
-            if (atomicIncrement.get() >= safeIncrementThreshold) {
-                atomicIncrement.set(0)
-            }
-
-            // Incrementing the atomic counter to get the next unique value for the increment part of the ID.
-            val increment = atomicIncrement.incrementAndGet()
-
-            // Constructing the numeric ID by combining the timestamp, machine ID, and increment.
-            // These components are shifted and combined in a way to ensure that each part contributes
-            // to the uniqueness of the overall ID.
-            val numericId = (timestamp shl TIME_STAMP_SHIFT) or (machineId shl MACHINE_ID_SHIFT).toLong() or increment.toLong()
-
-            // Converting the numeric ID to an alphanumeric string for easier use and storage.
-            return java.lang.Long.toString(numericId, ALPHA_NUMERIC_BASE)
+        // Check for invalid system clock settings.
+        if (currentTimestampMs < lastTimestampMs) {
+            tracer.error("Invalid System Clock. Current timestamp: $currentTimestampMs, last timestamp: $lastTimestampMs")
+            throw IllegalStateException("Invalid System Clock.")
         }
+
+        // If it's a new millisecond, reset the sequence number.
+        if (currentTimestampMs != lastTimestampMs) {
+            sequence = 0L
+            lastTimestampMs = currentTimestampMs
+        } else {
+            // If the current timestamp is the same, increment the sequence number.
+            // If sequence overflows, wait for the next millisecond.
+            if (++sequence > MAX_SEQUENCE) {
+                sequence = 0L
+                do {
+                    Thread.yield()
+                    currentTimestampMs = newTimestamp()
+                } while (currentTimestampMs <= lastTimestampMs)
+                lastTimestampMs = currentTimestampMs
+            }
+        }
+
+        // Construct the ID using the current state of the timestamp and sequence.
+        val timestampForId = lastTimestampMs
+        val sequenceForId = sequence
+        val id = (timestampForId shl (MACHINE_ID_BITS + SEQUENCE_BITS)) or
+                (machineId.toLong() shl SEQUENCE_BITS) or
+                sequenceForId
+
+        return id.toString(radix = ALPHA_NUMERIC_BASE)
     }
 
     /**
-     * Parses a unique ID back into its constituent parts.
-     *
-     * @param id The unique ID to parse.
-     * @return A [SnowflakeData] object containing the parsed segments.
+     * Parses a Snowflake ID to extract its segments.
+     * The ID is expected to have an optional "id-" prefix.
+     * @param id The Snowflake ID to parse.
+     * @return SnowflakeData containing the ID segments.
      */
-    @Suppress("unused")
     fun parse(id: String): SnowflakeData {
-        // Parsing the alphanumeric ID back to a numeric value for processing.
-        val numericId: Long = java.lang.Long.parseLong(id.lowercase(), ALPHA_NUMERIC_BASE)
+        val normalizedId = id.toLong(radix = ALPHA_NUMERIC_BASE)
 
-        // Extracting the timestamp part from the ID. The original timestamp is retrieved by
-        // shifting right by the number of bits allocated for the machine ID and increment,
-        // and then adding the epoch offset to get the actual timestamp.
-        val timestampMs: Long = (numericId shr TIME_STAMP_SHIFT) + EPOCH
-        val timestamp = Instant.fromEpochMilliseconds(timestampMs).toLocalDateTime(timeZone = TimeZone.UTC)
+        // Extract the machine ID segment.
+        val machineIdSegment = (normalizedId ushr SEQUENCE_BITS) and MAX_MACHINE_ID
 
-        // Calculating the mask to extract the machine ID and increment value.
-        // MAX_MACHINE_ID - 1 is used to create a bitmask that matches the bit length of the machine ID.
-        val lowerBitsMask: Long = MAX_MACHINE_ID - 1L
+        // Extract the timestamp segment.
+        val timestampMs = (normalizedId ushr (MACHINE_ID_BITS + SEQUENCE_BITS))
+        val instant = Instant.fromEpochMilliseconds(timestampMs)
+        val utcTimestampSegment = instant.toLocalDateTime(TimeZone.UTC)
 
-        // Extracting the machine ID part from the ID. This is achieved by shifting right
-        // to remove the increment, and then applying a bitmask to isolate the machine ID bits.
-        val machineId: Long = (numericId shr MACHINE_ID_SHIFT) and lowerBitsMask
+        // Convert the timestamp to LocalDateTime using the system's default timezone.
+        val localTimestampSegment = instant.toLocalDateTime(TimeZone.currentSystemDefault())
 
-        // Extracting the increment part from the ID. The bitmask isolates the increment bits from the ID.
-        val increment: Long = numericId and lowerBitsMask
+        // Extract the sequence number segment.
+        val sequenceSegment = normalizedId and MAX_SEQUENCE
 
         return SnowflakeData(
-            timestamp = timestamp,
-            machineId = machineId.toInt(),
-            increment = increment.toInt()
+            machineId = machineIdSegment.toInt(),
+            sequence = sequenceSegment,
+            utc = utcTimestampSegment,
+            local = localTimestampSegment
         )
+    }
+
+    /**
+     * Returns a more robust current timestamp in milliseconds.
+     * This method combines `System.currentTimeMillis()` and `System.nanoTime()`
+     * to mitigate the impact of system clock adjustments.
+     * `System.nanoTime()` is used for its monotonic properties, ensuring the measured
+     * elapsed time does not decrease even if the system clock is adjusted.
+     * The initial system time (`timestampEpoch`) captured at application startup
+     * is combined with the elapsed time since then, calculated using `System.nanoTime()`,
+     * to produce a stable and increasing timestamp.
+     */
+    private fun newTimestamp(): Long {
+        val nanoTimeDiff = System.nanoTime() - nanoTimeStart
+        return timestampEpoch + TimeUnit.NANOSECONDS.toMillis(nanoTimeDiff)
     }
 }

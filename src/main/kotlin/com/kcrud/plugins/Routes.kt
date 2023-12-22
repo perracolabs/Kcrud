@@ -11,7 +11,7 @@ import com.kcrud.routes.data.employmentRoute
 import com.kcrud.routes.main.rootRoute
 import com.kcrud.routes.system.accessTokenRoute
 import com.kcrud.routes.system.documentationRoute
-import com.kcrud.routes.main.healthCheckRoute
+import com.kcrud.routes.main.systemRoute
 import com.kcrud.settings.SettingsProvider
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -70,7 +70,7 @@ fun Application.configureRoutes() {
         // Swagger UI / OpenAPI Documentation.
         documentationRoute()
 
-        // Health-Check endpoint.
-        healthCheckRoute()
+        // System endpoints, (e.g. health check).
+        systemRoute()
     }
 }

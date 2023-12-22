@@ -17,9 +17,7 @@ import io.ktor.server.routing.*
  * Root endpoints.
  */
 fun Route.rootRoute() {
-
     if (SettingsProvider.security.basicAuth.isEnabled) {
-
         // Basic Authentication for the root endpoint.
         if (SettingsProvider.security.basicAuth.loginForm) {
 
@@ -33,7 +31,6 @@ fun Route.rootRoute() {
                 get("/") { call.respondText("Authentication successful") }
             }
         }
-
     } else {
         // No authentication required.
         get("/") { call.respondText("Hello World!") }

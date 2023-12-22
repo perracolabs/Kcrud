@@ -30,14 +30,13 @@ import org.slf4j.event.Level
  * See: [CallId Documentation](https://ktor.io/docs/call-id.html)
  */
 fun Application.configureCallLogging() {
-    val idToken = "id"
 
     install(CallLogging) {
         level = Level.INFO
 
         // Integrates the unique call ID into the Mapped Diagnostic Context (MDC) for logging.
         // This allows the call ID to be included in each log entry, linking logs to specific requests.
-        callIdMdc(name = idToken)
+        callIdMdc(name = "id")
 
         format {
             val durationMs = it.processingTimeMillis()
@@ -49,7 +48,7 @@ fun Application.configureCallLogging() {
         // Generates a unique ID for each call. This ID is used for request tracing and logging.
         // Must be added to the logback.xml file to be included in logs. See %X{id} in logback.xml.
         generate {
-            "$idToken-${SnowflakeFactory.nextId()}"
+            SnowflakeFactory.nextId()
         }
 
         // Adds the call ID to the response headers, so that it can be retrieved by the client for tracing.

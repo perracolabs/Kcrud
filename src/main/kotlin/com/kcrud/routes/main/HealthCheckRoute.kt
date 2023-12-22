@@ -6,8 +6,13 @@
 
 package com.kcrud.routes.main
 
+import com.kcrud.data.database.shared.DatabaseManager
+import com.kcrud.security.snowflake.SnowflakeFactory
+import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.NetworkUtils
+import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.datetime.Clock
@@ -17,31 +22,38 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 
 /**
- * Defines the health check endpoint for the application.
+ * Defines the health check and snowflake parser endpoints.
  *
- * This endpoint ("/health") provides a simple way to monitor the operational status
+ * The endpoint ("/health") provides a simple way to monitor the operational status
  * of the application.
+ *
+ * The snowflake endpoint ("/snowflake/{id}") parses a Snowflake ID and returns the
+ * components extracted from the ID.
  *
  * The current implementation checks the basic readiness of the application. Future
  * enhancements could include more complex health checks, like database connectivity,
  * external service availability, or other critical component checks.
  */
-fun Route.healthCheckRoute() {
-    route("/health") {
-        get {
-            val healthCheckResponse = HealthCheckResponse(ready = true)
-            call.respond(healthCheckResponse)
+fun Route.systemRoute() {
+    authenticate(SettingsProvider.security.basicAuth.providerName) {
+        get("/health") {
+            call.respond(HealthCheckResponse())
+        }
+
+        get("/snowflake/{id}") {
+            call.respond(HttpStatusCode.OK, SnowflakeFactory.parse(id = call.parameters["id"]!!))
         }
     }
 
-    NetworkUtils.logEndpoint(
-        reason = "Health Check",
-        endpoint = "health"
+    NetworkUtils.logEndpoints(
+        reason = "System endpoints. Requires basic authentication credentials",
+        endpoints = listOf("health", "snowflake/{id}")
     )
 }
 
 @Serializable
 data class HealthCheckResponse(
-    val ready: Boolean,
+    val ready: Boolean = true,
+    val databaseAlive: Boolean = DatabaseManager.ping(),
     val timestamp: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
 )

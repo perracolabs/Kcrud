@@ -93,4 +93,17 @@ internal object DatabaseManager {
             )
         }
     }
+
+    /**
+     * Checks whether the database is alive.
+     */
+    fun ping(): Boolean {
+        return try {
+            transaction {
+                true
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

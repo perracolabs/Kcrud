@@ -25,7 +25,6 @@ import io.ktor.server.routing.*
  */
 fun Route.accessTokenRoute() {
 
-    val authTokenOath = "auth/token"
     val keyToken = "token"
 
     /**
@@ -41,7 +40,7 @@ fun Route.accessTokenRoute() {
         }
     }
 
-    route(authTokenOath) {
+    route("auth/token") {
 
         // Endpoint for initial token generation; requires Basic Authentication.
         rateLimit(RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
