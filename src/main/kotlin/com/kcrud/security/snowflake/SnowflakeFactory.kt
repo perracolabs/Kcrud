@@ -101,12 +101,10 @@ internal object SnowflakeFactory {
             }
         }
 
-        // Construct the ID using the current state of the timestamp and sequence.
-        val timestampForId = lastTimestampMs
-        val sequenceForId = sequence
-        val id = (timestampForId shl (MACHINE_ID_BITS + SEQUENCE_BITS)) or
+        // Construct the ID.
+        val id = (lastTimestampMs shl (MACHINE_ID_BITS + SEQUENCE_BITS)) or
                 (machineId.toLong() shl SEQUENCE_BITS) or
-                sequenceForId
+                sequence
 
         return id.toString(radix = ALPHA_NUMERIC_BASE)
     }
