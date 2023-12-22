@@ -5,9 +5,9 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm") version "1.9.22"
     id("io.ktor.plugin") version "2.3.7"
-    kotlin("plugin.serialization") version "1.9.21"
+    kotlin("plugin.serialization") version "1.9.22"
     id("com.expediagroup.graphql") version "7.0.2"
 }
 
@@ -69,8 +69,9 @@ dependencies {
 
     // Logging.
     // https://github.com/qos-ch/logback
-    implementation("ch.qos.logback:logback-classic:1.4.14")
-    testImplementation("ch.qos.logback:logback-classic:1.2.11")
+    val logbackVersion = "1.4.14"
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     // Serialization.
     // https://github.com/Kotlin/kotlinx.serialization
@@ -127,7 +128,9 @@ dependencies {
     // GraphQL with ExpediaGroup.
     // https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview
     // https://github.com/ExpediaGroup/graphql-kotlin/tree/master/servers/graphql-kotlin-ktor-server
-    implementation("com.expediagroup:graphql-kotlin-ktor-server:7.0.2")
+    val expediaGroupVersion = "7.0.2"
+    implementation("com.expediagroup:graphql-kotlin-ktor-server:$expediaGroupVersion")
+    implementation("com.expediagroup:graphql-kotlin-schema-generator:$expediaGroupVersion")
 
     // OpenAPI / SwaggerUI.
     // https://ktor.io/docs/swagger-ui.html#configure-swagger
@@ -136,9 +139,9 @@ dependencies {
     implementation("io.ktor:ktor-server-swagger:$ktorVersion")
     implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.45")
     implementation("commons-codec:commons-codec:1.16.0")
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("io.mockk:mockk:1.13.8")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.21")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$ktorVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
 }

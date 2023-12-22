@@ -85,8 +85,9 @@ internal data class AppSettings(
      * @property isEnabled Whether GraphQL is enabled.
      * @property framework The GraphQL framework to use.
      * @property playground Whether to enable the GraphQL Playground.
+     * @property dumpSchema Whether to dump the GraphQL schema.
      */
-    data class GraphQL(val isEnabled: Boolean, val framework: GraphQLFramework, val playground: Boolean)
+    data class GraphQL(val isEnabled: Boolean, val framework: GraphQLFramework, val playground: Boolean, val dumpSchema: Boolean)
 
     /**
      * Security class holds settings related to security.

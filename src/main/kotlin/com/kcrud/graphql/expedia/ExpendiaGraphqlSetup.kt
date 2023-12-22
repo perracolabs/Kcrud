@@ -6,6 +6,10 @@
 
 package com.kcrud.graphql.expedia
 
+import com.expediagroup.graphql.generator.SchemaGeneratorConfig
+import com.expediagroup.graphql.generator.TopLevelObject
+import com.expediagroup.graphql.generator.extensions.print
+import com.expediagroup.graphql.generator.toSchema
 import com.expediagroup.graphql.server.ktor.*
 import com.kcrud.graphql.expedia.schema.KcrudSchema
 import com.kcrud.graphql.expedia.schema.employee.EmployeeMutations
@@ -14,22 +18,34 @@ import com.kcrud.graphql.expedia.schema.employment.EmploymentMutations
 import com.kcrud.graphql.expedia.schema.employment.EmploymentQueries
 import com.kcrud.graphql.expedia.types.CustomSchemaGeneratorHooks
 import com.kcrud.settings.SettingsProvider
+import com.kcrud.utils.Tracer
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
+import java.io.File
 
 /**
  * Sets up the GraphQL engine. Currently, using Expedia GraphQL.
  *
  * See: [Expedia GraphQL Documentation](https://opensource.expediagroup.com/graphql-kotlin/docs/)
  */
+@OptIn(ExpediaAPI::class)
 internal object ExpediaGraphQLSetup {
-    @OptIn(ExpediaAPI::class)
-    fun configure(application: Application, withPlayground: Boolean): List<String> {
-        application.install(GraphQL) {
+    private val graphqlPackages = listOf("com.kcrud")
 
+    fun configure(application: Application, withPlayground: Boolean): List<String> {
+
+        installGraphQL(application = application)
+        dumpSchema()
+        setEndpoints(application = application, withPlayground = withPlayground)
+
+        return if (withPlayground) listOf("graphiql", "sdl", "graphql") else listOf("sdl", "graphql")
+    }
+
+    private fun installGraphQL(application: Application) {
+        application.install(GraphQL) {
             schema {
-                this.packages = listOf("com.kcrud")
+                packages = graphqlPackages
                 queries = listOf(
                     EmployeeQueries(),
                     EmploymentQueries()
@@ -42,7 +58,10 @@ internal object ExpediaGraphQLSetup {
                 hooks = CustomSchemaGeneratorHooks()
             }
         }
+    }
 
+    private fun setEndpoints(application: Application, withPlayground: Boolean) {
+        // Configure the GraphQL endpoints.
         application.routing {
             if (SettingsProvider.security.jwt.isEnabled) {
                 authenticate {
@@ -61,8 +80,30 @@ internal object ExpediaGraphQLSetup {
                 graphiQLRoute() // http://localhost:8080/graphiql
             }
         }
+    }
 
-        // Return the configured endpoints.
-        return if (withPlayground) listOf("graphiql", "sdl", "graphql") else listOf("sdl", "graphql")
+    private fun dumpSchema() {
+        if (!SettingsProvider.graphql.dumpSchema)
+            return
+
+        val schema = toSchema(
+            queries = listOf(
+                TopLevelObject(EmployeeQueries()),
+                TopLevelObject(EmploymentQueries())
+            ),
+            mutations = listOf(
+                TopLevelObject(EmployeeMutations()),
+                TopLevelObject(EmploymentMutations())
+            ),
+            config = SchemaGeneratorConfig(
+                supportedPackages = graphqlPackages,
+                hooks = CustomSchemaGeneratorHooks()
+            )
+        )
+
+        val sdl = schema.print()
+        File("schema.graphql").writeText(sdl)
+        Tracer.create<ExpediaGraphQLSetup>().info("Dumped GraphQL schema to file: schema.graphql")
     }
 }
+
