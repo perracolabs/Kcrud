@@ -8,6 +8,8 @@ package com.kcrud.services
 
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.data.database.shared.Pagination
+import com.kcrud.data.repositories.employee.EmployeeFilterSet
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -31,8 +33,18 @@ class EmployeeService(private val repository: IEmployeeRepository) : KoinCompone
      * Retrieves all employees in the system.
      * @return List of all employee entities.
      */
-    fun findAll(): List<Employee> {
-        return repository.findAll()
+    fun findAll(pagination: Pagination?): List<Employee> {
+        return repository.findAll(pagination = pagination)
+    }
+
+    /**
+     * Retrieves all employees in the system that match the provided filter set.
+     * @param filterSet The filter set to be applied.
+     * @param pagination The pagination options to be applied.
+     * @return List of all employee entities that match the provided filter set.
+     */
+    fun filter(filterSet: EmployeeFilterSet, pagination: Pagination): List<Employee> {
+        return repository.filter(filterSet = filterSet, pagination = pagination)
     }
 
     /**

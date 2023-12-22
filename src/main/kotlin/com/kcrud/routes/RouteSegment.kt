@@ -46,4 +46,12 @@ internal object RouteSegment {
          */
         const val EMPLOYMENT_ID_PATH = "{${EMPLOYMENT_ID}}"
     }
+
+    object Page {
+        /** The segment for the numbered page. */
+        const val PAGE = "page"
+
+        /** The segment for the number of items per page (page size) */
+        const val LIMIT = "limit"
+    }
 }

@@ -2,11 +2,11 @@
 A REST/GraphQL **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
 
 ### Characteristics:
-* Most common **REST** operations.
+* Most common **REST** operations, including pagination example.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
 * [Database Connection Pooling](https://ktor.io/docs/connection-pooling-caching.html#connection-pooling) with [HikariCP ](https://github.com/brettwooldridge/HikariCP).
 * [Encryption](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/data/database/tables/ContactTable.kt) at field level example.
-* [GraphQL](https://graphql.org/) with both frameworks [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) or [KGraphQL](https://github.com/aPureBase/KGraphQL).
+* [GraphQL](https://graphql.org/) with either [ExpediaGroup GraphQL](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) or [KGraphQL](https://github.com/aPureBase/KGraphQL) frameworks. Examples for Mutations, Queries, Pagination and Filters.
 * [Koin](https://insert-koin.io/) dependency injection.
 * [Connection Rate limit](https://ktor.io/docs/rate-limit.html) examples.
 * [JWT authentication](https://ktor.io/docs/jwt.html) for both REST and GraphQL.

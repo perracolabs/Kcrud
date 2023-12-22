@@ -8,6 +8,8 @@ package com.kcrud.graphql.kgraphql.schema.employee
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.entities.employee.Employee
+import com.kcrud.data.database.shared.Pagination
+import com.kcrud.data.repositories.employee.EmployeeFilterSet
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.services.EmployeeService
 import org.koin.core.component.KoinComponent
@@ -24,6 +26,22 @@ import java.util.*
 internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinComponent {
 
     private val service: EmployeeService by inject()
+
+    /**
+     * Configures input types for queries.
+     */
+    fun configureInputs(): EmployeeQueries {
+        schemaBuilder.apply {
+            inputType<EmployeeFilterSet> {
+                name = "Input type definition for employee filters."
+            }
+            inputType<Pagination> {
+                name = "Input type definition for pagination."
+            }
+        }
+
+        return this
+    }
 
     /**
      * Configures query types specifically.
@@ -47,9 +65,17 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
                 description = "Returns a single employee given its id."
                 resolver { employeeId: UUID -> service.findById(employeeId = employeeId) }
             }
+
             query("employees") {
                 description = "Returns all existing employees."
-                resolver { -> service.findAll() }
+                resolver { pagination: Pagination? -> service.findAll(pagination = pagination) }
+            }
+
+            query("filterEmployees") {
+                description = "Filterable paginated Employee query."
+                resolver { filterSet: EmployeeFilterSet, pagination: Pagination ->
+                    service.filter(filterSet = filterSet, pagination = pagination)
+                }
             }
         }
 

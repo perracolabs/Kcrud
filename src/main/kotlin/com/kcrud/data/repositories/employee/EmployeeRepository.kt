@@ -6,6 +6,7 @@
 
 package com.kcrud.data.repositories.employee
 
+import com.kcrud.data.database.shared.Pagination
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
@@ -29,9 +30,20 @@ internal class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun findAll(): List<Employee> {
+    override fun findAll(pagination: Pagination?): List<Employee> {
         return transaction {
-            getFindEmployeeJoin().selectAll().map { resultRow ->
+            pagination ?: return@transaction getFindEmployeeJoin().selectAll().map { resultRow ->
+                Employee.toEntity(row = resultRow)
+            }
+
+            val query = getFindEmployeeJoin().selectAll()
+
+            val startIndex = (pagination.page - 1) * pagination.limit
+            query.limit(n = pagination.limit, offset = startIndex.toLong()).map { resultRow ->
+                Employee.toEntity(row = resultRow)
+            }
+
+            query.map { resultRow ->
                 Employee.toEntity(row = resultRow)
             }
         }
@@ -44,6 +56,37 @@ internal class EmployeeRepository : IEmployeeRepository {
             onColumn = EmployeeTable.id,
             otherColumn = ContactTable.employeeId
         )
+    }
+
+    override fun filter(filterSet: EmployeeFilterSet, pagination: Pagination): List<Employee> {
+        return transaction {
+            val query = EmployeeTable.selectAll()
+
+            // Using lowerCase() to make the search case-insensitive.
+            // This could be removed if the database is configured to use a case-insensitive collation.
+
+            filterSet.firstName?.let { firstName ->
+                query.andWhere { EmployeeTable.firstName.lowerCase() like "%${firstName.lowercase()}%" }
+            }
+            filterSet.lastName?.let { lastName ->
+                query.andWhere { EmployeeTable.lastName.lowerCase() like "%${lastName.lowercase()}%" }
+            }
+            filterSet.honorific?.let { honorificList ->
+                if (honorificList.isNotEmpty()) {
+                    query.andWhere { EmployeeTable.honorific inList honorificList }
+                }
+            }
+            filterSet.maritalStatus?.let { maritalStatusList ->
+                if (maritalStatusList.isNotEmpty()) {
+                    query.andWhere { EmployeeTable.maritalStatus inList maritalStatusList }
+                }
+            }
+
+            val startIndex = (pagination.page - 1) * pagination.limit
+            query.limit(n = pagination.limit, offset = startIndex.toLong()).map { resultRow ->
+                Employee.toEntity(row = resultRow)
+            }
+        }
     }
 
     override fun create(employee: EmployeeParams): Employee {

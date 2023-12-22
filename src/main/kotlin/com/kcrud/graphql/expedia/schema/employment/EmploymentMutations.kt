@@ -6,6 +6,7 @@
 
 package com.kcrud.graphql.expedia.schema.employment
 
+import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Mutation
 import com.kcrud.data.entities.employment.Employment
 import com.kcrud.data.entities.employment.EmploymentParams
@@ -23,18 +24,22 @@ class EmploymentMutations : Mutation {
 
     private val service: EmploymentService = getKoin().get()
 
+    @GraphQLDescription("Creates a new employment.")
     fun createEmployment(employeeId: UUID, employment: EmploymentParams): Employment {
         return service.create(employeeId = employeeId, employment = employment)
     }
 
+    @GraphQLDescription("Updates an existing employment.")
     fun updateEmployment(employeeId: UUID, employmentId: UUID, employment: EmploymentParams): Employment? {
         return service.update(employeeId = employeeId, employmentId = employmentId, employment = employment)
     }
 
+    @GraphQLDescription("Deletes an existing employment.")
     fun deleteEmployment(employmentId: UUID): Int {
         return service.delete(employmentId = employmentId)
     }
 
+    @GraphQLDescription("Deletes all employments for a given employee.")
     fun deleteAllEmployments(employeeId: UUID): Int {
         return service.deleteAll(employeeId = employeeId)
     }

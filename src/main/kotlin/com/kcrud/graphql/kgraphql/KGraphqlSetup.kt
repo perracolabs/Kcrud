@@ -39,6 +39,7 @@ internal object KGraphQLSetup {
                     .configure()
 
                 EmployeeQueries(schemaBuilder = this)
+                    .configureInputs()
                     .configureTypes()
                     .configureQueries()
 

@@ -7,6 +7,7 @@
 package com.kcrud.routes.data
 
 import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.data.database.shared.Pagination
 import com.kcrud.routes.RouteSegment
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.toUUIDOrNull
@@ -36,7 +37,11 @@ fun Route.employeeRoute() {
 
         // Find All
         get {
-            val employees = service.findAll()
+            val page = call.request.queryParameters[RouteSegment.Page.PAGE]?.toIntOrNull() ?: 0
+            val limit = call.request.queryParameters[RouteSegment.Page.LIMIT]?.toIntOrNull() ?: 0
+            val pagination = if (page < 1 || limit < 1) null else Pagination(page, limit)
+
+            val employees = service.findAll(pagination = pagination)
             call.respond(employees)
         }
 
