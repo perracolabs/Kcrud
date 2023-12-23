@@ -60,7 +60,6 @@ internal class EmployeeRepository : IEmployeeRepository {
     override fun filter(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
         return transaction {
             val query = EmployeeTable.selectAll()
-            val totalElements = query.count()
 
             // Using lowerCase() to make the search case-insensitive.
             // This could be removed if the database is configured to use a case-insensitive collation.
@@ -82,13 +81,16 @@ internal class EmployeeRepository : IEmployeeRepository {
                 }
             }
 
+            // Count total elements after applying filters.
+            val totalFilteredElements = query.count()
+
             val paginatedData = query
                 .applyPagination(pageable = pageable)
                 .map { resultRow ->
                     Employee.toEntity(row = resultRow)
                 }
 
-            Page.create(content = paginatedData, totalElements = totalElements, pageable = pageable)
+            Page.create(content = paginatedData, totalElements = totalFilteredElements, pageable = pageable)
         }
     }
 
