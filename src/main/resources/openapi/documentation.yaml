@@ -144,29 +144,7 @@ paths:
   /auth/token/create:
     post:
       description: "Create a new auth token."
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/HashMap_String"
-        "401":
-          description: "Unauthorized <br> Token is invalid; respond with an Unauthorized\
-            \ status."
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Invalid token."
+      responses: {}
   /auth/token/refresh:
     post:
       description: "Endpoint for token refresh. <br> No Basic Authentication is required\
@@ -194,6 +172,23 @@ paths:
               examples:
                 Example#1:
                   value: "Invalid token."
+  /health:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HealthCheckResponse"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    ready: true
+                    databaseAlive: "null"
+                    timestamp: "null"
   /login:
     post:
       description: ""
@@ -209,6 +204,22 @@ paths:
                   value: "Authentication failed"
                 Example#2:
                   value: "Authentication successful"
+  /snowflake/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SnowflakeData"
   /v1/employees/{employee_id}/employments:
     delete:
       description: ""
@@ -523,6 +534,36 @@ components:
       properties: {}
     HashMap_String:
       type: "string"
+    LocalDateTime:
+      type: "object"
+      properties: {}
+    HealthCheckResponse:
+      type: "object"
+      properties:
+        ready:
+          type: "boolean"
+        databaseAlive:
+          type: "boolean"
+        timestamp:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+      - "timestamp"
+    SnowflakeData:
+      type: "object"
+      properties:
+        machineId:
+          type: "integer"
+          format: "int32"
+        sequence:
+          type: "integer"
+          format: "int64"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+      - "utc"
+      - "local"
     Period:
       type: "object"
       properties:
@@ -544,11 +585,18 @@ components:
           $ref: "#/components/schemas/Period"
         probationEndDate:
           $ref: "#/components/schemas/LocalDate"
+        workModality:
+          type: "string"
+          enum:
+          - "ON_SITE"
+          - "REMOTE"
+          - "HYBRID"
         employee:
           $ref: "#/components/schemas/Employee"
       required:
       - "id"
       - "period"
+      - "workModality"
       - "employee"
     EmploymentParams:
       type: "object"
@@ -557,7 +605,14 @@ components:
           $ref: "#/components/schemas/Period"
         probationEndDate:
           $ref: "#/components/schemas/LocalDate"
+        workModality:
+          type: "string"
+          enum:
+          - "ON_SITE"
+          - "REMOTE"
+          - "HYBRID"
       required:
       - "period"
+      - "workModality"
     Function1_? super Employment:
       type: "object"
