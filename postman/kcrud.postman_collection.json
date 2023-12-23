@@ -248,6 +248,110 @@
 							"response": []
 						},
 						{
+							"name": "get all (sort)",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTY5ODA3NzY3NH0.EmLRZE64qMw19lVt4cYlf4m9iKPPYCdQVYPS2UurlxY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees?sort=firstName&direction=asc",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "firstName"
+										},
+										{
+											"key": "direction",
+											"value": "asc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all (paginated & sort)",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTY5ODA3NzY3NH0.EmLRZE64qMw19lVt4cYlf4m9iKPPYCdQVYPS2UurlxY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees?page=1&size=10&sort=firstName&direction=asc",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "firstName"
+										},
+										{
+											"key": "direction",
+											"value": "asc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "search (paginated)",
 							"protocolProfileBehavior": {
 								"strictSSL": false
@@ -263,7 +367,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"Saco\",\r\n    \"lastName\": \"Paco\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"MARRIED\"]\r\n}\r\n",
+									"raw": "{\r\n    \"firstName\": \"Saco\",\r\n    \"lastName\": \"Paco\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"]\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -271,7 +375,105 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/search?page=1&size=10",
+									"raw": "http://localhost:8080/v1/employees/search?page=4&size=5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "4"
+										},
+										{
+											"key": "size",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search (sort)",
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcwNTM2MDQ4Nn0.uPWj3W_jmtmtUEimDM_zRdcIvEIzgTJkGXB8fvhr_0U",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Saco\",\r\n    \"lastName\": \"Paco\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees/search?sort=firstName&direction=asc",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees",
+										"search"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "firstName"
+										},
+										{
+											"key": "direction",
+											"value": "asc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search (paginated & sort)",
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcwNTM2MDQ4Nn0.uPWj3W_jmtmtUEimDM_zRdcIvEIzgTJkGXB8fvhr_0U",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Saco\",\r\n    \"lastName\": \"Paco\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees/search?page=1&size=0&sort=firstName&direction=asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -289,7 +491,15 @@
 										},
 										{
 											"key": "size",
-											"value": "10"
+											"value": "0"
+										},
+										{
+											"key": "sort",
+											"value": "firstName"
+										},
+										{
+											"key": "direction",
+											"value": "asc"
 										}
 									]
 								}
@@ -591,7 +801,44 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\r\n    employees(pageable: { page: 1, size: 1 }) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
+										"query": "query {\r\n    employees(pageable: { page: 1, size: 10 }) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/graphql",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all (paginated & sort)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcwNTM2MDQ4Nn0.uPWj3W_jmtmtUEimDM_zRdcIvEIzgTJkGXB8fvhr_0U",
+										"type": "text"
+									},
+									{
+										"key": "user",
+										"value": "kgrud-user-example",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query {\r\n    employees(\r\n        pageable: { page: 1, size: 10, sort: { field: \"firstName\", direction: ASC } }\r\n    ) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},
@@ -656,6 +903,38 @@
 									"mode": "graphql",
 									"graphql": {
 										"query": "query {\r\n    filterEmployees(\r\n       filterSet: { \r\n            honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED]\r\n        }, \r\n        pageable: { page: 1, size: 5 }\r\n        ) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/graphql",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "filter (paginated & sort)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcwNTM2MDQ4Nn0.uPWj3W_jmtmtUEimDM_zRdcIvEIzgTJkGXB8fvhr_0U",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query {\r\n    filterEmployees(\r\n       filterSet: { \r\n            honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED]\r\n        }, \r\n        pageable: { page: 1, size: 10, sort: { field: \"firstName\", direction: ASC } }\r\n        ) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},

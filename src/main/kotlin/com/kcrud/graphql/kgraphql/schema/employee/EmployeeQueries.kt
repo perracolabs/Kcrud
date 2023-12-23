@@ -9,10 +9,10 @@ package com.kcrud.graphql.kgraphql.schema.employee
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.entities.employee.Employee
-import com.kcrud.data.utils.pagination.Page
-import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.data.entities.employee.EmployeeFilterSet
 import com.kcrud.data.entities.employee.EmployeeSet
+import com.kcrud.data.utils.pagination.Page
+import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.graphql.kgraphql.context.SessionContext
 import com.kcrud.services.EmployeeService

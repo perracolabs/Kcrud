@@ -62,9 +62,14 @@ open class Page<out T : Any>(
          * @return A new [Page] object with the given content, including a computed page [Info] details.
          */
         fun <T : Any> create(content: List<T>, totalElements: Long, pageable: Pageable?): Page<T> {
-            val totalPages = pageable?.let { max((totalElements + it.size - 1) / it.size, 1) } ?: 1
+
+            val (totalPages, pageSize) = pageable?.let {
+                val requestedSize = if (it.size == 0) content.size else it.size
+                val totalPages = max((totalElements + it.size - 1) / requestedSize, 1)
+                totalPages to requestedSize
+            } ?: Pair(1, content.size)
+
             val pageNumber = pageable?.page ?: 1
-            val pageSize = pageable?.size ?: content.size
 
             return Page(
                 content = content,

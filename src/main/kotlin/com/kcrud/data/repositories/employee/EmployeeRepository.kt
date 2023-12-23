@@ -10,11 +10,11 @@ import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.entities.employee.Employee
+import com.kcrud.data.entities.employee.EmployeeFilterSet
 import com.kcrud.data.entities.employee.EmployeeParams
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.data.utils.pagination.applyPagination
-import com.kcrud.data.entities.employee.EmployeeFilterSet
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -48,7 +48,7 @@ internal class EmployeeRepository : IEmployeeRepository {
             val totalElements = query.count()
 
             val paginatedData = query
-                .applyPagination(pageable = pageable)
+                .applyPagination(pageable = pageable, table = EmployeeTable)
                 .map { resultRow ->
                     Employee.toEntity(row = resultRow)
                 }
@@ -85,7 +85,7 @@ internal class EmployeeRepository : IEmployeeRepository {
             val totalFilteredElements = query.count()
 
             val paginatedData = query
-                .applyPagination(pageable = pageable)
+                .applyPagination(pageable = pageable, table = EmployeeTable)
                 .map { resultRow ->
                     Employee.toEntity(row = resultRow)
                 }
