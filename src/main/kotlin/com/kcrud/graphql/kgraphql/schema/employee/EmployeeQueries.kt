@@ -11,8 +11,8 @@ import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.pagination.Page
 import com.kcrud.data.pagination.Pageable
 import com.kcrud.data.repositories.employee.EmployeeFilterSet
-import com.kcrud.graphql.shared.EmployeeConnection
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
+import com.kcrud.graphql.shared.EmployeeConnection
 import com.kcrud.services.EmployeeService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -77,7 +77,7 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
                     val page: Page<Employee> = service.findAll(pageable = pageable)
                     EmployeeConnection(
                         content = page.content,
-                        pageInfo = page.pageInfo
+                        info = page.info
                     )
                 }
             }
@@ -85,10 +85,10 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
             query("filterEmployees") {
                 description = "Filterable paginated Employee query."
                 resolver { filterSet: EmployeeFilterSet, pageable: Pageable? ->
-                    val page: Page<Employee> =service.filter(filterSet = filterSet, pageable = pageable)
+                    val page: Page<Employee> = service.filter(filterSet = filterSet, pageable = pageable)
                     EmployeeConnection(
                         content = page.content,
-                        pageInfo = page.pageInfo
+                        info = page.info
                     )
                 }
             }

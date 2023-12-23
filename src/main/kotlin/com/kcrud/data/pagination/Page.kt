@@ -10,16 +10,16 @@ import kotlinx.serialization.Serializable
 import kotlin.math.max
 
 /**
- * A page is a sublist of a list of objects.
+ * Holds the data for a page of results.
  *
  * @param content The data that forms the content in a page.
- * @param pageInfo Information about the current page and the entire dataset.
+ * @param info Information about the current page and the entire dataset.
  */
 @Suppress("unused")
 @Serializable
 open class Page<out T : Any>(
     val content: List<T>,
-    val pageInfo: PageInfo
+    val info: Info
 ) {
     /**
      * Information about the current page and the entire dataset.
@@ -30,8 +30,9 @@ open class Page<out T : Any>(
      * @param pageIndex The current page number (usually starting from 1).
      * @param elementsInPage The number of elements in the current page.
      */
+    @Suppress("unused")
     @Serializable
-    data class PageInfo(
+    data class Info(
         val totalElements: Int,
         val totalPages: Int,
         val elementsPerPage: Int,
@@ -53,12 +54,12 @@ open class Page<out T : Any>(
 
     companion object {
         /**
-         * Factory method to create a new Page object.
+         * Factory method to create a new [Page] object.
          *
          * @param content The list of objects for the current page.
-         * @param totalElements Total number of elements in the entire dataset, not just the page.
-         * @param pageable The pagination information.
-         * @return A new Page object with the given content and pagination information.
+         * @param totalElements The total number of elements in the entire dataset, not just the page.
+         * @param pageable The pagination information that was used to request the content, or null if none was used.
+         * @return A new [Page] object with the given content, including a computed page [Info] details.
          */
         fun <T : Any> create(content: List<T>, totalElements: Long, pageable: Pageable?): Page<T> {
             val totalPages = pageable?.let { max((totalElements + it.size - 1) / it.size, 1) } ?: 1
@@ -67,7 +68,7 @@ open class Page<out T : Any>(
 
             return Page(
                 content = content,
-                pageInfo = PageInfo(
+                info = Info(
                     totalElements = totalElements.toInt(),
                     totalPages = totalPages.toInt(),
                     pageIndex = pageNumber,

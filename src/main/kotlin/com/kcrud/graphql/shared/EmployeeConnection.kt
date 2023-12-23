@@ -13,9 +13,9 @@ import com.kcrud.data.pagination.Page
  * Paginated employee for GraphQL queries.
  *
  * @param content The data that forms the content in a page.
- * @param pageInfo Information about the current page and the entire dataset.
+ * @param info Information about the current page and the entire dataset.
  */
 class EmployeeConnection(
     val content: List<Employee>,
-    val pageInfo: Page.PageInfo
+    val info: Page.Info
 )

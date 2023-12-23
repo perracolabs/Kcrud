@@ -39,7 +39,7 @@ class EmployeeQueries : Query {
         val page: Page<Employee> = service.findAll(pageable = pageableInfo)
         return EmployeeConnection(
             content = page.content,
-            pageInfo = page.pageInfo
+            info = page.info
         )
     }
 
@@ -49,7 +49,7 @@ class EmployeeQueries : Query {
         val page = service.filter(filterSet = filterSet, pageable = pageableInfo)
         return EmployeeConnection(
             content = page.content,
-            pageInfo = page.pageInfo
+            info = page.info
         )
     }
 }
