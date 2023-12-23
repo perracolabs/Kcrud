@@ -28,7 +28,7 @@ internal class SessionContext(private val context: Context) {
         val user: ContextUser? = getUser()
 
         user?.let {
-            tracer.info("EUREKA! Found context user: ${it.user}.")
+            tracer.info("Context user: ${it.username}.")
         } ?: tracer.info("No context user found.")
     }
 
@@ -42,11 +42,8 @@ internal class SessionContext(private val context: Context) {
          * In a real application, this could be a JWT token decoded from the bearer key.
          */
         fun injectUserFromHeader(contextBuilder: ContextBuilder, call: ApplicationCall) {
-            val user = call.request.headers[KEY_USER]
-
-            if (!user.isNullOrBlank()) {
-                contextBuilder.inject(ContextUser::class, ContextUser(user = user))
-            }
+            val user = ContextUser(user = call.request.headers[KEY_USER])
+            contextBuilder.inject(ContextUser::class, user)
         }
     }
 }

@@ -6,4 +6,19 @@
 
 package com.kcrud.graphql.context
 
-internal data class ContextUser(val user: String)
+internal class ContextUser(private val user: String?) {
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    val isAnonymous: Boolean by lazy {
+        user.isNullOrBlank()
+    }
+
+    val username: String by lazy {
+        if (isAnonymous) ANONYMOUS else user!!
+    }
+
+    private companion object {
+        const val ANONYMOUS = "anonymous"
+    }
+}
+
