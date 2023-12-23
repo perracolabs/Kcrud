@@ -10,13 +10,14 @@ import com.expediagroup.graphql.generator.hooks.SchemaGeneratorHooks
 import graphql.schema.GraphQLType
 import kotlinx.datetime.LocalDate
 import java.util.*
-import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
 class CustomSchemaGeneratorHooks : SchemaGeneratorHooks {
-    override fun willGenerateGraphQLType(type: KType): GraphQLType? = when (type.classifier as? KClass<*>) {
-        UUID::class -> graphqlUUIDType
-        LocalDate::class -> graphqlLocalDateType
-        else -> null
+    override fun willGenerateGraphQLType(type: KType): GraphQLType? {
+        return when (type.classifier) {
+            UUID::class -> GraphUUIDType
+            LocalDate::class -> GraphLocalDateType
+            else -> super.willGenerateGraphQLType(type)
+        }
     }
 }

@@ -7,7 +7,6 @@
 package com.kcrud.routes.data
 
 import com.kcrud.data.entities.employment.EmploymentParams
-import com.kcrud.routes.RouteSegment
 import com.kcrud.services.EmploymentService
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
@@ -32,14 +31,8 @@ import java.util.*
 fun Route.employmentRoute() {
     val service by inject<EmploymentService>()
 
-    route(RouteSegment.API_VERSION) {
-        route(RouteSegment.Employee.ROUTE) {
-            route(RouteSegment.Employee.EMPLOYEE_ID_PATH) {
-                route(RouteSegment.Employment.ROUTE) {
-                    setupEmploymentRoutes(service)
-                }
-            }
-        }
+    route("v1/employees/{employee_id}/employments") {
+        setupEmploymentRoutes(service)
     }
 }
 
@@ -52,7 +45,7 @@ private fun Route.setupEmploymentRoutes(service: EmploymentService) {
     findEmploymentByEmployeeId(service)
     deleteEmploymentByEmployeeId(service)
 
-    route(RouteSegment.Employment.EMPLOYMENT_ID_PATH) {
+    route("{employment_id}") {
         findEmploymentById(service)
         updateEmploymentById(service)
         deleteEmploymentById(service)
@@ -121,12 +114,12 @@ private fun Route.deleteEmploymentById(service: EmploymentService) {
 }
 
 private fun ApplicationCall.getEmployeeId(): UUID {
-    return parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
+    return parameters["employee_id"]?.toUUIDOrNull()
         ?: throw BadRequestException("Invalid employee ID argument.")
 }
 
 private fun ApplicationCall.getEmploymentId(): UUID {
-    return parameters[RouteSegment.Employment.EMPLOYMENT_ID]?.toUUIDOrNull()
+    return parameters["employment_id"]?.toUUIDOrNull()
         ?: throw BadRequestException("Invalid employment ID argument.")
 }
 

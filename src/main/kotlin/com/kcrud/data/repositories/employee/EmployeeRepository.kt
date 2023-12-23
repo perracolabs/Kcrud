@@ -6,12 +6,14 @@
 
 package com.kcrud.data.repositories.employee
 
-import com.kcrud.data.database.shared.Pagination
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.data.pagination.Page
+import com.kcrud.data.pagination.Pageable
+import com.kcrud.data.pagination.applyPagination
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -19,6 +21,15 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 internal class EmployeeRepository : IEmployeeRepository {
+
+    private fun getFindEmployeeJoin(): Join {
+        return EmployeeTable.join(
+            otherTable = ContactTable,
+            joinType = JoinType.LEFT,
+            onColumn = EmployeeTable.id,
+            otherColumn = ContactTable.employeeId
+        )
+    }
 
     override fun findById(employeeId: UUID): Employee? {
         return transaction {
@@ -30,37 +41,25 @@ internal class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun findAll(pagination: Pagination?): List<Employee> {
+    override fun findAll(pageable: Pageable?): Page<Employee> {
         return transaction {
-            pagination ?: return@transaction getFindEmployeeJoin().selectAll().map { resultRow ->
-                Employee.toEntity(row = resultRow)
-            }
-
             val query = getFindEmployeeJoin().selectAll()
+            val totalElements = query.count()
 
-            val startIndex = (pagination.page - 1) * pagination.limit
-            query.limit(n = pagination.limit, offset = startIndex.toLong()).map { resultRow ->
-                Employee.toEntity(row = resultRow)
-            }
+            val paginatedData = query
+                .applyPagination(pageable = pageable)
+                .map { resultRow ->
+                    Employee.toEntity(row = resultRow)
+                }
 
-            query.map { resultRow ->
-                Employee.toEntity(row = resultRow)
-            }
+            Page.create(content = paginatedData, totalElements = totalElements, pageable = pageable)
         }
     }
 
-    private fun getFindEmployeeJoin(): Join {
-        return EmployeeTable.join(
-            otherTable = ContactTable,
-            joinType = JoinType.LEFT,
-            onColumn = EmployeeTable.id,
-            otherColumn = ContactTable.employeeId
-        )
-    }
-
-    override fun filter(filterSet: EmployeeFilterSet, pagination: Pagination): List<Employee> {
+    override fun filter(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
         return transaction {
             val query = EmployeeTable.selectAll()
+            val totalElements = query.count()
 
             // Using lowerCase() to make the search case-insensitive.
             // This could be removed if the database is configured to use a case-insensitive collation.
@@ -82,10 +81,13 @@ internal class EmployeeRepository : IEmployeeRepository {
                 }
             }
 
-            val startIndex = (pagination.page - 1) * pagination.limit
-            query.limit(n = pagination.limit, offset = startIndex.toLong()).map { resultRow ->
-                Employee.toEntity(row = resultRow)
-            }
+            val paginatedData = query
+                .applyPagination(pageable = pageable)
+                .map { resultRow ->
+                    Employee.toEntity(row = resultRow)
+                }
+
+            Page.create(content = paginatedData, totalElements = totalElements, pageable = pageable)
         }
     }
 

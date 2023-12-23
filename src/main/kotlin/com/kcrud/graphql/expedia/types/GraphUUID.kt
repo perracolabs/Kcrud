@@ -14,7 +14,7 @@ import graphql.schema.*
 import java.util.*
 
 
-val graphqlUUIDType: GraphQLScalarType = GraphQLScalarType.newScalar()
+val GraphUUIDType: GraphQLScalarType = GraphQLScalarType.newScalar()
     .name("UUID")
     .description("Type representing a system UUID.")
     .coercing(UUIDCoercing)

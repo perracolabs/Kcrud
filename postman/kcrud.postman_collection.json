@@ -200,7 +200,7 @@
 							"response": []
 						},
 						{
-							"name": "get all paginated",
+							"name": "get all (paginated)",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -223,7 +223,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees?page=1&limit=2",
+									"raw": "http://localhost:8080/v1/employees?page=1&size=10",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -239,8 +239,8 @@
 											"value": "1"
 										},
 										{
-											"key": "limit",
-											"value": "2"
+											"key": "size",
+											"value": "10"
 										}
 									]
 								}
@@ -500,7 +500,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\r\n    employees(pagination: null) {\r\n        id\r\n        firstName\r\n        lastName\r\n        fullName\r\n        dob\r\n        maritalStatus\r\n        honorific\r\n        contact {\r\n            id\r\n            email\r\n            phone\r\n        }\r\n   }\r\n}",
+										"query": "query {\r\n    employees {\r\n        id\r\n        firstName\r\n        lastName\r\n        fullName\r\n        dob\r\n        maritalStatus\r\n        honorific\r\n        contact {\r\n            id\r\n            email\r\n            phone\r\n        }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},
@@ -519,7 +519,7 @@
 							"response": []
 						},
 						{
-							"name": "get all paginated",
+							"name": "get all (paginated)",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -532,7 +532,39 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\r\n    employees(pagination: {page: 1, size: 10}) {\r\n        id\r\n        firstName\r\n        lastName\r\n        fullName\r\n        dob\r\n        maritalStatus\r\n        honorific\r\n        contact {\r\n            id\r\n            email\r\n            phone\r\n        }\r\n   }\r\n}",
+										"query": "query {\r\n    employees(pageable: { page: 1, size: 1 }) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        pageInfo {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/graphql",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "filter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcwNTM2MDQ4Nn0.uPWj3W_jmtmtUEimDM_zRdcIvEIzgTJkGXB8fvhr_0U",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query {\r\n    filterEmployees(\r\n       filterSet: { \r\n            honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED]\r\n        }, \r\n        pageable: { page: 1, size: 10 }\r\n        ) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        pageInfo {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},
@@ -661,38 +693,6 @@
 									"mode": "graphql",
 									"graphql": {
 										"query": "mutation {\r\n    deleteAllEmployees\r\n}\r\n",
-										"variables": ""
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8080/graphql",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"graphql"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "filter",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcwNTM2MDQ4Nn0.uPWj3W_jmtmtUEimDM_zRdcIvEIzgTJkGXB8fvhr_0U",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "graphql",
-									"graphql": {
-										"query": "query {\r\n    filterEmployees(filterSet: { \r\n        honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED]\r\n        }, \r\n        pagination: { page: 1, size: 15}) {\r\n            id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},

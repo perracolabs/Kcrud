@@ -119,18 +119,18 @@ dependencies {
     // https://github.com/sqlite/sqlite
     implementation("org.xerial:sqlite-jdbc:3.44.1.0")
 
-    // GraphQL with KGraphQL.
-    // https://github.com/aPureBase/KGraphQL
-    val kgraphqlVersion = "0.19.0"
-    implementation("com.apurebase:kgraphql:$kgraphqlVersion")
-    implementation("com.apurebase:kgraphql-ktor:$kgraphqlVersion")
-
-    // GraphQL with ExpediaGroup.
+    // GraphQL using ExpediaGroup.
     // https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview
     // https://github.com/ExpediaGroup/graphql-kotlin/tree/master/servers/graphql-kotlin-ktor-server
     val expediaGroupVersion = "7.0.2"
     implementation("com.expediagroup:graphql-kotlin-ktor-server:$expediaGroupVersion")
     implementation("com.expediagroup:graphql-kotlin-schema-generator:$expediaGroupVersion")
+
+    // GraphQL using KGraphQL.
+    // https://github.com/aPureBase/KGraphQL
+    val kgraphqlVersion = "0.19.0"
+    implementation("com.apurebase:kgraphql:$kgraphqlVersion")
+    implementation("com.apurebase:kgraphql-ktor:$kgraphqlVersion")
 
     // OpenAPI / SwaggerUI.
     // https://ktor.io/docs/swagger-ui.html#configure-swagger
@@ -142,6 +142,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("io.mockk:mockk:1.13.8")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$ktorVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.22")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
 }

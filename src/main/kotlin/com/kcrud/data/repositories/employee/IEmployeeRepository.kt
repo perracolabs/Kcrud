@@ -8,7 +8,8 @@ package com.kcrud.data.repositories.employee
 
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.entities.employee.EmployeeParams
-import com.kcrud.data.database.shared.Pagination
+import com.kcrud.data.pagination.Page
+import com.kcrud.data.pagination.Pageable
 import java.util.*
 
 interface IEmployeeRepository {
@@ -22,18 +23,18 @@ interface IEmployeeRepository {
 
     /**
      * Retrieves all employee entities.
-     * @param pagination The pagination options to be applied.
+     * @param pageable The pagination options to be applied.
      * @return List of all employee entities.
      */
-    fun findAll(pagination: Pagination?): List<Employee>
+    fun findAll(pageable: Pageable?): Page<Employee>
 
     /**
      * Retrieves all employee entities matching the provided filter set.
      * @param filterSet The filter set to be applied.
-     * @param pagination The pagination options to be applied.
+     * @param pageable The pagination options to be applied.
      * @return List of all employee entities matching the provided filter set.
      */
-    fun filter(filterSet: EmployeeFilterSet, pagination: Pagination): List<Employee>
+    fun filter(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee>
 
     /**
      * Creates a new employee and returns the created employee entity.

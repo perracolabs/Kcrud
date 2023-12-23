@@ -15,7 +15,7 @@ import kotlinx.datetime.LocalDate
 import java.util.*
 
 
-val graphqlLocalDateType: GraphQLScalarType = GraphQLScalarType.newScalar()
+val GraphLocalDateType: GraphQLScalarType = GraphQLScalarType.newScalar()
     .name("LocalDate")
     .description("Type representing a LocalDate.")
     .coercing(LocalDateCoercing)

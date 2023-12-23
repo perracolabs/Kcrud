@@ -7,11 +7,14 @@
 package com.kcrud.graphql.expedia.schema.employee
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
+import com.expediagroup.graphql.generator.execution.OptionalInput
 import com.expediagroup.graphql.server.operations.Query
 import com.kcrud.data.entities.employee.Employee
-import com.kcrud.data.database.shared.Pagination
+import com.kcrud.data.pagination.Page
+import com.kcrud.data.pagination.Pageable
 import com.kcrud.data.repositories.employee.EmployeeFilterSet
 import com.kcrud.graphql.expedia.ExpediaAPI
+import com.kcrud.graphql.shared.EmployeeConnection
 import com.kcrud.services.EmployeeService
 import org.koin.mp.KoinPlatform.getKoin
 import java.util.*
@@ -31,12 +34,22 @@ class EmployeeQueries : Query {
     }
 
     @GraphQLDescription("Returns all existing employees.")
-    fun employees(pagination: Pagination?): List<Employee> {
-        return service.findAll(pagination = pagination)
+    fun employees(pageable: OptionalInput<Pageable>): EmployeeConnection {
+        val pageableInfo = Pageable.fromOptionalPageable(pageable = pageable)
+        val page: Page<Employee> = service.findAll(pageable = pageableInfo)
+        return EmployeeConnection(
+            content = page.content,
+            pageInfo = page.pageInfo
+        )
     }
 
     @GraphQLDescription("Filterable paginated Employee query.")
-    fun filterEmployees(filterSet: EmployeeFilterSet, pagination: Pagination): List<Employee> {
-        return service.filter(filterSet = filterSet, pagination = pagination)
+    fun filterEmployees(filterSet: EmployeeFilterSet, pageable: OptionalInput<Pageable>): EmployeeConnection {
+        val pageableInfo = Pageable.fromOptionalPageable(pageable = pageable)
+        val page = service.filter(filterSet = filterSet, pageable = pageableInfo)
+        return EmployeeConnection(
+            content = page.content,
+            pageInfo = page.pageInfo
+        )
     }
 }

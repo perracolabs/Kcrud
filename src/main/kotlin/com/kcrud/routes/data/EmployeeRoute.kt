@@ -7,8 +7,7 @@
 package com.kcrud.routes.data
 
 import com.kcrud.data.entities.employee.EmployeeParams
-import com.kcrud.data.database.shared.Pagination
-import com.kcrud.routes.RouteSegment
+import com.kcrud.data.pagination.getPageable
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
@@ -37,11 +36,8 @@ fun Route.employeeRoute() {
 
         // Find All
         get {
-            val page = call.request.queryParameters[RouteSegment.Page.PAGE]?.toIntOrNull() ?: 0
-            val limit = call.request.queryParameters[RouteSegment.Page.LIMIT]?.toIntOrNull() ?: 0
-            val pagination = if (page < 1 || limit < 1) null else Pagination(page, limit)
-
-            val employees = service.findAll(pagination = pagination)
+            val pageable = call.getPageable()
+            val employees = service.findAll(pageable = pageable)
             call.respond(employees)
         }
 
@@ -59,7 +55,7 @@ fun Route.employeeRoute() {
             }
         }
 
-        route(RouteSegment.Employee.EMPLOYEE_ID_PATH) {
+        route("{employee_id}") {
 
             // Find by employee ID
             get {
@@ -92,15 +88,13 @@ fun Route.employeeRoute() {
         }
     }
 
-    route(RouteSegment.API_VERSION) {
-        route(RouteSegment.Employee.ROUTE) {
-            routeSetup()
-        }
+    route("v1/employees") {
+        routeSetup()
     }
 }
 
 private fun ApplicationCall.getEmployeeId(): UUID {
-    return parameters[RouteSegment.Employee.EMPLOYEE_ID]?.toUUIDOrNull()
+    return parameters["employee_id"]?.toUUIDOrNull()
         ?: throw BadRequestException("Invalid employee ID argument.")
 }
 
