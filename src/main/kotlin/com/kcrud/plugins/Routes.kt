@@ -9,9 +9,9 @@ package com.kcrud.plugins
 import com.kcrud.routes.data.employeeRoute
 import com.kcrud.routes.data.employmentRoute
 import com.kcrud.routes.main.rootRoute
+import com.kcrud.routes.main.systemRoute
 import com.kcrud.routes.system.accessTokenRoute
 import com.kcrud.routes.system.documentationRoute
-import com.kcrud.routes.main.systemRoute
 import com.kcrud.settings.SettingsProvider
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

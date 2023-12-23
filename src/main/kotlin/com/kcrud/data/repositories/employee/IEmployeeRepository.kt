@@ -10,6 +10,7 @@ import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.entities.employee.EmployeeParams
 import com.kcrud.data.pagination.Page
 import com.kcrud.data.pagination.Pageable
+import com.kcrud.data.repositories.employee.types.EmployeeFilterSet
 import java.util.*
 
 interface IEmployeeRepository {

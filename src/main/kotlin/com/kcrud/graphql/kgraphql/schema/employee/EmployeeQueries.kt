@@ -10,9 +10,9 @@ import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.pagination.Page
 import com.kcrud.data.pagination.Pageable
-import com.kcrud.data.repositories.employee.EmployeeFilterSet
+import com.kcrud.data.repositories.employee.types.EmployeeFilterSet
+import com.kcrud.data.repositories.employee.types.EmployeeSet
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
-import com.kcrud.graphql.shared.EmployeeConnection
 import com.kcrud.services.EmployeeService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -53,7 +53,7 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
             type<Employee> {
                 description = "Query type definition for employee."
             }
-            type<EmployeeConnection> {
+            type<EmployeeSet> {
                 description = "Query type definition for paginated employee query."
             }
         }
@@ -75,7 +75,7 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
                 description = "Returns all existing employees."
                 resolver { pageable: Pageable? ->
                     val page: Page<Employee> = service.findAll(pageable = pageable)
-                    EmployeeConnection(
+                    EmployeeSet(
                         content = page.content,
                         info = page.info
                     )
@@ -86,7 +86,7 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
                 description = "Filterable paginated Employee query."
                 resolver { filterSet: EmployeeFilterSet, pageable: Pageable? ->
                     val page: Page<Employee> = service.filter(filterSet = filterSet, pageable = pageable)
-                    EmployeeConnection(
+                    EmployeeSet(
                         content = page.content,
                         info = page.info
                     )

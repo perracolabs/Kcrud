@@ -4,18 +4,26 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.graphql.shared
+package com.kcrud.data.repositories.employee.types
 
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.pagination.Page
+import kotlinx.serialization.Serializable
 
 /**
- * Paginated employee for GraphQL queries.
+ * Paginated employee, suitable for GraphQL queries.
+ *
+ * For rest this is not needed, as a Page<Employee> can
+ * directly be returned. Graphql on the other hand needs
+ * would need to return this class instead, as it does not
+ * support generics.
  *
  * @param content The data that forms the content in a page.
  * @param info Information about the current page and the entire dataset.
  */
-class EmployeeConnection(
+@Serializable
+class EmployeeSet(
     val content: List<Employee>,
     val info: Page.Info
 )
+
