@@ -25,9 +25,15 @@ fun main(args: Array<String>) {
 }
 
 /**
- * Application configuration module, responsible for setting up various
- * features like authentication, routing, and database initialization
- * for the Ktor application.
+ * Application configuration module, responsible for setting up the server.
+ *
+ * The first step is always to load the application settings,
+ * so that they can be accessed at any point in the pipeline.
+ *
+ * The second step is to configure all the plugins and modules
+ * ike authentication, routing, CORS, GraphQL, etc.
+ *
+ * The final step is to initialize the database connection.
  *
  * See: [Modules](https://ktor.io/docs/modules.html)
  *
@@ -55,6 +61,8 @@ fun Application.module() {
 
     configureGraphQL()
 
+    // The database is started last once all
+    // the plugins and modules are configured.
     DatabaseManager.init()
 
     Tracer.createForTag(
