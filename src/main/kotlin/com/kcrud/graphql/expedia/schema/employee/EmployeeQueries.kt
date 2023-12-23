@@ -9,8 +9,8 @@ package com.kcrud.graphql.expedia.schema.employee
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
 import com.kcrud.data.entities.employee.Employee
-import com.kcrud.data.pagination.Page
-import com.kcrud.data.pagination.Pageable
+import com.kcrud.data.utils.pagination.Page
+import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.data.entities.employee.EmployeeFilterSet
 import com.kcrud.data.entities.employee.EmployeeSet
 import com.kcrud.graphql.expedia.ExpediaAPI

@@ -11,9 +11,9 @@ import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.entities.employee.EmployeeParams
-import com.kcrud.data.pagination.Page
-import com.kcrud.data.pagination.Pageable
-import com.kcrud.data.pagination.applyPagination
+import com.kcrud.data.utils.pagination.Page
+import com.kcrud.data.utils.pagination.Pageable
+import com.kcrud.data.utils.pagination.applyPagination
 import com.kcrud.data.entities.employee.EmployeeFilterSet
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

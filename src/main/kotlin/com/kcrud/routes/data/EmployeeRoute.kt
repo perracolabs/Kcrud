@@ -8,7 +8,7 @@ package com.kcrud.routes.data
 
 import com.kcrud.data.entities.employee.EmployeeFilterSet
 import com.kcrud.data.entities.employee.EmployeeParams
-import com.kcrud.data.pagination.getPageable
+import com.kcrud.data.utils.pagination.getPageable
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*

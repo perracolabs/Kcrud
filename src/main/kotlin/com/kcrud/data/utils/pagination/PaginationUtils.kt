@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.pagination
+package com.kcrud.data.utils.pagination
 
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Query

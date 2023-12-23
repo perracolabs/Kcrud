@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.pagination
+package com.kcrud.data.utils.pagination
 
 import kotlinx.serialization.Serializable
 import kotlin.math.max
