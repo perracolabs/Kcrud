@@ -45,14 +45,14 @@ class Tracer(private val logger: Logger) {
          * Whether to show the full package name.
          * If false, only the class name will be shown.
          */
-        const val FULL_PACKAGE = true
+        const val LOG_FULL_PACKAGE = true
 
         /**
          * Creates a new [Tracer] instance for the given class.
          * Used at level class contexts.
          */
-        inline fun <reified T : Any> create(): Tracer {
-            val loggerName = if (FULL_PACKAGE) {
+        inline operator fun <reified T : Any> invoke(): Tracer {
+            val loggerName = if (LOG_FULL_PACKAGE) {
                 T::class.qualifiedName ?: T::class.java.simpleName
             } else {
                 T::class.java.simpleName
@@ -65,7 +65,7 @@ class Tracer(private val logger: Logger) {
          * Creates a new [Tracer] instance for the given tag.
          * Used at top-level functions or non-class contexts.
          */
-        fun createForTag(tag: String): Tracer {
+        fun simple(tag: String): Tracer {
             return Tracer(LoggerFactory.getLogger(tag))
         }
 
@@ -87,7 +87,7 @@ class Tracer(private val logger: Logger) {
          * @return String representing the full name of the function including its class.
          */
         inline fun <reified T : Any> KFunction<*>.nameWithClass(): String {
-            val loggerName = if (FULL_PACKAGE) {
+            val loggerName = if (LOG_FULL_PACKAGE) {
                 T::class.qualifiedName ?: T::class.java.simpleName
             } else {
                 T::class.java.simpleName

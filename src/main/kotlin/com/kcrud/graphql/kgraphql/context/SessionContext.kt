@@ -17,7 +17,7 @@ import io.ktor.server.application.*
  * Graphql session context hold attributes such as the context user.
  */
 internal class SessionContext(private val context: Context) {
-    private val tracer = Tracer.create<SessionContext>()
+    private val tracer = Tracer<SessionContext>()
 
     @Suppress("MemberVisibilityCanBePrivate")
     fun getUser(): ContextUser? {

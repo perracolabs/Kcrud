@@ -26,7 +26,7 @@ import java.util.*
  * If the token is invalid or any exception occurs, an UnauthorizedException will be thrown.
  */
 internal object AuthenticationToken {
-    private val tracer = Tracer.create<AuthenticationToken>()
+    private val tracer = Tracer<AuthenticationToken>()
 
     enum class TokenState {
         Valid, Expired, Invalid

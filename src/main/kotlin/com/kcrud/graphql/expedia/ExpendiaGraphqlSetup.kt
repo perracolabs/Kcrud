@@ -34,6 +34,7 @@ import java.nio.file.Paths
  */
 @OptIn(ExpediaAPI::class)
 internal object ExpediaGraphQLSetup {
+    private val tracer = Tracer<ExpediaGraphQLSetup>()
     private val graphqlPackages = listOf("com.kcrud")
 
     fun configure(application: Application, withPlayground: Boolean): List<String> {
@@ -90,6 +91,10 @@ internal object ExpediaGraphQLSetup {
         if (!SettingsProvider.graphql.dumpSchema)
             return
 
+        if (SettingsProvider.global.development) {
+            tracer.warning("Dumping GraphQL schema in development mode is not recommended.")
+        }
+
         val schema = toSchema(
             queries = listOf(
                 TopLevelObject(EmployeeQueries()),
@@ -110,7 +115,6 @@ internal object ExpediaGraphQLSetup {
         val file = File(directoryPath.resolve("schema.graphql").toUri())
         file.writeText(text = sdl)
 
-        val tracer = Tracer.create<ExpediaGraphQLSetup>()
         tracer.info("Dumped GraphQL schema file:")
         tracer.info(file.absolutePath)
     }

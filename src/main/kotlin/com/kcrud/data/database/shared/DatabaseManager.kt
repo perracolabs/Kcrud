@@ -25,7 +25,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * ```
  */
 internal object DatabaseManager {
-    private val tracer = Tracer.create<DatabaseManager>()
+    private val tracer = Tracer<DatabaseManager>()
 
     @Suppress("unused")
     enum class Mode {

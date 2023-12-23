@@ -20,7 +20,7 @@ import io.ktor.server.response.*
  * See: [Ktor Status Pages Documentation](https://ktor.io/docs/status-pages.html)
  */
 fun Application.configureStatusPages() {
-    val tracer = Tracer.create<Application>()
+    val tracer = Tracer<Application>()
 
     install(StatusPages) {
         // Handle 401 Unauthorized status.

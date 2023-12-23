@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
  * See: [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
 internal object SnowflakeFactory {
-    private val tracer = Tracer.create<SnowflakeFactory>()
+    private val tracer = Tracer<SnowflakeFactory>()
 
     // Lazy-loaded machine ID, configured per-machine.
     private val machineId by lazy { SettingsProvider.global.machineId }

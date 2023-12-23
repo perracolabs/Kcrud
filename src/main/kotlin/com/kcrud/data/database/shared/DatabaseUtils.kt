@@ -13,7 +13,7 @@ import java.sql.DriverManager
 
 @DatabaseAPI
 internal object DatabaseUtils {
-    private val tracer = Tracer.create<DatabaseUtils>()
+    private val tracer = Tracer<DatabaseUtils>()
 
     /**
      * Create a HikariDataSource to enable database connection pooling.

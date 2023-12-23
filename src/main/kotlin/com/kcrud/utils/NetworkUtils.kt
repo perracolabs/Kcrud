@@ -12,7 +12,7 @@ import com.kcrud.settings.SettingsProvider
  * Utility object for network-related functionalities.
  */
 internal object NetworkUtils {
-    private val tracer = Tracer.create<NetworkUtils>()
+    private val tracer = Tracer<NetworkUtils>()
 
     private const val LISTEN_ALL_IPS = "0.0.0.0"
     private const val SECURE_PROTOCOL = "https"

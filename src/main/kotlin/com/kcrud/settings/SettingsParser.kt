@@ -20,7 +20,7 @@ import kotlin.reflect.jvm.jvmErasure
  */
 @SettingsAPI
 internal object SettingsParser {
-    private val tracer = Tracer.create<SettingsParser>()
+    private val tracer = Tracer<SettingsParser>()
 
     /**
      * Performs the configuration file parsing.
