@@ -6,6 +6,15 @@
 
 package com.kcrud.graphql.context
 
+/**
+ * This class illustrative an example of how to represent a user context within the application,
+ * and should be adapted according to specific application requirements.
+ *
+ * The `userId` parameter could represent a unique identifier (such as an ID or username)
+ * from which more detailed user information could be resolved.
+ *
+ * @property userId The unique identifier of the user, which can be null or blank for anonymous users.
+ */
 internal class ContextUser(private val userId: String?) {
 
     @Suppress("MemberVisibilityCanBePrivate")
