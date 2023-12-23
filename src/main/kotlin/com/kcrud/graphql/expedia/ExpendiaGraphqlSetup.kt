@@ -11,6 +11,7 @@ import com.expediagroup.graphql.generator.TopLevelObject
 import com.expediagroup.graphql.generator.extensions.print
 import com.expediagroup.graphql.generator.toSchema
 import com.expediagroup.graphql.server.ktor.*
+import com.kcrud.graphql.expedia.context.ContextFactory
 import com.kcrud.graphql.expedia.schema.KcrudSchema
 import com.kcrud.graphql.expedia.schema.employee.EmployeeMutations
 import com.kcrud.graphql.expedia.schema.employee.EmployeeQueries
@@ -56,6 +57,10 @@ internal object ExpediaGraphQLSetup {
                 )
                 schemaObject = KcrudSchema()
                 hooks = CustomSchemaGeneratorHooks()
+            }
+
+            server {
+                contextFactory = ContextFactory()
             }
         }
     }

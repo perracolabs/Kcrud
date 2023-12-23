@@ -6,6 +6,7 @@
 
 package com.kcrud.graphql.kgraphql.schema.employee
 
+import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.pagination.Page
@@ -13,6 +14,7 @@ import com.kcrud.data.pagination.Pageable
 import com.kcrud.data.repositories.employee.types.EmployeeFilterSet
 import com.kcrud.data.repositories.employee.types.EmployeeSet
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
+import com.kcrud.graphql.kgraphql.context.SessionContext
 import com.kcrud.services.EmployeeService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -73,7 +75,12 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
 
             query("employees") {
                 description = "Returns all existing employees."
-                resolver { pageable: Pageable? ->
+                resolver { context: Context, pageable: Pageable? ->
+
+                    // Example of how to get the user from the context.
+                    // See SessionContext for more details.
+                    SessionContext(context = context).printUser()
+
                     val page: Page<Employee> = service.findAll(pageable = pageable)
                     EmployeeSet(
                         content = page.content,

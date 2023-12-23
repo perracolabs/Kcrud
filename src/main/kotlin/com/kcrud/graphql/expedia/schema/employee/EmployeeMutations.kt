@@ -18,29 +18,28 @@ import java.util.*
 /**
  * Employee mutation definitions.
  */
-@Suppress("unused")
+@Suppress("unused", "RedundantSuspendModifier")
 @ExpediaAPI
 class EmployeeMutations : Mutation {
-
     private val service: EmployeeService = getKoin().get()
 
     @GraphQLDescription("Creates a new employee.")
-    fun createEmployee(employee: EmployeeParams): Employee {
+    suspend fun createEmployee(employee: EmployeeParams): Employee {
         return service.create(employee = employee)
     }
 
     @GraphQLDescription("Updates an existing employee.")
-    fun updateEmployee(employeeId: UUID, employee: EmployeeParams): Employee? {
+    suspend fun updateEmployee(employeeId: UUID, employee: EmployeeParams): Employee? {
         return service.update(employeeId = employeeId, employee = employee)
     }
 
     @GraphQLDescription("Deletes an existing employee.")
-    fun deleteEmployee(employeeId: UUID): Int {
+    suspend fun deleteEmployee(employeeId: UUID): Int {
         return service.delete(employeeId = employeeId)
     }
 
     @GraphQLDescription("Delete all employees.")
-    fun deleteAllEmployees(): Int {
+    suspend fun deleteAllEmployees(): Int {
         return service.deleteAll()
     }
 }

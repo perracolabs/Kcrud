@@ -7,7 +7,6 @@
 package com.kcrud.graphql.expedia.schema.employee
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
-import com.expediagroup.graphql.generator.execution.OptionalInput
 import com.expediagroup.graphql.server.operations.Query
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.pagination.Page
@@ -15,28 +14,32 @@ import com.kcrud.data.pagination.Pageable
 import com.kcrud.data.repositories.employee.types.EmployeeFilterSet
 import com.kcrud.data.repositories.employee.types.EmployeeSet
 import com.kcrud.graphql.expedia.ExpediaAPI
+import com.kcrud.graphql.expedia.context.SessionContext
 import com.kcrud.services.EmployeeService
+import graphql.schema.DataFetchingEnvironment
 import org.koin.mp.KoinPlatform.getKoin
 import java.util.*
 
 /**
  * Employee query definitions.
  */
-@Suppress("unused")
+@Suppress("unused", "RedundantSuspendModifier")
 @ExpediaAPI
 class EmployeeQueries : Query {
-
     private val service: EmployeeService = getKoin().get()
 
     @GraphQLDescription("Returns an employee given its id.")
-    fun employee(employeeId: UUID): Employee? {
+    suspend fun employee(employeeId: UUID): Employee? {
         return service.findById(employeeId = employeeId)
     }
 
     @GraphQLDescription("Returns all existing employees.")
-    fun employees(pageable: OptionalInput<Pageable>): EmployeeSet {
-        val pageableInfo = Pageable.fromOptionalPageable(pageable = pageable)
-        val page: Page<Employee> = service.findAll(pageable = pageableInfo)
+    suspend fun employees(env: DataFetchingEnvironment, pageable: Pageable? = null): EmployeeSet {
+        // Example of how to get the user from the context.
+        // See ContextFactory and SessionContext for more details.
+        SessionContext(env = env).printUser()
+
+        val page: Page<Employee> = service.findAll(pageable = pageable)
         return EmployeeSet(
             content = page.content,
             info = page.info
@@ -44,9 +47,8 @@ class EmployeeQueries : Query {
     }
 
     @GraphQLDescription("Filterable paginated Employee query.")
-    fun filterEmployees(filterSet: EmployeeFilterSet, pageable: OptionalInput<Pageable>): EmployeeSet {
-        val pageableInfo = Pageable.fromOptionalPageable(pageable = pageable)
-        val page = service.filter(filterSet = filterSet, pageable = pageableInfo)
+    suspend fun filterEmployees(filterSet: EmployeeFilterSet, pageable: Pageable? = null): EmployeeSet {
+        val page = service.filter(filterSet = filterSet, pageable = pageable)
         return EmployeeSet(
             content = page.content,
             info = page.info

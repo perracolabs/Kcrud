@@ -7,6 +7,7 @@
 package com.kcrud.graphql.kgraphql
 
 import com.apurebase.kgraphql.GraphQL
+import com.kcrud.graphql.kgraphql.context.SessionContext
 import com.kcrud.graphql.kgraphql.schema.SharedTypes
 import com.kcrud.graphql.kgraphql.schema.employee.EmployeeMutations
 import com.kcrud.graphql.kgraphql.schema.employee.EmployeeQueries
@@ -31,6 +32,11 @@ internal object KGraphQLSetup {
             // Set the security context to verify the JWT token for each incoming GraphQL request.
             context { call ->
                 AuthenticationToken.verify(call)
+
+                // Example of how to add a session user from the request headers to the context.
+                // This could be for example be done by decoding a JWT token from the bearer key.
+                // In this simple example is just a header key-value pair.
+                SessionContext.injectUserFromHeader(contextBuilder = this, call = call)
             }
 
             // Define the GraphQL schema.

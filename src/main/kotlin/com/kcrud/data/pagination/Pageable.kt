@@ -6,8 +6,6 @@
 
 package com.kcrud.data.pagination
 
-import com.expediagroup.graphql.generator.execution.OptionalInput
-
 /**
  * Input parameters for pagination.
  *
@@ -21,14 +19,5 @@ data class Pageable(
     init {
         require(page > 0) { "Page index must be >= 1." }
         require(size > 0) { "Page size must be > 0." }
-    }
-
-    companion object {
-        fun fromOptionalPageable(pageable: OptionalInput<Pageable>): Pageable? {
-            return when (pageable) {
-                is OptionalInput.Defined<Pageable> -> pageable.value
-                is OptionalInput.Undefined -> null
-            }
-        }
     }
 }
