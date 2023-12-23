@@ -11,7 +11,7 @@ import com.kcrud.data.entities.employee.EmployeeParams
 import com.kcrud.data.pagination.Page
 import com.kcrud.data.pagination.Pageable
 import com.kcrud.data.repositories.employee.IEmployeeRepository
-import com.kcrud.data.repositories.employee.types.EmployeeFilterSet
+import com.kcrud.data.entities.employee.EmployeeFilterSet
 import org.koin.core.component.KoinComponent
 import java.util.*
 

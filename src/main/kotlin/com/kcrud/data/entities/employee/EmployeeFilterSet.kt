@@ -4,10 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.repositories.employee.types
+package com.kcrud.data.entities.employee
 
 import com.kcrud.data.entities.employee.types.Honorific
 import com.kcrud.data.entities.employee.types.MaritalStatus
+import kotlinx.serialization.Serializable
 
 /**
  * A set of filters that can be applied to an employee query.
@@ -17,6 +18,7 @@ import com.kcrud.data.entities.employee.types.MaritalStatus
  * @param honorific The honorific of the employee.
  * @param maritalStatus The marital status of the employee.
  */
+@Serializable
 data class EmployeeFilterSet(
     val firstName: String? = null,
     val lastName: String? = null,

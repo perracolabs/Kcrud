@@ -6,6 +6,7 @@
 
 package com.kcrud.routes.data
 
+import com.kcrud.data.entities.employee.EmployeeFilterSet
 import com.kcrud.data.entities.employee.EmployeeParams
 import com.kcrud.data.pagination.getPageable
 import com.kcrud.services.EmployeeService
@@ -53,6 +54,14 @@ fun Route.employeeRoute() {
             service.deleteAll().also { deletedCount ->
                 call.respond(HttpStatusCode.OK, deletedCount)
             }
+        }
+
+        // Search (Filter)
+        post("/search") {
+            val pageable = call.getPageable()
+            val filterSet = call.receive<EmployeeFilterSet>()
+            val employees = service.filter(filterSet = filterSet, pageable = pageable)
+            call.respond(employees)
         }
 
         route("{employee_id}") {

@@ -248,6 +248,55 @@
 							"response": []
 						},
 						{
+							"name": "search (paginated)",
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcwNTM2MDQ4Nn0.uPWj3W_jmtmtUEimDM_zRdcIvEIzgTJkGXB8fvhr_0U",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Saco\",\r\n    \"lastName\": \"Paco\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"MARRIED\"]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees/search?page=1&size=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees",
+										"search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "delete all",
 							"request": {
 								"method": "DELETE",

@@ -11,8 +11,8 @@ import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.pagination.Page
 import com.kcrud.data.pagination.Pageable
-import com.kcrud.data.repositories.employee.types.EmployeeFilterSet
-import com.kcrud.data.repositories.employee.types.EmployeeSet
+import com.kcrud.data.entities.employee.EmployeeFilterSet
+import com.kcrud.data.entities.employee.EmployeeSet
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.graphql.kgraphql.context.SessionContext
 import com.kcrud.services.EmployeeService
