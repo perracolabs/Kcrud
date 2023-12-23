@@ -42,7 +42,7 @@ internal class SessionContext(private val context: Context) {
          * In a real application, this could be a JWT token decoded from the bearer key.
          */
         fun injectUserFromHeader(contextBuilder: ContextBuilder, call: ApplicationCall) {
-            val user = ContextUser(user = call.request.headers[KEY_USER])
+            val user = ContextUser(userId = call.request.headers[KEY_USER])
             contextBuilder.inject(ContextUser::class, user)
         }
     }

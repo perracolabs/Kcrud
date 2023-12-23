@@ -40,7 +40,7 @@ internal class SessionContext(private val env: DataFetchingEnvironment) {
          * In a real application, this could be a JWT token decoded from the bearer key.
          */
         fun injectUserFromHeader(map: MutableMap<String, Any>, headers: Headers) {
-            map[KEY_USER] = ContextUser(user = headers[KEY_USER])
+            map[KEY_USER] = ContextUser(userId = headers[KEY_USER])
         }
     }
 }
