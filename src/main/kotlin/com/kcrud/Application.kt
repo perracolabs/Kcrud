@@ -65,7 +65,7 @@ fun Application.module() {
     // the plugins and modules are configured.
     DatabaseManager.init()
 
-    Tracer.simple(
+    Tracer.byTag(
         tag = ::module.nameWithClass<Application>()
     ).info("Server configured. Development Mode: ${SettingsProvider.global.development}.")
 }

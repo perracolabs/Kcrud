@@ -65,7 +65,7 @@ class Tracer(private val logger: Logger) {
          * Creates a new [Tracer] instance for the given tag.
          * Used at top-level functions or non-class contexts.
          */
-        fun simple(tag: String): Tracer {
+        fun byTag(tag: String): Tracer {
             return Tracer(LoggerFactory.getLogger(tag))
         }
 
