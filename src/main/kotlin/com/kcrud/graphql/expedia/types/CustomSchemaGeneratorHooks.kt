@@ -12,6 +12,9 @@ import kotlinx.datetime.LocalDate
 import java.util.*
 import kotlin.reflect.KType
 
+/**
+ * Generate custom GraphQL types which are not supported by default.
+ */
 class CustomSchemaGeneratorHooks : SchemaGeneratorHooks {
     override fun willGenerateGraphQLType(type: KType): GraphQLType? {
         return when (type.classifier) {

@@ -14,7 +14,9 @@ import graphql.schema.*
 import kotlinx.datetime.LocalDate
 import java.util.*
 
-
+/**
+ * Generate custom GraphQL for the Kotlinx LocalDate type.
+ */
 val GraphLocalDateType: GraphQLScalarType = GraphQLScalarType.newScalar()
     .name("LocalDate")
     .description("Type representing a LocalDate.")

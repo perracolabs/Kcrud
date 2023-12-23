@@ -13,7 +13,9 @@ import graphql.language.Value
 import graphql.schema.*
 import java.util.*
 
-
+/**
+ * Generate custom GraphQL for the UUID type.
+ */
 val GraphUUIDType: GraphQLScalarType = GraphQLScalarType.newScalar()
     .name("UUID")
     .description("Type representing a system UUID.")
