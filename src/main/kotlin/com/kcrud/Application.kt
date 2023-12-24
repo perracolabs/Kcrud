@@ -10,7 +10,6 @@ import com.kcrud.data.database.shared.DatabaseManager
 import com.kcrud.plugins.*
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.system.Tracer
-import com.kcrud.system.Tracer.Companion.nameWithClass
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -65,7 +64,7 @@ fun Application.module() {
     // the plugins and modules are configured.
     DatabaseManager.init()
 
-    val tag = ::module.nameWithClass<Application>()
-    Tracer.byTagAndDeploymentType(tag = tag, message = "Development Mode Enabled: ${SettingsProvider.global.development}.")
-    Tracer.byTag(tag = tag).info("Server configured. Deployment Type: ${SettingsProvider.deployment.type}.")
+    val tracer = Tracer.forFunction(Application::module)
+    tracer.byDeploymentType("Development Mode Enabled: ${SettingsProvider.global.development}.")
+    tracer.info("Server configured. Deployment Type: ${SettingsProvider.deployment.type}.")
 }

@@ -11,6 +11,7 @@ import com.kcrud.utils.DeploymentType
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KFunction
+import kotlin.reflect.jvm.javaMethod
 
 /**
  * A simple tracer wrapper to provide a consistent logging interface.
@@ -42,6 +43,17 @@ class Tracer(private val logger: Logger) {
         logger.error(message, throwable)
     }
 
+    /**
+     * Logs a message at different severity levels based on the current configured [DeploymentType].
+     * Intended for highlighting configurations or operations that might be allowed
+     * for development or testing environments but not for production.
+     * It logs the message as an error in production, as a warning in testing, and
+     * as information in development environments.
+     * This helps in quickly identifying potential misconfigurations or unintended
+     * execution of certain code paths in specific deployment environments.
+     *
+     * @param message The message to log indicating the context or operation that needs attention.
+     */
     fun byDeploymentType(message: String) {
         when (val deploymentType = SettingsProvider.deployment.type) {
             DeploymentType.PROD -> error("ATTENTION: '$deploymentType' environment >> $message")
@@ -51,63 +63,42 @@ class Tracer(private val logger: Logger) {
     }
 
     companion object {
-        /**
-         * Whether to show the full package name.
-         * If false, only the class name will be shown.
-         */
+        /** Toggle for full package name or simple name. */
         const val LOG_FULL_PACKAGE = true
 
         /**
-         * Creates a new [Tracer] instance for the given class.
-         * Used at level class contexts.
+         * Creates a new [Tracer] instance for a given class.
+         * Intended for classes where the class context is applicable.
+         *
+         * @param T The class for which the logger is being created.
+         * @return Tracer instance with a logger named after the class.
          */
         inline operator fun <reified T : Any> invoke(): Tracer {
             val loggerName = if (LOG_FULL_PACKAGE) {
-                T::class.qualifiedName ?: T::class.java.simpleName
+                T::class.qualifiedName ?: T::class.simpleName ?: "UnknownClass"
             } else {
-                T::class.java.simpleName
+                T::class.simpleName ?: "UnknownClass"
             }
-
             return Tracer(LoggerFactory.getLogger(loggerName))
         }
 
         /**
-         * Creates a new [Tracer] instance for the given tag.
-         * Used at top-level functions or non-class contexts.
+         * Creates a new [Tracer] instance for a given function.
+         * Intended for top-level and extension functions where class context is not applicable.
+         *
+         * @param funcRef The reference to the function for which the logger is being created.
+         * @return Tracer instance named after the function and its declaring class (if available).
          */
-        fun byTag(tag: String): Tracer {
-            return Tracer(LoggerFactory.getLogger(tag))
-        }
-
-        fun byTagAndDeploymentType(tag: String, message: String) {
-            byTag(tag = tag).byDeploymentType(message = message)
-        }
-
-        /**
-         * Combines a class name (T) and function name into a single string.
-         *
-         * When used in extension functions, "T" should be the receiver type
-         * of the extension function.
-         *
-         * Usage Example with an Extension Function:
-         * ```
-         * fun String.yourExtensionFunction() {
-         *     val tracerTag = ::yourExtensionFunction.nameWithClass<String>()
-         *     Tracer.create(tracerTag).info("Some log message.")
-         * }
-         * ```
-         *
-         * @param T The class containing the function or the receiver type for extension functions.
-         * @return String representing the full name of the function including its class.
-         */
-        inline fun <reified T : Any> KFunction<*>.nameWithClass(): String {
-            val loggerName = if (LOG_FULL_PACKAGE) {
-                T::class.qualifiedName ?: T::class.java.simpleName
-            } else {
-                T::class.java.simpleName
+        fun <R> forFunction(funcRef: KFunction<R>): Tracer {
+            val functionName = funcRef.name
+            val declaringClass = funcRef.javaMethod?.declaringClass
+            val className = when {
+                (LOG_FULL_PACKAGE && (declaringClass != null)) -> declaringClass.name
+                (declaringClass != null) -> declaringClass.simpleName
+                else -> "UnknownClass"
             }
-
-            return "$loggerName.${this.name}"
+            val loggerName = "$className.$functionName"
+            return Tracer(LoggerFactory.getLogger(loggerName))
         }
     }
 }

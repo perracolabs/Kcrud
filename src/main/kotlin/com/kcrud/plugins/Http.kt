@@ -8,7 +8,6 @@ package com.kcrud.plugins
 
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.system.Tracer
-import com.kcrud.system.Tracer.Companion.nameWithClass
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
@@ -29,7 +28,6 @@ import io.ktor.server.plugins.defaultheaders.*
  * See: [Default Headers Documentation](https://ktor.io/docs/default-headers.html)
  */
 fun Application.configureHttpSettings() {
-
 
     install(DefaultHeaders) {
         header("X-Engine", "Kcrud")
@@ -58,13 +56,14 @@ fun Application.configureHttpSettings() {
 
         // Set the allowed hosts.
 
+        val tracer = Tracer.forFunction(Application::configureHttpSettings)
+
         val allowedHosts: List<String> = SettingsProvider.cors.allowedHosts
-        val tag = Application::configureHttpSettings.nameWithClass<Application>()
-        Tracer.byTag(tag = tag).info("Allowed hosts: $allowedHosts")
+        tracer.info("Allowed hosts: $allowedHosts")
 
         if (allowedHosts.isEmpty() or allowedHosts.contains("*")) {
             anyHost()
-            Tracer.byTagAndDeploymentType(tag = tag, message = "Allowing all hosts.")
+            tracer.byDeploymentType("Allowing all hosts.")
         } else {
             allowedHosts.forEach { host -> allowHost(host) }
         }
