@@ -56,6 +56,15 @@ data class HealthCheck(
 
             if (developmentModeEnabled)
                 errors.add("Development mode is enabled in '$deploymentType' environment.")
+
+            if (graphQLPlayground)
+                errors.add("GraphQL Playground is enabled in '$deploymentType' environment.")
+
+            if (graphQLDumpSchemaEnabled)
+                errors.add("GraphQL Schema Dump is enabled in '$deploymentType' environment.")
+
+            if (docsEnabled)
+                errors.add("Docs are enabled in '$deploymentType' environment.")
         }
 
         if (errors.isEmpty()) {
