@@ -7,7 +7,10 @@
 package com.kcrud.routes.system
 
 import com.kcrud.settings.SettingsProvider
+import com.kcrud.system.Tracer
+import com.kcrud.system.Tracer.Companion.nameWithClass
 import com.kcrud.utils.NetworkUtils
+import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.openapi.*
 import io.ktor.server.plugins.swagger.*
@@ -32,6 +35,9 @@ import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 fun Route.documentationRoute() {
 
     if (SettingsProvider.docs.isEnabled) {
+        val tag = Route::documentationRoute.nameWithClass<Application>()
+        Tracer.byTagAndDeploymentType(tag = tag, message = "Configuring documentation.")
+
         val yamlFile = SettingsProvider.docs.yamlFile
         val rootPath = SettingsProvider.deployment.apiVersion
 

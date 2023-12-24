@@ -103,6 +103,7 @@ internal object DatabaseManager {
                 true
             }
         } catch (e: Exception) {
+            tracer.warning("Database is not alive.")
             false
         }
     }

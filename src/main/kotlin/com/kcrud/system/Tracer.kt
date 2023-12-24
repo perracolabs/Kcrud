@@ -6,6 +6,8 @@
 
 package com.kcrud.system
 
+import com.kcrud.settings.SettingsProvider
+import com.kcrud.utils.DeploymentType
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KFunction
@@ -40,6 +42,14 @@ class Tracer(private val logger: Logger) {
         logger.error(message, throwable)
     }
 
+    fun byDeploymentType(message: String) {
+        when (val deploymentType = SettingsProvider.deployment.type) {
+            DeploymentType.PROD -> error("ATTENTION: '$deploymentType' environment >> $message")
+            DeploymentType.TEST -> warning("ATTENTION: '$deploymentType' environment >> $message")
+            DeploymentType.DEV -> info(message)
+        }
+    }
+
     companion object {
         /**
          * Whether to show the full package name.
@@ -67,6 +77,10 @@ class Tracer(private val logger: Logger) {
          */
         fun byTag(tag: String): Tracer {
             return Tracer(LoggerFactory.getLogger(tag))
+        }
+
+        fun byTagAndDeploymentType(tag: String, message: String) {
+            byTag(tag = tag).byDeploymentType(message = message)
         }
 
         /**

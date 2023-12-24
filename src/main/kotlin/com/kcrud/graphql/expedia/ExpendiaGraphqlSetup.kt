@@ -19,9 +19,8 @@ import com.kcrud.graphql.expedia.schema.employment.EmploymentMutations
 import com.kcrud.graphql.expedia.schema.employment.EmploymentQueries
 import com.kcrud.graphql.expedia.types.CustomSchemaGeneratorHooks
 import com.kcrud.settings.SettingsProvider
-import com.kcrud.utils.DeploymentType
-import com.kcrud.utils.NetworkUtils
 import com.kcrud.system.Tracer
+import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
@@ -41,7 +40,11 @@ internal class ExpediaGraphQLSetup {
 
     fun configure(application: Application) {
         val withPlayground = SettingsProvider.graphql.playground
-        tracer.info("Configuring ExpediaGroup GraphQL engine. Playground: $withPlayground")
+        tracer.info("Configuring ExpediaGroup GraphQL engine.")
+
+        if (withPlayground) {
+            tracer.byDeploymentType(message = "GraphQL playground is enabled.")
+        }
 
         installGraphQL(application = application)
         dumpSchema()
@@ -101,10 +104,7 @@ internal class ExpediaGraphQLSetup {
         if (!SettingsProvider.graphql.dumpSchema)
             return
 
-        val deploymentType = SettingsProvider.deployment.type
-        if (deploymentType == DeploymentType.PROD) {
-            tracer.error("Dumping the GraphQL schema in the '$deploymentType' environment is not recommended.")
-        }
+        tracer.byDeploymentType(message = "Dumping GraphQL schema.")
 
         val schema = toSchema(
             queries = listOf(

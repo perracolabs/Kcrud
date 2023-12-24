@@ -9,7 +9,6 @@ package com.kcrud.plugins
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.system.Tracer
 import com.kcrud.system.Tracer.Companion.nameWithClass
-import com.kcrud.utils.DeploymentType
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
@@ -65,15 +64,9 @@ fun Application.configureHttpSettings() {
 
         if (allowedHosts.isEmpty() or allowedHosts.contains("*")) {
             anyHost()
-
-            when (val deploymentType = SettingsProvider.deployment.type) {
-                DeploymentType.PROD -> Tracer.byTag(tag = tag).error("Allowing all hosts in $deploymentType environment.")
-                DeploymentType.TEST -> Tracer.byTag(tag = tag).warning("Allowing all hosts in $deploymentType environment.")
-                DeploymentType.DEV -> Tracer.byTag(tag = tag).info("Allowing all hosts in $deploymentType environment.")
-            }
+            Tracer.byTagAndDeploymentType(tag = tag, message = "Allowing all hosts.")
         } else {
             allowedHosts.forEach { host -> allowHost(host) }
         }
     }
 }
-

@@ -65,10 +65,7 @@ fun Application.module() {
     // the plugins and modules are configured.
     DatabaseManager.init()
 
-    Tracer.byTag(
-        tag = ::module.nameWithClass<Application>()
-    ).info(
-        "Server configured. Deployment Type: ${SettingsProvider.deployment.type}. " +
-                "Development Mode Enabled: ${SettingsProvider.global.development}."
-    )
+    val tag = ::module.nameWithClass<Application>()
+    Tracer.byTagAndDeploymentType(tag = tag, message = "Development Mode Enabled: ${SettingsProvider.global.development}.")
+    Tracer.byTag(tag = tag).info("Server configured. Deployment Type: ${SettingsProvider.deployment.type}.")
 }
