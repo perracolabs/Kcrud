@@ -9,14 +9,12 @@ package com.kcrud.settings
 import com.kcrud.data.database.shared.DatabaseManager
 import com.kcrud.graphql.GraphQLFramework
 import com.kcrud.utils.DeploymentType
-import io.ktor.server.config.*
 
 /**
- * Represents the application's global settings, as parsed from the application configuration file.
+ * Represents the application's settings,
+ * as parsed from the application configuration file.
  *
- * @property global Configurations specific to main global environment.
- * @property deployment Configurations for the server's deployment settings.
- * @property security Configurations for security settings.
+ * This effectively provides strongly typed access to the configuration data.
  */
 internal data class AppSettings(
     val global: Global,
@@ -35,7 +33,10 @@ internal data class AppSettings(
      *                       See: [Development Mode](https://ktor.io/docs/development-mode.html)
      * @property machineId The unique machine ID. Used for generating unique IDs for call traceability.
      */
-    data class Global(val development: Boolean, val machineId: Int)
+    data class Global(
+        val development: Boolean,
+        val machineId: Int
+    )
 
     /**
      * Contains settings related to how the application is deployed.
@@ -45,14 +46,21 @@ internal data class AppSettings(
      * @property host The network address the server is bound to.
      * @property apiVersion The API version.
      */
-    data class Deployment(val type: DeploymentType, val port: Int, val host: String, val apiVersion: String)
+    data class Deployment(
+        val type: DeploymentType,
+        val port: Int,
+        val host: String,
+        val apiVersion: String
+    )
 
     /**
      * Contains settings related to CORS.
      *
      * @property allowedHosts The list of allowed hosts used in CORS.
      */
-    data class Cors(val allowedHosts: List<String>)
+    data class Cors(
+        val allowedHosts: List<String>
+    )
 
     /**
      * Database related settings.
@@ -100,7 +108,12 @@ internal data class AppSettings(
      * @property playground Whether to enable the GraphQL Playground.
      * @property dumpSchema Whether to dump the GraphQL schema.
      */
-    data class GraphQL(val isEnabled: Boolean, val framework: GraphQLFramework, val playground: Boolean, val dumpSchema: Boolean)
+    data class GraphQL(
+        val isEnabled: Boolean,
+        val framework: GraphQLFramework,
+        val playground: Boolean,
+        val dumpSchema: Boolean
+    )
 
     /**
      * Security class holds settings related to security.
@@ -109,8 +122,11 @@ internal data class AppSettings(
      * @property jwt Settings related to JWT authentication.
      * @property basicAuth Settings related to basic authentication.
      */
-    data class Security(val encryption: Encryption, val jwt: Jwt, val basicAuth: BasicAuth) {
-
+    data class Security(
+        val encryption: Encryption,
+        val jwt: Jwt,
+        val basicAuth: BasicAuth
+    ) {
         /**
          * Encryption key settings.
          *
@@ -118,7 +134,11 @@ internal data class AppSettings(
          * @property salt Salt used for encrypting/decrypting data.
          * @property key Secret key for encrypting/decrypting data.
          */
-        data class Encryption(val algorithm: String, val salt: String, val key: String) {
+        data class Encryption(
+            val algorithm: String,
+            val salt: String,
+            val key: String
+        ) {
             init {
                 require(algorithm.isNotBlank()) { "Missing encryption algorithm." }
                 require(salt.isNotBlank()) { "Missing encryption salt." }
@@ -173,7 +193,10 @@ internal data class AppSettings(
             val loginForm: Boolean,
             val credentials: Credentials
         ) {
-            data class Credentials(val username: String, val password: String) {
+            data class Credentials(
+                val username: String,
+                val password: String
+            ) {
                 init {
                     require(username.isNotBlank() && (username.length >= MIN_USERNAME_LENGTH)) {
                         "Invalid credential username. Must be >= $MIN_USERNAME_LENGTH characters long."
@@ -188,39 +211,6 @@ internal data class AppSettings(
         companion object {
             private const val MIN_USERNAME_LENGTH: Int = 4
             private const val MIN_KEY_LENGTH: Int = 12
-        }
-    }
-
-    companion object {
-        // Singleton AppSettings instance.
-        private var instance: AppSettings? = null
-
-        /**
-         * Factory method to create or return the instance of AppSettings.
-         *
-         * @param config Configuration from which the application's settings must be parsed.
-         * @return Singleton instance of AppSettings, populated with the parsed configuration data.
-         */
-        @OptIn(SettingsAPI::class)
-        operator fun invoke(config: ApplicationConfig): AppSettings {
-            return instance ?: synchronized(this) {
-                instance ?: run {
-                    val configMappings = mapOf(
-                        "ktor" to Global::class,
-                        "ktor.deployment" to Deployment::class,
-                        "ktor.cors" to Cors::class,
-                        "ktor.database" to Database::class,
-                        "ktor.docs" to Docs::class,
-                        "ktor.graphql" to GraphQL::class,
-                        "ktor.security" to Security::class
-                    )
-
-                    SettingsParser.parse(
-                        config = config,
-                        configMappings = configMappings
-                    ).also { instance = it }
-                }
-            }
         }
     }
 }

@@ -15,26 +15,43 @@ import io.ktor.server.application.*
  * the [AppSettings] can be accessed anywhere throughout the application.
  */
 internal object SettingsProvider {
+    @Volatile
     private lateinit var settings: AppSettings
 
-    val global: AppSettings.Global get() = getSettings().global
-    val deployment: AppSettings.Deployment get() = getSettings().deployment
-    val cors: AppSettings.Cors get() = getSettings().cors
-    val database: AppSettings.Database get() = getSettings().database
-    val docs: AppSettings.Docs get() = getSettings().docs
-    val graphql: AppSettings.GraphQL get() = getSettings().graphql
-    val security: AppSettings.Security get() = getSettings().security
+    val global: AppSettings.Global get() = settings.global
+    val deployment: AppSettings.Deployment get() = settings.deployment
+    val cors: AppSettings.Cors get() = settings.cors
+    val database: AppSettings.Database get() = settings.database
+    val docs: AppSettings.Docs get() = settings.docs
+    val graphql: AppSettings.GraphQL get() = settings.graphql
+    val security: AppSettings.Security get() = settings.security
 
+    @OptIn(SettingsAPI::class)
     fun configure(context: Application) {
-        settings = AppSettings(context.environment.config)
-    }
+        if (::settings.isInitialized) {
+            return
+        }
 
-    private fun getSettings(): AppSettings {
-        if (!::settings.isInitialized) {
-            throw UninitializedPropertyAccessException(
-                "Uninitialized SettingsProvider. Call 'SettingsProvider.install()' in the application pipeline."
+        synchronized(this) {
+            if (::settings.isInitialized) {
+                // Double check inside synchronized block.
+                return
+            }
+
+            val configMappings = mapOf(
+                "ktor" to AppSettings.Global::class,
+                "ktor.deployment" to AppSettings.Deployment::class,
+                "ktor.cors" to AppSettings.Cors::class,
+                "ktor.database" to AppSettings.Database::class,
+                "ktor.docs" to AppSettings.Docs::class,
+                "ktor.graphql" to AppSettings.GraphQL::class,
+                "ktor.security" to AppSettings.Security::class
+            )
+
+            settings = SettingsParser.parse(
+                config = context.environment.config,
+                configMappings = configMappings
             )
         }
-        return settings
     }
 }
