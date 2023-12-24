@@ -1,5 +1,5 @@
 # Kcrud
-A REST/GraphQL **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
+A REST/GraphQL **CRUD** server example in [Kotlin](https://kotlinlang.org/) and [Ktor](https://ktor.io/).
 
 ### Characteristics:
 * Most common **REST** operations, including filterable and sortable pagination examples.
