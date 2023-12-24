@@ -18,7 +18,7 @@ A REST/GraphQL **CRUD** example in [Kotlin](https://kotlinlang.org/) and [Ktor](
 * [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger), [OpenAPI](https://ktor.io/docs/openapi.html) and [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/) integration.
 * [Routing](https://ktor.io/docs/routing-in-ktor.html) organization examples.
 * [Call Logging](https://ktor.io/docs/call-logging.html) and [Call ID](https://ktor.io/docs/call-id.html) examples for events traceability.
-* [Snowflake](https://en.wikipedia.org/wiki/Snowflake_ID) unique IDs for logging purposes.
+* [Snowflake](https://en.wikipedia.org/wiki/Snowflake_ID) unique IDs for logging purposes, suitable for distributed systems.
 ---
 
 #### TODO:
