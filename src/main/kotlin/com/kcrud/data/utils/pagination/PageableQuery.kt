@@ -63,9 +63,9 @@ private object QueryOrderingHelper {
     private const val MAX_CACHE_SIZE = 100
 
     // LRU cache storing column references with table class and column name as the key.
-    private val columnCache: MutableMap<ColumnKey, Column<*>> = Collections.synchronizedMap(
-        object : LinkedHashMap<ColumnKey, Column<*>>(MAX_CACHE_SIZE, 0.75f, true) {
-            override fun removeEldestEntry(ignoredEldest: Map.Entry<ColumnKey, Column<*>>): Boolean {
+    private val columnCache: MutableMap<TableColumnKey, Column<*>> = Collections.synchronizedMap(
+        object : LinkedHashMap<TableColumnKey, Column<*>>(MAX_CACHE_SIZE, 0.75f, true) {
+            override fun removeEldestEntry(ignoredEldest: Map.Entry<TableColumnKey, Column<*>>): Boolean {
                 return size > MAX_CACHE_SIZE
             }
         }
@@ -117,7 +117,7 @@ private object QueryOrderingHelper {
      */
     private fun findColumn(table: Table, fieldName: String): Column<*> {
         val tableClass = table::class
-        val cacheKey: ColumnKey = tableClass to fieldName.lowercase()
+        val cacheKey: TableColumnKey = tableClass to fieldName.lowercase()
 
         // Retrieve from cache, or use reflection to find the column and cache it.
         return columnCache.getOrPut(cacheKey) {
@@ -138,4 +138,4 @@ private object QueryOrderingHelper {
  * Defined as a typealias for better readability.
  * The key is composed of the table class and column name.
  */
-private typealias ColumnKey = Pair<KClass<*>, String>
+private typealias TableColumnKey = Pair<KClass<*>, String>
