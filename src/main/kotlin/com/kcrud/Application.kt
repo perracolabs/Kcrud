@@ -47,7 +47,7 @@ fun Application.module() {
 
     configureKoin()
 
-    configureHttp()
+    configureHttpSettings()
 
     configureCallLogging()
 

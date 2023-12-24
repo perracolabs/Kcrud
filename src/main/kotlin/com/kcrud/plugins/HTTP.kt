@@ -12,14 +12,21 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.defaultheaders.*
 
 /**
- * Initializes CORS (Cross-Origin Resource Sharing) settings for the application.
+ * Configures HTTP settings for the application, including CORS and default headers.
  *
- * Configures allowed HTTP methods, headers, and other CORS-specific settings
- * such as permitting credentials and non-simple content types.
+ * This function sets up CORS by configuring allowed HTTP methods and headers, permitting credentials,
+ * and enabling non-simple content types for more complex operations like file uploads.
+ *
+ * Additionally, it sets a default header 'X-Engine' for all HTTP responses.
+ *
+ * Note: The 'anyHost' setting for CORS is not recommended for production use.
+ * It's advisable to specify allowed hosts.
  *
  * See: [CORS Documentation](https://ktor.io/docs/cors.html)
+ *
+ * See: [Default Headers Documentation](https://ktor.io/docs/default-headers.html)
  */
-fun Application.configureHttp() {
+fun Application.configureHttpSettings() {
 
     install(DefaultHeaders) {
         header("X-Engine", "Kcrud")
