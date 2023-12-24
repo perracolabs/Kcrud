@@ -136,5 +136,6 @@ private object QueryOrderingHelper {
  * Represents a key for the column cache.
  * Contains the table class and column name.
  * Defined as a typealias for better readability.
+ * The key is composed of the table class and column name.
  */
 private typealias ColumnKey = Pair<KClass<*>, String>
