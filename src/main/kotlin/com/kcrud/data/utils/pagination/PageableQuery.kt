@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.Table
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
@@ -62,11 +63,13 @@ private object QueryOrderingHelper {
     private const val MAX_CACHE_SIZE = 100
 
     // LRU cache storing column references with table class and column name as the key.
-    private val columnCache = object : LinkedHashMap<Pair<KClass<*>, String>, Column<*>>(MAX_CACHE_SIZE, 0.75f, true) {
-        override fun removeEldestEntry(ignoredEldest: Map.Entry<Pair<KClass<*>, String>, Column<*>>): Boolean {
-            return size > MAX_CACHE_SIZE
+    private val columnCache: MutableMap<Pair<KClass<*>, String>, Column<*>> = Collections.synchronizedMap(
+        object : LinkedHashMap<Pair<KClass<*>, String>, Column<*>>(MAX_CACHE_SIZE, 0.75f, true) {
+            override fun removeEldestEntry(ignoredEldest: Map.Entry<Pair<KClass<*>, String>, Column<*>>): Boolean {
+                return size > MAX_CACHE_SIZE
+            }
         }
-    }
+    )
 
     /**
      * Applies ordering to a query based on the provided Pageable object.
