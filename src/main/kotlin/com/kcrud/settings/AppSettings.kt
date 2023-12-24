@@ -204,7 +204,22 @@ internal data class AppSettings(
         @OptIn(SettingsAPI::class)
         operator fun invoke(config: ApplicationConfig): AppSettings {
             return instance ?: synchronized(this) {
-                instance ?: SettingsParser.parse(config = config).also { instance = it }
+                instance ?: run {
+                    val configMappings = mapOf(
+                        "ktor" to Global::class,
+                        "ktor.deployment" to Deployment::class,
+                        "ktor.cors" to Cors::class,
+                        "ktor.database" to Database::class,
+                        "ktor.docs" to Docs::class,
+                        "ktor.graphql" to GraphQL::class,
+                        "ktor.security" to Security::class
+                    )
+
+                    SettingsParser.parse(
+                        config = config,
+                        configMappings = configMappings
+                    ).also { instance = it }
+                }
             }
         }
     }

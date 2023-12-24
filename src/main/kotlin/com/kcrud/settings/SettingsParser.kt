@@ -28,26 +28,20 @@ internal object SettingsParser {
      * Performs the configuration file parsing.
      *
      * @param config Configuration data parsed from the application's settings file.
+     * @param configMappings Map of configuration paths to their corresponding classes.
      * @return A new AppSettings object populated with the parsed configuration data.
      */
-    fun parse(config: ApplicationConfig): AppSettings {
-        val global = instantiateConfig(config = config, keyPath = "ktor", kClass = AppSettings.Global::class)
-        val deployment = instantiateConfig(config = config, keyPath = "ktor.deployment", kClass = AppSettings.Deployment::class)
-        val cors = instantiateConfig(config = config, keyPath = "ktor.cors", kClass = AppSettings.Cors::class)
-        val database = instantiateConfig(config = config, keyPath = "ktor.database", kClass = AppSettings.Database::class)
-        val docs = instantiateConfig(config = config, keyPath = "ktor.docs", kClass = AppSettings.Docs::class)
-        val graphql = instantiateConfig(config = config, keyPath = "ktor.graphql", kClass = AppSettings.GraphQL::class)
-        val security = instantiateConfig(config = config, keyPath = "ktor.security", kClass = AppSettings.Security::class)
+    fun parse(config: ApplicationConfig, configMappings: Map<String, KClass<*>>): AppSettings {
+        val constructor: KFunction<AppSettings> = AppSettings::class.primaryConstructor!!
+        val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
-        return AppSettings(
-            global = global,
-            deployment = deployment,
-            cors = cors,
-            database = database,
-            docs = docs,
-            security = security,
-            graphql = graphql
-        )
+        val settings: Map<KParameter, Any> = configMappings.mapNotNull { (keyPath, kClass) ->
+            val configInstance: Any = instantiateConfig(config = config, keyPath = keyPath, kClass = kClass)
+            val argumentKey = kClass.simpleName!!.lowercase()
+            constructorParameters[argumentKey]!! to configInstance
+        }.toMap()
+
+        return constructor.callBy(settings)
     }
 
     /**
@@ -68,13 +62,11 @@ internal object SettingsParser {
 
         val constructor: KFunction<T> = kClass.primaryConstructor!!
 
-
         val arguments: Map<KParameter, Any?> = constructor.parameters.associateWith { parameter ->
             // Extracts the Kotlin Class (KClass) from the parameter's type using jvmErasure,
             // which resolves the Kotlin type to its JVM representation. This is crucial for
             // determining the correct class at runtime, particularly for handling complex data structures.
             val parameterType: KClass<*> = parameter.type.jvmErasure
-            val property = kClass.memberProperties.find { it.name == parameter.name }
 
             // Constructs the specific key path for this parameter by appending the parameter's name
             // to the base key path, used to locate the corresponding value in the configuration
@@ -86,7 +78,8 @@ internal object SettingsParser {
                 instantiateConfig(config = config, keyPath = parameterKeyPath, kClass = parameterType)
             } else {
                 // For simple types convert the value to the correct type.
-                convertToType(config = config, keyPath = parameterKeyPath, type = parameterType, property = property!!)
+                val property: KProperty1<T, *> = kClass.memberProperties.find { it.name == parameter.name }!!
+                convertToType(config = config, keyPath = parameterKeyPath, type = parameterType, property = property)
             }
         }
 
@@ -120,16 +113,8 @@ internal object SettingsParser {
 
         // Handle lists.
         if (type == List::class) {
-            // Determine the type of the list elements.
-            val listType = property.returnType.arguments.firstOrNull()?.type?.classifier as? KClass<*>
-            val rawList = config.propertyOrNull(keyPath)?.getList()
-
-            // Map each element of the list to its respective type.
-            return listType?.let { listElementType ->
-                rawList?.map { listElementValue ->
-                    parseElementValue(keyPath = keyPath, stringValue = listElementValue, type = listElementType)
-                }
-            } ?: rawList
+            val listType = (property.returnType.arguments.first().type!!.classifier as? KClass<*>)!!
+            return parseListValues(config = config, keyPath = keyPath, listType = listType)
         }
 
         // Handle simple types.
@@ -178,5 +163,36 @@ internal object SettingsParser {
             (it as Enum<*>).name.compareTo(stringValue, ignoreCase = true) == 0
         } as Enum<*>?
             ?: throw IllegalArgumentException("Enum value '$stringValue' not found for type: $enumType. Found in path: $keyPath")
+    }
+
+    /**
+     * Parses a list from the configuration.
+     * Lists can be specified as a single string, comma-separated, or as a list of strings.
+     * The list is mapped to the specified type.
+     *
+     * @param config The application configuration object.
+     * @param keyPath The key path for the property in the configuration.
+     * @param listType The KClass to which the list elements should be converted.
+     * @return The converted list or an empty list if not found.
+     */
+    private fun parseListValues(config: ApplicationConfig, keyPath: String, listType: KClass<*>): List<Any?> {
+        val rawList: List<String> = try {
+            // Attempt to retrieve it as a list.
+            config.propertyOrNull(keyPath)?.getList() ?: listOf()
+        } catch (e: Exception) {
+            // If failed to get a list, then treat it as a single string with comma-delimited values.
+            val stringValue: String = config.propertyOrNull(keyPath)?.getString() ?: ""
+
+            if (stringValue.contains(',')) {
+                stringValue.split(',').map { it.trim() }
+            } else {
+                listOf(stringValue.trim())
+            }
+        }
+
+        // Map each element of the list to its respective type.
+        return rawList.map { listElementValue ->
+            parseElementValue(keyPath = keyPath, stringValue = listElementValue, type = listType)
+        }
     }
 }
