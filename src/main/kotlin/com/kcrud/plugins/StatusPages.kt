@@ -40,11 +40,11 @@ fun Application.configureStatusPages() {
             call.respond(status = HttpStatusCode.BadRequest, message = cause.localizedMessage)
         }
         exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = formatErrorMessage(cause=cause), throwable = cause)
+            tracer.error(message = formatErrorMessage(cause = cause), throwable = cause)
             call.respond(status = HttpStatusCode.NotFound, message = cause.localizedMessage)
         }
         exception<Throwable> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = formatErrorMessage(cause=cause), throwable = cause)
+            tracer.error(message = formatErrorMessage(cause = cause), throwable = cause)
             call.respond(status = HttpStatusCode.InternalServerError, message = "Internal server error. ${cause.localizedMessage}")
         }
     }

@@ -69,7 +69,7 @@ data class HealthCheckResponse(
     val graphQLPlayground: Boolean = SettingsProvider.graphql.playground,
     val graphQLDumpSchemaEnabled: Boolean = SettingsProvider.graphql.dumpSchema,
     val docsEnabled: Boolean = SettingsProvider.docs.isEnabled,
-    val snowflakeTestId: String =  SnowflakeFactory.nextId(),
+    val snowflakeTestId: String = SnowflakeFactory.nextId(),
     val snowflakeTestResult: SnowflakeData = SnowflakeFactory.parse(id = snowflakeTestId),
     val utc: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC),
     val local: LocalDateTime = utc.toInstant(TimeZone.UTC).toLocalDateTime(TimeZone.currentSystemDefault())
