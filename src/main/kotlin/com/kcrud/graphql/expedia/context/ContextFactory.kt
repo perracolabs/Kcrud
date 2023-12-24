@@ -8,6 +8,7 @@ package com.kcrud.graphql.expedia.context
 
 import com.expediagroup.graphql.generator.extensions.plus
 import com.expediagroup.graphql.server.ktor.DefaultKtorGraphQLContextFactory
+import com.kcrud.graphql.expedia.ExpediaAPI
 import graphql.GraphQLContext
 import io.ktor.server.request.*
 
@@ -29,6 +30,7 @@ import io.ktor.server.request.*
  *
  * See: [Expedia GraphQL Documentation](https://opensource.expediagroup.com/graphql-kotlin/docs/schema-generator/execution/contextual-data/)
  */
+@ExpediaAPI
 class ContextFactory : DefaultKtorGraphQLContextFactory() {
     override suspend fun generateContext(request: ApplicationRequest): GraphQLContext {
         // Example of how to add a session user from the request headers to the context.

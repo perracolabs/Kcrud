@@ -17,7 +17,7 @@ import kotlin.reflect.jvm.javaMethod
  * A simple tracer wrapper to provide a consistent logging interface.
  */
 @Suppress("unused")
-class Tracer(private val logger: Logger) {
+internal class Tracer(private val logger: Logger) {
 
     fun trace(message: String) {
         logger.trace(message)

@@ -9,6 +9,7 @@ package com.kcrud.graphql.kgraphql.context
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.ContextBuilder
 import com.kcrud.graphql.context.ContextUser
+import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.system.Tracer
 import io.ktor.server.application.*
 
@@ -16,6 +17,7 @@ import io.ktor.server.application.*
 /**
  * Graphql session context hold attributes such as the context user.
  */
+@KGraphQLAPI
 internal class SessionContext(private val context: Context) {
     private val tracer = Tracer<SessionContext>()
 

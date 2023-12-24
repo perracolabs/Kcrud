@@ -54,6 +54,15 @@ paths:
         schema:
           type: "string"
       responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
         "200":
           description: "OK"
           content:
@@ -172,20 +181,24 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthCheck"
               examples:
                 Example#1:
                   description: ""
                   value:
-                    ready: true
+                    errors: []
+                    utc: "null"
+                    local: "null"
                     machineId: "null"
-                    development: "null"
+                    deploymentType: "null"
+                    developmentModeEnabled: "null"
                     databaseAlive: "null"
                     databasePoolSize: "null"
                     databaseJDBC: "null"
                     databaseJDBCUrl: "null"
                     protocol: "null"
                     server: "null"
+                    allowedHosts: "null"
                     apiVersion: "null"
                     jwtEnabled: "null"
                     basicAuthEnabled: "null"
@@ -196,8 +209,6 @@ paths:
                     docsEnabled: "null"
                     snowflakeTestId: "null"
                     snowflakeTestResult: "null"
-                    utc: "null"
-                    local: "null"
         "500":
           description: "Internal Server Error"
           content:
@@ -593,15 +604,27 @@ components:
       required:
       - "utc"
       - "local"
-    HealthCheckResponse:
+    HealthCheck:
       type: "object"
       properties:
-        ready:
-          type: "boolean"
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
         machineId:
           type: "integer"
           format: "int32"
-        development:
+        deploymentType:
+          type: "string"
+          enum:
+          - "DEV"
+          - "TEST"
+          - "PROD"
+        developmentModeEnabled:
           type: "boolean"
         databaseAlive:
           type: "boolean"
@@ -616,6 +639,10 @@ components:
           type: "string"
         server:
           type: "string"
+        allowedHosts:
+          type: "array"
+          items:
+            type: "string"
         apiVersion:
           type: "string"
         jwtEnabled:
@@ -639,21 +666,20 @@ components:
           type: "string"
         snowflakeTestResult:
           $ref: "#/components/schemas/SnowflakeData"
-        utc:
-          $ref: "#/components/schemas/LocalDateTime"
-        local:
-          $ref: "#/components/schemas/LocalDateTime"
       required:
+      - "errors"
+      - "utc"
+      - "local"
+      - "deploymentType"
       - "databaseJDBC"
       - "databaseJDBCUrl"
       - "protocol"
       - "server"
+      - "allowedHosts"
       - "apiVersion"
       - "graphQLFramework"
       - "snowflakeTestId"
       - "snowflakeTestResult"
-      - "utc"
-      - "local"
     EmployeeFilterSet:
       type: "object"
       properties:
@@ -684,16 +710,16 @@ components:
     Info:
       type: "object"
       properties:
-        totalElements:
-          type: "integer"
-          format: "int32"
         totalPages:
           type: "integer"
           format: "int32"
-        elementsPerPage:
+        pageIndex:
           type: "integer"
           format: "int32"
-        pageIndex:
+        totalElements:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
           type: "integer"
           format: "int32"
         elementsInPage:

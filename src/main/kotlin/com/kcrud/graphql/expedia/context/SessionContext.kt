@@ -7,6 +7,7 @@
 package com.kcrud.graphql.expedia.context
 
 import com.kcrud.graphql.context.ContextUser
+import com.kcrud.graphql.expedia.ExpediaAPI
 import com.kcrud.system.Tracer
 import graphql.schema.DataFetchingEnvironment
 import io.ktor.http.*
@@ -14,6 +15,7 @@ import io.ktor.http.*
 /**
  * Graphql session context hold attributes such as the context user.
  */
+@ExpediaAPI
 internal class SessionContext(private val env: DataFetchingEnvironment) {
     private val tracer = Tracer<SessionContext>()
 
