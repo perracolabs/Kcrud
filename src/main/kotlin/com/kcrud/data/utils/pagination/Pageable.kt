@@ -11,11 +11,12 @@ package com.kcrud.data.utils.pagination
  *
  * @property page The 1-based page index.
  * @property size The size of the page to be returned. 0 means all elements.
+ * @property order The optional order to apply to the results.
  */
 data class Pageable(
     val page: Int,
     val size: Int,
-    val sort: Sort? = null
+    val order: Order? = null
 ) {
     init {
         require(page > 0) { "Page index must be >= 1." }
@@ -26,8 +27,8 @@ data class Pageable(
         ASC, DESC
     }
 
-    data class Sort(
+    data class Order(
         val field: String,
-        val direction: SortDirection
+        val sort: SortDirection
     )
 }

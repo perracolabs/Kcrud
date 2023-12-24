@@ -54,15 +54,6 @@ paths:
         schema:
           type: "string"
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "200":
           description: "OK"
           content:
@@ -187,8 +178,35 @@ paths:
                   description: ""
                   value:
                     ready: true
+                    machineId: "null"
+                    development: "null"
                     databaseAlive: "null"
-                    timestamp: "null"
+                    databasePoolSize: "null"
+                    databaseJDBC: "null"
+                    databaseJDBCUrl: "null"
+                    protocol: "null"
+                    server: "null"
+                    apiVersion: "null"
+                    jwtEnabled: "null"
+                    basicAuthEnabled: "null"
+                    graphQLEnabled: "null"
+                    graphQLFramework: "null"
+                    graphQLPlayground: "null"
+                    graphQLDumpSchemaEnabled: "null"
+                    docsEnabled: "null"
+                    snowflakeTestId: "null"
+                    snowflakeTestResult: "null"
+                    utc: "null"
+                    local: "null"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
   /login:
     post:
       description: ""
@@ -204,6 +222,28 @@ paths:
                   value: "Authentication failed"
                 Example#2:
                   value: "Authentication successful"
+  /search:
+    post:
+      description: "Search (Filter)"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/EmployeeFilterSet"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends Employee"
   /snowflake/{id}:
     get:
       description: ""
@@ -537,17 +577,6 @@ components:
     LocalDateTime:
       type: "object"
       properties: {}
-    HealthCheckResponse:
-      type: "object"
-      properties:
-        ready:
-          type: "boolean"
-        databaseAlive:
-          type: "boolean"
-        timestamp:
-          $ref: "#/components/schemas/LocalDateTime"
-      required:
-      - "timestamp"
     SnowflakeData:
       type: "object"
       properties:
@@ -564,6 +593,135 @@ components:
       required:
       - "utc"
       - "local"
+    HealthCheckResponse:
+      type: "object"
+      properties:
+        ready:
+          type: "boolean"
+        machineId:
+          type: "integer"
+          format: "int32"
+        development:
+          type: "boolean"
+        databaseAlive:
+          type: "boolean"
+        databasePoolSize:
+          type: "integer"
+          format: "int32"
+        databaseJDBC:
+          type: "string"
+        databaseJDBCUrl:
+          type: "string"
+        protocol:
+          type: "string"
+        server:
+          type: "string"
+        apiVersion:
+          type: "string"
+        jwtEnabled:
+          type: "boolean"
+        basicAuthEnabled:
+          type: "boolean"
+        graphQLEnabled:
+          type: "boolean"
+        graphQLFramework:
+          type: "string"
+          enum:
+          - "EXPEDIA_GROUP"
+          - "K_GRAPHQL"
+        graphQLPlayground:
+          type: "boolean"
+        graphQLDumpSchemaEnabled:
+          type: "boolean"
+        docsEnabled:
+          type: "boolean"
+        snowflakeTestId:
+          type: "string"
+        snowflakeTestResult:
+          $ref: "#/components/schemas/SnowflakeData"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+      - "databaseJDBC"
+      - "databaseJDBCUrl"
+      - "protocol"
+      - "server"
+      - "apiVersion"
+      - "graphQLFramework"
+      - "snowflakeTestId"
+      - "snowflakeTestResult"
+      - "utc"
+      - "local"
+    EmployeeFilterSet:
+      type: "object"
+      properties:
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        honorific:
+          type: "array"
+          items:
+            type: "string"
+            enum:
+            - "MR"
+            - "MRS"
+            - "MS"
+            - "DR"
+            - "MISS"
+            - "UNKNOWN"
+        maritalStatus:
+          type: "array"
+          items:
+            type: "string"
+            enum:
+            - "MARRIED"
+            - "SINGLE"
+            - "DIVORCED"
+            - "UNKNOWN"
+    Info:
+      type: "object"
+      properties:
+        totalElements:
+          type: "integer"
+          format: "int32"
+        totalPages:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
+          type: "integer"
+          format: "int32"
+        pageIndex:
+          type: "integer"
+          format: "int32"
+        elementsInPage:
+          type: "integer"
+          format: "int32"
+        hasNext:
+          type: "boolean"
+        hasPrevious:
+          type: "boolean"
+    Page:
+      type: "object"
+      properties:
+        content:
+          type: "array"
+        info:
+          $ref: "#/components/schemas/Info"
+      required:
+      - "content"
+      - "info"
+    Page_? extends Employee:
+      type: "object"
+      properties:
+        content:
+          type: "array"
+          items:
+            type: "object"
+        info:
+          $ref: "#/components/schemas/Info"
     Period:
       type: "object"
       properties:

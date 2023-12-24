@@ -14,6 +14,9 @@ import com.kcrud.graphql.kgraphql.schema.employee.EmployeeQueries
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentMutations
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentQueries
 import com.kcrud.security.authentication.AuthenticationToken
+import com.kcrud.settings.SettingsProvider
+import com.kcrud.utils.NetworkUtils
+import com.kcrud.utils.Tracer
 import io.ktor.server.application.*
 
 /**
@@ -21,9 +24,14 @@ import io.ktor.server.application.*
  *
  * See: [KGraphQL Documentation](https://kgraphql.io/)
  */
-internal object KGraphQLSetup {
+internal class KGraphQLSetup {
+    private val tracer = Tracer<KGraphQLSetup>()
+
     @OptIn(KGraphQLAPI::class)
-    fun configure(application: Application, withPlayground: Boolean): List<String>? {
+    fun configure(application: Application) {
+        val withPlayground = SettingsProvider.graphql.playground
+        tracer.info("Configuring KGraphQL engine. Playground: $withPlayground")
+
         application.install(GraphQL) {
 
             // Set GraphQL playground for development and testing.
@@ -63,7 +71,11 @@ internal object KGraphQLSetup {
             }
         }
 
-        // Return the configured endpoints.
-        return if (withPlayground) listOf("graphql") else null
+        if (withPlayground) {
+            NetworkUtils.logEndpoints(
+                reason = "GraphQL",
+                endpoints = listOf("graphql")
+            )
+        }
     }
 }

@@ -16,7 +16,7 @@ import kotlin.reflect.full.memberProperties
 /**
  * Extension function to apply pagination to a database [Query] based on the provided [Pageable] object.
  *
- * If Pageable is not null, then first applies the chosen sort-order (if defined in pageable),
+ * If Pageable is not null, then first applies the chosen ordering (if defined in pageable),
  * and after it calculates the start index based on the page and size to finally apply it
  * as a limit to the query.
  *
@@ -29,7 +29,7 @@ import kotlin.reflect.full.memberProperties
  */
 internal fun Query.applyPagination(pageable: Pageable?): Query {
     pageable?.let {
-        QuerySortingHelper.applyOrder(query = this, pageable = pageable)
+        QueryOrderingHelper.applyOrder(query = this, pageable = pageable)
 
         if (it.size > 0) {
             val startIndex = (it.page - 1) * it.size
@@ -41,7 +41,7 @@ internal fun Query.applyPagination(pageable: Pageable?): Query {
 }
 
 /**
- * Handles the determination and application of column-based sorting for database
+ * Handles the determination and application of column-based ordering for database
  * queries according to the provided Pageable object.
  *
  * Reflection is used to dynamically resolve column references from field names
@@ -57,7 +57,7 @@ internal fun Query.applyPagination(pageable: Pageable?): Query {
  * It also ensures correct column resolution across different tables, for better
  * handling identical names in different tables.
  */
-private object QuerySortingHelper {
+private object QueryOrderingHelper {
     // Define the maximum size for the LRU cache.
     private const val MAX_CACHE_SIZE = 100
 
@@ -70,15 +70,15 @@ private object QuerySortingHelper {
 
     /**
      * Applies ordering to a query based on the provided Pageable object.
-     * Sorts the query according to the field and direction specified in Pageable.
+     * Orders the query according to the field and direction specified in Pageable.
      *
-     * @param query The query to apply sorting to.
-     * @param pageable An optional Pageable object containing sorting information.
+     * @param query The query to apply ordering to.
+     * @param pageable An optional Pageable object containing ordering information.
      */
     fun applyOrder(query: Query, pageable: Pageable?) {
-        pageable?.sort?.let { sort ->
-            val column = getOrderColumn(targets = query.targets, fieldName = sort.field)
-            val sortOrder = if (sort.direction == Pageable.SortDirection.ASC) SortOrder.ASC else SortOrder.DESC
+        pageable?.order?.let { order ->
+            val column = getOrderColumn(targets = query.targets, fieldName = order.field)
+            val sortOrder: SortOrder = if (order.sort == Pageable.SortDirection.ASC) SortOrder.ASC else SortOrder.DESC
             query.orderBy(column to sortOrder)
         }
     }
@@ -100,7 +100,7 @@ private object QuerySortingHelper {
             }
         }
 
-        throw IllegalArgumentException("Invalid sorting column: $fieldName")
+        throw IllegalArgumentException("Invalid order column: $fieldName")
     }
 
     /**
@@ -124,7 +124,7 @@ private object QuerySortingHelper {
                             it.returnType.classifier == Column::class
                 }
                 ?.getter?.call(table) as? Column<*>
-                ?: throw IllegalArgumentException("Invalid sorting column: $fieldName")
+                ?: throw IllegalArgumentException("Invalid order column: $fieldName")
         }
     }
 }

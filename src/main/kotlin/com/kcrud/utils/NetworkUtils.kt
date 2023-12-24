@@ -20,19 +20,6 @@ internal object NetworkUtils {
     private const val SECURE_PORT = 443
 
     /**
-     * Logs a single endpoint with a specified reason.
-     *
-     * Logs are formatted to full URLs.
-     *
-     * @param reason A description of why the endpoint is being logged, for context.
-     * @param endpoint The endpoint to be logged.
-     */
-    @Suppress("unused")
-    fun logEndpoint(reason: String, endpoint: String) {
-        logEndpoints(reason = reason, endpoints = listOf(endpoint))
-    }
-
-    /**
      * Logs multiple endpoints with a specified reason.
      *
      * Logs are formatted to full URLs.
@@ -53,7 +40,7 @@ internal object NetworkUtils {
         }
     }
 
-    private fun getServerUrl(): String {
+    fun getServerUrl(): String {
         val host = SettingsProvider.deployment.host
         var url = ""
 
@@ -66,7 +53,7 @@ internal object NetworkUtils {
         return url
     }
 
-    private fun getProtocol(): String {
+    fun getProtocol(): String {
         return if (SettingsProvider.deployment.port == SECURE_PORT) SECURE_PROTOCOL else INSECURE_PROTOCOL
     }
 }

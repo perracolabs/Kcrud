@@ -271,7 +271,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees?sort=firstName&direction=asc",
+									"raw": "http://localhost:8080/v1/employees?order=firstName&sort=asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -283,11 +283,11 @@
 									],
 									"query": [
 										{
-											"key": "sort",
+											"key": "order",
 											"value": "firstName"
 										},
 										{
-											"key": "direction",
+											"key": "sort",
 											"value": "asc"
 										}
 									]
@@ -319,7 +319,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees?page=1&size=10&sort=firstName&direction=asc",
+									"raw": "http://localhost:8080/v1/employees?page=1&size=10&order=lastName&sort=asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -339,11 +339,11 @@
 											"value": "10"
 										},
 										{
-											"key": "sort",
-											"value": "firstName"
+											"key": "order",
+											"value": "lastName"
 										},
 										{
-											"key": "direction",
+											"key": "sort",
 											"value": "asc"
 										}
 									]
@@ -424,7 +424,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/search?sort=firstName&direction=asc",
+									"raw": "http://localhost:8080/v1/employees/search?order=firstName&sort=asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -437,11 +437,11 @@
 									],
 									"query": [
 										{
-											"key": "sort",
+											"key": "order",
 											"value": "firstName"
 										},
 										{
-											"key": "direction",
+											"key": "sort",
 											"value": "asc"
 										}
 									]
@@ -473,7 +473,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/search?page=1&size=0&sort=firstName&direction=asc",
+									"raw": "http://localhost:8080/v1/employees/search?page=1&size=0&order=firstName&sort=asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -494,11 +494,11 @@
 											"value": "0"
 										},
 										{
-											"key": "sort",
+											"key": "order",
 											"value": "firstName"
 										},
 										{
-											"key": "direction",
+											"key": "sort",
 											"value": "asc"
 										}
 									]
@@ -838,7 +838,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\r\n    employees(\r\n        pageable: { page: 1, size: 10, sort: { field: \"firstName\", direction: ASC } }\r\n    ) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
+										"query": "query {\r\n    employees(\r\n        pageable: { page: 1, size: 10, order: { field: \"firstName\", sort: ASC } }\r\n    ) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},
@@ -934,7 +934,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\r\n    filterEmployees(\r\n       filterSet: { \r\n            honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED]\r\n        }, \r\n        pageable: { page: 1, size: 10, sort: { field: \"firstName\", direction: ASC } }\r\n        ) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
+										"query": "query {\r\n    filterEmployees(\r\n       filterSet: { \r\n            honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED]\r\n        }, \r\n        pageable: { page: 1, size: 10, order: { field: \"firstName\", sort: ASC } }\r\n        ) {\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n        info {\r\n            totalElements\r\n            totalPages\r\n            elementsPerPage\r\n            pageIndex\r\n            elementsInPage\r\n            isFirst\r\n            isLast\r\n            hasNext\r\n            hasPrevious\r\n        }\r\n   }\r\n}",
 										"variables": ""
 									}
 								},

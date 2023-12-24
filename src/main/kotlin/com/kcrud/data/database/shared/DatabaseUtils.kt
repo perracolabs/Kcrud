@@ -13,7 +13,6 @@ import java.sql.DriverManager
 
 @DatabaseAPI
 internal object DatabaseUtils {
-    private val tracer = Tracer<DatabaseUtils>()
 
     /**
      * Create a HikariDataSource to enable database connection pooling.
@@ -45,6 +44,7 @@ internal object DatabaseUtils {
             Runtime.getRuntime().addShutdownHook(Thread {
                 connection?.let {
                     if (!it.isClosed) {
+                        val tracer = Tracer<DatabaseUtils>()
                         tracer.info("Shutdown hook triggered. Closing database connection.")
                         it.close()
                         tracer.info("Database connection closed.")
