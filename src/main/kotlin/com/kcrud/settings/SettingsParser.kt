@@ -11,6 +11,8 @@ import io.ktor.server.config.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
+import kotlin.reflect.KProperty1
+import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
 
@@ -64,11 +66,13 @@ internal object SettingsParser {
 
         val constructor: KFunction<T> = kClass.primaryConstructor!!
 
+
         val arguments: Map<KParameter, Any?> = constructor.parameters.associateWith { parameter ->
             // Extracts the Kotlin Class (KClass) from the parameter's type using jvmErasure,
             // which resolves the Kotlin type to its JVM representation. This is crucial for
             // determining the correct class at runtime, particularly for handling complex data structures.
             val parameterType: KClass<*> = parameter.type.jvmErasure
+            val property = kClass.memberProperties.find { it.name == parameter.name }
 
             // Constructs the specific key path for this parameter by appending the parameter's name
             // to the base key path, used to locate the corresponding value in the configuration
@@ -80,7 +84,7 @@ internal object SettingsParser {
                 instantiateConfig(config = config, keyPath = parameterKeyPath, kClass = parameterType)
             } else {
                 // For simple types convert the value to the correct type.
-                convertToType(config = config, keyPath = parameterKeyPath, type = parameterType)
+                convertToType(config = config, keyPath = parameterKeyPath, type = parameterType, property = property!!)
             }
         }
 
@@ -102,28 +106,67 @@ internal object SettingsParser {
      * @param config The application configuration object.
      * @param keyPath The key path for the property in the configuration.
      * @param type The KClass to which the property should be converted.
+     * @param property The property attribute from the type's KClass.
      * @return The converted property value or null if not found.
      * @throws IllegalArgumentException for unsupported types or conversion failures.
      */
-    private fun convertToType(config: ApplicationConfig, keyPath: String, type: KClass<*>): Any? {
+    private fun convertToType(config: ApplicationConfig, keyPath: String, type: KClass<*>, property: KProperty1<*, *>): Any? {
+        // Handle data classes. Recursively instantiate them.
         if (type.isData) {
-            // If the type is a data class, handle it recursively.
             return instantiateConfig(config = config, keyPath = keyPath, kClass = type)
         }
 
+        // Handle lists.
+        if (type == List::class) {
+            // Determine the type of the list elements.
+            val listType = property.returnType.arguments.firstOrNull()?.type?.classifier as? KClass<*>
+            val rawList = config.propertyOrNull(keyPath)?.getList()
+
+            // Map each element of the list to its respective type.
+            return listType?.let { listElementType ->
+                rawList?.map { listElementValue ->
+                    parseElementValue(keyPath = keyPath, stringValue = listElementValue, type = listElementType)
+                }
+            } ?: rawList
+        }
+
+        // Handle simple types.
         val stringValue: String = config.propertyOrNull(path = keyPath)?.getString() ?: return null
+        return parseElementValue(keyPath = keyPath, stringValue = stringValue, type = type)
+    }
+
+    /**
+     * Function to parse an element into its final value.
+     *
+     * @param keyPath The key path for the property in the configuration.
+     * @param stringValue The string value to convert.
+     * @param type The KClass to which the property should be converted.
+     * @return The converted property value or null if not found.
+     * @throws IllegalArgumentException For unsupported types or conversion failures.
+     */
+    private fun parseElementValue(keyPath: String, stringValue: String, type: KClass<*>): Any? {
+        val key = "$keyPath: $stringValue"
 
         return when {
             type == String::class -> stringValue
-            type == Boolean::class -> stringValue.toBooleanStrictOrNull()
-            type == Int::class -> stringValue.toIntOrNull()
-            type == Long::class -> stringValue.toLongOrNull()
-            type == Double::class -> stringValue.toDoubleOrNull()
+            type == Boolean::class -> stringValue.toBooleanStrictOrNull() ?: throw IllegalArgumentException("Invalid Boolean. $key")
+            type == Int::class -> stringValue.toIntOrNull() ?: throw IllegalArgumentException("Invalid Int. $key")
+            type == Long::class -> stringValue.toLongOrNull() ?: throw IllegalArgumentException("Invalid Long. $key")
+            type == Double::class -> stringValue.toDoubleOrNull() ?: throw IllegalArgumentException("Invalid Double. $key")
             type.java.isEnum -> convertToEnum(enumType = type, stringValue = stringValue, keyPath = keyPath)
             else -> throw IllegalArgumentException("Unsupported type: $type. Found in path: $keyPath")
         }
     }
 
+    /**
+     * Converts a string value to an enum.
+     *
+     * @param enumType The enum type to which the string value should be converted.
+     * @param stringValue The string value to convert.
+     * @param keyPath The key path for the property in the configuration.
+     * @return The converted enum value or null if not found.
+     * @throws IllegalArgumentException If the enum value is not found.
+     */
     private fun convertToEnum(enumType: KClass<*>, stringValue: String, keyPath: String): Enum<*>? {
         if (stringValue.isBlank() || stringValue.lowercase() == "null") {
             return null

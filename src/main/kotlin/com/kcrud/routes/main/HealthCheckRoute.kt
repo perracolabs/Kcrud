@@ -61,6 +61,7 @@ data class HealthCheckResponse(
     val databaseJDBCUrl: String = SettingsProvider.database.jdbcUrl,
     val protocol: String = NetworkUtils.getProtocol(),
     val server: String = NetworkUtils.getServerUrl(),
+    val allowedHosts: List<String> = SettingsProvider.deployment.allowedHosts,
     val apiVersion: String = SettingsProvider.deployment.apiVersion,
     val jwtEnabled: Boolean = SettingsProvider.security.jwt.isEnabled,
     val basicAuthEnabled: Boolean = SettingsProvider.security.basicAuth.isEnabled,

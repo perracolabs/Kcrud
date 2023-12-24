@@ -37,9 +37,10 @@ internal data class AppSettings(
      *
      * @property port The network port the server listens on.
      * @property host The network address the server is bound to.
+     * @property allowedHosts The list of allowed hosts used in CORS.
      * @property apiVersion The API version.
      */
-    data class Deployment(val port: Int, val host: String, val apiVersion: String)
+    data class Deployment(val port: Int, val host: String, val apiVersion: String, val allowedHosts: List<String>)
 
     /**
      * Database related settings.
