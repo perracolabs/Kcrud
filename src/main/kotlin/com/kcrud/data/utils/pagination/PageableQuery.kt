@@ -31,9 +31,9 @@ internal fun Query.applyPagination(pageable: Pageable?): Query {
     pageable?.let {
         QuerySortingHelper.applyOrder(query = this, pageable = pageable)
 
-        if (it.pageSize > 0) {
-            val startIndex = (it.pageIndex - 1) * it.pageSize
-            this.limit(n = it.pageSize, offset = startIndex.toLong())
+        if (it.size > 0) {
+            val startIndex = (it.page - 1) * it.size
+            this.limit(n = it.size, offset = startIndex.toLong())
         }
     }
 
@@ -48,16 +48,22 @@ internal fun Query.applyPagination(pageable: Pageable?): Query {
  * and employing LRU caching to optimize this process reducing the overhead
  * of repetitive reflection.
  *
+ * Must consider that this approach assumes that the first field name found in the
+ * set of tables that compose a query, is the one to be used for the ordering.
+ * So, if a query targets multiple tables, in which some of them have the same field name,
+ * a different approach should be used. For example by using a prefix for the field name
+ * that identifies the table, instead of passing only the field name.
+ *
  * It also ensures correct column resolution across different tables, for better
  * handling identical names in different tables.
  */
 private object QuerySortingHelper {
-    // Define the maximum size for the cache.
+    // Define the maximum size for the LRU cache.
     private const val MAX_CACHE_SIZE = 100
 
     // LRU cache storing column references with table class and column name as the key.
     private val columnCache = object : LinkedHashMap<Pair<KClass<*>, String>, Column<*>>(MAX_CACHE_SIZE, 0.75f, true) {
-        override fun removeEldestEntry(eldest: Map.Entry<Pair<KClass<*>, String>, Column<*>>): Boolean {
+        override fun removeEldestEntry(ignoredEldest: Map.Entry<Pair<KClass<*>, String>, Column<*>>): Boolean {
             return size > MAX_CACHE_SIZE
         }
     }
@@ -71,7 +77,7 @@ private object QuerySortingHelper {
      */
     fun applyOrder(query: Query, pageable: Pageable?) {
         pageable?.sort?.let { sort ->
-            val column = getOrderColumn(targets = query.targets, fieldName = sort.fieldName)
+            val column = getOrderColumn(targets = query.targets, fieldName = sort.field)
             val sortOrder = if (sort.direction == Pageable.SortDirection.ASC) SortOrder.ASC else SortOrder.DESC
             query.orderBy(column to sortOrder)
         }

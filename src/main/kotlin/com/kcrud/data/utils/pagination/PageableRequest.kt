@@ -33,15 +33,15 @@ internal fun ApplicationCall.getPageable(): Pageable? {
     // Create the Sort object if sorting parameters are provided
     val sort = if (sortFieldName != null) {
         Pageable.Sort(
-            fieldName = sortFieldName,
+            field = sortFieldName,
             direction = Pageable.SortDirection.entries.firstOrNull { it.name.equals(sortDirection, ignoreCase = true) }
                 ?: throw IllegalArgumentException("Sort direction not found: $sortDirection")
         )
     } else null
 
     return Pageable(
-        pageIndex = pageIndex ?: 1,
-        pageSize = pageSize ?: 0,
+        page = pageIndex ?: 1,
+        size = pageSize ?: 0,
         sort = sort
     )
 }

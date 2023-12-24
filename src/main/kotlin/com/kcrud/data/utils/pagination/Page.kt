@@ -63,14 +63,14 @@ open class Page<out T : Any>(
          */
         fun <T : Any> create(content: List<T>, totalElements: Long, pageable: Pageable?): Page<T> {
 
-            val (totalPages, pageSize) = pageable?.let {
+            val (totalPages, pageSize) = pageable?.let { pageableInstance ->
                 // If the page size is 0, then the requested size is the entire dataset elements.
-                val requestedSize = if (it.pageSize == 0) content.size else it.pageSize
-                val totalPages = max((totalElements + it.pageSize - 1) / requestedSize, 1)
+                val requestedSize = if (pageableInstance.size == 0) content.size else pageableInstance.size
+                val totalPages = max((totalElements + pageableInstance.size - 1) / requestedSize, 1)
                 totalPages to requestedSize
-            } ?: Pair(1, content.size)
+            } ?: (1 to content.size) // If no pagination was requested, then is 1 page with the entire dataset.
 
-            val pageIndex = pageable?.pageIndex ?: 1
+            val pageIndex = pageable?.page ?: 1
 
             return Page(
                 content = content,

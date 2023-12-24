@@ -9,17 +9,17 @@ package com.kcrud.data.utils.pagination
 /**
  * Input parameters for pagination.
  *
- * @property pageIndex The 1-based page index.
- * @property pageSize The size of the page to be returned. 0 means all elements.
+ * @property page The 1-based page index.
+ * @property size The size of the page to be returned. 0 means all elements.
  */
 data class Pageable(
-    val pageIndex: Int,
-    val pageSize: Int,
+    val page: Int,
+    val size: Int,
     val sort: Sort? = null
 ) {
     init {
-        require(pageIndex > 0) { "Page index must be >= 1." }
-        require(pageSize >= 0) { "Page size must be >= 0. (0 means all elements)." }
+        require(page > 0) { "Page index must be >= 1." }
+        require(size >= 0) { "Page size must be >= 0. (0 means all elements)." }
     }
 
     enum class SortDirection {
@@ -27,7 +27,7 @@ data class Pageable(
     }
 
     data class Sort(
-        val fieldName: String,
+        val field: String,
         val direction: SortDirection
     )
 }

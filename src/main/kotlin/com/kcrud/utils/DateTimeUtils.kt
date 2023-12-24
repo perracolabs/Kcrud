@@ -16,8 +16,7 @@ import kotlin.reflect.KProperty
  * Delegate for calculating an Age based on a given date of birth (dob).
  */
 internal class AgeDelegate(private val dob: LocalDate) {
-    @Suppress("unused")
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): Int {
+    operator fun getValue(ignoreThisRef: Any?, ignoreProperty: KProperty<*>): Int {
         return DateTimeUtils.calculateAge(dob)
     }
 }
