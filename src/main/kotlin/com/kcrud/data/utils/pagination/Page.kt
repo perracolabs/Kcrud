@@ -24,19 +24,19 @@ open class Page<out T : Any>(
     /**
      * Information about the current page and the entire dataset.
      *
-     * @param totalElements Total number of elements in the entire dataset, not just a page.
      * @param totalPages The total number of pages available based on the pagination settings.
-     * @param elementsPerPage The number of elements per each page.
      * @param pageIndex The current page number (usually starting from 1).
+     * @param totalElements Total number of elements in the entire dataset, not just a page.
+     * @param elementsPerPage The number of elements per each page.
      * @param elementsInPage The number of elements in the current page.
      */
     @Suppress("unused")
     @Serializable
     data class Info(
-        val totalElements: Int,
         val totalPages: Int,
-        val elementsPerPage: Int,
         val pageIndex: Int,
+        val totalElements: Int,
+        val elementsPerPage: Int,
         val elementsInPage: Int,
     ) {
         /** True if this is the first page. */
@@ -75,9 +75,9 @@ open class Page<out T : Any>(
             return Page(
                 content = content,
                 info = Info(
-                    totalElements = totalElements.toInt(),
                     totalPages = totalPages.toInt(),
                     pageIndex = pageIndex,
+                    totalElements = totalElements.toInt(),
                     elementsPerPage = pageSize,
                     elementsInPage = content.size
                 )
