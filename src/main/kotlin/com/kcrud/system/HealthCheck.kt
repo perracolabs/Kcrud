@@ -22,6 +22,7 @@ import kotlinx.serialization.Serializable
 @Suppress("unused")
 @Serializable
 data class HealthCheck(
+    val errors: MutableList<String> = mutableListOf(),
     val utc: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC),
     val local: LocalDateTime = utc.toInstant(TimeZone.UTC).toLocalDateTime(TimeZone.currentSystemDefault()),
     val machineId: Int = SettingsProvider.global.machineId,
@@ -43,8 +44,7 @@ data class HealthCheck(
     val graphQLDumpSchemaEnabled: Boolean = SettingsProvider.graphql.dumpSchema,
     val docsEnabled: Boolean = SettingsProvider.docs.isEnabled,
     val snowflakeTestId: String = SnowflakeFactory.nextId(),
-    val snowflakeTestResult: SnowflakeData = SnowflakeFactory.parse(id = snowflakeTestId),
-    val errors: MutableList<String> = mutableListOf()
+    val snowflakeTestResult: SnowflakeData = SnowflakeFactory.parse(id = snowflakeTestId)
 ) {
     init {
         if (!databaseAlive)
