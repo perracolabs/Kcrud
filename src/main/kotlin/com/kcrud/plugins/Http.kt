@@ -7,8 +7,9 @@
 package com.kcrud.plugins
 
 import com.kcrud.settings.SettingsProvider
-import com.kcrud.utils.Tracer
-import com.kcrud.utils.Tracer.Companion.nameWithClass
+import com.kcrud.system.Tracer
+import com.kcrud.system.Tracer.Companion.nameWithClass
+import com.kcrud.utils.DeploymentType
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
@@ -30,6 +31,7 @@ import io.ktor.server.plugins.defaultheaders.*
  */
 fun Application.configureHttpSettings() {
 
+
     install(DefaultHeaders) {
         header("X-Engine", "Kcrud")
     }
@@ -48,20 +50,30 @@ fun Application.configureHttpSettings() {
         allowHeader(HttpHeaders.Authorization)
         allowHeader(HttpHeaders.ContentType)
 
-        // Set allowed hosts.
-        val allowedHosts = SettingsProvider.deployment.allowedHosts
-        Tracer.byTag(tag = Application::configureHttpSettings.nameWithClass<Application>()).info("Allowed hosts: $allowedHosts")
-        if (allowedHosts.isEmpty() or allowedHosts.contains("*")) {
-            anyHost()
-        } else {
-            allowedHosts.forEach { host -> allowHost(host) }
-        }
-
         // Enable inclusion of credentials in CORS requests.
         allowCredentials = true
 
-        // Enable non-simple content types, allowing for more complex operations like file uploads.
+        // Enable non-simple content types,
+        // allowing for more complex operations like file uploads.
         allowNonSimpleContentTypes = true
+
+        // Set the allowed hosts.
+
+        val allowedHosts: List<String> = SettingsProvider.cors.allowedHosts
+        val tag = Application::configureHttpSettings.nameWithClass<Application>()
+        Tracer.byTag(tag = tag).info("Allowed hosts: $allowedHosts")
+
+        if (allowedHosts.isEmpty() or allowedHosts.contains("*")) {
+            anyHost()
+
+            when (val deploymentType = SettingsProvider.deployment.type) {
+                DeploymentType.PROD -> Tracer.byTag(tag = tag).error("Allowing all hosts in $deploymentType environment.")
+                DeploymentType.TEST -> Tracer.byTag(tag = tag).warning("Allowing all hosts in $deploymentType environment.")
+                DeploymentType.DEV -> Tracer.byTag(tag = tag).info("Allowing all hosts in $deploymentType environment.")
+            }
+        } else {
+            allowedHosts.forEach { host -> allowHost(host) }
+        }
     }
 }
 

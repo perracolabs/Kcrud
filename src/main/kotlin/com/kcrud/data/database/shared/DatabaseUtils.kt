@@ -6,7 +6,7 @@
 
 package com.kcrud.data.database.shared
 
-import com.kcrud.utils.Tracer
+import com.kcrud.system.Tracer
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import java.sql.DriverManager

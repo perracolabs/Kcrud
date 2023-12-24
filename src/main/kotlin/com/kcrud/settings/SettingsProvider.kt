@@ -19,6 +19,7 @@ internal object SettingsProvider {
 
     val global: AppSettings.Global get() = getSettings().global
     val deployment: AppSettings.Deployment get() = getSettings().deployment
+    val cors: AppSettings.Cors get() = getSettings().cors
     val database: AppSettings.Database get() = getSettings().database
     val docs: AppSettings.Docs get() = getSettings().docs
     val graphql: AppSettings.GraphQL get() = getSettings().graphql

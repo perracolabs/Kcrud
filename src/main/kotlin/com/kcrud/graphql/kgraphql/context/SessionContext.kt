@@ -9,7 +9,7 @@ package com.kcrud.graphql.kgraphql.context
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.ContextBuilder
 import com.kcrud.graphql.context.ContextUser
-import com.kcrud.utils.Tracer
+import com.kcrud.system.Tracer
 import io.ktor.server.application.*
 
 

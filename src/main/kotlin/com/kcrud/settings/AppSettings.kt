@@ -8,6 +8,7 @@ package com.kcrud.settings
 
 import com.kcrud.data.database.shared.DatabaseManager
 import com.kcrud.graphql.GraphQLFramework
+import com.kcrud.utils.DeploymentType
 import io.ktor.server.config.*
 
 /**
@@ -20,6 +21,7 @@ import io.ktor.server.config.*
 internal data class AppSettings(
     val global: Global,
     val deployment: Deployment,
+    val cors: Cors,
     val database: Database,
     val docs: Docs,
     val graphql: GraphQL,
@@ -28,19 +30,29 @@ internal data class AppSettings(
     /**
      * Contains the main global configuration settings.
      *
-     * @property development Indicates whether development mode is active.
+     * @property development Ktor flag indicating whether development mode is enabled.
+     *                       This makes Ktor to activate development concrete features.
+     *                       See: [Development Mode](https://ktor.io/docs/development-mode.html)
+     * @property machineId The unique machine ID. Used for generating unique IDs for call traceability.
      */
     data class Global(val development: Boolean, val machineId: Int)
 
     /**
      * Contains settings related to how the application is deployed.
      *
+     * @property type The deployment type. Not to be confused with the development mode.
      * @property port The network port the server listens on.
      * @property host The network address the server is bound to.
-     * @property allowedHosts The list of allowed hosts used in CORS.
      * @property apiVersion The API version.
      */
-    data class Deployment(val port: Int, val host: String, val apiVersion: String, val allowedHosts: List<String>)
+    data class Deployment(val type: DeploymentType, val port: Int, val host: String, val apiVersion: String)
+
+    /**
+     * Contains settings related to CORS.
+     *
+     * @property allowedHosts The list of allowed hosts used in CORS.
+     */
+    data class Cors(val allowedHosts: List<String>)
 
     /**
      * Database related settings.

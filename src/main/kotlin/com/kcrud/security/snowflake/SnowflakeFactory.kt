@@ -7,7 +7,7 @@
 package com.kcrud.security.snowflake
 
 import com.kcrud.settings.SettingsProvider
-import com.kcrud.utils.Tracer
+import com.kcrud.system.Tracer
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime

@@ -19,8 +19,9 @@ import com.kcrud.graphql.expedia.schema.employment.EmploymentMutations
 import com.kcrud.graphql.expedia.schema.employment.EmploymentQueries
 import com.kcrud.graphql.expedia.types.CustomSchemaGeneratorHooks
 import com.kcrud.settings.SettingsProvider
+import com.kcrud.utils.DeploymentType
 import com.kcrud.utils.NetworkUtils
-import com.kcrud.utils.Tracer
+import com.kcrud.system.Tracer
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
@@ -100,8 +101,9 @@ internal class ExpediaGraphQLSetup {
         if (!SettingsProvider.graphql.dumpSchema)
             return
 
-        if (SettingsProvider.global.development) {
-            tracer.warning("Dumping GraphQL schema in development mode is not recommended.")
+        val deploymentType = SettingsProvider.deployment.type
+        if (deploymentType == DeploymentType.PROD) {
+            tracer.error("Dumping the GraphQL schema in the '$deploymentType' environment is not recommended.")
         }
 
         val schema = toSchema(

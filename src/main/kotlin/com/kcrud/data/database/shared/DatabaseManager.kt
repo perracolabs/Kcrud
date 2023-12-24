@@ -9,7 +9,7 @@ package com.kcrud.data.database.shared
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
-import com.kcrud.utils.Tracer
+import com.kcrud.system.Tracer
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction

@@ -7,7 +7,7 @@
 package com.kcrud.graphql.expedia.context
 
 import com.kcrud.graphql.context.ContextUser
-import com.kcrud.utils.Tracer
+import com.kcrud.system.Tracer
 import graphql.schema.DataFetchingEnvironment
 import io.ktor.http.*
 

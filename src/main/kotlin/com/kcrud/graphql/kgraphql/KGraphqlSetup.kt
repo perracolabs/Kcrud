@@ -16,7 +16,7 @@ import com.kcrud.graphql.kgraphql.schema.employment.EmploymentQueries
 import com.kcrud.security.authentication.AuthenticationToken
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.utils.NetworkUtils
-import com.kcrud.utils.Tracer
+import com.kcrud.system.Tracer
 import io.ktor.server.application.*
 
 /**

@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.utils
+package com.kcrud.system
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

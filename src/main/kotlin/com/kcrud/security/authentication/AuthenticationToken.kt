@@ -11,7 +11,7 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.kcrud.settings.SettingsProvider
-import com.kcrud.utils.Tracer
+import com.kcrud.system.Tracer
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import io.ktor.server.application.*

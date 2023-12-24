@@ -9,8 +9,8 @@ package com.kcrud
 import com.kcrud.data.database.shared.DatabaseManager
 import com.kcrud.plugins.*
 import com.kcrud.settings.SettingsProvider
-import com.kcrud.utils.Tracer
-import com.kcrud.utils.Tracer.Companion.nameWithClass
+import com.kcrud.system.Tracer
+import com.kcrud.system.Tracer.Companion.nameWithClass
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -67,5 +67,8 @@ fun Application.module() {
 
     Tracer.byTag(
         tag = ::module.nameWithClass<Application>()
-    ).info("Server configured. Development Mode: ${SettingsProvider.global.development}.")
+    ).info(
+        "Server configured. Deployment Type: ${SettingsProvider.deployment.type}. " +
+                "Development Mode Enabled: ${SettingsProvider.global.development}."
+    )
 }
