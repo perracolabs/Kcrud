@@ -48,7 +48,7 @@ internal class EmployeeRepository : IEmployeeRepository {
             val totalElements = query.count()
 
             val paginatedData = query
-                .applyPagination(pageable = pageable, table = EmployeeTable)
+                .applyPagination(pageable = pageable)
                 .map { resultRow ->
                     Employee.toEntity(row = resultRow)
                 }
@@ -85,7 +85,7 @@ internal class EmployeeRepository : IEmployeeRepository {
             val totalFilteredElements = query.count()
 
             val paginatedData = query
-                .applyPagination(pageable = pageable, table = EmployeeTable)
+                .applyPagination(pageable = pageable)
                 .map { resultRow ->
                     Employee.toEntity(row = resultRow)
                 }

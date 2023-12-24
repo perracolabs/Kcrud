@@ -22,9 +22,9 @@ import kotlin.reflect.full.memberProperties
  * @param pageable An optional [Pageable] object containing pagination information.
  * @return The Query with pagination applied if Pageable is provided, otherwise the original Query.
  */
-fun Query.applyPagination(pageable: Pageable?, table: Table): Query {
+fun Query.applyPagination(pageable: Pageable?): Query {
     pageable?.let {
-        applySorting(query = this, table = table, pageable = pageable)
+        applySorting(query = this, pageable = pageable)
 
         if (it.size > 0) {
             val startIndex = (it.page - 1) * it.size
@@ -35,19 +35,26 @@ fun Query.applyPagination(pageable: Pageable?, table: Table): Query {
     return this
 }
 
-private fun applySorting(query: Query, table: Table, pageable: Pageable?) {
+private fun applySorting(query: Query, pageable: Pageable?) {
     pageable?.sort?.let { sort ->
-        val column = getSortColumn(table = table, fieldName = sort.field)
+        val column = getSortColumn(targets = query.targets, fieldName = sort.field)
         val sortOrder = if (sort.direction == Pageable.SortDirection.ASC) SortOrder.ASC else SortOrder.DESC
         query.orderBy(column to sortOrder)
     }
 }
 
-private fun getSortColumn(table: Table, fieldName: String): Column<*> {
-    val property = table::class.memberProperties
-        .firstOrNull { it.name.equals(fieldName, ignoreCase = true) }
-        ?: throw IllegalArgumentException("Field not found: $fieldName")
+private fun getSortColumn(targets: List<Table>, fieldName: String): Column<*> {
+    for (table in targets) {
+        val property = table::class.memberProperties
+            .firstOrNull { it.name.equals(fieldName, ignoreCase = true) }
 
-    return property.getter.call(table) as? Column<*>
-        ?: throw IllegalArgumentException("Property is not a Column: $fieldName")
+        property?.let {
+            val column = property.getter.call(table) as? Column<*>
+            if (column != null) {
+                return column
+            }
+        }
+    }
+
+    throw IllegalArgumentException("Invalid sorting column: $fieldName")
 }
