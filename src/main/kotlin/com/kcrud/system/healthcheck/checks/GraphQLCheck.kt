@@ -24,11 +24,13 @@ data class GraphQLCheck(
         val deploymentType = AppSettings.deployment.type
 
         if (deploymentType == DeploymentType.PROD) {
-            if (playground)
+            if (playground) {
                 errors.add("$className. GraphQL Playground is enabled in '$deploymentType' environment.")
+            }
 
-            if (dumpSchema)
+            if (dumpSchema) {
                 errors.add("$className. GraphQL Schema Dump is enabled in '$deploymentType' environment.")
+            }
         }
     }
 }

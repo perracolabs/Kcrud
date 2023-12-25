@@ -23,15 +23,18 @@ data class DatabaseCheck(
     init {
         val className = this::class.simpleName
 
-        if (!alive)
+        if (!alive) {
             errors.add("$className. Database is not responding.")
+        }
 
         database?.let {
-            if (it.isClosed)
+            if (it.isClosed) {
                 errors.add("$className. Database is closed.")
+            }
 
-            if (it.isReadOnly)
+            if (it.isReadOnly) {
                 errors.add("$className. Database is read-only.")
+            }
         } ?: errors.add("$className. Database not set.")
     }
 

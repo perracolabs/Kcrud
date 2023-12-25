@@ -28,13 +28,17 @@ data class ServerCheck(
         val className = this::class.simpleName
 
         if (deploymentType == DeploymentType.PROD) {
-            if (allowedHosts.isEmpty() or allowedHosts.contains("*"))
+            if (allowedHosts.isEmpty() or allowedHosts.contains("*")) {
                 errors.add("$className. Allowing all hosts in '$deploymentType' environment.")
+            }
 
-            if (developmentModeEnabled)
+            if (developmentModeEnabled) {
                 errors.add("$className. Development mode is enabled in '$deploymentType' environment.")
+            }
 
-            if (protocol == NetworkUtils.INSECURE_PROTOCOL) errors.add("$className. Using ${NetworkUtils.INSECURE_PROTOCOL} protocol in '$deploymentType' environment.")
+            if (protocol == NetworkUtils.INSECURE_PROTOCOL) {
+                errors.add("$className. Using ${NetworkUtils.INSECURE_PROTOCOL} protocol in '$deploymentType' environment.")
+            }
         }
     }
 }

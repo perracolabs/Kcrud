@@ -21,8 +21,9 @@ data class ApplicationCheck(
         val deploymentType = AppSettings.deployment.type
 
         if (deploymentType == DeploymentType.PROD) {
-            if (docsEnabled)
+            if (docsEnabled) {
                 errors.add("$className. Docs are enabled in '$deploymentType' environment.")
+            }
         }
     }
 }
