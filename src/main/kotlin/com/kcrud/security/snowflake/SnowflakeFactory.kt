@@ -8,6 +8,7 @@ package com.kcrud.security.snowflake
 
 import com.kcrud.settings.AppSettings
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.util.concurrent.TimeUnit
@@ -24,51 +25,51 @@ import java.util.concurrent.TimeUnit
 internal object SnowflakeFactory {
 
     // Lazy-loaded machine ID, configured per-machine.
-    private val machineId by lazy { AppSettings.server.machineId }
+    private val machineId: Int by lazy { AppSettings.server.machineId }
 
     // The base used for converting the generated ID to an alphanumeric string.
     // Base 36 uses digits 0-9 and letters a-z, allowing a compact yet readable format.
     // For example, a 12345 value in Base 36 might be represented as '9ix' in alphanumeric.
     // Note: The base must be a value between 2 and 36, inclusive, as per the limitations
     // of Kotlin's toString(radix) function used for this conversion.
-    private const val ALPHA_NUMERIC_BASE = 36
+    private const val ALPHA_NUMERIC_BASE: Int = 36
 
     // Tracks the last timestamp in milliseconds when an ID was generated.
     // Initialized to -1 to indicate no IDs have been generated yet.
-    private var lastTimestampMs = -1L
+    private var lastTimestampMs: Long = -1L
 
     // Tracks the sequence number within the same millisecond.
     // This is used to generate multiple unique IDs within the same millisecond.
     // Initialized to 0, as it gets incremented for each ID generated within the
     // same millisecond. This value will typically be 0 if IDs are not generated
     // at a frequency higher than one per millisecond.
-    private var sequence = 0L
+    private var sequence: Long = 0L
 
     // Number of bits allocated for the machine ID within the 64-bit Snowflake ID.
     // Minimum 1 bit for at least 2 unique IDs. 10 bits allows 2^10 = 1,024 IDs.
-    private const val MACHINE_ID_BITS = 10
+    private const val MACHINE_ID_BITS: Int = 10
 
     // Number of bits for the sequence number, part of the 64-bit limit.
     // Minimum 1 bit for 2 IDs per millisecond. 12 bits allows 2^12 = 4,096 IDs per millisecond.
-    private const val SEQUENCE_BITS = 12
+    private const val SEQUENCE_BITS: Int = 12
 
     // Maximum possible value for machine ID, derived from the number of bits allocated.
     // This value is 2^MACHINE_ID_BITS - 1.
-    private const val MAX_MACHINE_ID = (1 shl MACHINE_ID_BITS) - 1L
+    private const val MAX_MACHINE_ID: Long = (1 shl MACHINE_ID_BITS) - 1L
 
     // Maximum possible value for the sequence number, based on the allocated bits.
     // Equals 2^SEQUENCE_BITS - 1, ensuring a unique ID sequence within a millisecond.
-    private const val MAX_SEQUENCE = (1 shl SEQUENCE_BITS) - 1L
+    private const val MAX_SEQUENCE: Long = (1 shl SEQUENCE_BITS) - 1L
 
     // Wall-clock reference time set at SnowflakeFactory initialization.
     // Utilized in `newTimestamp()` to compute stable millisecond timestamps,
     // combining with elapsed time since initialization for adjustment-resilient values.
-    val timestampEpoch = System.currentTimeMillis()
+    val timestampEpoch: Long = System.currentTimeMillis()
 
     // Nanosecond-precision timestamp recorded at SnowflakeFactory initialization.
     // Used alongside System.currentTimeMillis() in `newTimestamp()` to ensure
     // monotonically increasing timestamps, immune to system clock modifications.
-    val nanoTimeStart = System.nanoTime()
+    val nanoTimeStart: Long = System.nanoTime()
 
     init {
         // Ensures that the machine ID is within the allowable range.
@@ -82,7 +83,7 @@ internal object SnowflakeFactory {
      */
     @Synchronized
     fun nextId(): String {
-        var currentTimestampMs = newTimestamp()
+        var currentTimestampMs: Long = newTimestamp()
 
         // Check for invalid system clock settings.
         if (currentTimestampMs < lastTimestampMs) {
@@ -109,7 +110,7 @@ internal object SnowflakeFactory {
         }
 
         // Construct the ID.
-        val id = (lastTimestampMs shl (MACHINE_ID_BITS + SEQUENCE_BITS)) or
+        val id: Long = (lastTimestampMs shl (MACHINE_ID_BITS + SEQUENCE_BITS)) or
                 (machineId.toLong() shl SEQUENCE_BITS) or
                 sequence
 
@@ -123,21 +124,21 @@ internal object SnowflakeFactory {
      * @return SnowflakeData containing the ID segments.
      */
     fun parse(id: String): SnowflakeData {
-        val normalizedId = id.toLong(radix = ALPHA_NUMERIC_BASE)
+        val normalizedId: Long = id.toLong(radix = ALPHA_NUMERIC_BASE)
 
         // Extract the machine ID segment.
-        val machineIdSegment = (normalizedId ushr SEQUENCE_BITS) and MAX_MACHINE_ID
+        val machineIdSegment: Long = (normalizedId ushr SEQUENCE_BITS) and MAX_MACHINE_ID
 
         // Extract the timestamp segment.
-        val timestampMs = (normalizedId ushr (MACHINE_ID_BITS + SEQUENCE_BITS))
-        val instant = Instant.fromEpochMilliseconds(timestampMs)
-        val utcTimestampSegment = instant.toLocalDateTime(TimeZone.UTC)
+        val timestampMs: Long = (normalizedId ushr (MACHINE_ID_BITS + SEQUENCE_BITS))
+        val instant: Instant = Instant.fromEpochMilliseconds(timestampMs)
+        val utcTimestampSegment: LocalDateTime = instant.toLocalDateTime(TimeZone.UTC)
 
         // Convert the timestamp to LocalDateTime using the system's default timezone.
-        val localTimestampSegment = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        val localTimestampSegment: LocalDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
 
         // Extract the sequence number segment.
-        val sequenceSegment = normalizedId and MAX_SEQUENCE
+        val sequenceSegment: Long = normalizedId and MAX_SEQUENCE
 
         return SnowflakeData(
             machineId = machineIdSegment.toInt(),
@@ -158,7 +159,7 @@ internal object SnowflakeFactory {
      * to produce a stable and increasing timestamp.
      */
     private fun newTimestamp(): Long {
-        val nanoTimeDiff = System.nanoTime() - nanoTimeStart
+        val nanoTimeDiff: Long = System.nanoTime() - nanoTimeStart
         return timestampEpoch + TimeUnit.NANOSECONDS.toMillis(nanoTimeDiff)
     }
 }

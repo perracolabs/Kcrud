@@ -55,7 +55,6 @@ data class DatabaseCheck(
             fun build(database: Database?): Details? {
                 return database?.let {
                     val connector = it.connector()
-
                     Details(
                         isClosed = connector.isClosed,
                         isReadOnly = connector.readOnly,
@@ -66,7 +65,9 @@ data class DatabaseCheck(
                         vendor = it.vendor,
                         autoCommit = connector.autoCommit,
                         catalog = connector.catalog
-                    )
+                    ).also {
+                        connector.close()
+                    }
                 }
             }
         }
