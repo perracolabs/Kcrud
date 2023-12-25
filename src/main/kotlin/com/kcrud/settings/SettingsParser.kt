@@ -85,39 +85,31 @@ internal object SettingsParser {
     private fun <T : Any> instantiateConfig(config: Config, keyPath: String, kClass: KClass<T>): T {
         tracer.debug("Parsing: ${kClass.simpleName}")
 
-        // Get the primary constructor for the specified class.
+        // Fetch the primary constructor of the class.
         val constructor: KFunction<T> = kClass.primaryConstructor!!
 
-        // For each constructor parameter, fetch the corresponding configuration value,
-        // instantiate the corresponding class, and map it to the parameter.
-        // If a value is a section, then it will recursively instantiate the corresponding class.
+        // Map each constructor parameter to its corresponding value from the configuration.
+        // This includes direct value assignment for simple types and recursive instantiation for nested data classes.
         val arguments: Map<KParameter, Any?> = constructor.parameters.associateWith { parameter ->
-            // Extracts the Kotlin Class (KClass) from the parameter's type using jvmErasure,
-            // which resolves the Kotlin type to its JVM representation. This is crucial for
-            // determining the correct class at runtime, particularly for handling complex data structures.
             val parameterType: KClass<*> = parameter.type.jvmErasure
-
-            // Constructs the specific key path for this parameter by appending the parameter's name
-            // to the base key path, used to locate the corresponding value in the configuration
-            // for this class parameter.
             val parameterKeyPath = "$keyPath.${parameter.name}"
 
             if (parameterType.isData) {
-                // For nested data classes.
+                // Recursive instantiation for nested data classes.
                 instantiateConfig(config = config, keyPath = parameterKeyPath, kClass = parameterType)
             } else {
-                // For simple types convert the value to the correct type.
+                // Conversion for simple types.
                 val property: KProperty1<T, *> = kClass.memberProperties.find { it.name == parameter.name }!!
                 convertToType(config = config, keyPath = parameterKeyPath, type = parameterType, property = property)
             }
         }
 
-        // Instantiate the class with the parsed configuration values.
+        // Create an instance of the class with the obtained configuration values.
         return runCatching {
             constructor.callBy(args = arguments)
         }.getOrElse {
             throw IllegalArgumentException(
-                "Error instantiating settings class.\nClass: $kClass\nError: ${it.message}\nPath: $keyPath\nArguments:\n$arguments"
+                "Error instantiating class $kClass at '$keyPath':\n${it.message}.\nArguments: $arguments"
             )
         }
     }
