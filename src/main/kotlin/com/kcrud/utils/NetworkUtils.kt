@@ -16,9 +16,9 @@ internal object NetworkUtils {
     private val tracer = Tracer<NetworkUtils>()
 
     private const val LISTEN_ALL_IPS = "0.0.0.0"
-    private const val SECURE_PROTOCOL = "https"
-    private const val INSECURE_PROTOCOL = "http"
     private const val SECURE_PORT = 443
+    private const val SECURE_PROTOCOL = "https"
+    const val INSECURE_PROTOCOL = "http"
 
     /**
      * Logs multiple endpoints with a specified reason.

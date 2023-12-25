@@ -34,8 +34,7 @@ data class ServerCheck(
             if (developmentModeEnabled)
                 errors.add("$className. Development mode is enabled in '$deploymentType' environment.")
 
-            if (protocol == "http")
-                errors.add("$className. Using HTTP protocol in '$deploymentType' environment.")
+            if (protocol == NetworkUtils.INSECURE_PROTOCOL) errors.add("$className. Using ${NetworkUtils.INSECURE_PROTOCOL} protocol in '$deploymentType' environment.")
         }
     }
 }
