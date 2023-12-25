@@ -6,7 +6,7 @@
 
 package com.kcrud
 
-import com.kcrud.data.database.shared.DatabaseManager
+import com.kcrud.data.database.service.DatabaseManager
 import com.kcrud.plugins.*
 import com.kcrud.settings.SettingsProvider
 import com.kcrud.system.Tracer

@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.database.shared
+package com.kcrud.data.database.service
 
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
@@ -100,6 +100,7 @@ internal object DatabaseManager {
     fun ping(): Boolean {
         return try {
             transaction {
+                exec("SELECT 1;")
                 true
             }
         } catch (e: Exception) {
