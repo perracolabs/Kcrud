@@ -7,6 +7,8 @@
 package com.kcrud.settings
 
 import com.kcrud.system.Tracer
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -17,8 +19,21 @@ import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
 
 /**
- * Creates an AppSettings instance by parsing the application configuration data.
- * This ensures strongly typed access to the configuration data throughout the application.
+ * Application configuration parser for strongly typed settings, leveraging reflection to map HOCON
+ * configuration paths to corresponding Kotlin data classes.
+ * This enables automatic instantiation and population of both nested and simple data class types,
+ * aligning with the HOCON structure.
+ *
+ * Key requirements for successful parsing:
+ * - Data class property names must precisely match configuration keys.
+ * - Configuration paths must reflect the hierarchical structure of the data classes for accurate mapping.
+ * - The configuration file must be correctly formatted and adhere to HOCON specifications.
+ *
+ * The parser accommodates list configurations in two forms: as comma-delimited strings or actual lists.
+ * This design allows list values in environment variables to be expressed as one single string containing
+ * comma-delimited values, simplifying configuration.
+ * For instance, a setting can be a real list of values in the HOCON file, while its environmental variable
+ * counterpart is a single string containing comma-delimited values.
  */
 @SettingsAPI
 internal object SettingsParser {
@@ -27,20 +42,30 @@ internal object SettingsParser {
     /**
      * Performs the configuration file parsing.
      *
-     * @param config Configuration data parsed from the application's settings file.
+     * @param configuration The HOCON resource configuration file to be parsed.
      * @param configMappings Map of configuration paths to their corresponding classes.
      * @return A new AppSettings object populated with the parsed configuration data.
      */
-    fun parse(config: ApplicationConfig, configMappings: Map<String, KClass<*>>): AppSettings {
+    fun parse(configuration: String, configMappings: Map<String, KClass<*>>): AppSettings {
+        // Load the configuration file.
+        val config: Config = ConfigFactory.load(configuration)!!
+
+        // Instantiate the AppSettings class and get the primary constructor
+        // in order to map the configuration values to the constructor parameters.
         val constructor: KFunction<AppSettings> = AppSettings::class.primaryConstructor!!
         val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
+        // Parse the configuration values to the constructor parameters.
+        // For each constructor parameter, fetch the corresponding configuration value,
+        // instantiate the corresponding class, and map it to the parameter.
+        // If a value is a section, then it will recursively instantiate the corresponding class.
         val settings: Map<KParameter, Any> = configMappings.mapNotNull { (keyPath, kClass) ->
             val configInstance: Any = instantiateConfig(config = config, keyPath = keyPath, kClass = kClass)
             val argumentKey = kClass.simpleName!!.lowercase()
             constructorParameters[argumentKey]!! to configInstance
         }.toMap()
 
+        // Instantiate the AppSettings class with the parsed configuration values.
         return constructor.callBy(settings)
     }
 
@@ -57,11 +82,15 @@ internal object SettingsParser {
      * @return An instance of the specified class with properties populated from the configuration.
      * @throws IllegalArgumentException If a required configuration key is missing or if there is a type mismatch.
      */
-    private fun <T : Any> instantiateConfig(config: ApplicationConfig, keyPath: String, kClass: KClass<T>): T {
-        tracer.debug("Loading configuration: ${kClass.simpleName}")
+    private fun <T : Any> instantiateConfig(config: Config, keyPath: String, kClass: KClass<T>): T {
+        tracer.debug("Parsing: ${kClass.simpleName}")
 
+        // Get the primary constructor for the specified class.
         val constructor: KFunction<T> = kClass.primaryConstructor!!
 
+        // For each constructor parameter, fetch the corresponding configuration value,
+        // instantiate the corresponding class, and map it to the parameter.
+        // If a value is a section, then it will recursively instantiate the corresponding class.
         val arguments: Map<KParameter, Any?> = constructor.parameters.associateWith { parameter ->
             // Extracts the Kotlin Class (KClass) from the parameter's type using jvmErasure,
             // which resolves the Kotlin type to its JVM representation. This is crucial for
@@ -83,6 +112,7 @@ internal object SettingsParser {
             }
         }
 
+        // Instantiate the class with the parsed configuration values.
         return runCatching {
             constructor.callBy(args = arguments)
         }.getOrElse {
@@ -105,7 +135,7 @@ internal object SettingsParser {
      * @return The converted property value or null if not found.
      * @throws IllegalArgumentException for unsupported types or conversion failures.
      */
-    private fun convertToType(config: ApplicationConfig, keyPath: String, type: KClass<*>, property: KProperty1<*, *>): Any? {
+    private fun convertToType(config: Config, keyPath: String, type: KClass<*>, property: KProperty1<*, *>): Any? {
         // Handle data classes. Recursively instantiate them.
         if (type.isData) {
             return instantiateConfig(config = config, keyPath = keyPath, kClass = type)
@@ -118,7 +148,7 @@ internal object SettingsParser {
         }
 
         // Handle simple types.
-        val stringValue: String = config.propertyOrNull(path = keyPath)?.getString() ?: return null
+        val stringValue: String = config.tryGetString(path = keyPath) ?: return null
         return parseElementValue(keyPath = keyPath, stringValue = stringValue, type = type)
     }
 
@@ -136,12 +166,22 @@ internal object SettingsParser {
 
         return when {
             type == String::class -> stringValue
-            type == Boolean::class -> stringValue.toBooleanStrictOrNull() ?: throw IllegalArgumentException("Invalid Boolean. $key")
-            type == Int::class -> stringValue.toIntOrNull() ?: throw IllegalArgumentException("Invalid Int. $key")
-            type == Long::class -> stringValue.toLongOrNull() ?: throw IllegalArgumentException("Invalid Long. $key")
-            type == Double::class -> stringValue.toDoubleOrNull() ?: throw IllegalArgumentException("Invalid Double. $key")
+
+            type == Boolean::class -> stringValue.toBooleanStrictOrNull()
+                ?: throw IllegalArgumentException("Invalid Boolean value in: '$key'")
+
+            type == Int::class -> stringValue.toIntOrNull()
+                ?: throw IllegalArgumentException("Invalid Int value in: '$key'")
+
+            type == Long::class -> stringValue.toLongOrNull()
+                ?: throw IllegalArgumentException("Invalid Long value in: '$key'")
+
+            type == Double::class -> stringValue.toDoubleOrNull()
+                ?: throw IllegalArgumentException("Invalid Double value in: '$key'")
+
             type.java.isEnum -> convertToEnum(enumType = type, stringValue = stringValue, keyPath = keyPath)
-            else -> throw IllegalArgumentException("Unsupported type: $type. Found in path: $keyPath")
+
+            else -> throw IllegalArgumentException("Unsupported type '$type' in '$key'")
         }
     }
 
@@ -162,7 +202,9 @@ internal object SettingsParser {
         return enumType.java.enumConstants.firstOrNull {
             (it as Enum<*>).name.compareTo(stringValue, ignoreCase = true) == 0
         } as Enum<*>?
-            ?: throw IllegalArgumentException("Enum value '$stringValue' not found for type: $enumType. Found in path: $keyPath")
+            ?: throw IllegalArgumentException(
+                "Enum value '$stringValue' not found for type: $enumType. Found in path: $keyPath"
+            )
     }
 
     /**
@@ -175,13 +217,13 @@ internal object SettingsParser {
      * @param listType The KClass to which the list elements should be converted.
      * @return The converted list or an empty list if not found.
      */
-    private fun parseListValues(config: ApplicationConfig, keyPath: String, listType: KClass<*>): List<Any?> {
+    private fun parseListValues(config: Config, keyPath: String, listType: KClass<*>): List<Any?> {
         val rawList: List<String> = try {
             // Attempt to retrieve it as a list.
-            config.propertyOrNull(keyPath)?.getList() ?: listOf()
+            config.tryGetStringList(keyPath) ?: listOf()
         } catch (e: Exception) {
             // If failed to get a list, then treat it as a single string with comma-delimited values.
-            val stringValue: String = config.propertyOrNull(keyPath)?.getString() ?: ""
+            val stringValue: String = config.tryGetString(keyPath) ?: ""
 
             if (stringValue.contains(',')) {
                 stringValue.split(',').map { it.trim() }

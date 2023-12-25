@@ -26,7 +26,7 @@ internal object SnowflakeFactory {
     private val tracer = Tracer<SnowflakeFactory>()
 
     // Lazy-loaded machine ID, configured per-machine.
-    private val machineId by lazy { SettingsProvider.global.machineId }
+    private val machineId by lazy { SettingsProvider.server.machineId }
 
     // Tracks the last timestamp in milliseconds when an ID was generated.
     // Initialized to -1 to indicate no IDs have been generated yet.

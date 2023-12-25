@@ -11,13 +11,14 @@ import com.kcrud.graphql.GraphQLFramework
 import com.kcrud.utils.DeploymentType
 
 /**
- * Represents the application's settings,
- * as parsed from the application configuration file.
+ * Represents the application's configuration settings as a structured, easily accessible model.
  *
- * This effectively provides strongly typed access to the configuration data.
+ * For accurate mapping, the names of nested data classes must correspond directly with
+ * their configuration section names. Similarly, property names within these classes
+ * must exactly match the key names in their respective configuration sections.
  */
 internal data class AppSettings(
-    val global: Global,
+    val server: Server,
     val deployment: Deployment,
     val cors: Cors,
     val database: Database,
@@ -26,14 +27,14 @@ internal data class AppSettings(
     val security: Security
 ) {
     /**
-     * Contains the main global configuration settings.
+     * Contains the server root-level main configuration settings.
      *
      * @property development Ktor flag indicating whether development mode is enabled.
      *                       This makes Ktor to activate development concrete features.
      *                       See: [Development Mode](https://ktor.io/docs/development-mode.html)
      * @property machineId The unique machine ID. Used for generating unique IDs for call traceability.
      */
-    data class Global(
+    data class Server(
         val development: Boolean,
         val machineId: Int
     )
