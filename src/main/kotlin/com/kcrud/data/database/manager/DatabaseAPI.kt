@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.database.service
+package com.kcrud.data.database.manager
 
 /**
  * Annotation for controlled access to the Database Management code,

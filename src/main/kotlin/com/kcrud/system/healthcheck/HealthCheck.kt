@@ -6,7 +6,7 @@
 
 package com.kcrud.system.healthcheck
 
-import com.kcrud.data.database.service.DatabaseManager
+import com.kcrud.data.database.manager.DatabaseManager
 import com.kcrud.system.healthcheck.checks.*
 import kotlinx.serialization.Serializable
 

@@ -6,7 +6,7 @@
 
 package com.kcrud.settings
 
-import com.kcrud.data.database.service.DatabaseManager
+import com.kcrud.data.database.manager.DatabaseManager
 import com.kcrud.graphql.utils.GraphQLFramework
 import com.kcrud.utils.DeploymentType
 

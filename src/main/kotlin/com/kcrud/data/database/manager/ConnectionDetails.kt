@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.data.database.service
+package com.kcrud.data.database.manager
 
 import com.kcrud.settings.AppSettings
 import java.nio.file.Files
