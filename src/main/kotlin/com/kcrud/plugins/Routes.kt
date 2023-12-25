@@ -12,7 +12,7 @@ import com.kcrud.routes.main.rootRoute
 import com.kcrud.routes.main.systemRoute
 import com.kcrud.routes.system.accessTokenRoute
 import com.kcrud.routes.system.documentationRoute
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -53,7 +53,7 @@ fun Application.configureRoutes() {
         // Define data endpoints.
         rateLimit(RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
             rootRoute()
-            if (SettingsProvider.security.jwt.isEnabled) {
+            if (AppSettings.security.jwt.isEnabled) {
                 authenticate {
                     employeeRoute()
                     employmentRoute()

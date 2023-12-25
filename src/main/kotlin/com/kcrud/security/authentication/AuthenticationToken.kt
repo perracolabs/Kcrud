@@ -10,7 +10,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.Tracer
 import io.ktor.http.*
 import io.ktor.http.auth.*
@@ -38,7 +38,7 @@ internal object AuthenticationToken {
      */
     fun verify(call: ApplicationCall) {
 
-        if (SettingsProvider.security.jwt.isEnabled) {
+        if (AppSettings.security.jwt.isEnabled) {
             val tokenState = getState(call)
             when (tokenState) {
                 TokenState.Valid -> {
@@ -67,7 +67,7 @@ internal object AuthenticationToken {
 
         return try {
             val token = fromHeader(call)
-            val algorithm: Algorithm = Algorithm.HMAC256(SettingsProvider.security.jwt.secretKey)
+            val algorithm: Algorithm = Algorithm.HMAC256(AppSettings.security.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             verifier.verify(JWT.decode(token))
             TokenState.Valid
@@ -98,7 +98,7 @@ internal object AuthenticationToken {
      * Generate a new authorization token.
      */
     fun generate(): String {
-        val jwtSettings = SettingsProvider.security.jwt
+        val jwtSettings = AppSettings.security.jwt
         val tokenLifetimeMs = jwtSettings.tokenLifetime
         val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeMs)
 

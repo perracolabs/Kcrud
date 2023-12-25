@@ -6,7 +6,7 @@
 
 package com.kcrud.system
 
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.utils.DeploymentType
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -55,7 +55,7 @@ internal class Tracer(private val logger: Logger) {
      * @param message The message to log indicating the context or operation that needs attention.
      */
     fun byDeploymentType(message: String) {
-        when (val deploymentType = SettingsProvider.deployment.type) {
+        when (val deploymentType = AppSettings.deployment.type) {
             DeploymentType.PROD -> error("ATTENTION: '$deploymentType' environment >> $message")
             DeploymentType.TEST -> warning("ATTENTION: '$deploymentType' environment >> $message")
             DeploymentType.DEV -> info(message)

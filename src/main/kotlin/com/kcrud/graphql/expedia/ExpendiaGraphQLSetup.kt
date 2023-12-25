@@ -18,7 +18,7 @@ import com.kcrud.graphql.expedia.schema.employee.EmployeeQueries
 import com.kcrud.graphql.expedia.schema.employment.EmploymentMutations
 import com.kcrud.graphql.expedia.schema.employment.EmploymentQueries
 import com.kcrud.graphql.expedia.types.CustomSchemaGeneratorHooks
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.Tracer
 import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
@@ -39,7 +39,7 @@ internal class ExpediaGraphQLSetup {
     private val graphqlPackages = listOf("com.kcrud")
 
     fun configure(application: Application) {
-        val withPlayground = SettingsProvider.graphql.playground
+        val withPlayground = AppSettings.graphql.playground
         tracer.info("Configuring ExpediaGroup GraphQL engine.")
 
         if (withPlayground) {
@@ -81,7 +81,7 @@ internal class ExpediaGraphQLSetup {
 
     private fun setEndpoints(application: Application, withPlayground: Boolean) {
         application.routing {
-            if (SettingsProvider.security.jwt.isEnabled) {
+            if (AppSettings.security.jwt.isEnabled) {
                 authenticate {
                     graphQLGetRoute()
                     graphQLPostRoute()
@@ -101,7 +101,7 @@ internal class ExpediaGraphQLSetup {
     }
 
     private fun dumpSchema() {
-        if (!SettingsProvider.graphql.dumpSchema)
+        if (!AppSettings.graphql.dumpSchema)
             return
 
         tracer.byDeploymentType(message = "Dumping GraphQL schema.")

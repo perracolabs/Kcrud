@@ -6,7 +6,7 @@
 
 package com.kcrud.security.snowflake
 
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.Tracer
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -26,7 +26,7 @@ internal object SnowflakeFactory {
     private val tracer = Tracer<SnowflakeFactory>()
 
     // Lazy-loaded machine ID, configured per-machine.
-    private val machineId by lazy { SettingsProvider.server.machineId }
+    private val machineId by lazy { AppSettings.server.machineId }
 
     // Tracks the last timestamp in milliseconds when an ID was generated.
     // Initialized to -1 to indicate no IDs have been generated yet.

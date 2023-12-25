@@ -7,7 +7,7 @@
 package com.kcrud.routes.main
 
 import com.kcrud.security.snowflake.SnowflakeFactory
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.HealthCheck
 import com.kcrud.utils.NetworkUtils
 import io.ktor.http.*
@@ -30,7 +30,7 @@ import io.ktor.server.routing.*
  * external service availability, or other critical component checks.
  */
 fun Route.systemRoute() {
-    authenticate(SettingsProvider.security.basicAuth.providerName) {
+    authenticate(AppSettings.security.basicAuth.providerName) {
         get("/health") {
             call.respond(HealthCheck())
         }

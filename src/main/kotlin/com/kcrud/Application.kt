@@ -8,7 +8,7 @@ package com.kcrud
 
 import com.kcrud.data.database.service.DatabaseManager
 import com.kcrud.plugins.*
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.Tracer
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -33,7 +33,7 @@ fun main(args: Array<String>) {
  */
 fun Application.module() {
 
-    SettingsProvider.load(context = this)
+    AppSettings.load(context = this)
 
     configureKoin()
 
@@ -56,6 +56,6 @@ fun Application.module() {
     DatabaseManager.init()
 
     val tracer = Tracer.forFunction(Application::module)
-    tracer.byDeploymentType("Development Mode Enabled: ${SettingsProvider.server.development}.")
-    tracer.info("Server configured. Deployment Type: ${SettingsProvider.deployment.type}.")
+    tracer.byDeploymentType("Development Mode Enabled: ${AppSettings.server.development}.")
+    tracer.info("Server configured. Deployment Type: ${AppSettings.deployment.type}.")
 }

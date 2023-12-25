@@ -9,7 +9,7 @@ package com.kcrud.plugins
 import com.kcrud.graphql.GraphQLFramework
 import com.kcrud.graphql.expedia.ExpediaGraphQLSetup
 import com.kcrud.graphql.kgraphql.KGraphQLSetup
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import io.ktor.server.application.*
 
 /**
@@ -21,11 +21,11 @@ import io.ktor.server.application.*
  */
 fun Application.configureGraphQL() {
 
-    if (!SettingsProvider.graphql.isEnabled) {
+    if (!AppSettings.graphql.isEnabled) {
         return
     }
 
-    when (SettingsProvider.graphql.framework) {
+    when (AppSettings.graphql.framework) {
         GraphQLFramework.EXPEDIA_GROUP -> {
             ExpediaGraphQLSetup().configure(application = this)
         }

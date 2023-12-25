@@ -6,7 +6,7 @@
 
 package com.kcrud.data.utils
 
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import org.jetbrains.exposed.crypt.Algorithms
 import org.jetbrains.exposed.crypt.Encryptor
 
@@ -23,7 +23,7 @@ internal object EncryptionUtils {
     }
 
     fun getEncryptor(): Encryptor {
-        val encryption = SettingsProvider.security.encryption
+        val encryption = AppSettings.security.encryption
         val algorithm: AlgorithmName = AlgorithmName.valueOf(encryption.algorithm)
 
         return when (algorithm) {

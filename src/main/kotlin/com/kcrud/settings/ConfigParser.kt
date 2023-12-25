@@ -31,8 +31,8 @@ import kotlin.reflect.jvm.jvmErasure
  * in HOCON to be represented as comma-delimited strings in environmental variables.
  */
 @SettingsAPI
-internal object SettingsParser {
-    private val tracer = Tracer<SettingsParser>()
+internal object ConfigParser {
+    private val tracer = Tracer<ConfigParser>()
 
     /**
      * Performs the application configuration parsing.
@@ -41,9 +41,9 @@ internal object SettingsParser {
      * @param mappings Map of top-level configuration paths to their corresponding classes.
      * @return A new AppSettings object populated with the parsed configuration data.
      */
-    fun parse(configuration: ApplicationConfig, mappings: Map<String, KClass<*>>): AppSettings {
+    fun parse(configuration: ApplicationConfig, mappings: Map<String, KClass<*>>): Config {
         // Retrieve the primary constructor of AppSettings for parameter mapping.
-        val constructor: KFunction<AppSettings> = AppSettings::class.primaryConstructor!!
+        val constructor: KFunction<Config> = Config::class.primaryConstructor!!
         val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
         // Map each configuration path to its corresponding class, instantiating classes for each setting.

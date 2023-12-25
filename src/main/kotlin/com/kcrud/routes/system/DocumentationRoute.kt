@@ -6,7 +6,7 @@
 
 package com.kcrud.routes.system
 
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.Tracer
 import com.kcrud.utils.NetworkUtils
 import io.ktor.server.http.content.*
@@ -32,25 +32,25 @@ import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
  */
 fun Route.documentationRoute() {
 
-    if (SettingsProvider.docs.isEnabled) {
+    if (AppSettings.docs.isEnabled) {
         Tracer.forFunction(Route::documentationRoute).byDeploymentType("Configuring documentation.")
 
-        val yamlFile = SettingsProvider.docs.yamlFile
-        val rootPath = SettingsProvider.deployment.apiVersion
+        val yamlFile = AppSettings.docs.yamlFile
+        val rootPath = AppSettings.deployment.apiVersion
 
         // Root path.
         staticResources(remotePath = rootPath, basePackage = "openapi")
 
         // Swagger-UI.
-        val swaggerPath = SettingsProvider.docs.swaggerPath
+        val swaggerPath = AppSettings.docs.swaggerPath
         swaggerUI(path = swaggerPath, swaggerFile = yamlFile) { version = "4.15.5" }
 
         // OpenAPI.
-        val openApiPath = SettingsProvider.docs.openApiPath
+        val openApiPath = AppSettings.docs.openApiPath
         openAPI(path = openApiPath, swaggerFile = yamlFile) { codegen = StaticHtmlCodegen() }
 
         // Redoc.
-        val redocPath = "$rootPath/docs${SettingsProvider.docs.redocPath}"
+        val redocPath = "$rootPath/docs${AppSettings.docs.redocPath}"
 
         val endpoints = listOf(redocPath, swaggerPath, openApiPath)
         NetworkUtils.logEndpoints(reason = "Redoc - Swagger-UI - OpenApi", endpoints = endpoints)

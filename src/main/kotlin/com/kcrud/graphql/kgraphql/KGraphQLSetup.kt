@@ -14,7 +14,7 @@ import com.kcrud.graphql.kgraphql.schema.employee.EmployeeQueries
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentMutations
 import com.kcrud.graphql.kgraphql.schema.employment.EmploymentQueries
 import com.kcrud.security.authentication.AuthenticationToken
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.Tracer
 import com.kcrud.utils.NetworkUtils
 import io.ktor.server.application.*
@@ -29,7 +29,7 @@ internal class KGraphQLSetup {
 
     @OptIn(KGraphQLAPI::class)
     fun configure(application: Application) {
-        val withPlayground = SettingsProvider.graphql.playground
+        val withPlayground = AppSettings.graphql.playground
         tracer.info("Configuring KGraphQL engine.")
 
         if (withPlayground) {

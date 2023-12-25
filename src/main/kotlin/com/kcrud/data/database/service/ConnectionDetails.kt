@@ -6,7 +6,7 @@
 
 package com.kcrud.data.database.service
 
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -25,17 +25,17 @@ internal data class ConnectionDetails(
 
     companion object {
         fun build(): ConnectionDetails {
-            val dbType = SettingsProvider.database.dbType
+            val dbType = AppSettings.database.dbType
 
-            val path = "${SettingsProvider.database.path}${dbType.name}"
+            val path = "${AppSettings.database.path}${dbType.name}"
             Files.createDirectories(Paths.get(path))
 
             return ConnectionDetails(
-                jdbcUrl = SettingsProvider.database.jdbcUrl,
-                jdbcDriver = SettingsProvider.database.jdbcDriver,
-                mode = SettingsProvider.database.mode,
-                dbType = SettingsProvider.database.dbType,
-                connectionPoolSize = SettingsProvider.database.connectionPoolSize
+                jdbcUrl = AppSettings.database.jdbcUrl,
+                jdbcDriver = AppSettings.database.jdbcDriver,
+                mode = AppSettings.database.mode,
+                dbType = AppSettings.database.dbType,
+                connectionPoolSize = AppSettings.database.connectionPoolSize
             )
         }
     }

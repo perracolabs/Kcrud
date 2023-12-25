@@ -6,7 +6,7 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.Tracer
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -58,7 +58,7 @@ fun Application.configureHttpSettings() {
 
         val tracer = Tracer.forFunction(Application::configureHttpSettings)
 
-        val allowedHosts: List<String> = SettingsProvider.cors.allowedHosts
+        val allowedHosts: List<String> = AppSettings.cors.allowedHosts
         tracer.info("Allowed hosts: $allowedHosts")
 
         if (allowedHosts.isEmpty() or allowedHosts.contains("*")) {

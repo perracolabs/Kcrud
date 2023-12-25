@@ -6,11 +6,11 @@
 
 package com.kcrud.system
 
-import com.kcrud.data.database.shared.DatabaseManager
+import com.kcrud.data.database.service.DatabaseManager
 import com.kcrud.graphql.GraphQLFramework
 import com.kcrud.security.snowflake.SnowflakeData
 import com.kcrud.security.snowflake.SnowflakeFactory
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.utils.DeploymentType
 import com.kcrud.utils.NetworkUtils
 import kotlinx.datetime.*
@@ -25,24 +25,24 @@ data class HealthCheck(
     val errors: MutableList<String> = mutableListOf(),
     val utc: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC),
     val local: LocalDateTime = utc.toInstant(TimeZone.UTC).toLocalDateTime(TimeZone.currentSystemDefault()),
-    val machineId: Int = SettingsProvider.server.machineId,
-    val deploymentType: DeploymentType = SettingsProvider.deployment.type,
-    val developmentModeEnabled: Boolean = SettingsProvider.server.development,
+    val machineId: Int = AppSettings.server.machineId,
+    val deploymentType: DeploymentType = AppSettings.deployment.type,
+    val developmentModeEnabled: Boolean = AppSettings.server.development,
     val databaseAlive: Boolean = DatabaseManager.ping(),
-    val databasePoolSize: Int = SettingsProvider.database.connectionPoolSize,
-    val databaseJDBC: String = SettingsProvider.database.jdbcDriver,
-    val databaseJDBCUrl: String = SettingsProvider.database.jdbcUrl,
+    val databasePoolSize: Int = AppSettings.database.connectionPoolSize,
+    val databaseJDBC: String = AppSettings.database.jdbcDriver,
+    val databaseJDBCUrl: String = AppSettings.database.jdbcUrl,
     val protocol: String = NetworkUtils.getProtocol(),
     val server: String = NetworkUtils.getServerUrl(),
-    val allowedHosts: List<String> = SettingsProvider.cors.allowedHosts,
-    val apiVersion: String = SettingsProvider.deployment.apiVersion,
-    val jwtEnabled: Boolean = SettingsProvider.security.jwt.isEnabled,
-    val basicAuthEnabled: Boolean = SettingsProvider.security.basicAuth.isEnabled,
-    val graphQLEnabled: Boolean = SettingsProvider.graphql.isEnabled,
-    val graphQLFramework: GraphQLFramework = SettingsProvider.graphql.framework,
-    val graphQLPlayground: Boolean = SettingsProvider.graphql.playground,
-    val graphQLDumpSchemaEnabled: Boolean = SettingsProvider.graphql.dumpSchema,
-    val docsEnabled: Boolean = SettingsProvider.docs.isEnabled,
+    val allowedHosts: List<String> = AppSettings.cors.allowedHosts,
+    val apiVersion: String = AppSettings.deployment.apiVersion,
+    val jwtEnabled: Boolean = AppSettings.security.jwt.isEnabled,
+    val basicAuthEnabled: Boolean = AppSettings.security.basicAuth.isEnabled,
+    val graphQLEnabled: Boolean = AppSettings.graphql.isEnabled,
+    val graphQLFramework: GraphQLFramework = AppSettings.graphql.framework,
+    val graphQLPlayground: Boolean = AppSettings.graphql.playground,
+    val graphQLDumpSchemaEnabled: Boolean = AppSettings.graphql.dumpSchema,
+    val docsEnabled: Boolean = AppSettings.docs.isEnabled,
     val snowflakeTestId: String = SnowflakeFactory.nextId(),
     val snowflakeTestResult: SnowflakeData = SnowflakeFactory.parse(id = snowflakeTestId)
 ) {

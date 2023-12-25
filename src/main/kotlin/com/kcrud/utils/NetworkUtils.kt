@@ -6,7 +6,7 @@
 
 package com.kcrud.utils
 
-import com.kcrud.settings.SettingsProvider
+import com.kcrud.settings.AppSettings
 import com.kcrud.system.Tracer
 
 /**
@@ -42,11 +42,11 @@ internal object NetworkUtils {
     }
 
     fun getServerUrl(): String {
-        val host = SettingsProvider.deployment.host
+        val host = AppSettings.deployment.host
         var url = ""
 
         if (host != LISTEN_ALL_IPS) {
-            val port = SettingsProvider.deployment.port
+            val port = AppSettings.deployment.port
             val protocol = getProtocol()
             url = "$protocol://$host:$port"
         }
@@ -55,6 +55,6 @@ internal object NetworkUtils {
     }
 
     fun getProtocol(): String {
-        return if (SettingsProvider.deployment.port == SECURE_PORT) SECURE_PROTOCOL else INSECURE_PROTOCOL
+        return if (AppSettings.deployment.port == SECURE_PORT) SECURE_PROTOCOL else INSECURE_PROTOCOL
     }
 }
