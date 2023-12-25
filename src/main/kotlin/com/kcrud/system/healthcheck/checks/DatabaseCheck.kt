@@ -17,7 +17,7 @@ import org.jetbrains.exposed.sql.name
 data class DatabaseCheck(
     val errors: MutableList<String> = mutableListOf(),
     val alive: Boolean,
-    val database: Details? = null,
+    val details: Details? = null,
     val datasource: Datasource? = null,
     val configuration: Configuration = Configuration()
 ) {
@@ -28,7 +28,7 @@ data class DatabaseCheck(
             errors.add("$className. Database is not responding.")
         }
 
-        database?.let {
+        details?.let {
             if (it.isClosed) {
                 errors.add("$className. Database is closed.")
             }
@@ -36,7 +36,7 @@ data class DatabaseCheck(
             if (it.isReadOnly) {
                 errors.add("$className. Database is read-only.")
             }
-        } ?: errors.add("$className. Database not set.")
+        } ?: errors.add("$className. Unable to get database details.")
     }
 
     @Serializable
@@ -53,21 +53,27 @@ data class DatabaseCheck(
     ) {
         companion object {
             fun build(database: Database?): Details? {
-                return database?.let {
-                    val connector = it.connector()
-                    Details(
-                        isClosed = connector.isClosed,
-                        isReadOnly = connector.readOnly,
-                        name = it.name,
-                        version = it.version.toString(),
-                        dialect = it.dialect.name,
-                        url = it.url,
-                        vendor = it.vendor,
-                        autoCommit = connector.autoCommit,
-                        catalog = connector.catalog
-                    ).also {
-                        connector.close()
+                return runCatching {
+                    database?.let {
+                        val connector = it.connector()
+                        try {
+                            Details(
+                                isClosed = connector.isClosed,
+                                isReadOnly = connector.readOnly,
+                                name = it.name,
+                                version = it.version.toString(),
+                                dialect = it.dialect.name,
+                                url = it.url,
+                                vendor = it.vendor,
+                                autoCommit = connector.autoCommit,
+                                catalog = connector.catalog
+                            )
+                        } finally {
+                            connector.close()
+                        }
                     }
+                }.getOrElse {
+                    null
                 }
             }
         }

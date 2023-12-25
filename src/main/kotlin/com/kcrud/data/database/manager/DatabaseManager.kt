@@ -122,7 +122,7 @@ internal object DatabaseManager {
     fun getHealthCheck(): DatabaseCheck {
         return DatabaseCheck(
             alive = ping(),
-            database = DatabaseCheck.Details.build(database = database),
+            details = DatabaseCheck.Details.build(database = database),
             datasource = DatabaseCheck.Datasource.build(datasource = hikariDataSource)
         )
     }
