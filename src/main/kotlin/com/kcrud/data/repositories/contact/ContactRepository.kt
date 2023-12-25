@@ -9,6 +9,7 @@ package com.kcrud.data.repositories.contact
 import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.entities.contact.Contact
 import com.kcrud.data.entities.contact.ContactRequest
+import com.kcrud.data.entities.employee.EmployeeRequest
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
@@ -30,17 +31,33 @@ internal class ContactRepository : IContactRepository {
         }
     }
 
-
-    override fun setContact(employeeId: UUID, contactId: UUID?, contactRequest: ContactRequest): UUID? {
+    override fun findByEmployeeId(employeeId: UUID): Contact? {
         return transaction {
+            ContactTable.select {
+                ContactTable.employeeId eq employeeId
+            }.singleOrNull()?.let { resultRow ->
+                Contact.toEntity(row = resultRow)
+            }
+        }
+    }
+
+    override fun setByEmployee(employeeId: UUID, employeeRequest: EmployeeRequest): UUID? {
+        return if (employeeRequest.contact == null) {
+            deleteContactByEmployeeId(employeeId = employeeId)
+            null
+        } else {
+            val contactId = findByEmployeeId(employeeId = employeeId)?.id
+
             if (contactId == null) {
-                createContact(employeeId = employeeId, contactRequest = contactRequest)
+                createContact(employeeId = employeeId, contactRequest = employeeRequest.contact)
             } else {
-                updateContact(
+                val updateCount = updateContact(
                     employeeId = employeeId,
                     contactId = contactId,
-                    contactRequest = contactRequest
+                    contactRequest = employeeRequest.contact
                 )
+
+                contactId.takeIf { updateCount > 0 }
             }
         }
     }
@@ -57,25 +74,24 @@ internal class ContactRepository : IContactRepository {
         }
     }
 
-    /**
-     * Updates the contact of an employee.
-     */
-    private fun updateContact(employeeId: UUID, contactId: UUID, contactRequest: ContactRequest): UUID? {
+    override fun updateContact(employeeId: UUID, contactId: UUID, contactRequest: ContactRequest): Int {
         return transaction {
-            val updatedCount = ContactTable.update(where = { ContactTable.id eq contactId }) { contactRow ->
+            ContactTable.update(where = { ContactTable.id eq contactId }) { contactRow ->
                 contactRequestToTable(
                     employeeId = employeeId,
                     contactRequest = contactRequest,
                     target = contactRow
                 )
             }
-
-            contactId.takeIf { updatedCount > 0 }
         }
     }
 
     override fun deleteContact(contactId: UUID): Int {
         return ContactTable.deleteWhere { id eq contactId }
+    }
+
+    override fun deleteContactByEmployeeId(employeeId: UUID): Int {
+        return ContactTable.deleteWhere { ContactTable.employeeId eq employeeId }
     }
 
     /**

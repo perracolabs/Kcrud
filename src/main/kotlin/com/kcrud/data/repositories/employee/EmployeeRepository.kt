@@ -115,26 +115,21 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
 
     override fun update(employeeId: UUID, employeeRequest: EmployeeRequest): Int {
         return transaction {
-            // First, find the existing employee to get the contact id.
-            val dbEmployee = findById(employeeId) ?: return@transaction 0
 
-            // Set the contact.
-            if (employeeRequest.contact == null) {
-                if (dbEmployee.contact != null) {
-                    contactRepository.deleteContact(contactId = dbEmployee.contact.id)
-                }
-            } else {
-                contactRepository.setContact(
+            val updateCount = EmployeeTable.update(
+                where = { EmployeeTable.id eq employeeId }
+            ) { employeeRow ->
+                employeeRequestToTable(employeeRequest = employeeRequest, target = employeeRow)
+            }
+
+            if (updateCount > 0) {
+                contactRepository.setByEmployee(
                     employeeId = employeeId,
-                    contactId = dbEmployee.contact?.id,
-                    contactRequest = employeeRequest.contact
+                    employeeRequest = employeeRequest
                 )
             }
 
-            // Update the Employees table.
-            EmployeeTable.update(where = { EmployeeTable.id eq employeeId }) { employeeRow ->
-                employeeRequestToTable(employeeRequest = employeeRequest, target = employeeRow)
-            }
+            updateCount
         }
     }
 

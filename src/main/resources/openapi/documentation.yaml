@@ -143,7 +143,7 @@ paths:
                   value: ""
   /auth/token/create:
     post:
-      description: "Create a new auth token."
+      description: "Creates a new token and responds with it."
       responses: {}
   /auth/token/refresh:
     post:
