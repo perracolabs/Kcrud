@@ -53,11 +53,11 @@ data class DatabaseCheck(
     ) {
         companion object {
             fun build(database: Database?): Details? {
-                return runCatching {
-                    database?.let {
+                return database?.let {
+                    runCatching {
                         val connector = it.connector()
                         try {
-                            Details(
+                            return Details(
                                 isClosed = connector.isClosed,
                                 isReadOnly = connector.readOnly,
                                 name = it.name,
@@ -71,9 +71,7 @@ data class DatabaseCheck(
                         } finally {
                             connector.close()
                         }
-                    }
-                }.getOrElse {
-                    null
+                    }.getOrNull()
                 }
             }
         }
