@@ -17,8 +17,8 @@ import org.jetbrains.exposed.sql.name
 data class DatabaseCheck(
     val errors: MutableList<String> = mutableListOf(),
     val alive: Boolean,
-    val details: Details? = null,
     val datasource: Datasource? = null,
+    val connectionTest: ConnectionTest? = null,
     val configuration: Configuration = Configuration()
 ) {
     init {
@@ -28,20 +28,20 @@ data class DatabaseCheck(
             errors.add("$className. Database is not responding.")
         }
 
-        details?.let {
-            if (it.isClosed) {
-                errors.add("$className. Database is closed.")
+        connectionTest?.let {
+            if (!it.established) {
+                errors.add("$className. Database connection not established.")
             }
 
             if (it.isReadOnly) {
-                errors.add("$className. Database is read-only.")
+                errors.add("$className. Database connection is read-only.")
             }
-        } ?: errors.add("$className. Unable to get database details.")
+        } ?: errors.add("$className. Unable to test database connection.")
     }
 
     @Serializable
-    data class Details(
-        val isClosed: Boolean,
+    data class ConnectionTest(
+        val established: Boolean,
         val isReadOnly: Boolean,
         val name: String,
         val version: String,
@@ -52,13 +52,13 @@ data class DatabaseCheck(
         val catalog: String,
     ) {
         companion object {
-            fun build(database: Database?): Details? {
+            fun build(database: Database?): ConnectionTest? {
                 return database?.let {
                     runCatching {
                         val connector = it.connector()
                         try {
-                            return Details(
-                                isClosed = connector.isClosed,
+                            return ConnectionTest(
+                                established = !connector.isClosed,
                                 isReadOnly = connector.readOnly,
                                 name = it.name,
                                 version = it.version.toString(),
