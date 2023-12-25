@@ -43,15 +43,15 @@ internal class ContactRepository : IContactRepository {
 
     override fun setByEmployee(employeeId: UUID, employeeRequest: EmployeeRequest): UUID? {
         return if (employeeRequest.contact == null) {
-            deleteContactByEmployeeId(employeeId = employeeId)
+            deleteByEmployeeId(employeeId = employeeId)
             null
         } else {
             val contactId = findByEmployeeId(employeeId = employeeId)?.id
 
             if (contactId == null) {
-                createContact(employeeId = employeeId, contactRequest = employeeRequest.contact)
+                create(employeeId = employeeId, contactRequest = employeeRequest.contact)
             } else {
-                val updateCount = updateContact(
+                val updateCount = update(
                     employeeId = employeeId,
                     contactId = contactId,
                     contactRequest = employeeRequest.contact
@@ -62,7 +62,7 @@ internal class ContactRepository : IContactRepository {
         }
     }
 
-    override fun createContact(employeeId: UUID, contactRequest: ContactRequest): UUID {
+    override fun create(employeeId: UUID, contactRequest: ContactRequest): UUID {
         return transaction {
             ContactTable.insert { contactRow ->
                 contactRequestToTable(
@@ -74,7 +74,7 @@ internal class ContactRepository : IContactRepository {
         }
     }
 
-    override fun updateContact(employeeId: UUID, contactId: UUID, contactRequest: ContactRequest): Int {
+    override fun update(employeeId: UUID, contactId: UUID, contactRequest: ContactRequest): Int {
         return transaction {
             ContactTable.update(where = { ContactTable.id eq contactId }) { contactRow ->
                 contactRequestToTable(
@@ -86,11 +86,11 @@ internal class ContactRepository : IContactRepository {
         }
     }
 
-    override fun deleteContact(contactId: UUID): Int {
+    override fun delete(contactId: UUID): Int {
         return ContactTable.deleteWhere { id eq contactId }
     }
 
-    override fun deleteContactByEmployeeId(employeeId: UUID): Int {
+    override fun deleteByEmployeeId(employeeId: UUID): Int {
         return ContactTable.deleteWhere { ContactTable.employeeId eq employeeId }
     }
 

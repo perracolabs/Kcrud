@@ -34,22 +34,22 @@ interface IContactRepository {
     /**
      * Creates a new contact for an employee.
      */
-    fun createContact(employeeId: UUID, contactRequest: ContactRequest): UUID
+    fun create(employeeId: UUID, contactRequest: ContactRequest): UUID
 
     /**
      * Updates the contact of an employee.
      *
      * @return The number of rows updated.
      */
-    fun updateContact(employeeId: UUID, contactId: UUID, contactRequest: ContactRequest): Int
+    fun update(employeeId: UUID, contactId: UUID, contactRequest: ContactRequest): Int
 
     /**
      * Deletes the contact of an employee.
      */
-    fun deleteContact(contactId: UUID): Int
+    fun delete(contactId: UUID): Int
 
     /**
      * Deletes the contact of an employee.
      */
-    fun deleteContactByEmployeeId(employeeId: UUID): Int
+    fun deleteByEmployeeId(employeeId: UUID): Int
 }

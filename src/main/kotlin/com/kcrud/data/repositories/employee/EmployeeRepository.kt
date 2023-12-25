@@ -103,7 +103,7 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
             } get EmployeeTable.id
 
             employeeRequest.contact?.let {
-                contactRepository.createContact(
+                contactRepository.create(
                     employeeId = newEmployeeId,
                     contactRequest = employeeRequest.contact
                 )
