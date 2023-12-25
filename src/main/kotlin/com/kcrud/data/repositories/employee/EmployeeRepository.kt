@@ -24,18 +24,14 @@ import java.util.*
 
 internal class EmployeeRepository(private val contactRepository: IContactRepository) : IEmployeeRepository {
 
-    private fun getFindEmployeeJoin(): Join {
-        return EmployeeTable.join(
-            otherTable = ContactTable,
-            joinType = JoinType.LEFT,
-            onColumn = EmployeeTable.id,
-            otherColumn = ContactTable.employeeId
-        )
-    }
-
     override fun findById(employeeId: UUID): Employee? {
         return transaction {
-            getFindEmployeeJoin().select {
+            EmployeeTable.join(
+                otherTable = ContactTable,
+                joinType = JoinType.LEFT,
+                onColumn = EmployeeTable.id,
+                otherColumn = ContactTable.employeeId
+            ).select {
                 EmployeeTable.id eq employeeId
             }.singleOrNull()?.let { resultRow ->
                 Employee.toEntity(row = resultRow)
@@ -45,7 +41,12 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
         return transaction {
-            val query = getFindEmployeeJoin().selectAll()
+            val query = EmployeeTable.join(
+                otherTable = ContactTable,
+                joinType = JoinType.LEFT,
+                onColumn = EmployeeTable.id,
+                otherColumn = ContactTable.employeeId
+            ).selectAll()
             val totalElements = query.count()
 
             val paginatedData = query
