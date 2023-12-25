@@ -10,7 +10,7 @@ import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.entities.employment.Employment
-import com.kcrud.data.entities.employment.EmploymentParams
+import com.kcrud.data.entities.employment.EmploymentRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -42,25 +42,29 @@ internal class EmploymentRepository : IEmploymentRepository {
         }
     }
 
-    override fun create(employeeId: UUID, employment: EmploymentParams): Employment {
+    override fun create(employeeId: UUID, employmentRequest: EmploymentRequest): UUID {
         return transaction {
-            val newEmploymentId = EmploymentTable.insert { employmentRow ->
-                employmentParamsToTable(employeeId = employeeId, employment = employment, target = employmentRow)
+            EmploymentTable.insert { employmentRow ->
+                employmentRequestToTable(
+                    employeeId = employeeId,
+                    employmentRequest = employmentRequest,
+                    target = employmentRow
+                )
             } get EmploymentTable.id
-
-            findById(employeeId = employeeId, employmentId = newEmploymentId)!!
         }
     }
 
-    override fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentParams): Employment? {
+    override fun update(employeeId: UUID, employmentId: UUID, employmentRequest: EmploymentRequest): Int {
         return transaction {
             EmploymentTable.update(where = {
                 EmploymentTable.id eq employmentId and (EmploymentTable.employeeId eq employeeId)
             }) { employmentRow ->
-                employmentParamsToTable(employeeId = employeeId, employment = employment, target = employmentRow)
+                employmentRequestToTable(
+                    employeeId = employeeId,
+                    employmentRequest = employmentRequest,
+                    target = employmentRow
+                )
             }
-
-            findById(employeeId = employeeId, employmentId = employmentId)
         }
     }
 
@@ -77,17 +81,17 @@ internal class EmploymentRepository : IEmploymentRepository {
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [EmploymentParams] instance.
+     * Populates an SQL [UpdateBuilder] with data from an [EmploymentRequest] instance.
      */
-    private fun employmentParamsToTable(employeeId: UUID, employment: EmploymentParams, target: UpdateBuilder<Int>) {
+    private fun employmentRequestToTable(employeeId: UUID, employmentRequest: EmploymentRequest, target: UpdateBuilder<Int>) {
         target.apply {
             this[EmploymentTable.employeeId] = employeeId
-            this[EmploymentTable.probationEndDate] = employment.probationEndDate
-            this[EmploymentTable.workModality] = employment.workModality
-            this[EmploymentTable.isActive] = employment.period.isActive
-            this[EmploymentTable.startDate] = employment.period.startDate
-            this[EmploymentTable.endDate] = employment.period.endDate
-            this[EmploymentTable.comments] = employment.period.comments?.trim()
+            this[EmploymentTable.probationEndDate] = employmentRequest.probationEndDate
+            this[EmploymentTable.workModality] = employmentRequest.workModality
+            this[EmploymentTable.isActive] = employmentRequest.period.isActive
+            this[EmploymentTable.startDate] = employmentRequest.period.startDate
+            this[EmploymentTable.endDate] = employmentRequest.period.endDate
+            this[EmploymentTable.comments] = employmentRequest.period.comments?.trim()
         }
     }
 }

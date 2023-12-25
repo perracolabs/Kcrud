@@ -6,7 +6,7 @@
 
 package com.kcrud.routes.data
 
-import com.kcrud.data.entities.employment.EmploymentParams
+import com.kcrud.data.entities.employment.EmploymentRequest
 import com.kcrud.services.EmploymentService
 import com.kcrud.utils.toUUIDOrNull
 import io.ktor.http.*
@@ -55,8 +55,8 @@ private fun Route.setupEmploymentRoutes(service: EmploymentService) {
 private fun Route.createEmployment(service: EmploymentService) {
     post {
         val employeeId = call.getEmployeeId()
-        val employmentParams = call.receive<EmploymentParams>()
-        val newEmployment = service.create(employeeId = employeeId, employment = employmentParams)
+        val employmentRequest = call.receive<EmploymentRequest>()
+        val newEmployment = service.create(employeeId = employeeId, employmentRequest = employmentRequest)
         call.respond(HttpStatusCode.Created, newEmployment)
     }
 }
@@ -85,8 +85,8 @@ private fun Route.updateEmploymentById(service: EmploymentService) {
         val employeeId = call.getEmployeeId()
         val employmentId = call.getEmploymentId()
 
-        val updatedEmployment = call.receive<EmploymentParams>().let { employmentParams ->
-            service.update(employeeId = employeeId, employmentId = employmentId, employment = employmentParams)
+        val updatedEmployment = call.receive<EmploymentRequest>().let { employmentRequest ->
+            service.update(employeeId = employeeId, employmentId = employmentId, employmentRequest = employmentRequest)
         }
 
         updatedEmployment?.also { employment ->

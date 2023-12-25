@@ -6,7 +6,7 @@
 
 package com.kcrud.data.entities.employee
 
-import com.kcrud.data.entities.contact.ContactParams
+import com.kcrud.data.entities.contact.ContactRequest
 import com.kcrud.data.entities.employee.types.Honorific
 import com.kcrud.data.entities.employee.types.MaritalStatus
 import kotlinx.datetime.LocalDate
@@ -23,13 +23,13 @@ import kotlinx.serialization.Serializable
  * @property contact Optional contact details of the employee.
  */
 @Serializable
-data class EmployeeParams(
+data class EmployeeRequest(
     val firstName: String,
     val lastName: String,
     val dob: LocalDate,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
-    val contact: ContactParams? = null
+    val contact: ContactRequest? = null
 ) {
     init {
         require(firstName.isNotBlank()) { "First name can't be empty." }

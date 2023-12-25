@@ -35,7 +35,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: "#/components/schemas/EmployeeParams"
+              $ref: "#/components/schemas/EmployeeRequest"
         required: true
       responses:
         "201":
@@ -114,7 +114,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: "#/components/schemas/EmployeeParams"
+              $ref: "#/components/schemas/EmployeeRequest"
         required: true
       responses:
         "500":
@@ -187,28 +187,35 @@ paths:
                   description: ""
                   value:
                     errors: []
-                    utc: "null"
-                    local: "null"
-                    machineId: "null"
-                    deploymentType: "null"
-                    developmentModeEnabled: "null"
-                    databaseAlive: "null"
-                    databasePoolSize: "null"
-                    databaseJDBC: "null"
-                    databaseJDBCUrl: "null"
-                    protocol: "null"
-                    server: "null"
-                    allowedHosts: "null"
-                    apiVersion: "null"
-                    jwtEnabled: "null"
-                    basicAuthEnabled: "null"
-                    graphQLEnabled: "null"
-                    graphQLFramework: "null"
-                    graphQLPlayground: "null"
-                    graphQLDumpSchemaEnabled: "null"
-                    docsEnabled: "null"
-                    snowflakeTestId: "null"
-                    snowflakeTestResult: "null"
+                    server:
+                      errors: [ ]
+                      machineId: "null"
+                      deploymentType: "null"
+                      developmentModeEnabled: "null"
+                      protocol: "null"
+                      host: "null"
+                      allowedHosts: "null"
+                      utc: "null"
+                      local: "null"
+                    security:
+                      errors: [ ]
+                      jwtEnabled: "null"
+                      basicAuthEnabled: "null"
+                    database: "null"
+                    application:
+                      errors: [ ]
+                      apiVersion: "null"
+                      docsEnabled: "null"
+                    graphQL:
+                      errors: [ ]
+                      enabled: "null"
+                      framework: "null"
+                      playground: "null"
+                      dumpSchema: "null"
+                    snowflake:
+                      errors: [ ]
+                      testId: "null"
+                      testResult: "null"
         "500":
           description: "Internal Server Error"
           content:
@@ -334,7 +341,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: "#/components/schemas/EmploymentParams"
+              $ref: "#/components/schemas/EmploymentRequest"
         required: true
       responses:
         "500":
@@ -439,7 +446,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: "#/components/schemas/EmploymentParams"
+              $ref: "#/components/schemas/EmploymentRequest"
         required: true
       responses:
         "500":
@@ -480,7 +487,7 @@ components:
     LocalDate:
       type: "object"
       properties: {}
-    ContactParams:
+    ContactRequest:
       type: "object"
       properties:
         email:
@@ -490,7 +497,7 @@ components:
       required:
       - "email"
       - "phone"
-    EmployeeParams:
+    EmployeeRequest:
       type: "object"
       properties:
         firstName:
@@ -516,7 +523,7 @@ components:
           - "MISS"
           - "UNKNOWN"
         contact:
-          $ref: "#/components/schemas/ContactParams"
+          $ref: "#/components/schemas/ContactRequest"
       required:
       - "firstName"
       - "lastName"
@@ -588,6 +595,174 @@ components:
     LocalDateTime:
       type: "object"
       properties: {}
+    ServerCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        machineId:
+          type: "integer"
+          format: "int32"
+        deploymentType:
+          type: "string"
+          enum:
+            - "DEV"
+            - "TEST"
+            - "PROD"
+        developmentModeEnabled:
+          type: "boolean"
+        protocol:
+          type: "string"
+        host:
+          type: "string"
+        allowedHosts:
+          type: "array"
+          items:
+            type: "string"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+        - "errors"
+        - "deploymentType"
+        - "protocol"
+        - "host"
+        - "allowedHosts"
+        - "utc"
+        - "local"
+    SecurityCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        jwtEnabled:
+          type: "boolean"
+        basicAuthEnabled:
+          type: "boolean"
+      required:
+        - "errors"
+    Details:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        version:
+          type: "string"
+        dialect:
+          type: "string"
+        url:
+          type: "string"
+        vendor:
+          type: "string"
+        autoCommit:
+          type: "boolean"
+        catalog:
+          type: "string"
+      required:
+        - "name"
+        - "version"
+        - "dialect"
+        - "url"
+        - "vendor"
+        - "catalog"
+    Datasource:
+      type: "object"
+      properties:
+        totalConnections:
+          type: "integer"
+          format: "int32"
+        activeConnections:
+          type: "integer"
+          format: "int32"
+        idleConnections:
+          type: "integer"
+          format: "int32"
+        threadsAwaitingConnection:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        maxLifetime:
+          type: "integer"
+          format: "int64"
+        keepaliveTime:
+          type: "integer"
+          format: "int64"
+        maxPoolSize:
+          type: "integer"
+          format: "int32"
+    Configuration:
+      type: "object"
+      properties:
+        poolSize:
+          type: "integer"
+          format: "int32"
+        jdbcDriver:
+          type: "string"
+        jdbcUrl:
+          type: "string"
+      required:
+        - "jdbcDriver"
+        - "jdbcUrl"
+    DatabaseCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        alive:
+          type: "boolean"
+        database:
+          $ref: "#/components/schemas/Details"
+        datasource:
+          $ref: "#/components/schemas/Datasource"
+        configuration:
+          $ref: "#/components/schemas/Configuration"
+      required:
+        - "errors"
+        - "configuration"
+    ApplicationCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        apiVersion:
+          type: "string"
+        docsEnabled:
+          type: "boolean"
+      required:
+        - "errors"
+        - "apiVersion"
+    GraphQLCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        enabled:
+          type: "boolean"
+        framework:
+          type: "string"
+          enum:
+          - "EXPEDIA_GROUP"
+          - "K_GRAPHQL"
+        playground:
+          type: "boolean"
+        dumpSchema:
+          type: "boolean"
+      required:
+      - "errors"
+      - "framework"
     SnowflakeData:
       type: "object"
       properties:
@@ -604,6 +779,19 @@ components:
       required:
       - "utc"
       - "local"
+    SnowflakeCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        testId:
+          type: "string"
+        testResult:
+          $ref: "#/components/schemas/SnowflakeData"
+      required:
+        - "errors"
     HealthCheck:
       type: "object"
       properties:
@@ -611,75 +799,26 @@ components:
           type: "array"
           items:
             type: "string"
-        utc:
-          $ref: "#/components/schemas/LocalDateTime"
-        local:
-          $ref: "#/components/schemas/LocalDateTime"
-        machineId:
-          type: "integer"
-          format: "int32"
-        deploymentType:
-          type: "string"
-          enum:
-          - "DEV"
-          - "TEST"
-          - "PROD"
-        developmentModeEnabled:
-          type: "boolean"
-        databaseAlive:
-          type: "boolean"
-        databasePoolSize:
-          type: "integer"
-          format: "int32"
-        databaseJDBC:
-          type: "string"
-        databaseJDBCUrl:
-          type: "string"
-        protocol:
-          type: "string"
         server:
-          type: "string"
-        allowedHosts:
-          type: "array"
-          items:
-            type: "string"
-        apiVersion:
-          type: "string"
-        jwtEnabled:
-          type: "boolean"
-        basicAuthEnabled:
-          type: "boolean"
-        graphQLEnabled:
-          type: "boolean"
-        graphQLFramework:
-          type: "string"
-          enum:
-          - "EXPEDIA_GROUP"
-          - "K_GRAPHQL"
-        graphQLPlayground:
-          type: "boolean"
-        graphQLDumpSchemaEnabled:
-          type: "boolean"
-        docsEnabled:
-          type: "boolean"
-        snowflakeTestId:
-          type: "string"
-        snowflakeTestResult:
-          $ref: "#/components/schemas/SnowflakeData"
+          $ref: "#/components/schemas/ServerCheck"
+        security:
+          $ref: "#/components/schemas/SecurityCheck"
+        database:
+          $ref: "#/components/schemas/DatabaseCheck"
+        application:
+          $ref: "#/components/schemas/ApplicationCheck"
+        graphQL:
+          $ref: "#/components/schemas/GraphQLCheck"
+        snowflake:
+          $ref: "#/components/schemas/SnowflakeCheck"
       required:
-      - "errors"
-      - "utc"
-      - "local"
-      - "deploymentType"
-      - "databaseJDBC"
-      - "databaseJDBCUrl"
-      - "protocol"
-      - "server"
-      - "allowedHosts"
-      - "apiVersion"
-      - "graphQLFramework"
-      - "snowflakeTestId"
-      - "snowflakeTestResult"
+        - "errors"
+        - "server"
+        - "security"
+        - "database"
+        - "application"
+        - "graphQL"
+        - "snowflake"
     EmployeeFilterSet:
       type: "object"
       properties:
@@ -782,7 +921,7 @@ components:
       - "period"
       - "workModality"
       - "employee"
-    EmploymentParams:
+    EmploymentRequest:
       type: "object"
       properties:
         period:

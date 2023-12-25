@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
  * @property probationEndDate Optional employment's probation end date.
  */
 @Serializable
-data class EmploymentParams(
+data class EmploymentRequest(
     val period: Period,
     val probationEndDate: LocalDate? = null,
     val workModality: WorkModality

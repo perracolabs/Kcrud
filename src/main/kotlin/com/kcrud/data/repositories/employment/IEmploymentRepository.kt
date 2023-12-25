@@ -7,7 +7,7 @@
 package com.kcrud.data.repositories.employment
 
 import com.kcrud.data.entities.employment.Employment
-import com.kcrud.data.entities.employment.EmploymentParams
+import com.kcrud.data.entities.employment.EmploymentRequest
 import java.util.*
 
 interface IEmploymentRepository {
@@ -30,19 +30,19 @@ interface IEmploymentRepository {
     /**
      * Creates a new employment and returns the created employment entity.
      * @param employeeId The employee ID associated with the employment.
-     * @param employment The employment to be created.
+     * @param employmentRequest The employment to be created.
      * @return The created employment entity with generated ID.
      */
-    fun create(employeeId: UUID, employment: EmploymentParams): Employment
+    fun create(employeeId: UUID, employmentRequest: EmploymentRequest): UUID
 
     /**
      * Updates an employment's details using the provided ID and employment entity.
      * @param employeeId The employee ID associated with the employment.
      * @param employmentId The ID of the employment to be updated.
-     * @param employment The new details for the employment.
-     * @return The updated employment entity if the update was successful, null otherwise.
+     * @param employmentRequest The new details for the employment.
+     * @return How many records were updated.
      */
-    fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentParams): Employment?
+    fun update(employeeId: UUID, employmentId: UUID, employmentRequest: EmploymentRequest): Int
 
     /**
      * Deletes an employment using the provided ID.

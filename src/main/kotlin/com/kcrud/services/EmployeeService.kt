@@ -8,7 +8,7 @@ package com.kcrud.services
 
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.entities.employee.EmployeeFilterSet
-import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.data.entities.employee.EmployeeRequest
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable
@@ -50,21 +50,23 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
 
     /**
      * Creates a new employee in the system.
-     * @param employee The employee to be created.
+     * @param employeeRequest The employee to be created.
      * @return The created employee entity with generated ID.
      */
-    fun create(employee: EmployeeParams): Employee {
-        return repository.create(employee = employee)
+    fun create(employeeRequest: EmployeeRequest): Employee {
+        val employeeId = repository.create(employeeRequest = employeeRequest)
+        return findById(employeeId = employeeId)!!
     }
 
     /**
      * Updates an employee's details in the system.
      * @param employeeId The ID of the employee to be updated.
-     * @param employee The new details for the employee.
+     * @param employeeRequest The new details for the employee.
      * @return The updated employee entity if the update was successful, null otherwise.
      */
-    fun update(employeeId: UUID, employee: EmployeeParams): Employee? {
-        return repository.update(employeeId = employeeId, employee = employee)
+    fun update(employeeId: UUID, employeeRequest: EmployeeRequest): Employee? {
+        val updatedCount = repository.update(employeeId = employeeId, employeeRequest = employeeRequest)
+        return if (updatedCount > 0) findById(employeeId = employeeId) else null
     }
 
     /**

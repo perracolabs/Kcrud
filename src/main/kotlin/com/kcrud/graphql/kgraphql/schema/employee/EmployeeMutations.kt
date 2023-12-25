@@ -7,7 +7,7 @@
 package com.kcrud.graphql.kgraphql.schema.employee
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.data.entities.employee.EmployeeRequest
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.services.EmployeeService
 import org.koin.core.component.KoinComponent
@@ -29,7 +29,7 @@ internal class EmployeeMutations(private val schemaBuilder: SchemaBuilder) : Koi
      */
     fun configureInputs(): EmployeeMutations {
         schemaBuilder.apply {
-            inputType<EmployeeParams> {
+            inputType<EmployeeRequest> {
                 name = "Input type definition for Employee."
             }
         }
@@ -44,13 +44,13 @@ internal class EmployeeMutations(private val schemaBuilder: SchemaBuilder) : Koi
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."
-                resolver { employee: EmployeeParams -> service.create(employee = employee) }
+                resolver { employee: EmployeeRequest -> service.create(employeeRequest = employee) }
             }
 
             mutation("updateEmployee") {
                 description = "Updates an existing employee."
-                resolver { employeeId: UUID, employee: EmployeeParams ->
-                    service.update(employeeId = employeeId, employee = employee)
+                resolver { employeeId: UUID, employee: EmployeeRequest ->
+                    service.update(employeeId = employeeId, employeeRequest = employee)
                 }
             }
 

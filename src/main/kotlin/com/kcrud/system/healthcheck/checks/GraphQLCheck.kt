@@ -11,6 +11,7 @@ import com.kcrud.settings.AppSettings
 import com.kcrud.utils.DeploymentType
 import kotlinx.serialization.Serializable
 
+@Suppress("unused")
 @Serializable
 data class GraphQLCheck(
     val errors: MutableList<String> = mutableListOf(),

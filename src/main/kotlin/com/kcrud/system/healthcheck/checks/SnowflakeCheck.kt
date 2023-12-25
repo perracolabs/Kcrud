@@ -10,6 +10,7 @@ import com.kcrud.security.snowflake.SnowflakeData
 import com.kcrud.security.snowflake.SnowflakeFactory
 import kotlinx.serialization.Serializable
 
+@Suppress("unused")
 @Serializable
 data class SnowflakeCheck(
     val errors: MutableList<String> = mutableListOf(),

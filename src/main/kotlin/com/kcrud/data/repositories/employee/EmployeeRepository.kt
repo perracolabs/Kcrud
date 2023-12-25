@@ -11,7 +11,8 @@ import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.entities.employee.EmployeeFilterSet
-import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.data.entities.employee.EmployeeRequest
+import com.kcrud.data.repositories.contact.IContactRepository
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.data.utils.pagination.applyPagination
@@ -21,7 +22,7 @@ import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
-internal class EmployeeRepository : IEmployeeRepository {
+internal class EmployeeRepository(private val contactRepository: IContactRepository) : IEmployeeRepository {
 
     private fun getFindEmployeeJoin(): Join {
         return EmployeeTable.join(
@@ -94,52 +95,45 @@ internal class EmployeeRepository : IEmployeeRepository {
         }
     }
 
-    override fun create(employee: EmployeeParams): Employee {
+    override fun create(employeeRequest: EmployeeRequest): UUID {
         return transaction {
             val newEmployeeId = EmployeeTable.insert { employeeRow ->
-                employeeParamsToTable(employee = employee, target = employeeRow)
+                employeeRequestToTable(employeeRequest = employeeRequest, target = employeeRow)
             } get EmployeeTable.id
 
-            employee.contact?.let {
-                ContactTable.insert { contactRow ->
-                    contactRow[employeeId] = newEmployeeId
-                    contactRow[email] = employee.contact.email.trim()
-                    contactRow[phone] = employee.contact.phone.trim()
-                } get ContactTable.id
+            employeeRequest.contact?.let {
+                contactRepository.createContact(
+                    employeeId = newEmployeeId,
+                    contactRequest = employeeRequest.contact
+                )
             }
 
-            findById(newEmployeeId)!!
+            newEmployeeId
         }
     }
 
-    override fun update(employeeId: UUID, employee: EmployeeParams): Employee? {
+    override fun update(employeeId: UUID, employeeRequest: EmployeeRequest): Int {
         return transaction {
             // First, find the existing employee to get the contact id.
-            val dbEmployee = findById(employeeId) ?: return@transaction null
+            val dbEmployee = findById(employeeId) ?: return@transaction 0
 
-            employee.contact?.let {
-                if (dbEmployee.contact == null) {
-                    // If the employee doesn't have a contact, create a new one.
-                    ContactTable.insert { contactRow ->
-                        contactRow[email] = employee.contact.email.trim()
-                        contactRow[phone] = employee.contact.phone.trim()
-                    } get ContactTable.id
-                } else {
-                    // If the employee already has a contact, update it.
-                    ContactTable.update(where = { ContactTable.id eq dbEmployee.contact.id }) { contactRow ->
-                        contactRow[email] = employee.contact.email.trim()
-                        contactRow[phone] = employee.contact.phone.trim()
-                    }
-                    dbEmployee.contact.id
+            // Set the contact.
+            if (employeeRequest.contact == null) {
+                if (dbEmployee.contact != null) {
+                    contactRepository.deleteContact(contactId = dbEmployee.contact.id)
                 }
+            } else {
+                contactRepository.setContact(
+                    employeeId = employeeId,
+                    contactId = dbEmployee.contact?.id,
+                    contactRequest = employeeRequest.contact
+                )
             }
 
             // Update the Employees table.
             EmployeeTable.update(where = { EmployeeTable.id eq employeeId }) { employeeRow ->
-                employeeParamsToTable(employee = employee, target = employeeRow)
+                employeeRequestToTable(employeeRequest = employeeRequest, target = employeeRow)
             }
-
-            findById(employeeId)
         }
     }
 
@@ -174,15 +168,15 @@ internal class EmployeeRepository : IEmployeeRepository {
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [EmployeeParams] instance.
+     * Populates an SQL [UpdateBuilder] with data from an [EmployeeRequest] instance.
      */
-    private fun employeeParamsToTable(employee: EmployeeParams, target: UpdateBuilder<Int>) {
+    private fun employeeRequestToTable(employeeRequest: EmployeeRequest, target: UpdateBuilder<Int>) {
         target.apply {
-            this[EmployeeTable.firstName] = employee.firstName.trim()
-            this[EmployeeTable.lastName] = employee.lastName.trim()
-            this[EmployeeTable.dob] = employee.dob
-            this[EmployeeTable.maritalStatus] = employee.maritalStatus
-            this[EmployeeTable.honorific] = employee.honorific
+            this[EmployeeTable.firstName] = employeeRequest.firstName.trim()
+            this[EmployeeTable.lastName] = employeeRequest.lastName.trim()
+            this[EmployeeTable.dob] = employeeRequest.dob
+            this[EmployeeTable.maritalStatus] = employeeRequest.maritalStatus
+            this[EmployeeTable.honorific] = employeeRequest.honorific
         }
     }
 }

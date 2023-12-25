@@ -7,7 +7,7 @@
 package com.kcrud.graphql.kgraphql.schema.employment
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.data.entities.employment.EmploymentParams
+import com.kcrud.data.entities.employment.EmploymentRequest
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.services.EmploymentService
 import org.koin.core.component.KoinComponent
@@ -30,7 +30,7 @@ internal class EmploymentMutations(private val schemaBuilder: SchemaBuilder) : K
      */
     fun configureInputs(): EmploymentMutations {
         schemaBuilder.apply {
-            inputType<EmploymentParams> {
+            inputType<EmploymentRequest> {
                 name = "Input type definition for Employments."
             }
         }
@@ -42,18 +42,18 @@ internal class EmploymentMutations(private val schemaBuilder: SchemaBuilder) : K
         schemaBuilder.apply {
             mutation("createEmployment") {
                 description = "Creates a new employment."
-                resolver { employeeId: UUID, employment: EmploymentParams ->
-                    service.create(employeeId = employeeId, employment = employment)
+                resolver { employeeId: UUID, employment: EmploymentRequest ->
+                    service.create(employeeId = employeeId, employmentRequest = employment)
                 }
             }
 
             mutation("updateEmployment") {
                 description = "Updates an existing employment."
-                resolver { employeeId: UUID, employmentId: UUID, employment: EmploymentParams ->
+                resolver { employeeId: UUID, employmentId: UUID, employment: EmploymentRequest ->
                     service.update(
                         employeeId = employeeId,
                         employmentId = employmentId,
-                        employment = employment
+                        employmentRequest = employment
                     )
                 }
             }

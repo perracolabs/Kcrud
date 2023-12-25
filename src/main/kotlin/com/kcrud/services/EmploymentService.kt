@@ -7,7 +7,7 @@
 package com.kcrud.services
 
 import com.kcrud.data.entities.employment.Employment
-import com.kcrud.data.entities.employment.EmploymentParams
+import com.kcrud.data.entities.employment.EmploymentRequest
 import com.kcrud.data.repositories.employment.IEmploymentRepository
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -40,21 +40,32 @@ internal class EmploymentService(private val repository: IEmploymentRepository) 
     /**
      * Creates a new employment and returns the created employment entity.
      * @param employeeId The employee ID associated with the employment.
-     * @param employment The employment to be created.
+     * @param employmentRequest The employment to be created.
      * @return The created employment entity with generated ID.
      */
-    fun create(employeeId: UUID, employment: EmploymentParams): Employment {
-        return repository.create(employeeId = employeeId, employment = employment)
+    fun create(employeeId: UUID, employmentRequest: EmploymentRequest): Employment {
+        val employmentId: UUID = repository.create(employeeId = employeeId, employmentRequest = employmentRequest)
+        return findById(employeeId = employeeId, employmentId = employmentId)!!
     }
 
     /**
      * Updates an employment's details using the provided ID and employment entity.
      * @param employmentId The ID of the employment to be updated.
-     * @param employment The new details for the employment.
+     * @param employmentRequest The new details for the employment.
      * @return The updated employment entity if the update was successful, null otherwise.
      */
-    fun update(employeeId: UUID, employmentId: UUID, employment: EmploymentParams): Employment? {
-        return repository.update(employeeId = employeeId, employmentId = employmentId, employment = employment)
+    fun update(employeeId: UUID, employmentId: UUID, employmentRequest: EmploymentRequest): Employment? {
+        val updateCount = repository.update(
+            employeeId = employeeId,
+            employmentId = employmentId,
+            employmentRequest = employmentRequest
+        )
+
+        return if (updateCount > 0) {
+            findById(employeeId = employeeId, employmentId = employmentId)
+        } else {
+            null
+        }
     }
 
     /**

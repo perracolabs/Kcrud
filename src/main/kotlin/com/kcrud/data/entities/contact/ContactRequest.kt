@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
  * @property phone The contact's phone. Must not be blank.
  */
 @Serializable
-data class ContactParams(
+data class ContactRequest(
     val email: String,
     val phone: String
 ) {

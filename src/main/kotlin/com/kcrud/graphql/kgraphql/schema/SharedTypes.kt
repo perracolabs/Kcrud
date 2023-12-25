@@ -10,6 +10,7 @@ import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.kcrud.data.entities.employee.types.Honorific
 import com.kcrud.data.entities.employee.types.MaritalStatus
 import com.kcrud.data.entities.employment.types.WorkModality
+import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.graphql.kgraphql.KGraphQLAPI
 import com.kcrud.utils.toUUID
 import kotlinx.datetime.LocalDate
@@ -54,9 +55,12 @@ internal class SharedTypes(private val schemaBuilder: SchemaBuilder) {
                 deserialize = { str -> LocalDate.parse(str) }
             }
             stringScalar<UUID> {
-                description = "Unique identifier"
+                description = "UUID unique identifier"
                 serialize = { uuid -> uuid.toString() }
                 deserialize = { str -> str.toUUID() }
+            }
+            enum<Pageable.SortDirection> {
+                description = "Sort direction used in pagination."
             }
         }
 

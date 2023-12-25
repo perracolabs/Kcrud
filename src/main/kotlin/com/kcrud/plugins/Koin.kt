@@ -6,6 +6,8 @@
 
 package com.kcrud.plugins
 
+import com.kcrud.data.repositories.contact.ContactRepository
+import com.kcrud.data.repositories.contact.IContactRepository
 import com.kcrud.data.repositories.employee.EmployeeRepository
 import com.kcrud.data.repositories.employee.IEmployeeRepository
 import com.kcrud.data.repositories.employment.EmploymentRepository
@@ -25,7 +27,9 @@ fun Application.configureKoin() {
 
     // Declare a Koin module to manage application-level dependencies.
     val moduleList = module {
-        single<IEmployeeRepository> { EmployeeRepository() }
+        single<IContactRepository> { ContactRepository() }
+
+        single<IEmployeeRepository> { EmployeeRepository(get()) }
         single { EmployeeService(get()) }
 
         single<IEmploymentRepository> { EmploymentRepository() }

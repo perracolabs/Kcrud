@@ -12,6 +12,7 @@ import com.kcrud.utils.NetworkUtils
 import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 
+@Suppress("unused")
 @Serializable
 data class ServerCheck(
     val errors: MutableList<String> = mutableListOf(),

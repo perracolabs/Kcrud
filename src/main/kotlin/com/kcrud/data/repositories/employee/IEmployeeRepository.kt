@@ -8,7 +8,7 @@ package com.kcrud.data.repositories.employee
 
 import com.kcrud.data.entities.employee.Employee
 import com.kcrud.data.entities.employee.EmployeeFilterSet
-import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.data.entities.employee.EmployeeRequest
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable
 import java.util.*
@@ -39,18 +39,18 @@ interface IEmployeeRepository {
 
     /**
      * Creates a new employee and returns the created employee entity.
-     * @param employee The employee to be created.
-     * @return The created employee entity with generated ID.
+     * @param employeeRequest The employee to be created.
+     * @return The created employee ID.
      */
-    fun create(employee: EmployeeParams): Employee
+    fun create(employeeRequest: EmployeeRequest): UUID
 
     /**
      * Updates an employee's details using the provided ID and employee entity.
      * @param employeeId The ID of the employee to be updated.
-     * @param employee The new details for the employee.
-     * @return The updated employee entity if the update was successful, null otherwise.
+     * @param employeeRequest The new details for the employee.
+     * @return How many records were updated.
      */
-    fun update(employeeId: UUID, employee: EmployeeParams): Employee?
+    fun update(employeeId: UUID, employeeRequest: EmployeeRequest): Int
 
     /**
      * Deletes an employee using the provided ID.

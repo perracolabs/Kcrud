@@ -7,7 +7,7 @@
 package com.kcrud.routes.data
 
 import com.kcrud.data.entities.employee.EmployeeFilterSet
-import com.kcrud.data.entities.employee.EmployeeParams
+import com.kcrud.data.entities.employee.EmployeeRequest
 import com.kcrud.data.utils.pagination.getPageable
 import com.kcrud.services.EmployeeService
 import com.kcrud.utils.toUUIDOrNull
@@ -44,8 +44,8 @@ fun Route.employeeRoute() {
 
         // Create
         post {
-            val employeeParams = call.receive<EmployeeParams>()
-            val createdEmployee = service.create(employee = employeeParams)
+            val employeeRequest = call.receive<EmployeeRequest>()
+            val createdEmployee = service.create(employeeRequest = employeeRequest)
             call.respond(HttpStatusCode.Created, createdEmployee)
         }
 
@@ -79,8 +79,8 @@ fun Route.employeeRoute() {
             // Update by employee ID
             put {
                 val employeeId = call.getEmployeeId()
-                val employeeParams = call.receive<EmployeeParams>()
-                val updatedEmployee = service.update(employeeId = employeeId, employee = employeeParams)
+                val employeeRequest = call.receive<EmployeeRequest>()
+                val updatedEmployee = service.update(employeeId = employeeId, employeeRequest = employeeRequest)
 
                 updatedEmployee?.let {
                     call.respond(HttpStatusCode.OK, updatedEmployee)

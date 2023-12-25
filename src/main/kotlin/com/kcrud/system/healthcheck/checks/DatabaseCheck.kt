@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.name
 
+@Suppress("unused")
 @Serializable
 data class DatabaseCheck(
     val errors: MutableList<String> = mutableListOf(),
