@@ -26,15 +26,22 @@ internal object SnowflakeFactory {
     // Lazy-loaded machine ID, configured per-machine.
     private val machineId by lazy { AppSettings.server.machineId }
 
+    // The base used for converting the generated ID to an alphanumeric string.
+    // Base 36 uses digits 0-9 and letters a-z, allowing a compact yet readable format.
+    // For example, a 12345 value in Base 36 might be represented as '9ix' in alphanumeric.
+    // Note: The base must be a value between 2 and 36, inclusive, as per the limitations
+    // of Kotlin's toString(radix) function used for this conversion.
+    private const val ALPHA_NUMERIC_BASE = 36
+
     // Tracks the last timestamp in milliseconds when an ID was generated.
     // Initialized to -1 to indicate no IDs have been generated yet.
     private var lastTimestampMs = -1L
 
     // Tracks the sequence number within the same millisecond.
     // This is used to generate multiple unique IDs within the same millisecond.
-    // Initialized to 0, as it gets incremented for each ID generated within the same millisecond.
-    // If IDs are not generated at a frequency higher than one per millisecond, this value
-    // will typically be 0.
+    // Initialized to 0, as it gets incremented for each ID generated within the
+    // same millisecond. This value will typically be 0 if IDs are not generated
+    // at a frequency higher than one per millisecond.
     private var sequence = 0L
 
     // Number of bits allocated for the machine ID.
@@ -46,11 +53,6 @@ internal object SnowflakeFactory {
     // catering to high-frequency ID generation requirements.
     private const val SEQUENCE_BITS = 12
 
-    // The base used for converting the generated ID to an alphanumeric string.
-    // Base 36 uses digits 0-9 and letters a-z for representation, allowing a compact yet readable format.
-    // For example, a numeric value of 12345 in Base 36 might be represented as '9ix' in alphanumeric form.
-    private const val ALPHA_NUMERIC_BASE = 36
-
     // Maximum possible value for machine ID, derived from the number of bits allocated.
     // This value is 2^MACHINE_ID_BITS - 1.
     private const val MAX_MACHINE_ID = (1 shl MACHINE_ID_BITS) - 1L
@@ -59,19 +61,15 @@ internal object SnowflakeFactory {
     // Equals 2^SEQUENCE_BITS - 1, ensuring a unique ID sequence within a millisecond.
     private const val MAX_SEQUENCE = (1 shl SEQUENCE_BITS) - 1L
 
-    // Wall-clock reference time captured at the initialization of SnowflakeFactory.
-    // This timestamp is used as a reference point in `newTimestamp()` to calculate a robust
-    // current time in milliseconds. It provides a stable base time that, when combined with
-    // the elapsed time since the factory's initialization (measured using `System.nanoTime()`),
-    // creates a timestamp that is immune to system clock adjustments.
-    private val timestampEpoch = System.currentTimeMillis()
+    // Wall-clock reference time set at SnowflakeFactory initialization.
+    // Utilized in `newTimestamp()` to compute stable millisecond timestamps,
+    // combining with elapsed time since initialization for adjustment-resilient values.
+    val timestampEpoch = System.currentTimeMillis()
 
-    // Initial nanosecond-precision timestamp marking the SnowflakeFactory's startup moment.
-    // This timestamp is used in conjunction with System.currentTimeMillis() to calculate a robust,
-    // monotonic current time in `newTimestamp()`. It ensures that the generated timestamps are always
-    // increasing, even in the event of system clock adjustments, by measuring the elapsed time since
-    // the factory initialization in a way that's immune to system time changes.
-    private val nanoTimeStart = System.nanoTime()
+    // Nanosecond-precision timestamp recorded at SnowflakeFactory initialization.
+    // Used alongside System.currentTimeMillis() in `newTimestamp()` to ensure
+    // monotonically increasing timestamps, immune to system clock modifications.
+    val nanoTimeStart = System.nanoTime()
 
     init {
         // Ensures that the machine ID is within the allowable range.
@@ -80,7 +78,7 @@ internal object SnowflakeFactory {
 
     /**
      * Generates the next unique Snowflake ID.
-     * @return The generated Snowflake ID as a base-36 alphanumeric string.
+     * @return The generated Snowflake ID in the configured base alphanumeric string.
      * @throws IllegalStateException If the system clock has moved backwards, breaking the ID sequence.
      */
     @Synchronized

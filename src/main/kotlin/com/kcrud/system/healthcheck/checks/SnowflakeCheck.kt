@@ -15,7 +15,9 @@ import kotlinx.serialization.Serializable
 data class SnowflakeCheck(
     val errors: MutableList<String> = mutableListOf(),
     var testId: String? = null,
-    var testResult: SnowflakeData? = null
+    var testResult: SnowflakeData? = null,
+    val timestampEpoch: Long = SnowflakeFactory.timestampEpoch,
+    val nanoTimeStart: Long = SnowflakeFactory.nanoTimeStart,
 ) {
     init {
         // Generating testId and handling potential exceptions.
