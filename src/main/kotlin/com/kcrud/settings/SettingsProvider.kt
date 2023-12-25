@@ -39,7 +39,7 @@ internal object SettingsProvider {
         // While top-level sections can be named freely, as this mapping dictates their data class
         // associations, the names for nested configuration sections must align exactly with the
         // property names in their respective nested data classes.
-        val configurationMappings = mapOf(
+        val mappings = mapOf(
             "ktor" to AppSettings.Server::class,
             "ktor.deployment" to AppSettings.Deployment::class,
             "ktor.cors" to AppSettings.Cors::class,
@@ -52,7 +52,7 @@ internal object SettingsProvider {
         @OptIn(SettingsAPI::class)
         settings = SettingsParser.parse(
             configuration = context.environment.config,
-            configurationMappings = configurationMappings
+            mappings = mappings
         )
 
         tracer.debug("Configuration loaded successfully.")
