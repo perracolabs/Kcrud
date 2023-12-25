@@ -6,9 +6,9 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.graphql.GraphQLFramework
 import com.kcrud.graphql.expedia.ExpediaGraphQLSetup
 import com.kcrud.graphql.kgraphql.KGraphQLSetup
+import com.kcrud.graphql.utils.GraphQLFramework
 import com.kcrud.settings.AppSettings
 import io.ktor.server.application.*
 

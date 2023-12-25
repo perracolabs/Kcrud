@@ -10,6 +10,8 @@ import com.kcrud.data.database.tables.ContactTable
 import com.kcrud.data.database.tables.EmployeeTable
 import com.kcrud.data.database.tables.EmploymentTable
 import com.kcrud.system.Tracer
+import com.kcrud.system.healthcheck.checks.DatabaseCheck
+import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -26,6 +28,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
  */
 internal object DatabaseManager {
     private val tracer = Tracer<DatabaseManager>()
+
+    private var database: Database? = null
+    private var hikariDataSource: HikariDataSource? = null
 
     @Suppress("unused")
     enum class Mode {
@@ -57,12 +62,13 @@ internal object DatabaseManager {
         // If a connection pool size is specified, a HikariCP DataSource is configured to manage
         // the pool which optimizes resource usage by reusing connections and managing their lifecycle.
         // This setup enables application-wide database access without global variables.
-        val database: Database = if (connectionDetails.connectionPoolSize > 0) {
+        val databaseInstance: Database = if (connectionDetails.connectionPoolSize > 0) {
             val dataSource = DatabaseUtils.createHikariDataSource(
                 poolSize = connectionDetails.connectionPoolSize,
                 url = connectionDetails.jdbcUrl,
                 driver = connectionDetails.jdbcDriver
             )
+            hikariDataSource = dataSource
             Database.connect(datasource = dataSource)
         } else {
             Database.connect(url = connectionDetails.jdbcUrl, driver = connectionDetails.jdbcDriver)
@@ -70,9 +76,10 @@ internal object DatabaseManager {
 
         if (createSchema) {
             tracer.info("Setting database schema.")
-            setupDatabase(database = database)
+            setupDatabase(database = databaseInstance)
         }
 
+        database = databaseInstance
         tracer.info("Database ready: $connectionDetails.")
     }
 
@@ -97,7 +104,7 @@ internal object DatabaseManager {
     /**
      * Checks whether the database is alive.
      */
-    fun ping(): Boolean {
+    private fun ping(): Boolean {
         return try {
             transaction {
                 exec("SELECT 1;")
@@ -107,5 +114,16 @@ internal object DatabaseManager {
             tracer.warning("Database is not alive.")
             false
         }
+    }
+
+    /**
+     * Retrieves HikariCP health metrics.
+     */
+    fun getHealthCheck(): DatabaseCheck {
+        return DatabaseCheck(
+            alive = ping(),
+            database = DatabaseCheck.Details.build(database = database),
+            datasource = DatabaseCheck.Datasource.build(datasource = hikariDataSource)
+        )
     }
 }

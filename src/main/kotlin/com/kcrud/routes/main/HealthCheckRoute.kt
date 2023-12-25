@@ -8,7 +8,7 @@ package com.kcrud.routes.main
 
 import com.kcrud.security.snowflake.SnowflakeFactory
 import com.kcrud.settings.AppSettings
-import com.kcrud.system.HealthCheck
+import com.kcrud.system.healthcheck.HealthCheck
 import com.kcrud.utils.NetworkUtils
 import io.ktor.http.*
 import io.ktor.server.application.*

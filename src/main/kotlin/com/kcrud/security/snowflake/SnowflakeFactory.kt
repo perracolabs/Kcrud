@@ -7,7 +7,6 @@
 package com.kcrud.security.snowflake
 
 import com.kcrud.settings.AppSettings
-import com.kcrud.system.Tracer
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -23,7 +22,6 @@ import java.util.concurrent.TimeUnit
  * See: [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
 internal object SnowflakeFactory {
-    private val tracer = Tracer<SnowflakeFactory>()
 
     // Lazy-loaded machine ID, configured per-machine.
     private val machineId by lazy { AppSettings.server.machineId }
@@ -80,8 +78,9 @@ internal object SnowflakeFactory {
 
         // Check for invalid system clock settings.
         if (currentTimestampMs < lastTimestampMs) {
-            tracer.error("Invalid System Clock. Current timestamp: $currentTimestampMs, last timestamp: $lastTimestampMs")
-            throw IllegalStateException("Invalid System Clock.")
+            throw IllegalStateException(
+                "Invalid System Clock. Current timestamp: $currentTimestampMs, last timestamp: $lastTimestampMs"
+            )
         }
 
         // If it's a new millisecond, reset the sequence number.

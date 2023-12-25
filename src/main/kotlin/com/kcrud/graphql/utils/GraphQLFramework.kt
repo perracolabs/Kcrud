@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.graphql
+package com.kcrud.graphql.utils
 
 /**
  * The supported GraphQL frameworks.
