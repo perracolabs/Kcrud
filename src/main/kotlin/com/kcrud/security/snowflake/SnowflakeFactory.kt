@@ -44,13 +44,12 @@ internal object SnowflakeFactory {
     // at a frequency higher than one per millisecond.
     private var sequence = 0L
 
-    // Number of bits allocated for the machine ID.
-    // 10 bits allows for 2^10 = 1,024 unique machine IDs, supporting large distributed systems.
+    // Number of bits allocated for the machine ID within the 64-bit Snowflake ID.
+    // Minimum 1 bit for at least 2 unique IDs. 10 bits allows 2^10 = 1,024 IDs.
     private const val MACHINE_ID_BITS = 10
 
-    // Number of bits allocated for the sequence number.
-    // 12 bits supports generating up to 2^12 = 4,096 unique IDs per millisecond per machine,
-    // catering to high-frequency ID generation requirements.
+    // Number of bits for the sequence number, part of the 64-bit limit.
+    // Minimum 1 bit for 2 IDs per millisecond. 12 bits allows 2^12 = 4,096 IDs per millisecond.
     private const val SEQUENCE_BITS = 12
 
     // Maximum possible value for machine ID, derived from the number of bits allocated.
