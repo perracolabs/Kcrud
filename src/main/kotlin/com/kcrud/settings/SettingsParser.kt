@@ -7,8 +7,6 @@
 package com.kcrud.settings
 
 import com.kcrud.system.Tracer
-import com.typesafe.config.Config
-import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -19,53 +17,44 @@ import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
 
 /**
- * Application configuration parser for strongly typed settings, leveraging reflection to map HOCON
- * configuration paths to corresponding Kotlin data classes.
- * This enables automatic instantiation and population of both nested and simple data class types,
- * aligning with the HOCON structure.
+ * Automates the parsing of application configuration settings into Kotlin data classes.
+ * Utilizes reflection for mapping configuration paths to data class types, supporting
+ * both nested and simple structures in line with HOCON standards.
  *
- * Key requirements for successful parsing:
- * - Data class property names must precisely match configuration keys.
- * - Configuration paths must reflect the hierarchical structure of the data classes for accurate mapping.
- * - The configuration file must be correctly formatted and adhere to HOCON specifications.
+ * Requirements for effective parsing:
+ * - Data class properties must match configuration keys exactly.
+ * - Configuration paths should mirror the data class hierarchy for proper mapping.
+ * - The configuration file needs to be properly formatted according to HOCON specifications.
  *
- * The parser accommodates list configurations in two forms: as comma-delimited strings or actual lists.
- * This design allows list values in environment variables to be expressed as one single string containing
- * comma-delimited values, simplifying configuration.
- * For instance, a setting can be a real list of values in the HOCON file, while its environmental variable
- * counterpart is a single string containing comma-delimited values.
+ * Additionally, the parser handles list configurations as comma-separated strings or actual lists,
+ * facilitating simpler configuration in environment variables. This allows settings defined as lists
+ * in HOCON to be represented as comma-delimited strings in environmental variables.
  */
 @SettingsAPI
 internal object SettingsParser {
     private val tracer = Tracer<SettingsParser>()
 
     /**
-     * Performs the configuration file parsing.
+     * Performs the application configuration parsing.
      *
-     * @param configuration The HOCON resource configuration file to be parsed.
-     * @param configMappings Map of configuration paths to their corresponding classes.
+     * @param configuration The application configuration object to be parsed.
+     * @param configurationMappings Map of configuration paths to their corresponding classes.
      * @return A new AppSettings object populated with the parsed configuration data.
      */
-    fun parse(configuration: String, configMappings: Map<String, KClass<*>>): AppSettings {
-        // Load the configuration file.
-        val config: Config = ConfigFactory.load(configuration)!!
-
-        // Instantiate the AppSettings class and get the primary constructor
-        // in order to map the configuration values to the constructor parameters.
+    fun parse(configuration: ApplicationConfig, configurationMappings: Map<String, KClass<*>>): AppSettings {
+        // Retrieve the primary constructor of AppSettings for parameter mapping.
         val constructor: KFunction<AppSettings> = AppSettings::class.primaryConstructor!!
         val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
-        // Parse the configuration values to the constructor parameters.
-        // For each constructor parameter, fetch the corresponding configuration value,
-        // instantiate the corresponding class, and map it to the parameter.
-        // If a value is a section, then it will recursively instantiate the corresponding class.
-        val settings: Map<KParameter, Any> = configMappings.mapNotNull { (keyPath, kClass) ->
-            val configInstance: Any = instantiateConfig(config = config, keyPath = keyPath, kClass = kClass)
+        // Map each configuration path to its corresponding class, instantiating classes for each setting.
+        // Nested settings are handled recursively.
+        val settings: Map<KParameter, Any> = configurationMappings.mapNotNull { (keyPath, kClass) ->
+            val configInstance: Any = instantiateConfig(config = configuration, keyPath = keyPath, kClass = kClass)
             val argumentKey = kClass.simpleName!!.lowercase()
             constructorParameters[argumentKey]!! to configInstance
         }.toMap()
 
-        // Instantiate the AppSettings class with the parsed configuration values.
+        // Create an AppSettings instance with the mapped configuration values.
         return constructor.callBy(settings)
     }
 
@@ -82,7 +71,7 @@ internal object SettingsParser {
      * @return An instance of the specified class with properties populated from the configuration.
      * @throws IllegalArgumentException If a required configuration key is missing or if there is a type mismatch.
      */
-    private fun <T : Any> instantiateConfig(config: Config, keyPath: String, kClass: KClass<T>): T {
+    private fun <T : Any> instantiateConfig(config: ApplicationConfig, keyPath: String, kClass: KClass<T>): T {
         tracer.debug("Parsing: ${kClass.simpleName}")
 
         // Fetch the primary constructor of the class.
@@ -127,7 +116,7 @@ internal object SettingsParser {
      * @return The converted property value or null if not found.
      * @throws IllegalArgumentException for unsupported types or conversion failures.
      */
-    private fun convertToType(config: Config, keyPath: String, type: KClass<*>, property: KProperty1<*, *>): Any? {
+    private fun convertToType(config: ApplicationConfig, keyPath: String, type: KClass<*>, property: KProperty1<*, *>): Any? {
         // Handle data classes. Recursively instantiate them.
         if (type.isData) {
             return instantiateConfig(config = config, keyPath = keyPath, kClass = type)
@@ -135,12 +124,12 @@ internal object SettingsParser {
 
         // Handle lists.
         if (type == List::class) {
-            val listType = (property.returnType.arguments.first().type!!.classifier as? KClass<*>)!!
+            val listType: KClass<*> = (property.returnType.arguments.first().type!!.classifier as? KClass<*>)!!
             return parseListValues(config = config, keyPath = keyPath, listType = listType)
         }
 
         // Handle simple types.
-        val stringValue: String = config.tryGetString(path = keyPath) ?: return null
+        val stringValue: String = config.tryGetString(keyPath) ?: return null
         return parseElementValue(keyPath = keyPath, stringValue = stringValue, type = type)
     }
 
@@ -209,7 +198,7 @@ internal object SettingsParser {
      * @param listType The KClass to which the list elements should be converted.
      * @return The converted list or an empty list if not found.
      */
-    private fun parseListValues(config: Config, keyPath: String, listType: KClass<*>): List<Any?> {
+    private fun parseListValues(config: ApplicationConfig, keyPath: String, listType: KClass<*>): List<Any?> {
         val rawList: List<String> = try {
             // Attempt to retrieve it as a list.
             config.tryGetStringList(keyPath) ?: listOf()

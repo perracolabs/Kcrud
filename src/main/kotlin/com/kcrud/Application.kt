@@ -20,7 +20,8 @@ import io.ktor.server.netty.*
  * See: [Choosing an engine](https://ktor.io/docs/engines.html)
  */
 fun main(args: Array<String>) {
-    embeddedServer(Netty, commandLineEnvironment(args)).start(wait = true)
+    val environment: ApplicationEngineEnvironment = commandLineEnvironment(args = args)
+    embeddedServer(factory = Netty, environment = environment).start(wait = true)
 }
 
 /**
@@ -31,6 +32,8 @@ fun main(args: Array<String>) {
  * See: [Plugins](https://ktor.io/docs/plugins.html#install)
  */
 fun Application.module() {
+
+    SettingsProvider.load(context = this)
 
     configureKoin()
 

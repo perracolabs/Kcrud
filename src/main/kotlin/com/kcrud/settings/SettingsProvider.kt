@@ -7,6 +7,7 @@
 package com.kcrud.settings
 
 import com.kcrud.system.Tracer
+import io.ktor.server.application.*
 
 /**
  * Singleton providing the configuration settings throughout the application.
@@ -14,10 +15,8 @@ import com.kcrud.system.Tracer
  * This class serves as the central point for accessing all configuration settings in a type-safe manner.
  */
 internal object SettingsProvider {
-
-    private const val RESOURCE_CONFIGURATION_FILE = "application.conf"
-
-    private val settings: AppSettings by lazy { configure() }
+    @Volatile
+    private lateinit var settings: AppSettings
 
     val server: AppSettings.Server get() = settings.server
     val deployment: AppSettings.Deployment get() = settings.deployment
@@ -27,17 +26,20 @@ internal object SettingsProvider {
     val graphql: AppSettings.GraphQL get() = settings.graphql
     val security: AppSettings.Security get() = settings.security
 
-    @OptIn(SettingsAPI::class)
-    private fun configure(): AppSettings {
+    @Synchronized
+    fun load(context: Application) {
+        if (::settings.isInitialized)
+            return
+
         val tracer = Tracer<SettingsProvider>()
-        tracer.debug("Loading configuration from '$RESOURCE_CONFIGURATION_FILE'.")
+        tracer.debug("Loading application configuration.")
 
         // Maps top-level configuration paths (like "ktor.database") to specific data classes
         // (such as AppSettings.Database::class).
         // While top-level sections can be named freely, as this mapping dictates their data class
         // associations, the names for nested configuration sections must align exactly with the
         // property names in their respective nested data classes.
-        val configMappings = mapOf(
+        val configurationMappings = mapOf(
             "ktor" to AppSettings.Server::class,
             "ktor.deployment" to AppSettings.Deployment::class,
             "ktor.cors" to AppSettings.Cors::class,
@@ -47,12 +49,12 @@ internal object SettingsProvider {
             "ktor.security" to AppSettings.Security::class
         )
 
-        val output = SettingsParser.parse(
-            configuration = RESOURCE_CONFIGURATION_FILE,
-            configMappings = configMappings
+        @OptIn(SettingsAPI::class)
+        settings = SettingsParser.parse(
+            configuration = context.environment.config,
+            configurationMappings = configurationMappings
         )
 
         tracer.debug("Configuration loaded successfully.")
-        return output
     }
 }
