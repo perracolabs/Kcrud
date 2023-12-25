@@ -37,15 +37,18 @@ internal object SnowflakeFactory {
     // will typically be 0.
     private var sequence = 0L
 
-    // Number of bits allocated for the machine ID. Determines the maximum number of unique machine IDs.
+    // Number of bits allocated for the machine ID.
+    // 10 bits allows for 2^10 = 1,024 unique machine IDs, supporting large distributed systems.
     private const val MACHINE_ID_BITS = 10
 
     // Number of bits allocated for the sequence number.
-    // Controls the maximum number of IDs that can be generated per millisecond for each machine.
+    // 12 bits supports generating up to 2^12 = 4,096 unique IDs per millisecond per machine,
+    // catering to high-frequency ID generation requirements.
     private const val SEQUENCE_BITS = 12
 
     // The base used for converting the generated ID to an alphanumeric string.
-    // Base 36 combines 0-9 and a-z for a compact representation.
+    // Base 36 uses digits 0-9 and letters a-z for representation, allowing a compact yet readable format.
+    // For example, a numeric value of 12345 in Base 36 might be represented as '9ix' in alphanumeric form.
     private const val ALPHA_NUMERIC_BASE = 36
 
     // Maximum possible value for machine ID, derived from the number of bits allocated.
@@ -56,10 +59,18 @@ internal object SnowflakeFactory {
     // Equals 2^SEQUENCE_BITS - 1, ensuring a unique ID sequence within a millisecond.
     private const val MAX_SEQUENCE = (1 shl SEQUENCE_BITS) - 1L
 
-    // Wall-clock reference time for Snowflake IDs.
+    // Wall-clock reference time captured at the initialization of SnowflakeFactory.
+    // This timestamp is used as a reference point in `newTimestamp()` to calculate a robust
+    // current time in milliseconds. It provides a stable base time that, when combined with
+    // the elapsed time since the factory's initialization (measured using `System.nanoTime()`),
+    // creates a timestamp that is immune to system clock adjustments.
     private val timestampEpoch = System.currentTimeMillis()
 
-    // Starting point for elapsed time measurement with System.nanoTime().
+    // Initial nanosecond-precision timestamp marking the SnowflakeFactory's startup moment.
+    // This timestamp is used in conjunction with System.currentTimeMillis() to calculate a robust,
+    // monotonic current time in `newTimestamp()`. It ensures that the generated timestamps are always
+    // increasing, even in the event of system clock adjustments, by measuring the elapsed time since
+    // the factory initialization in a way that's immune to system time changes.
     private val nanoTimeStart = System.nanoTime()
 
     init {
