@@ -27,9 +27,8 @@ internal object SnowflakeFactory {
     // Lazy-loaded machine ID, configured per-machine.
     private val machineId: Int by lazy { AppSettings.server.machineId }
 
-    // The base used for converting the generated ID to an alphanumeric string.
-    // Base 36 uses digits 0-9 and letters a-z, allowing a compact yet readable format.
-    // For example, a 12345 value in Base 36 might be represented as '9ix' in alphanumeric.
+    // The base used for converting the generated ID to a compact alphanumeric string.
+    // For example, 12345 in Base 36 might be represented as '9ix' in alphanumeric.
     // Note: The base must be a value between 2 and 36, inclusive, as per the limitations
     // of Kotlin's toString(radix) function used for this conversion.
     private const val ALPHA_NUMERIC_BASE: Int = 36
@@ -38,11 +37,9 @@ internal object SnowflakeFactory {
     // Initialized to -1 to indicate no IDs have been generated yet.
     private var lastTimestampMs: Long = -1L
 
-    // Tracks the sequence number within the same millisecond.
-    // This is used to generate multiple unique IDs within the same millisecond.
-    // Initialized to 0, as it gets incremented for each ID generated within the
-    // same millisecond. This value will typically be 0 if IDs are not generated
-    // at a frequency higher than one per millisecond.
+    // Tracks the sequence number for generating multiple unique IDs within the same millisecond.
+    // Initialized to 0 and incremented for each ID generated in the same millisecond. This value
+    // will typically be 0 if IDs are not generated at a frequency higher than one per millisecond.
     private var sequence: Long = 0L
 
     // Number of bits allocated for the machine ID within the 64-bit Snowflake ID.
