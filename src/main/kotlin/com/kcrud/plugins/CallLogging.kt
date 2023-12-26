@@ -51,7 +51,8 @@ fun Application.configureCallLogging() {
             SnowflakeFactory.nextId()
         }
 
-        // Adds the call ID to the response headers, so that it can be retrieved by the client for tracing.
+        // Optionally we can also include the IDs to the response headers,
+        // so that it can be retrieved by the client for tracing.
         replyToHeader(headerName = HttpHeaders.XRequestId)
     }
 }
