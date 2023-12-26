@@ -7,6 +7,7 @@
 package com.kcrud.api.routes.admin
 
 import com.kcrud.config.env.healthcheck.HealthCheck
+import com.kcrud.config.env.healthcheck.utils.collectRoutes
 import com.kcrud.config.env.security.snowflake.SnowflakeFactory
 import com.kcrud.config.settings.AppSettings
 import com.kcrud.utils.NetworkUtils
@@ -32,7 +33,9 @@ import io.ktor.server.routing.*
 fun Route.systemRoute() {
     authenticate(AppSettings.security.basicAuth.providerName) {
         get("/health") {
-            call.respond(HealthCheck())
+            val endpoints = call.application.collectRoutes()
+            val healthCheck = HealthCheck(endpoints = endpoints)
+            call.respond(healthCheck)
         }
 
         get("/snowflake/{id}") {

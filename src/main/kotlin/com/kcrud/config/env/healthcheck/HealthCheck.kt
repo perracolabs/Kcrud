@@ -22,6 +22,7 @@ data class HealthCheck(
     val application: ApplicationCheck = ApplicationCheck(),
     val graphQL: GraphQLCheck = GraphQLCheck(),
     val snowflake: SnowflakeCheck = SnowflakeCheck(),
+    val endpoints: List<String>,
 ) {
     init {
         errors.addAll(server.errors)
@@ -30,6 +31,10 @@ data class HealthCheck(
         errors.addAll(application.errors)
         errors.addAll(graphQL.errors)
         errors.addAll(snowflake.errors)
+
+        if (endpoints.isEmpty()) {
+            errors.add("No Endpoints Detected.")
+        }
 
         if (errors.isEmpty()) {
             errors.add("No Errors Detected.")
