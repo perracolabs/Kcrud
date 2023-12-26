@@ -12,7 +12,7 @@ import com.kcrud.config.settings.configuration.sections.security.sections.Encryp
 import com.kcrud.config.settings.configuration.sections.security.sections.JwtSettings
 
 /**
- * Security class holds settings related to security.
+ * Top level for the Security related settings.
  *
  * @property encryption Settings related to encryption.
  * @property constraints Settings related to security constraints.
