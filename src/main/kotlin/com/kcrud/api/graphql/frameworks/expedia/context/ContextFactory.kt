@@ -4,11 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.expedia.context
+package com.kcrud.api.graphql.frameworks.expedia.context
 
 import com.expediagroup.graphql.generator.extensions.plus
 import com.expediagroup.graphql.server.ktor.DefaultKtorGraphQLContextFactory
-import com.kcrud.api.graphql.expedia.ExpediaAPI
+import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
 import graphql.GraphQLContext
 import io.ktor.server.request.*
 

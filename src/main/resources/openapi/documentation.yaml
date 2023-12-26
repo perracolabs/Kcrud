@@ -54,6 +54,15 @@ paths:
         schema:
           type: "string"
       responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
         "200":
           description: "OK"
           content:
@@ -179,7 +188,7 @@ paths:
                   value:
                     errors: []
                     server:
-                      errors: [ ]
+                      errors: []
                       machineId: "null"
                       deploymentType: "null"
                       developmentModeEnabled: "null"
@@ -189,7 +198,7 @@ paths:
                       utc: "null"
                       local: "null"
                     security:
-                      errors: [ ]
+                      errors: []
                       jwtEnabled: "null"
                       basicAuthEnabled: "null"
                       publicApiRateLimit: "null"
@@ -198,17 +207,17 @@ paths:
                       newTokenRateRefillMs: "null"
                     database: "null"
                     application:
-                      errors: [ ]
+                      errors: []
                       apiVersion: "null"
                       docsEnabled: "null"
                     graphQL:
-                      errors: [ ]
+                      errors: []
                       enabled: "null"
                       framework: "null"
                       playground: "null"
                       dumpSchema: "null"
                     snowflake:
-                      errors: [ ]
+                      errors: []
                       testId: "null"
                       testResult: "null"
                       timestampEpoch: "null"
@@ -605,9 +614,9 @@ components:
         deploymentType:
           type: "string"
           enum:
-            - "DEV"
-            - "TEST"
-            - "PROD"
+          - "DEV"
+          - "TEST"
+          - "PROD"
         developmentModeEnabled:
           type: "boolean"
         protocol:
@@ -623,13 +632,13 @@ components:
         local:
           $ref: "#/components/schemas/LocalDateTime"
       required:
-        - "errors"
-        - "deploymentType"
-        - "protocol"
-        - "host"
-        - "allowedHosts"
-        - "utc"
-        - "local"
+      - "errors"
+      - "deploymentType"
+      - "protocol"
+      - "host"
+      - "allowedHosts"
+      - "utc"
+      - "local"
     SecurityCheck:
       type: "object"
       properties:
@@ -654,7 +663,7 @@ components:
           type: "integer"
           format: "int64"
       required:
-        - "errors"
+      - "errors"
     Datasource:
       type: "object"
       properties:
@@ -702,12 +711,12 @@ components:
         catalog:
           type: "string"
       required:
-        - "name"
-        - "version"
-        - "dialect"
-        - "url"
-        - "vendor"
-        - "catalog"
+      - "name"
+      - "version"
+      - "dialect"
+      - "url"
+      - "vendor"
+      - "catalog"
     Configuration:
       type: "object"
       properties:
@@ -719,8 +728,8 @@ components:
         jdbcUrl:
           type: "string"
       required:
-        - "jdbcDriver"
-        - "jdbcUrl"
+      - "jdbcDriver"
+      - "jdbcUrl"
     DatabaseCheck:
       type: "object"
       properties:
@@ -737,8 +746,8 @@ components:
         configuration:
           $ref: "#/components/schemas/Configuration"
       required:
-        - "errors"
-        - "configuration"
+      - "errors"
+      - "configuration"
     ApplicationCheck:
       type: "object"
       properties:
@@ -751,8 +760,8 @@ components:
         docsEnabled:
           type: "boolean"
       required:
-        - "errors"
-        - "apiVersion"
+      - "errors"
+      - "apiVersion"
     GraphQLCheck:
       type: "object"
       properties:
@@ -808,7 +817,7 @@ components:
           type: "integer"
           format: "int64"
       required:
-        - "errors"
+      - "errors"
     HealthCheck:
       type: "object"
       properties:
@@ -829,13 +838,13 @@ components:
         snowflake:
           $ref: "#/components/schemas/SnowflakeCheck"
       required:
-        - "errors"
-        - "server"
-        - "security"
-        - "database"
-        - "application"
-        - "graphQL"
-        - "snowflake"
+      - "errors"
+      - "server"
+      - "security"
+      - "database"
+      - "application"
+      - "graphQL"
+      - "snowflake"
     EmployeeFilterSet:
       type: "object"
       properties:

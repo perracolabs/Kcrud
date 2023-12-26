@@ -4,25 +4,24 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.kgraphql.context
+package com.kcrud.api.graphql.frameworks.expedia.context
 
-import com.apurebase.kgraphql.Context
-import com.apurebase.kgraphql.ContextBuilder
 import com.kcrud.api.graphql.context.ContextUser
-import com.kcrud.api.graphql.kgraphql.KGraphQLAPI
+import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
 import com.kcrud.utils.Tracer
-import io.ktor.server.application.*
+import graphql.schema.DataFetchingEnvironment
+import io.ktor.http.*
 
 /**
  * Graphql session context hold attributes such as the context user.
  */
-@KGraphQLAPI
-internal class SessionContext(private val context: Context) {
+@ExpediaAPI
+internal class SessionContext(private val env: DataFetchingEnvironment) {
     private val tracer = Tracer<SessionContext>()
 
     @Suppress("MemberVisibilityCanBePrivate")
     fun getUser(): ContextUser? {
-        return context.get<ContextUser>()
+        return env.graphQlContext.getOrDefault(KEY_USER, null)
     }
 
     fun printUser() {
@@ -42,9 +41,8 @@ internal class SessionContext(private val context: Context) {
          * the GraphQL context.
          * In a real application, this could be a JWT token decoded from the bearer key.
          */
-        fun injectUserFromHeader(contextBuilder: ContextBuilder, call: ApplicationCall) {
-            val user = ContextUser(userId = call.request.headers[KEY_USER])
-            contextBuilder.inject(ContextUser::class, user)
+        fun injectUserFromHeader(map: MutableMap<String, Any>, headers: Headers) {
+            map[KEY_USER] = ContextUser(userId = headers[KEY_USER])
         }
     }
 }

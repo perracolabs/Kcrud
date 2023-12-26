@@ -4,11 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.expedia.schema.employment
+package com.kcrud.api.graphql.frameworks.expedia.schema.employment
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
-import com.kcrud.api.graphql.expedia.ExpediaAPI
+import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
 import com.kcrud.domain.entities.employment.Employment
 import com.kcrud.domain.services.EmploymentService
 import org.koin.mp.KoinPlatform.getKoin

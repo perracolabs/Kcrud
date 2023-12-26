@@ -4,15 +4,15 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.kgraphql
+package com.kcrud.api.graphql.frameworks.kgraphql
 
 import com.apurebase.kgraphql.GraphQL
-import com.kcrud.api.graphql.kgraphql.context.SessionContext
-import com.kcrud.api.graphql.kgraphql.schema.SharedTypes
-import com.kcrud.api.graphql.kgraphql.schema.employee.EmployeeMutations
-import com.kcrud.api.graphql.kgraphql.schema.employee.EmployeeQueries
-import com.kcrud.api.graphql.kgraphql.schema.employment.EmploymentMutations
-import com.kcrud.api.graphql.kgraphql.schema.employment.EmploymentQueries
+import com.kcrud.api.graphql.frameworks.kgraphql.context.SessionContext
+import com.kcrud.api.graphql.frameworks.kgraphql.schema.SharedTypes
+import com.kcrud.api.graphql.frameworks.kgraphql.schema.employee.EmployeeMutations
+import com.kcrud.api.graphql.frameworks.kgraphql.schema.employee.EmployeeQueries
+import com.kcrud.api.graphql.frameworks.kgraphql.schema.employment.EmploymentMutations
+import com.kcrud.api.graphql.frameworks.kgraphql.schema.employment.EmploymentQueries
 import com.kcrud.config.env.security.authentication.AuthenticationToken
 import com.kcrud.config.settings.AppSettings
 import com.kcrud.utils.NetworkUtils

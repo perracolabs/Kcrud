@@ -4,12 +4,12 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.expedia.schema
+package com.kcrud.api.graphql.frameworks.expedia.schema
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.federation.directives.ContactDirective
 import com.expediagroup.graphql.server.Schema
-import com.kcrud.api.graphql.expedia.ExpediaAPI
+import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
 
 @ContactDirective(
     name = "KCrud Schema",

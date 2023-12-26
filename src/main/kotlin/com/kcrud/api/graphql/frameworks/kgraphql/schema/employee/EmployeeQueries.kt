@@ -4,12 +4,12 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.kgraphql.schema.employee
+package com.kcrud.api.graphql.frameworks.kgraphql.schema.employee
 
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.api.graphql.kgraphql.KGraphQLAPI
-import com.kcrud.api.graphql.kgraphql.context.SessionContext
+import com.kcrud.api.graphql.frameworks.kgraphql.KGraphQLAPI
+import com.kcrud.api.graphql.frameworks.kgraphql.context.SessionContext
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.domain.entities.employee.Employee

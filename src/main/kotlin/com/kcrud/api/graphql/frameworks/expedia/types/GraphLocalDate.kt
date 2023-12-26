@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.expedia.types
+package com.kcrud.api.graphql.frameworks.expedia.types
 
 import graphql.GraphQLContext
 import graphql.execution.CoercedVariables

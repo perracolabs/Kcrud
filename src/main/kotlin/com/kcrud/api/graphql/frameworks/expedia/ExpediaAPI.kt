@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.expedia
+package com.kcrud.api.graphql.frameworks.expedia
 
 /**
  * Annotation for controlled access to the Expedia GraphQL API code,

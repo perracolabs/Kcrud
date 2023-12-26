@@ -4,10 +4,10 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.kgraphql.schema
+package com.kcrud.api.graphql.frameworks.kgraphql.schema
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.api.graphql.kgraphql.KGraphQLAPI
+import com.kcrud.api.graphql.frameworks.kgraphql.KGraphQLAPI
 import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.data.utils.toUUID
 import com.kcrud.domain.entities.employee.types.Honorific

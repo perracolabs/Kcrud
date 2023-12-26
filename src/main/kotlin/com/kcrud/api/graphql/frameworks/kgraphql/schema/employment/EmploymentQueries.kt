@@ -4,10 +4,10 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.kgraphql.schema.employment
+package com.kcrud.api.graphql.frameworks.kgraphql.schema.employment
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.api.graphql.kgraphql.KGraphQLAPI
+import com.kcrud.api.graphql.frameworks.kgraphql.KGraphQLAPI
 import com.kcrud.domain.entities.employment.Employment
 import com.kcrud.domain.services.EmploymentService
 import org.koin.core.component.KoinComponent

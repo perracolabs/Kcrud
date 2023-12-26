@@ -4,12 +4,12 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.expedia.schema.employee
+package com.kcrud.api.graphql.frameworks.expedia.schema.employee
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
-import com.kcrud.api.graphql.expedia.ExpediaAPI
-import com.kcrud.api.graphql.expedia.context.SessionContext
+import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
+import com.kcrud.api.graphql.frameworks.expedia.context.SessionContext
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.domain.entities.employee.Employee
