@@ -12,12 +12,12 @@ import com.kcrud.config.settings.configuration.sections.security.sections.Encryp
 import com.kcrud.config.settings.configuration.sections.security.sections.JwtSettings
 
 /**
- * Top level for the Security related settings.
+ * Top level section for the Security related settings.
  *
- * @property encryption Settings related to encryption.
- * @property constraints Settings related to security constraints.
- * @property jwt Settings related to JWT authentication.
- * @property basicAuth Settings related to basic authentication.
+ * @property encryption Settings related to encryption, such as the encryption keys.
+ * @property constraints Settings related to security constraints, such endpoints rate limits.
+ * @property jwt Settings related to JWT authentication, such as the JWT secrets.
+ * @property basicAuth Settings related to basic authentication, such as the basic auth credentials.
  */
 internal data class SecuritySettings(
     val encryption: EncryptionSettings,
