@@ -6,8 +6,8 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.settings.AppSettings
-import com.kcrud.system.Tracer
+import com.kcrud.config.settings.AppSettings
+import com.kcrud.utils.Tracer
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*

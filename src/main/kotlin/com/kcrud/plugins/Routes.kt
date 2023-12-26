@@ -6,13 +6,13 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.routes.data.employeeRoute
-import com.kcrud.routes.data.employmentRoute
-import com.kcrud.routes.main.rootRoute
-import com.kcrud.routes.main.systemRoute
-import com.kcrud.routes.system.accessTokenRoute
-import com.kcrud.routes.system.documentationRoute
-import com.kcrud.settings.AppSettings
+import com.kcrud.api.routes.data.employeeRoute
+import com.kcrud.api.routes.data.employmentRoute
+import com.kcrud.api.routes.main.rootRoute
+import com.kcrud.api.routes.main.systemRoute
+import com.kcrud.api.routes.system.accessTokenRoute
+import com.kcrud.api.routes.system.documentationRoute
+import com.kcrud.config.settings.AppSettings
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

@@ -6,7 +6,7 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.security.authentication.AuthenticationSetup
+import com.kcrud.config.env.security.authentication.AuthenticationSetup
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 

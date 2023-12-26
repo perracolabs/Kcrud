@@ -6,10 +6,10 @@
 
 package com.kcrud
 
-import com.kcrud.data.database.manager.DatabaseManager
+import com.kcrud.config.settings.AppSettings
+import com.kcrud.data.database.DatabaseManager
 import com.kcrud.plugins.*
-import com.kcrud.settings.AppSettings
-import com.kcrud.system.Tracer
+import com.kcrud.utils.Tracer
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*

@@ -6,8 +6,7 @@
 
 package com.kcrud.utils
 
-import com.kcrud.settings.AppSettings
-import com.kcrud.system.Tracer
+import com.kcrud.config.settings.AppSettings
 
 /**
  * Utility object for network-related functionalities.

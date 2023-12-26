@@ -6,14 +6,14 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.data.repositories.contact.ContactRepository
-import com.kcrud.data.repositories.contact.IContactRepository
-import com.kcrud.data.repositories.employee.EmployeeRepository
-import com.kcrud.data.repositories.employee.IEmployeeRepository
-import com.kcrud.data.repositories.employment.EmploymentRepository
-import com.kcrud.data.repositories.employment.IEmploymentRepository
-import com.kcrud.services.EmployeeService
-import com.kcrud.services.EmploymentService
+import com.kcrud.domain.repositories.contact.ContactRepository
+import com.kcrud.domain.repositories.contact.IContactRepository
+import com.kcrud.domain.repositories.employee.EmployeeRepository
+import com.kcrud.domain.repositories.employee.IEmployeeRepository
+import com.kcrud.domain.repositories.employment.EmploymentRepository
+import com.kcrud.domain.repositories.employment.IEmploymentRepository
+import com.kcrud.domain.services.EmployeeService
+import com.kcrud.domain.services.EmploymentService
 import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin

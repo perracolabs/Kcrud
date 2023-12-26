@@ -6,12 +6,12 @@
 
 package com.kcrud
 
-import com.kcrud.data.entities.contact.Contact
-import com.kcrud.data.entities.employee.Employee
-import com.kcrud.data.entities.employee.types.Honorific
-import com.kcrud.data.entities.employee.types.MaritalStatus
-import com.kcrud.data.repositories.employee.IEmployeeRepository
-import com.kcrud.services.EmployeeService
+import com.kcrud.domain.entities.contact.Contact
+import com.kcrud.domain.entities.employee.Employee
+import com.kcrud.domain.entities.employee.types.Honorific
+import com.kcrud.domain.entities.employee.types.MaritalStatus
+import com.kcrud.domain.repositories.employee.IEmployeeRepository
+import com.kcrud.domain.services.EmployeeService
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
