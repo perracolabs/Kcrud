@@ -10,12 +10,16 @@ import com.kcrud.config.settings.configuration.sections.*
 import com.kcrud.config.settings.configuration.sections.security.SecuritySettings
 
 /**
- * Represents the application's configuration settings as a structured, easily accessible model.
+ * Represents the top-level configuration settings for the application.
  *
- * For accurate mapping, the property names of nested data classes must correspond directly
- * with their configuration section names.
+ * This data class serves as a structured representation of the application's configuration file.
+ * Each property in this class corresponds to a specific section in the configuration file,
+ * allowing for a direct and type-safe mapping of configuration data.
+ *
+ * Note: It is crucial that the property names in this class exactly match the respective section
+ * names in the configuration file to ensure proper mapping and instantiation of the settings.
  */
-internal data class Configuration(
+internal data class RootConfiguration(
     val server: ServerSettings,
     val deployment: DeploymentSettings,
     val cors: CorsSettings,

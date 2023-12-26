@@ -6,7 +6,7 @@
 
 package com.kcrud.config.settings.utils
 
-import com.kcrud.config.settings.configuration.Configuration
+import com.kcrud.config.settings.configuration.RootConfiguration
 import com.kcrud.utils.Tracer
 import io.ktor.server.config.*
 import kotlin.reflect.KClass
@@ -42,9 +42,9 @@ internal object ConfigurationParser {
      * @param mappings Map of top-level configuration paths to their corresponding classes.
      * @return A new AppSettings object populated with the parsed configuration data.
      */
-    fun parse(configuration: ApplicationConfig, mappings: Map<String, Pair<String, KClass<*>>>): Configuration {
+    fun parse(configuration: ApplicationConfig, mappings: Map<String, Pair<String, KClass<*>>>): RootConfiguration {
         // Retrieve the primary constructor of AppSettings for parameter mapping.
-        val constructor: KFunction<Configuration> = Configuration::class.primaryConstructor!!
+        val constructor: KFunction<RootConfiguration> = RootConfiguration::class.primaryConstructor!!
         val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
         // Map each configuration path to its corresponding class, instantiating classes for each setting.

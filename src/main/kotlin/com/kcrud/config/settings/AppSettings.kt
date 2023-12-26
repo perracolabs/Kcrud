@@ -6,7 +6,7 @@
 
 package com.kcrud.config.settings
 
-import com.kcrud.config.settings.configuration.Configuration
+import com.kcrud.config.settings.configuration.RootConfiguration
 import com.kcrud.config.settings.configuration.sections.*
 import com.kcrud.config.settings.configuration.sections.security.SecuritySettings
 import com.kcrud.config.settings.utils.ConfigurationAPI
@@ -21,7 +21,7 @@ import io.ktor.server.application.*
  */
 internal object AppSettings {
     @Volatile
-    private lateinit var configuration: Configuration
+    private lateinit var configuration: RootConfiguration
 
     val server: ServerSettings get() = configuration.server
     val deployment: DeploymentSettings get() = configuration.deployment
