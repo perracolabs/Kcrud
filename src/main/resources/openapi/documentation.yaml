@@ -54,15 +54,6 @@ paths:
         schema:
           type: "string"
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "200":
           description: "OK"
           content:
@@ -201,6 +192,10 @@ paths:
                       errors: [ ]
                       jwtEnabled: "null"
                       basicAuthEnabled: "null"
+                      publicApiRateLimit: "null"
+                      publicApiRateRefillMs: "null"
+                      newTokenRateLimit: "null"
+                      newTokenRateRefillMs: "null"
                     database: "null"
                     application:
                       errors: [ ]
@@ -216,6 +211,8 @@ paths:
                       errors: [ ]
                       testId: "null"
                       testResult: "null"
+                      timestampEpoch: "null"
+                      nanoTimeStart: "null"
         "500":
           description: "Internal Server Error"
           content:
@@ -644,32 +641,20 @@ components:
           type: "boolean"
         basicAuthEnabled:
           type: "boolean"
+        publicApiRateLimit:
+          type: "integer"
+          format: "int32"
+        publicApiRateRefillMs:
+          type: "integer"
+          format: "int64"
+        newTokenRateLimit:
+          type: "integer"
+          format: "int32"
+        newTokenRateRefillMs:
+          type: "integer"
+          format: "int64"
       required:
         - "errors"
-    Details:
-      type: "object"
-      properties:
-        name:
-          type: "string"
-        version:
-          type: "string"
-        dialect:
-          type: "string"
-        url:
-          type: "string"
-        vendor:
-          type: "string"
-        autoCommit:
-          type: "boolean"
-        catalog:
-          type: "string"
-      required:
-        - "name"
-        - "version"
-        - "dialect"
-        - "url"
-        - "vendor"
-        - "catalog"
     Datasource:
       type: "object"
       properties:
@@ -697,6 +682,32 @@ components:
         maxPoolSize:
           type: "integer"
           format: "int32"
+    ConnectionTest:
+      type: "object"
+      properties:
+        established:
+          type: "boolean"
+        name:
+          type: "string"
+        version:
+          type: "string"
+        dialect:
+          type: "string"
+        url:
+          type: "string"
+        vendor:
+          type: "string"
+        autoCommit:
+          type: "boolean"
+        catalog:
+          type: "string"
+      required:
+        - "name"
+        - "version"
+        - "dialect"
+        - "url"
+        - "vendor"
+        - "catalog"
     Configuration:
       type: "object"
       properties:
@@ -719,10 +730,10 @@ components:
             type: "string"
         alive:
           type: "boolean"
-        database:
-          $ref: "#/components/schemas/Details"
         datasource:
           $ref: "#/components/schemas/Datasource"
+        connectionTest:
+          $ref: "#/components/schemas/ConnectionTest"
         configuration:
           $ref: "#/components/schemas/Configuration"
       required:
@@ -790,6 +801,12 @@ components:
           type: "string"
         testResult:
           $ref: "#/components/schemas/SnowflakeData"
+        timestampEpoch:
+          type: "integer"
+          format: "int64"
+        nanoTimeStart:
+          type: "integer"
+          format: "int64"
       required:
         - "errors"
     HealthCheck:

@@ -6,9 +6,10 @@
 
 package com.kcrud.plugins
 
+import com.kcrud.config.settings.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.plugins.ratelimit.*
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Configures the routes rate limits by defining the maximum allowed calls per period.
@@ -27,14 +28,20 @@ import kotlin.time.Duration.Companion.seconds
  */
 fun Application.configureRateLimit() {
     install(RateLimit) {
-        // Example scope for new token generation rate limit.
-        register(RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
-            rateLimiter(limit = 100, refillPeriod = 10.seconds)
-        }
-
         // Example scope for the public API rate limit.
         register(RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
-            rateLimiter(limit = 1_000, refillPeriod = 1.seconds)
+            rateLimiter(
+                limit = AppSettings.security.constraints.publicApi.limit,
+                refillPeriod = AppSettings.security.constraints.publicApi.refill.milliseconds
+            )
+        }
+
+        // Example scope for new token generation rate limit.
+        register(RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
+            rateLimiter(
+                limit = AppSettings.security.constraints.newToken.limit,
+                refillPeriod = AppSettings.security.constraints.newToken.refill.milliseconds
+            )
         }
     }
 }

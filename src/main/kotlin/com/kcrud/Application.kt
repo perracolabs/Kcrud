@@ -37,7 +37,9 @@ fun Application.module() {
 
     configureKoin()
 
-    configureHttpSettings()
+    configureCors()
+
+    configureDefaultHeaders()
 
     configureCallLogging()
 

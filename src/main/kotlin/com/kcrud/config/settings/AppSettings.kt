@@ -6,6 +6,10 @@
 
 package com.kcrud.config.settings
 
+import com.kcrud.config.settings.config.Config
+import com.kcrud.config.settings.config.ConfigAPI
+import com.kcrud.config.settings.config.ConfigParser
+import com.kcrud.config.settings.config.sections.*
 import com.kcrud.utils.Tracer
 import io.ktor.server.application.*
 
@@ -18,13 +22,13 @@ internal object AppSettings {
     @Volatile
     private lateinit var config: Config
 
-    val server: Config.Server get() = config.server
-    val deployment: Config.Deployment get() = config.deployment
-    val cors: Config.Cors get() = config.cors
-    val database: Config.Database get() = config.database
-    val docs: Config.Docs get() = config.docs
-    val graphql: Config.GraphQL get() = config.graphql
-    val security: Config.Security get() = config.security
+    val server: Server get() = config.server
+    val deployment: Deployment get() = config.deployment
+    val cors: Cors get() = config.cors
+    val database: Database get() = config.database
+    val docs: Docs get() = config.docs
+    val graphql: GraphQL get() = config.graphql
+    val security: Security get() = config.security
 
     @Synchronized
     fun load(context: Application) {
@@ -40,13 +44,13 @@ internal object AppSettings {
         // associations, the names for nested configuration sections must align exactly with the
         // property names in their respective nested data classes.
         val mappings = mapOf(
-            "ktor" to Config.Server::class,
-            "ktor.deployment" to Config.Deployment::class,
-            "ktor.cors" to Config.Cors::class,
-            "ktor.database" to Config.Database::class,
-            "ktor.docs" to Config.Docs::class,
-            "ktor.graphql" to Config.GraphQL::class,
-            "ktor.security" to Config.Security::class
+            "ktor" to Server::class,
+            "ktor.deployment" to Deployment::class,
+            "ktor.cors" to Cors::class,
+            "ktor.database" to Database::class,
+            "ktor.docs" to Docs::class,
+            "ktor.graphql" to GraphQL::class,
+            "ktor.security" to Security::class
         )
 
         @OptIn(ConfigAPI::class)

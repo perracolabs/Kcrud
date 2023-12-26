@@ -11,27 +11,16 @@ import com.kcrud.utils.Tracer
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.plugins.defaultheaders.*
 
 /**
- * Configures HTTP settings for the application, including CORS and default headers.
- *
- * This function sets up CORS by configuring allowed HTTP methods and headers, permitting credentials,
+ * Configures CORS settings by setting allowed HTTP methods and headers, permitting credentials,
  * and enabling non-simple content types for more complex operations like file uploads.
- *
- * Additionally, it sets a default header 'X-Engine' for all HTTP responses.
  *
  * Note: The 'anyHost' setting for CORS is not recommended for production use.
  *
  * See: [CORS Documentation](https://ktor.io/docs/cors.html)
- *
- * See: [Default Headers Documentation](https://ktor.io/docs/default-headers.html)
  */
-fun Application.configureHttpSettings() {
-
-    install(DefaultHeaders) {
-        header("X-Engine", "Kcrud")
-    }
+fun Application.configureCors() {
 
     // Install and configure the CORS feature.
     install(CORS) {
@@ -56,7 +45,7 @@ fun Application.configureHttpSettings() {
 
         // Set the allowed hosts.
 
-        val tracer = Tracer.forFunction(Application::configureHttpSettings)
+        val tracer = Tracer.forFunction(Application::configureCors)
 
         val allowedHosts: List<String> = AppSettings.cors.allowedHosts
         tracer.info("Allowed hosts: $allowedHosts")

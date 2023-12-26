@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings
+package com.kcrud.config.settings.config
 
 import com.kcrud.utils.Tracer
 import io.ktor.server.config.*
@@ -72,7 +72,7 @@ internal object ConfigParser {
      * @throws IllegalArgumentException If a required configuration key is missing or if there is a type mismatch.
      */
     private fun <T : Any> instantiateConfig(config: ApplicationConfig, keyPath: String, kClass: KClass<T>): T {
-        tracer.debug("Parsing: ${kClass.simpleName}")
+        tracer.debug("Parsing '${kClass.simpleName}' from '$keyPath'")
 
         // Fetch the primary constructor of the class.
         val constructor: KFunction<T> = kClass.primaryConstructor!!
