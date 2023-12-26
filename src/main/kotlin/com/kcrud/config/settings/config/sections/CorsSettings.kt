@@ -11,6 +11,6 @@ package com.kcrud.config.settings.config.sections
  *
  * @property allowedHosts The list of allowed hosts used in CORS.
  */
-internal data class Cors(
+internal data class CorsSettings(
     val allowedHosts: List<String>
 )

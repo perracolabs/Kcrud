@@ -41,21 +41,24 @@ internal object ConfigParser {
      * @param mappings Map of top-level configuration paths to their corresponding classes.
      * @return A new AppSettings object populated with the parsed configuration data.
      */
-    fun parse(configuration: ApplicationConfig, mappings: Map<String, KClass<*>>): Config {
+    fun parse(configuration: ApplicationConfig, mappings: Map<String, Pair<String, KClass<*>>>): Config {
         // Retrieve the primary constructor of AppSettings for parameter mapping.
         val constructor: KFunction<Config> = Config::class.primaryConstructor!!
         val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
         // Map each configuration path to its corresponding class, instantiating classes for each setting.
         // Nested settings are handled recursively.
-        val settings: Map<KParameter, Any> = mappings.mapNotNull { (keyPath, kClass) ->
-            val configInstance: Any = instantiateConfig(config = configuration, keyPath = keyPath, kClass = kClass)
-            val argumentKey = kClass.simpleName!!.lowercase()
-            constructorParameters[argumentKey]!! to configInstance
+        val arguments: Map<KParameter, Any> = mappings.mapNotNull { (keyPath, keyClassMap) ->
+            val (argumentName, configClass) = keyClassMap
+            val configInstance: Any = instantiateConfig(config = configuration, keyPath = keyPath, kClass = configClass)
+
+            constructorParameters[argumentName]?.let { parameter ->
+                parameter to configInstance
+            }
         }.toMap()
 
         // Create an AppSettings instance with the mapped configuration values.
-        return constructor.callBy(settings)
+        return constructor.callBy(args = arguments)
     }
 
     /**

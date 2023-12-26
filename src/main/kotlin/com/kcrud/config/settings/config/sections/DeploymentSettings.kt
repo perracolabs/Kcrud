@@ -16,7 +16,7 @@ import com.kcrud.config.env.types.DeploymentType
  * @property host The network address the server is bound to.
  * @property apiVersion The API version.
  */
-internal data class Deployment(
+internal data class DeploymentSettings(
     val type: DeploymentType,
     val port: Int,
     val host: String,

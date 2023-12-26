@@ -6,10 +6,10 @@
 
 package com.kcrud.config.settings.config.sections
 
-import com.kcrud.config.settings.config.sections.security.BasicAuth
-import com.kcrud.config.settings.config.sections.security.Constraints
-import com.kcrud.config.settings.config.sections.security.Encryption
-import com.kcrud.config.settings.config.sections.security.Jwt
+import com.kcrud.config.settings.config.sections.security.BasicAuthSettings
+import com.kcrud.config.settings.config.sections.security.ConstraintsSettings
+import com.kcrud.config.settings.config.sections.security.EncryptionSettings
+import com.kcrud.config.settings.config.sections.security.JwtSettings
 
 /**
  * Security class holds settings related to security.
@@ -19,11 +19,11 @@ import com.kcrud.config.settings.config.sections.security.Jwt
  * @property jwt Settings related to JWT authentication.
  * @property basicAuth Settings related to basic authentication.
  */
-internal data class Security(
-    val encryption: Encryption,
-    val constraints: Constraints,
-    val jwt: Jwt,
-    val basicAuth: BasicAuth
+internal data class SecuritySettings(
+    val encryption: EncryptionSettings,
+    val constraints: ConstraintsSettings,
+    val jwt: JwtSettings,
+    val basicAuth: BasicAuthSettings
 ) {
     companion object {
         const val MIN_USERNAME_LENGTH: Int = 4

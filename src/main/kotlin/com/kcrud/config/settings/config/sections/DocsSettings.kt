@@ -15,7 +15,7 @@ package com.kcrud.config.settings.config.sections
  * @property openApiPath The path to the OpenAPI specification.
  * @property redocPath The path to the Redoc file.
  */
-internal data class Docs(
+internal data class DocsSettings(
     val isEnabled: Boolean,
     val yamlFile: String,
     val swaggerPath: String,

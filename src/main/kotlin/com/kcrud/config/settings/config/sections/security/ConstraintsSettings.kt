@@ -12,7 +12,7 @@ package com.kcrud.config.settings.config.sections.security
  * @property publicApi Rate limit specification for the Public API endpoints.
  * @property newToken Rate limit specification for the New Authentication Token generation endpoint.
  */
-data class Constraints(
+data class ConstraintsSettings(
     val publicApi: LimitSpec,
     val newToken: LimitSpec
 ) {

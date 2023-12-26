@@ -6,7 +6,7 @@
 
 package com.kcrud.config.settings.config.sections.security
 
-import com.kcrud.config.settings.config.sections.Security
+import com.kcrud.config.settings.config.sections.SecuritySettings
 
 /**
  * Encryption key settings.
@@ -15,7 +15,7 @@ import com.kcrud.config.settings.config.sections.Security
  * @property salt Salt used for encrypting/decrypting data.
  * @property key Secret key for encrypting/decrypting data.
  */
-internal data class Encryption(
+internal data class EncryptionSettings(
     val algorithm: String,
     val salt: String,
     val key: String
@@ -23,8 +23,8 @@ internal data class Encryption(
     init {
         require(algorithm.isNotBlank()) { "Missing encryption algorithm." }
         require(salt.isNotBlank()) { "Missing encryption salt." }
-        require(key.isNotBlank() && (key.length >= Security.MIN_KEY_LENGTH)) {
-            "Invalid encryption key. Must be >= ${Security.MIN_KEY_LENGTH} characters long."
+        require(key.isNotBlank() && (key.length >= SecuritySettings.MIN_KEY_LENGTH)) {
+            "Invalid encryption key. Must be >= ${SecuritySettings.MIN_KEY_LENGTH} characters long."
         }
     }
 }

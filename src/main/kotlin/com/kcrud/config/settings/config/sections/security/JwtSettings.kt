@@ -6,7 +6,7 @@
 
 package com.kcrud.config.settings.config.sections.security
 
-import com.kcrud.config.settings.config.sections.Security.Companion.MIN_KEY_LENGTH
+import com.kcrud.config.settings.config.sections.SecuritySettings.Companion.MIN_KEY_LENGTH
 
 /**
  * JWT authentication settings.
@@ -18,7 +18,7 @@ import com.kcrud.config.settings.config.sections.Security.Companion.MIN_KEY_LENG
  * @property realm Security realm for the JWT authentication.
  * @property secretKey Secret key for signing the JWT.
  */
-internal data class Jwt(
+internal data class JwtSettings(
     val isEnabled: Boolean,
     val tokenLifetime: Long,
     val audience: String,

@@ -19,7 +19,7 @@ import com.kcrud.data.database.DatabaseManager
  * @property jdbcDriver The JDBC driver class name.
  * @property connectionPoolSize The database connection pool size. 0 for no connection pooling.
  */
-internal data class Database(
+internal data class DatabaseSettings(
     val mode: DatabaseManager.Mode,
     val dbType: DatabaseManager.DBType,
     val name: String,

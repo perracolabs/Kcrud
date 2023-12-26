@@ -16,7 +16,7 @@ import com.kcrud.api.graphql.utils.GraphQLFramework
  * @property playground Whether to enable the GraphQL Playground.
  * @property dumpSchema Whether to dump the GraphQL schema.
  */
-internal data class GraphQL(
+internal data class GraphQLSettings(
     val isEnabled: Boolean,
     val framework: GraphQLFramework,
     val playground: Boolean,

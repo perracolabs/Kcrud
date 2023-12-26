@@ -6,7 +6,7 @@
 
 package com.kcrud.config.settings.config.sections.security
 
-import com.kcrud.config.settings.config.sections.Security
+import com.kcrud.config.settings.config.sections.SecuritySettings
 
 /**
  * Basic authentication settings.
@@ -17,7 +17,7 @@ import com.kcrud.config.settings.config.sections.Security
  * @property loginForm Whether to use the Login Form, or the browser-based basic authentication.
  * @property credentials Credentials for the basic authentication.
  */
-internal data class BasicAuth(
+internal data class BasicAuthSettings(
     val isEnabled: Boolean,
     val providerName: String,
     val realm: String,
@@ -29,11 +29,11 @@ internal data class BasicAuth(
         val password: String
     ) {
         init {
-            require(username.isNotBlank() && (username.length >= Security.MIN_USERNAME_LENGTH)) {
-                "Invalid credential username. Must be >= ${Security.MIN_USERNAME_LENGTH} characters long."
+            require(username.isNotBlank() && (username.length >= SecuritySettings.MIN_USERNAME_LENGTH)) {
+                "Invalid credential username. Must be >= ${SecuritySettings.MIN_USERNAME_LENGTH} characters long."
             }
-            require(password.isNotBlank() && (password.length >= Security.MIN_KEY_LENGTH)) {
-                "Invalid credential password. Must be >= ${Security.MIN_KEY_LENGTH} characters long."
+            require(password.isNotBlank() && (password.length >= SecuritySettings.MIN_KEY_LENGTH)) {
+                "Invalid credential password. Must be >= ${SecuritySettings.MIN_KEY_LENGTH} characters long."
             }
         }
     }

@@ -16,11 +16,11 @@ import com.kcrud.config.settings.config.sections.*
  * must exactly match the key names in their respective configuration sections.
  */
 internal data class Config(
-    val server: Server,
-    val deployment: Deployment,
-    val cors: Cors,
-    val database: Database,
-    val docs: Docs,
-    val graphql: GraphQL,
-    val security: Security
+    val server: ServerSettings,
+    val deployment: DeploymentSettings,
+    val cors: CorsSettings,
+    val database: DatabaseSettings,
+    val docs: DocsSettings,
+    val graphql: GraphQLSettings,
+    val security: SecuritySettings
 )

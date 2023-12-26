@@ -14,7 +14,7 @@ package com.kcrud.config.settings.config.sections
  *                       See: [Development Mode](https://ktor.io/docs/development-mode.html)
  * @property machineId The unique machine ID. Used for generating unique IDs for call traceability.
  */
-internal data class Server(
+internal data class ServerSettings(
     val development: Boolean,
     val machineId: Int
 )
