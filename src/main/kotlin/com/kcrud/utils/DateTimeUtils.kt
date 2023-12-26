@@ -17,7 +17,7 @@ import kotlin.reflect.KProperty
  */
 internal class AgeDelegate(private val dob: LocalDate) {
     operator fun getValue(ignoreThisRef: Any?, ignoreProperty: KProperty<*>): Int {
-        return DateTimeUtils.calculateAge(dob)
+        return DateTimeUtils.calculateAge(dob = dob)
     }
 }
 
@@ -27,7 +27,7 @@ internal class AgeDelegate(private val dob: LocalDate) {
 internal object DateTimeUtils {
     fun calculateAge(dob: LocalDate): Int {
         // Get today's date based on the system clock and timezone.
-        val currentDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
+        val currentDate = Clock.System.todayIn(timeZone = TimeZone.currentSystemDefault())
 
         // Calculate the difference in years.
         val age = currentDate.year - dob.year

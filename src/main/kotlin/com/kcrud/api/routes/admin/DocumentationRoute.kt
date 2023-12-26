@@ -33,7 +33,7 @@ import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 fun Route.documentationRoute() {
 
     if (AppSettings.docs.isEnabled) {
-        Tracer.forFunction(Route::documentationRoute).byDeploymentType("Configuring documentation.")
+        Tracer.forFunction(funcRef = Route::documentationRoute).byDeploymentType("Configuring documentation.")
 
         val yamlFile = AppSettings.docs.yamlFile
         val rootPath = AppSettings.deployment.apiVersion

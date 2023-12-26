@@ -37,7 +37,7 @@ fun Route.accessTokenRoute() {
             val jwtToken = AuthenticationToken.generate()
             respond(hashMapOf(keyToken to jwtToken))
         } catch (e: Exception) {
-            respond(HttpStatusCode.InternalServerError, "Failed to generate token.")
+            respond(status = HttpStatusCode.InternalServerError, message = "Failed to generate token.")
         }
     }
 
@@ -74,7 +74,7 @@ fun Route.accessTokenRoute() {
 
                 AuthenticationToken.TokenState.Invalid -> {
                     // Token is invalid; respond with an Unauthorized status.
-                    call.respond(HttpStatusCode.Unauthorized, "Invalid token.")
+                    call.respond(status = HttpStatusCode.Unauthorized, message = "Invalid token.")
                 }
             }
         }

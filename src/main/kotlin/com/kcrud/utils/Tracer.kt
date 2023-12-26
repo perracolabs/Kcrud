@@ -79,7 +79,7 @@ internal class Tracer(private val logger: Logger) {
             } else {
                 T::class.simpleName ?: "UnknownClass"
             }
-            return Tracer(LoggerFactory.getLogger(loggerName))
+            return Tracer(logger = LoggerFactory.getLogger(loggerName))
         }
 
         /**
@@ -98,7 +98,7 @@ internal class Tracer(private val logger: Logger) {
                 else -> "UnknownClass"
             }
             val loggerName = "$className.$functionName"
-            return Tracer(LoggerFactory.getLogger(loggerName))
+            return Tracer(logger = LoggerFactory.getLogger(loggerName))
         }
     }
 }

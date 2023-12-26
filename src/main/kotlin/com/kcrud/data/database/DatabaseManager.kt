@@ -92,7 +92,7 @@ internal object DatabaseManager {
      * For migrations should use external libraries such as Flyway or Liquibase.
      */
     private fun setupDatabase(database: Database) {
-        transaction(database) {
+        transaction(db = database) {
             SchemaUtils.create(
                 ContactTable,
                 EmployeeTable,
@@ -106,7 +106,7 @@ internal object DatabaseManager {
      */
     private fun ping(): Boolean {
         return try {
-            transaction {
+            transaction(db = database) {
                 exec("SELECT 1;")
                 true
             }

@@ -22,7 +22,7 @@ internal object EmployeeTable : Table(name = "employee") {
     val dob = date(name = "dob")
 
     // Example of an enum that is stored as a string in the database.
-    val maritalStatus = enumerationByName(name = "marital_status", length = 64, MaritalStatus::class)
+    val maritalStatus = enumerationByName(name = "marital_status", length = 64, klass = MaritalStatus::class)
 
     // Example of an enum that is stored as an integer in the database.
     val honorific = enumById(name = "honorific", fromId = Honorific::fromId)

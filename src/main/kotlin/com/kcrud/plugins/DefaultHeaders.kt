@@ -17,6 +17,6 @@ import io.ktor.server.plugins.defaultheaders.*
 fun Application.configureDefaultHeaders() {
 
     install(DefaultHeaders) {
-        header("X-Engine", "Kcrud")
+        header(name = "X-Engine", value = "Kcrud")
     }
 }

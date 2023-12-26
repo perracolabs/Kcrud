@@ -45,7 +45,7 @@ fun Application.configureCors() {
 
         // Set the allowed hosts.
 
-        val tracer = Tracer.forFunction(Application::configureCors)
+        val tracer = Tracer.forFunction(funcRef = Application::configureCors)
 
         val allowedHosts: List<String> = AppSettings.cors.allowedHosts
         tracer.info("Allowed hosts: $allowedHosts")

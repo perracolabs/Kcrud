@@ -57,7 +57,7 @@ fun Application.module() {
     // the plugins and modules are configured.
     DatabaseManager.init()
 
-    val tracer = Tracer.forFunction(Application::module)
+    val tracer = Tracer.forFunction(funcRef = Application::module)
     tracer.byDeploymentType("Development Mode Enabled: ${AppSettings.server.development}.")
     tracer.info("Server configured. Deployment Type: ${AppSettings.deployment.type}.")
 }
