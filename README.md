@@ -25,7 +25,9 @@ A REST/GraphQL **CRUD** server example in [Kotlin](https://kotlinlang.org/) and 
 * Add database migrations examples. 
 ---
 
-For convenience the project includes a *[Postman Collection (kcrud.postman_collection)](https://github.com/perracolabs/Kcrud/blob/master/postman/kcrud.postman_collection.json)* with all the available REST endpoints, including the GraphQL queries and mutations.
+For convenience it is included a
+*[Postman Collection (kcrud.postman_collection)](https://github.com/perracolabs/Kcrud/blob/master/postman/kcrud.postman_collection.json)*
+with all the available REST endpoints, including the GraphQL queries and mutations.
 
 ---
 
