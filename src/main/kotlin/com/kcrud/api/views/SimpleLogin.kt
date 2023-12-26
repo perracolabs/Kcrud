@@ -18,39 +18,23 @@ import kotlinx.html.*
  *
  * See: [HTML DSL](https://ktor.io/docs/html-dsl.html)
  */
-internal class SimpleLogin {
+internal object SimpleLogin {
+
+    /** The path to the login form. */
+    const val LOGIN_PATH = "/login"
+
+    // The key for the username field.
+    private const val KEY_USERNAME = "username"
+
+    // The key for the password field.
+    private const val KEY_PASSWORD = "password"
 
     /**
      * Generates and displays the login form when a GET request is made to the root path.
      */
-    suspend fun generateForm(call: ApplicationCall) {
-
+    suspend fun showLoginForm(call: ApplicationCall) {
         call.respondHtml {
-            body {
-                h1 { +"Kcrud Login" }
-
-                form(action = LOGIN_PATH, method = FormMethod.post) {
-                    p {
-                        label {
-                            +"Username: "
-                            textInput(name = KEY_USERNAME) {
-                                placeholder = "Enter username"
-                            }
-                        }
-                    }
-                    p {
-                        label {
-                            +"Password: "
-                            passwordInput(name = KEY_PASSWORD) {
-                                placeholder = "Enter password"
-                            }
-                        }
-                    }
-                    p {
-                        submitInput { value = "Login" }
-                    }
-                }
-            }
+            buildLoginForm()
         }
     }
 
@@ -70,9 +54,36 @@ internal class SimpleLogin {
         }
     }
 
-    companion object {
-        const val LOGIN_PATH = "/login"
-        private const val KEY_USERNAME = "username"
-        private const val KEY_PASSWORD = "password"
+    /**
+     * Generates the login form using HTML DSL.
+     *
+     * See: [HTML DSL](https://ktor.io/docs/html-dsl.html)
+     */
+    private fun HTML.buildLoginForm() {
+        body {
+            h1 { +"Kcrud Login" }
+
+            form(action = LOGIN_PATH, method = FormMethod.post) {
+                p {
+                    label {
+                        +"Username: "
+                        textInput(name = KEY_USERNAME) {
+                            placeholder = "Enter username"
+                        }
+                    }
+                }
+                p {
+                    label {
+                        +"Password: "
+                        passwordInput(name = KEY_PASSWORD) {
+                            placeholder = "Enter password"
+                        }
+                    }
+                }
+                p {
+                    submitInput { value = "Login" }
+                }
+            }
+        }
     }
 }
