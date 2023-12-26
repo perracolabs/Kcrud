@@ -6,8 +6,8 @@
 
 package com.kcrud.utils
 
-import com.kcrud.config.env.types.DeploymentType
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.env.types.DeploymentType
+import com.kcrud.admin.settings.AppSettings
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KFunction

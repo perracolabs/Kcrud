@@ -6,7 +6,7 @@
 
 package com.kcrud.utils
 
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.settings.AppSettings
 
 /**
  * Utility object for network-related functionalities.

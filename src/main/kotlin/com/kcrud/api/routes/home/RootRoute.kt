@@ -6,8 +6,8 @@
 
 package com.kcrud.api.routes.home
 
+import com.kcrud.admin.settings.AppSettings
 import com.kcrud.api.views.SimpleLogin
-import com.kcrud.config.settings.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*

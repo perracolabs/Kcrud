@@ -6,7 +6,7 @@
 
 package com.kcrud.api.views
 
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.settings.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*

@@ -6,7 +6,7 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.settings.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.plugins.ratelimit.*
 import kotlin.time.Duration.Companion.milliseconds

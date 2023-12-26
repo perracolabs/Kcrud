@@ -11,6 +11,7 @@ import com.expediagroup.graphql.generator.TopLevelObject
 import com.expediagroup.graphql.generator.extensions.print
 import com.expediagroup.graphql.generator.toSchema
 import com.expediagroup.graphql.server.ktor.*
+import com.kcrud.admin.settings.AppSettings
 import com.kcrud.api.graphql.frameworks.expedia.context.ContextFactory
 import com.kcrud.api.graphql.frameworks.expedia.schema.KcrudSchema
 import com.kcrud.api.graphql.frameworks.expedia.schema.employee.EmployeeMutations
@@ -18,7 +19,6 @@ import com.kcrud.api.graphql.frameworks.expedia.schema.employee.EmployeeQueries
 import com.kcrud.api.graphql.frameworks.expedia.schema.employment.EmploymentMutations
 import com.kcrud.api.graphql.frameworks.expedia.schema.employment.EmploymentQueries
 import com.kcrud.api.graphql.frameworks.expedia.types.CustomSchemaGeneratorHooks
-import com.kcrud.config.settings.AppSettings
 import com.kcrud.utils.NetworkUtils
 import com.kcrud.utils.Tracer
 import io.ktor.server.application.*

@@ -7,14 +7,14 @@
 package com.kcrud.api.graphql.frameworks.kgraphql
 
 import com.apurebase.kgraphql.GraphQL
+import com.kcrud.admin.env.security.authentication.AuthenticationToken
+import com.kcrud.admin.settings.AppSettings
 import com.kcrud.api.graphql.frameworks.kgraphql.context.SessionContext
 import com.kcrud.api.graphql.frameworks.kgraphql.schema.SharedTypes
 import com.kcrud.api.graphql.frameworks.kgraphql.schema.employee.EmployeeMutations
 import com.kcrud.api.graphql.frameworks.kgraphql.schema.employee.EmployeeQueries
 import com.kcrud.api.graphql.frameworks.kgraphql.schema.employment.EmploymentMutations
 import com.kcrud.api.graphql.frameworks.kgraphql.schema.employment.EmploymentQueries
-import com.kcrud.config.env.security.authentication.AuthenticationToken
-import com.kcrud.config.settings.AppSettings
 import com.kcrud.utils.NetworkUtils
 import com.kcrud.utils.Tracer
 import io.ktor.server.application.*

@@ -6,10 +6,10 @@
 
 package com.kcrud.api.routes.admin
 
-import com.kcrud.config.env.healthcheck.HealthCheck
-import com.kcrud.config.env.healthcheck.utils.collectRoutes
-import com.kcrud.config.env.security.snowflake.SnowflakeFactory
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.env.healthcheck.HealthCheck
+import com.kcrud.admin.env.healthcheck.utils.collectRoutes
+import com.kcrud.admin.env.security.snowflake.SnowflakeFactory
+import com.kcrud.admin.settings.AppSettings
 import com.kcrud.utils.NetworkUtils
 import io.ktor.http.*
 import io.ktor.server.application.*

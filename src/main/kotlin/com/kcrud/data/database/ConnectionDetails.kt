@@ -6,7 +6,7 @@
 
 package com.kcrud.data.database
 
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.settings.AppSettings
 import java.nio.file.Files
 import java.nio.file.Paths
 

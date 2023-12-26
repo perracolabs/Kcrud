@@ -6,7 +6,7 @@
 
 package com.kcrud.api.routes.admin
 
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.settings.AppSettings
 import com.kcrud.utils.NetworkUtils
 import com.kcrud.utils.Tracer
 import io.ktor.server.http.content.*

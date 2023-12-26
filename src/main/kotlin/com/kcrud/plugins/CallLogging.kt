@@ -6,7 +6,7 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.config.env.security.snowflake.SnowflakeFactory
+import com.kcrud.admin.env.security.snowflake.SnowflakeFactory
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*

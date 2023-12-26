@@ -6,7 +6,7 @@
 
 package com.kcrud.data.utils
 
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.settings.AppSettings
 import org.jetbrains.exposed.crypt.Algorithms
 import org.jetbrains.exposed.crypt.Encryptor
 

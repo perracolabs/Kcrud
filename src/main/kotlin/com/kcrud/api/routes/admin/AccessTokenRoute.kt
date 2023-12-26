@@ -6,8 +6,8 @@
 
 package com.kcrud.api.routes.admin
 
-import com.kcrud.config.env.security.authentication.AuthenticationToken
-import com.kcrud.config.settings.AppSettings
+import com.kcrud.admin.env.security.authentication.AuthenticationToken
+import com.kcrud.admin.settings.AppSettings
 import com.kcrud.plugins.RateLimitScope
 import com.kcrud.utils.NetworkUtils
 import io.ktor.http.*

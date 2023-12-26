@@ -6,10 +6,10 @@
 
 package com.kcrud.plugins
 
+import com.kcrud.admin.settings.AppSettings
 import com.kcrud.api.graphql.frameworks.expedia.ExpediaGraphQLSetup
 import com.kcrud.api.graphql.frameworks.kgraphql.KGraphQLSetup
 import com.kcrud.api.graphql.utils.GraphQLFramework
-import com.kcrud.config.settings.AppSettings
 import io.ktor.server.application.*
 
 /**
