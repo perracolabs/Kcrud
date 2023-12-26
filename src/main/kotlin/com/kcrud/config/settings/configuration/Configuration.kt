@@ -4,18 +4,18 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.config
+package com.kcrud.config.settings.configuration
 
-import com.kcrud.config.settings.config.sections.*
+import com.kcrud.config.settings.configuration.sections.*
+import com.kcrud.config.settings.configuration.sections.security.SecuritySettings
 
 /**
  * Represents the application's configuration settings as a structured, easily accessible model.
  *
- * For accurate mapping, the names of nested data classes must correspond directly with
- * their configuration section names. Similarly, property names within these classes
- * must exactly match the key names in their respective configuration sections.
+ * For accurate mapping, the property names of nested data classes must correspond directly
+ * with their configuration section names.
  */
-internal data class Config(
+internal data class Configuration(
     val server: ServerSettings,
     val deployment: DeploymentSettings,
     val cors: CorsSettings,

@@ -4,11 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.config
+package com.kcrud.config.settings.configuration
 
 /**
  * Annotation for controlled access to the Config Management code,
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within Config Management contexts.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Configuration Management context.")
 @Retention(AnnotationRetention.BINARY)
-annotation class ConfigAPI
+annotation class ConfigurationAPI

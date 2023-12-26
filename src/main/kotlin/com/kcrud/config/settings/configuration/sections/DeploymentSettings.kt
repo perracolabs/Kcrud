@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.config.sections
+package com.kcrud.config.settings.configuration.sections
 
 import com.kcrud.config.env.types.DeploymentType
 

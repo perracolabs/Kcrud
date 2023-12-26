@@ -6,10 +6,11 @@
 
 package com.kcrud.config.settings
 
-import com.kcrud.config.settings.config.Config
-import com.kcrud.config.settings.config.ConfigAPI
-import com.kcrud.config.settings.config.ConfigParser
-import com.kcrud.config.settings.config.sections.*
+import com.kcrud.config.settings.configuration.Configuration
+import com.kcrud.config.settings.configuration.ConfigurationAPI
+import com.kcrud.config.settings.configuration.ConfigurationParser
+import com.kcrud.config.settings.configuration.sections.*
+import com.kcrud.config.settings.configuration.sections.security.SecuritySettings
 import com.kcrud.utils.Tracer
 import io.ktor.server.application.*
 
@@ -20,19 +21,19 @@ import io.ktor.server.application.*
  */
 internal object AppSettings {
     @Volatile
-    private lateinit var config: Config
+    private lateinit var configuration: Configuration
 
-    val server: ServerSettings get() = config.server
-    val deployment: DeploymentSettings get() = config.deployment
-    val cors: CorsSettings get() = config.cors
-    val database: DatabaseSettings get() = config.database
-    val docs: DocsSettings get() = config.docs
-    val graphql: GraphQLSettings get() = config.graphql
-    val security: SecuritySettings get() = config.security
+    val server: ServerSettings get() = configuration.server
+    val deployment: DeploymentSettings get() = configuration.deployment
+    val cors: CorsSettings get() = configuration.cors
+    val database: DatabaseSettings get() = configuration.database
+    val docs: DocsSettings get() = configuration.docs
+    val graphql: GraphQLSettings get() = configuration.graphql
+    val security: SecuritySettings get() = configuration.security
 
     @Synchronized
     fun load(context: Application) {
-        if (AppSettings::config.isInitialized)
+        if (AppSettings::configuration.isInitialized)
             return
 
         val tracer = Tracer<AppSettings>()
@@ -52,8 +53,8 @@ internal object AppSettings {
             "ktor.security" to Pair("security", SecuritySettings::class)
         )
 
-        @OptIn(ConfigAPI::class)
-        config = ConfigParser.parse(
+        @OptIn(ConfigurationAPI::class)
+        configuration = ConfigurationParser.parse(
             configuration = context.environment.config,
             mappings = configMappings
         )

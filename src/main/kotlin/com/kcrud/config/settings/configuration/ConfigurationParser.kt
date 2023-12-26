@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.config
+package com.kcrud.config.settings.configuration
 
 import com.kcrud.utils.Tracer
 import io.ktor.server.config.*
@@ -30,9 +30,9 @@ import kotlin.reflect.jvm.jvmErasure
  * facilitating simpler configuration in environment variables. This allows settings defined as lists
  * in HOCON to be represented as comma-delimited strings in environmental variables.
  */
-@ConfigAPI
-internal object ConfigParser {
-    private val tracer = Tracer<ConfigParser>()
+@ConfigurationAPI
+internal object ConfigurationParser {
+    private val tracer = Tracer<ConfigurationParser>()
 
     /**
      * Performs the application configuration parsing.
@@ -41,9 +41,9 @@ internal object ConfigParser {
      * @param mappings Map of top-level configuration paths to their corresponding classes.
      * @return A new AppSettings object populated with the parsed configuration data.
      */
-    fun parse(configuration: ApplicationConfig, mappings: Map<String, Pair<String, KClass<*>>>): Config {
+    fun parse(configuration: ApplicationConfig, mappings: Map<String, Pair<String, KClass<*>>>): Configuration {
         // Retrieve the primary constructor of AppSettings for parameter mapping.
-        val constructor: KFunction<Config> = Config::class.primaryConstructor!!
+        val constructor: KFunction<Configuration> = Configuration::class.primaryConstructor!!
         val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
         // Map each configuration path to its corresponding class, instantiating classes for each setting.

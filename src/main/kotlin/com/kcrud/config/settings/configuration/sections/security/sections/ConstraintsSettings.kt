@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.config.sections.security
+package com.kcrud.config.settings.configuration.sections.security.sections
 
 /**
  * Security constraints settings.

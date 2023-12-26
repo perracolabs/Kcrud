@@ -4,9 +4,9 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.config.sections.security
+package com.kcrud.config.settings.configuration.sections.security.sections
 
-import com.kcrud.config.settings.config.sections.SecuritySettings.Companion.MIN_KEY_LENGTH
+import com.kcrud.config.settings.configuration.sections.security.SecuritySettings.Companion.MIN_KEY_LENGTH
 
 /**
  * JWT authentication settings.

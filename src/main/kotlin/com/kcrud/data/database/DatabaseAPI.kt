@@ -9,6 +9,6 @@ package com.kcrud.data.database
 /**
  * Annotation for controlled access to the Database Management code,
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within Database Management contexts.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Database Management context.")
 @Retention(AnnotationRetention.BINARY)
 annotation class DatabaseAPI

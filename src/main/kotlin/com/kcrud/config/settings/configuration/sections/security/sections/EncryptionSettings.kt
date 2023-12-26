@@ -4,9 +4,9 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.config.sections.security
+package com.kcrud.config.settings.configuration.sections.security.sections
 
-import com.kcrud.config.settings.config.sections.SecuritySettings
+import com.kcrud.config.settings.configuration.sections.security.SecuritySettings
 
 /**
  * Encryption key settings.

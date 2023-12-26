@@ -4,12 +4,12 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.config.sections
+package com.kcrud.config.settings.configuration.sections.security
 
-import com.kcrud.config.settings.config.sections.security.BasicAuthSettings
-import com.kcrud.config.settings.config.sections.security.ConstraintsSettings
-import com.kcrud.config.settings.config.sections.security.EncryptionSettings
-import com.kcrud.config.settings.config.sections.security.JwtSettings
+import com.kcrud.config.settings.configuration.sections.security.sections.BasicAuthSettings
+import com.kcrud.config.settings.configuration.sections.security.sections.ConstraintsSettings
+import com.kcrud.config.settings.configuration.sections.security.sections.EncryptionSettings
+import com.kcrud.config.settings.configuration.sections.security.sections.JwtSettings
 
 /**
  * Security class holds settings related to security.
