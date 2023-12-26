@@ -33,7 +33,7 @@ import io.ktor.server.routing.*
 fun Route.systemRoute() {
     authenticate(AppSettings.security.basicAuth.providerName) {
         get("/health") {
-            val endpoints = call.application.collectRoutes()
+            val endpoints: List<String> = call.application.collectRoutes()
             val healthCheck = HealthCheck(endpoints = endpoints)
             call.respond(healthCheck)
         }

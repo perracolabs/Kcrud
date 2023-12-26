@@ -26,7 +26,7 @@ fun Application.collectRoutes(): List<String> {
  *               It accumulates as it goes deeper into the route tree.
  * @return A list of strings representing the terminal routes.
  */
-fun Route.allRoutes(prefix: String = ""): List<String> {
+private fun Route.allRoutes(prefix: String = ""): List<String> {
     val routes = mutableListOf<String>()
 
     /**
