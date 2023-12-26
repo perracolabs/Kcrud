@@ -34,6 +34,10 @@ fun Application.configureStatusPages() {
             call.respond(status = HttpStatusCode.Unauthorized, message = "$status")
         }
 
+        status(HttpStatusCode.MethodNotAllowed) { call: ApplicationCall, status: HttpStatusCode ->
+            call.respond(status = HttpStatusCode.MethodNotAllowed, message = "$status")
+        }
+
         // Additional exception handling.
         exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
             tracer.error(message = formatErrorMessage(cause), throwable = cause)

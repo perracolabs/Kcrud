@@ -145,6 +145,10 @@ paths:
     post:
       description: "Creates a new token and responds with it."
       responses: {}
+  /auth/token/form-create:
+    get:
+      description: "Generate auth tokens via the browser URL."
+      responses: { }
   /auth/token/refresh:
     post:
       description: "Endpoint for token refresh. <br> No Basic Authentication is required\

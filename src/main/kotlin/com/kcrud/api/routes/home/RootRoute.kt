@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.routes.main
+package com.kcrud.api.routes.home
 
 import com.kcrud.api.views.SimpleLogin
 import com.kcrud.config.settings.AppSettings

@@ -29,14 +29,9 @@ internal object NetworkUtils {
      */
     fun logEndpoints(reason: String, endpoints: List<String>) {
         val url = getServerUrl()
-
-        if (endpoints.size == 1) {
-            tracer.info("$reason: $url/${endpoints[0]}")
-        } else {
-            tracer.info("$reason:")
-            endpoints.forEach { endpoint ->
-                tracer.info("$url/$endpoint")
-            }
+        tracer.info("$reason:")
+        endpoints.forEach { endpoint ->
+            tracer.info("$url/$endpoint")
         }
     }
 

@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.routes.system
+package com.kcrud.api.routes.admin
 
 import com.kcrud.config.settings.AppSettings
 import com.kcrud.utils.NetworkUtils

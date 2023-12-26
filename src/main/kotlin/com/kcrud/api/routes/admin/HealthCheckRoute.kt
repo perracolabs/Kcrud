@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.routes.main
+package com.kcrud.api.routes.admin
 
 import com.kcrud.config.env.healthcheck.HealthCheck
 import com.kcrud.config.env.security.snowflake.SnowflakeFactory
@@ -41,7 +41,7 @@ fun Route.systemRoute() {
     }
 
     NetworkUtils.logEndpoints(
-        reason = "System endpoints. Requires basic authentication credentials",
+        reason = "System endpoints",
         endpoints = listOf("health", "snowflake/${SnowflakeFactory.nextId()}")
     )
 }

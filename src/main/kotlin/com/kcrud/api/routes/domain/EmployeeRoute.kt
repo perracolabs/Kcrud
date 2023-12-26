@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.routes.data
+package com.kcrud.api.routes.domain
 
 import com.kcrud.data.utils.pagination.getPageable
 import com.kcrud.data.utils.toUUIDOrNull
