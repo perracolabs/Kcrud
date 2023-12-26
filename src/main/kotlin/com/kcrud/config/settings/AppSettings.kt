@@ -7,10 +7,10 @@
 package com.kcrud.config.settings
 
 import com.kcrud.config.settings.configuration.Configuration
-import com.kcrud.config.settings.configuration.ConfigurationAPI
-import com.kcrud.config.settings.configuration.ConfigurationParser
 import com.kcrud.config.settings.configuration.sections.*
 import com.kcrud.config.settings.configuration.sections.security.SecuritySettings
+import com.kcrud.config.settings.utils.ConfigurationAPI
+import com.kcrud.config.settings.utils.ConfigurationParser
 import com.kcrud.utils.Tracer
 import io.ktor.server.application.*
 

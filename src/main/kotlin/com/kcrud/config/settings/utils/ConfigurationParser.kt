@@ -4,8 +4,9 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.configuration
+package com.kcrud.config.settings.utils
 
+import com.kcrud.config.settings.configuration.Configuration
 import com.kcrud.utils.Tracer
 import io.ktor.server.config.*
 import kotlin.reflect.KClass

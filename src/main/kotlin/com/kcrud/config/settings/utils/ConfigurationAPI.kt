@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.config.settings.configuration
+package com.kcrud.config.settings.utils
 
 /**
  * Annotation for controlled access to the Config Management code,
