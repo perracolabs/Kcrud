@@ -7,6 +7,7 @@
 package com.kcrud.plugins
 
 import com.kcrud.admin.env.security.snowflake.SnowflakeFactory
+import com.kcrud.admin.settings.AppSettings
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -30,6 +31,9 @@ import org.slf4j.event.Level
  * See: [CallId Documentation](https://ktor.io/docs/call-id.html)
  */
 fun Application.configureCallLogging() {
+
+    // Set the machine ID used for generating Snowflake IDs.
+    SnowflakeFactory.setMachineId(id = AppSettings.server.machineId)
 
     install(CallLogging) {
         level = Level.INFO

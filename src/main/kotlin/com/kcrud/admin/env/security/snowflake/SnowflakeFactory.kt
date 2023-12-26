@@ -6,7 +6,6 @@
 
 package com.kcrud.admin.env.security.snowflake
 
-import com.kcrud.admin.settings.AppSettings
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -24,8 +23,10 @@ import java.util.concurrent.TimeUnit
  */
 internal object SnowflakeFactory {
 
-    // Lazy-loaded machine ID, configured per-machine.
-    private val machineId: Int by lazy { AppSettings.server.machineId }
+    // The machine ID used to generate the Snowflake ID.
+    // Must be set before generating IDs.
+    // This value must be unique for each machine in a distributed system.
+    private var machineId: Int? = null
 
     // The base used for converting the generated ID to a compact alphanumeric string.
     // For example, 12345 in Base 36 might be represented as '9ix' in alphanumeric.
@@ -68,9 +69,16 @@ internal object SnowflakeFactory {
     // monotonically increasing timestamps, immune to system clock modifications.
     val nanoTimeStart: Long = System.nanoTime()
 
-    init {
-        // Ensures that the machine ID is within the allowable range.
-        require(machineId in 0..MAX_MACHINE_ID) { "The Machine ID must be between 0 and $MAX_MACHINE_ID" }
+    /**
+     * Sets the machine ID used to generate the Snowflake ID.
+     * This value must be unique for each machine in a distributed system.
+     *
+     * @param id The machine ID to use for generating Snowflake IDs.
+     * @throws IllegalArgumentException If the machine ID is outside the allowable range.
+     */
+    fun setMachineId(id: Int) {
+        require(id in 0..MAX_MACHINE_ID) { "The Machine ID must be between 0 and $MAX_MACHINE_ID" }
+        this.machineId = id
     }
 
     /**
@@ -108,7 +116,7 @@ internal object SnowflakeFactory {
 
         // Construct the ID.
         val id: Long = (lastTimestampMs shl (MACHINE_ID_BITS + SEQUENCE_BITS)) or
-                (machineId.toLong() shl SEQUENCE_BITS) or
+                (machineId!!.toLong() shl SEQUENCE_BITS) or
                 sequence
 
         return id.toString(radix = ALPHA_NUMERIC_BASE)
