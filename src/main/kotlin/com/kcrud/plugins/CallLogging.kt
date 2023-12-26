@@ -42,9 +42,11 @@ fun Application.configureCallLogging() {
         // This allows the call ID to be included in each log entry, linking logs to specific requests.
         callIdMdc(name = "id")
 
+        // Add the request duration to the log message.
         format {
             val durationMs = it.processingTimeMillis()
-            "Call Metric: [${it.request.origin.remoteHost}] ${it.request.httpMethod.value} - ${it.request.path()} - ${durationMs}ms"
+            "Call Metric: [${it.request.origin.remoteHost}] " +
+                    "${it.request.httpMethod.value} - ${it.request.path()} - ${durationMs}ms"
         }
     }
 
