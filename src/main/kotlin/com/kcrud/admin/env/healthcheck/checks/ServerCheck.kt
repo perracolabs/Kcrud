@@ -19,8 +19,8 @@ data class ServerCheck(
     val machineId: Int = AppSettings.server.machineId,
     val deploymentType: DeploymentType = AppSettings.deployment.type,
     val developmentModeEnabled: Boolean = AppSettings.server.development,
-    val protocol: String = NetworkUtils.getProtocol(),
-    val host: String = NetworkUtils.getServerUrl(),
+    val protocol: String = NetworkUtils.getProtocol().name,
+    val host: String = NetworkUtils.getServerUrl().toString(),
     val allowedHosts: List<String> = AppSettings.cors.allowedHosts,
     val utc: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC),
     val local: LocalDateTime = utc.toInstant(TimeZone.UTC).toLocalDateTime(TimeZone.currentSystemDefault())
@@ -37,8 +37,8 @@ data class ServerCheck(
                 errors.add("$className. Development mode is enabled in '$deploymentType' environment.")
             }
 
-            if (protocol == NetworkUtils.INSECURE_PROTOCOL) {
-                errors.add("$className. Using ${NetworkUtils.INSECURE_PROTOCOL} protocol in '$deploymentType' environment.")
+            if (!NetworkUtils.isSecureProtocol(protocol = protocol)) {
+                errors.add("$className. Using insecure '$protocol' protocol in '$deploymentType' environment.")
             }
         }
     }

@@ -55,14 +55,14 @@ internal object AuthenticationSetup {
      */
     fun configureBasicAuth(config: AuthenticationConfig) {
 
-        config.basic(AppSettings.security.basicAuth.providerName) {
+        config.basic(name = AppSettings.security.basicAuth.providerName) {
             realm = AppSettings.security.basicAuth.realm
 
             validate { credentials ->
-                val localCredentials = AppSettings.security.basicAuth.credentials
+                val isValid = BasicCredentials.verify(username = credentials.name, password = credentials.password)
 
-                if (credentials.name == localCredentials.username && credentials.password == localCredentials.password) {
-                    UserIdPrincipal(credentials.name)
+                if (isValid) {
+                    UserIdPrincipal(name = credentials.name)
                 } else {
                     null
                 }

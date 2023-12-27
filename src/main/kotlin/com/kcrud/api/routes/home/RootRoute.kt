@@ -21,14 +21,17 @@ fun Route.rootRoute() {
         // Basic Authentication for the root endpoint.
         if (AppSettings.security.basicAuth.loginForm) {
 
-            // Use the login form to handle authentication.
+            // Use the custom login form to handle authentication.
             get("/") { SimpleLogin.showLoginForm(call) }
             post(SimpleLogin.LOGIN_PATH) { SimpleLogin.manageResponse(call) }
 
         } else {
             // Use built-in browser-based basic authentication.
             authenticate(AppSettings.security.basicAuth.providerName) {
-                get("/") { call.respondText("Authentication successful") }
+                get("/") {
+                    val principal = call.principal<UserIdPrincipal>()
+                    call.respondText("Authentication successful. Welcome ${principal?.name}!")
+                }
             }
         }
     } else {

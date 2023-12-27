@@ -7,6 +7,7 @@
 package com.kcrud.utils
 
 import com.kcrud.admin.settings.AppSettings
+import io.ktor.http.*
 
 /**
  * Utility object for network-related functionalities.
@@ -14,10 +15,10 @@ import com.kcrud.admin.settings.AppSettings
 internal object NetworkUtils {
     private val tracer = Tracer<NetworkUtils>()
 
-    private const val LISTEN_ALL_IPS = "0.0.0.0"
-    private const val SECURE_PORT = 443
-    private const val SECURE_PROTOCOL = "https"
-    const val INSECURE_PROTOCOL = "http"
+    private const val LISTEN_ALL_IPS: String = "0.0.0.0"
+    private const val SECURE_PORT: Int = 443
+    private val SECURE_PROTOCOL: URLProtocol = URLProtocol.HTTPS
+    private val INSECURE_PROTOCOL: URLProtocol = URLProtocol.HTTP
 
     /**
      * Logs multiple endpoints with a specified reason.
@@ -28,27 +29,31 @@ internal object NetworkUtils {
      * @param endpoints The list of endpoints to be logged.
      */
     fun logEndpoints(reason: String, endpoints: List<String>) {
-        val url = getServerUrl()
+        val url: Url? = getServerUrl()
         tracer.info("$reason:")
         endpoints.forEach { endpoint ->
             tracer.info("$url/$endpoint")
         }
     }
 
-    fun getServerUrl(): String {
+    fun getServerUrl(): Url? {
         val host = AppSettings.deployment.host
-        var url = ""
+        var url: Url? = null
 
         if (host != LISTEN_ALL_IPS) {
             val port = AppSettings.deployment.port
             val protocol = getProtocol()
-            url = "$protocol://$host:$port"
+            url = URLBuilder(protocol = protocol, host = host, port = port).build()
         }
 
         return url
     }
 
-    fun getProtocol(): String {
+    fun getProtocol(): URLProtocol {
         return if (AppSettings.deployment.port == SECURE_PORT) SECURE_PROTOCOL else INSECURE_PROTOCOL
+    }
+
+    fun isSecureProtocol(protocol: String): Boolean {
+        return protocol == SECURE_PROTOCOL.name
     }
 }
