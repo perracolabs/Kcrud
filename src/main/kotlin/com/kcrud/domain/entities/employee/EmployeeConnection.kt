@@ -22,7 +22,7 @@ import kotlinx.serialization.Serializable
  * @param info Information about the current page and the entire dataset.
  */
 @Serializable
-class EmployeeSet(
+class EmployeeConnection(
     val content: List<Employee>,
     val info: Page.Info
 )

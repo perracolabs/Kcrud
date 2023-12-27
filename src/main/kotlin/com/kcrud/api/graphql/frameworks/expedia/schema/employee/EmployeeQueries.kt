@@ -13,8 +13,8 @@ import com.kcrud.api.graphql.frameworks.expedia.context.SessionContext
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable
 import com.kcrud.domain.entities.employee.Employee
+import com.kcrud.domain.entities.employee.EmployeeConnection
 import com.kcrud.domain.entities.employee.EmployeeFilterSet
-import com.kcrud.domain.entities.employee.EmployeeSet
 import com.kcrud.domain.services.EmployeeService
 import graphql.schema.DataFetchingEnvironment
 import org.koin.mp.KoinPlatform.getKoin
@@ -34,22 +34,22 @@ class EmployeeQueries : Query {
     }
 
     @GraphQLDescription("Returns all existing employees.")
-    suspend fun employees(env: DataFetchingEnvironment, pageable: Pageable? = null): EmployeeSet {
+    suspend fun employees(env: DataFetchingEnvironment, pageable: Pageable? = null): EmployeeConnection {
         // Example of how to get the user from the context.
         // See ContextFactory and SessionContext for more details.
         SessionContext(env = env).printUser()
 
         val page: Page<Employee> = service.findAll(pageable = pageable)
-        return EmployeeSet(
+        return EmployeeConnection(
             content = page.content,
             info = page.info
         )
     }
 
     @GraphQLDescription("Filterable paginated Employee query.")
-    suspend fun filterEmployees(filterSet: EmployeeFilterSet, pageable: Pageable? = null): EmployeeSet {
+    suspend fun filterEmployees(filterSet: EmployeeFilterSet, pageable: Pageable? = null): EmployeeConnection {
         val page = service.filter(filterSet = filterSet, pageable = pageable)
-        return EmployeeSet(
+        return EmployeeConnection(
             content = page.content,
             info = page.info
         )
