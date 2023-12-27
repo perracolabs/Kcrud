@@ -39,7 +39,7 @@ fun Application.module() {
 
     configureCors()
 
-    configureDefaultHeaders()
+    configureHeaders()
 
     configureCallLogging()
 

@@ -17,7 +17,7 @@ import io.ktor.server.plugins.defaultheaders.*
  *
  * See: [Auto Head Response Documentation](https://ktor.io/docs/autoheadresponse.html)
  */
-fun Application.configureDefaultHeaders() {
+fun Application.configureHeaders() {
 
     install(AutoHeadResponse)
 
