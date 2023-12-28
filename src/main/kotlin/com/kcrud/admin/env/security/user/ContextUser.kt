@@ -16,10 +16,6 @@ import io.ktor.server.auth.*
  * @property role The role of the user.
  */
 internal data class ContextUser(val userId: String?, val role: UserRole) {
-    @Suppress("unused")
-    val isAnonymous: Boolean by lazy {
-        userId.isNullOrBlank()
-    }
 
     companion object {
 
