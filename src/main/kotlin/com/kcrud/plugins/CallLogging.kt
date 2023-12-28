@@ -46,10 +46,10 @@ fun Application.configureCallLogging() {
 
         // Add the request duration to the log message.
         format { call ->
-            // Just as an example, we can retrieve the user from the current call's principal
-            // and print it in the metrics log message. Usually we would not do this.
-            // Security must be enabled to be able to retrieve the user from the call.
-            // Otherwise, will be retrieved only when creating a new token.
+            // An example using a custom extension function to retrieve the user from the current
+            // call's principal and print it in the metrics log message.
+            // Usually we would not do this. Security must be enabled to be able to retrieve the
+            // user from the call. Otherwise, will be retrieved only when creating a new token.
             val user: ContextUser? = call.userFromCall()
 
             val durationMs = call.processingTimeMillis()
