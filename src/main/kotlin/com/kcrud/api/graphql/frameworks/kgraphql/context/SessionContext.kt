@@ -8,7 +8,8 @@ package com.kcrud.api.graphql.frameworks.kgraphql.context
 
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.ContextBuilder
-import com.kcrud.api.graphql.context.ContextUser
+import com.kcrud.admin.env.security.user.ContextUser
+import com.kcrud.admin.env.security.user.UserRole
 import com.kcrud.api.graphql.frameworks.kgraphql.KGraphQLAPI
 import com.kcrud.utils.Tracer
 import io.ktor.server.application.*
@@ -29,13 +30,11 @@ internal class SessionContext(private val context: Context) {
         val user: ContextUser? = getUser()
 
         user?.let {
-            tracer.info("Context user: ${it.username}.")
+            tracer.info("Context user: ${it.userId}. Role: ${it.role}.")
         } ?: tracer.info("No context user found.")
     }
 
     companion object {
-        private const val KEY_USER = "user"
-
         /**
          * This is a very naive simple example just adding a header key-value pair.
          * as an example of how to add a user to the map that will be injected into
@@ -43,7 +42,12 @@ internal class SessionContext(private val context: Context) {
          * In a real application, this could be a JWT token decoded from the bearer key.
          */
         fun injectUserFromHeader(contextBuilder: ContextBuilder, call: ApplicationCall) {
-            val user = ContextUser(userId = call.request.headers[KEY_USER])
+            // In a real application, the role should ideally
+            // be retrieved from a database or another source.
+            val user = ContextUser(
+                userId = call.request.headers[ContextUser.KEY_USER],
+                role = UserRole.ADMIN
+            )
             contextBuilder.inject(ContextUser::class, user)
         }
     }

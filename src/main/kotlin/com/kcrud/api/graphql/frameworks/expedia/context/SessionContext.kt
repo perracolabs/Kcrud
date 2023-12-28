@@ -6,7 +6,8 @@
 
 package com.kcrud.api.graphql.frameworks.expedia.context
 
-import com.kcrud.api.graphql.context.ContextUser
+import com.kcrud.admin.env.security.user.ContextUser
+import com.kcrud.admin.env.security.user.UserRole
 import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
 import com.kcrud.utils.Tracer
 import graphql.schema.DataFetchingEnvironment
@@ -21,20 +22,18 @@ internal class SessionContext(private val env: DataFetchingEnvironment) {
 
     @Suppress("MemberVisibilityCanBePrivate")
     fun getUser(): ContextUser? {
-        return env.graphQlContext.getOrDefault(KEY_USER, null)
+        return env.graphQlContext.getOrDefault(ContextUser.KEY_USER, null)
     }
 
     fun printUser() {
         val user: ContextUser? = getUser()
 
-        user?.let {
-            tracer.info("Context user: ${it.username}.")
+        user?.let { contextUser ->
+            tracer.info("Context user: ${contextUser.userId}. Role: ${contextUser.role}.")
         } ?: tracer.info("No context user found.")
     }
 
     companion object {
-        private const val KEY_USER = "user"
-
         /**
          * This is a very naive simple example just adding a header key-value pair.
          * as an example of how to add a user to the map that will be injected into
@@ -42,7 +41,12 @@ internal class SessionContext(private val env: DataFetchingEnvironment) {
          * In a real application, this could be a JWT token decoded from the bearer key.
          */
         fun injectUserFromHeader(map: MutableMap<String, Any>, headers: Headers) {
-            map[KEY_USER] = ContextUser(userId = headers[KEY_USER])
+            // In a real application, the role should ideally
+            // be retrieved from a database or another source.
+            map[ContextUser.KEY_USER] = ContextUser(
+                userId = headers[ContextUser.KEY_USER],
+                role = UserRole.ADMIN
+            )
         }
     }
 }

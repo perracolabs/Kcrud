@@ -6,8 +6,9 @@
 
 package com.kcrud.plugins
 
-import com.kcrud.admin.env.security.authentication.userIdFromPrincipal
 import com.kcrud.admin.env.security.snowflake.SnowflakeFactory
+import com.kcrud.admin.env.security.user.ContextUser
+import com.kcrud.admin.env.security.user.userFromCall
 import com.kcrud.admin.settings.AppSettings
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -45,10 +46,15 @@ fun Application.configureCallLogging() {
 
         // Add the request duration to the log message.
         format { call ->
-            val userId = call.userIdFromPrincipal()
+            // Just as an example, we can retrieve the user from the current call's principal
+            // and print it in the metrics log message. Usually we would not do this.
+            // Security must be enabled to be able to retrieve the user from the call.
+            // Otherwise, will be retrieved only when creating a new token.
+            val user: ContextUser? = call.userFromCall()
+
             val durationMs = call.processingTimeMillis()
             "Call Metric: [${call.request.origin.remoteHost}] " +
-                    "${call.request.httpMethod.value} - ${call.request.path()} - by '$userId' - ${durationMs}ms"
+                    "${call.request.httpMethod.value} - ${call.request.path()} - by '$user' - ${durationMs}ms"
         }
     }
 

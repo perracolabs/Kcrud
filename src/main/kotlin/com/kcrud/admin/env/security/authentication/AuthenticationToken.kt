@@ -10,6 +10,8 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
+import com.kcrud.admin.env.security.user.ContextUser
+import com.kcrud.admin.env.security.user.UserRole
 import com.kcrud.admin.settings.AppSettings
 import com.kcrud.admin.settings.config.sections.security.sections.JwtSettings
 import com.kcrud.utils.Tracer
@@ -29,8 +31,6 @@ import java.util.*
  */
 internal object AuthenticationToken {
     private val tracer = Tracer<AuthenticationToken>()
-
-    const val KEY_USER_ID: String = "userId"
 
     enum class TokenState {
         Valid, Expired, Invalid
@@ -110,8 +110,12 @@ internal object AuthenticationToken {
 
         tracer.debug("Generating new authorization token. Expiration: $expirationDate.")
 
+        // In a real application, the role should ideally be retrieved from a database or another source.
+        val userRole: UserRole = UserRole.ADMIN
+
         return JWT.create()
-            .withClaim(KEY_USER_ID, userId.name)
+            .withClaim(ContextUser.KEY_USER_ID, userId.name)
+            .withClaim(ContextUser.KEY_USER_ROLE, userRole.name)
             .withAudience(jwtSettings.audience)
             .withIssuer(jwtSettings.issuer)
             .withExpiresAt(expirationDate)
