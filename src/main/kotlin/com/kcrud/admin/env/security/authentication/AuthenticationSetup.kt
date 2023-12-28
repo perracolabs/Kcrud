@@ -24,14 +24,12 @@ internal object AuthenticationSetup {
      * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
      */
     fun configureJwt(config: AuthenticationConfig) {
-
         config.jwt {
             realm = AppSettings.security.jwt.realm
 
             // Build and set the JWT verifier with the configured settings.
             verifier(
-                JWT
-                    .require(Algorithm.HMAC256(AppSettings.security.jwt.secretKey))
+                JWT.require(Algorithm.HMAC256(AppSettings.security.jwt.secretKey))
                     .withAudience(AppSettings.security.jwt.audience)
                     .withIssuer(AppSettings.security.jwt.issuer)
                     .build()
@@ -54,12 +52,11 @@ internal object AuthenticationSetup {
      * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
      */
     fun configureBasicAuth(config: AuthenticationConfig) {
-
         config.basic(name = AppSettings.security.basicAuth.providerName) {
             realm = AppSettings.security.basicAuth.realm
 
             validate { credentials ->
-                val isValid = BasicCredentials.verify(username = credentials.name, password = credentials.password)
+                val isValid: Boolean = BasicCredentials.verify(username = credentials.name, password = credentials.password)
 
                 if (isValid) {
                     UserIdPrincipal(name = credentials.name)

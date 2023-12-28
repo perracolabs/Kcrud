@@ -11,10 +11,12 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.kcrud.admin.settings.AppSettings
+import com.kcrud.admin.settings.config.sections.security.sections.JwtSettings
 import com.kcrud.utils.Tracer
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -28,6 +30,8 @@ import java.util.*
 internal object AuthenticationToken {
     private val tracer = Tracer<AuthenticationToken>()
 
+    const val KEY_USER_ID: String = "userId"
+
     enum class TokenState {
         Valid, Expired, Invalid
     }
@@ -39,7 +43,7 @@ internal object AuthenticationToken {
     fun verify(call: ApplicationCall) {
 
         if (AppSettings.security.jwt.isEnabled) {
-            val tokenState = getState(call)
+            val tokenState: TokenState = getState(call)
             when (tokenState) {
                 TokenState.Valid -> {
                     // Token is valid; continue processing.
@@ -64,9 +68,8 @@ internal object AuthenticationToken {
      * Returns the current [TokenState] from the header authorization token.
      */
     fun getState(call: ApplicationCall): TokenState {
-
         return try {
-            val token = fromHeader(call)
+            val token: String = fromHeader(call)
             val algorithm: Algorithm = Algorithm.HMAC256(AppSettings.security.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             verifier.verify(JWT.decode(token))
@@ -83,11 +86,11 @@ internal object AuthenticationToken {
      * Returns the current authorization token from the headers.
      */
     fun fromHeader(call: ApplicationCall): String {
-        val authHeader = call.request.headers.entries().find {
+        val authHeader: String? = call.request.headers.entries().find {
             it.key.equals(HttpHeaders.Authorization, ignoreCase = true)
-        }?.value?.get(0) ?: ""
+        }?.value?.get(0)
 
-        if (authHeader.isBlank() || !authHeader.startsWith(AuthScheme.Bearer, ignoreCase = true)) {
+        if (authHeader.isNullOrBlank() || !authHeader.startsWith(AuthScheme.Bearer, ignoreCase = true)) {
             throw IllegalArgumentException("Invalid Authorization header format.")
         }
 
@@ -96,15 +99,19 @@ internal object AuthenticationToken {
 
     /**
      * Generate a new authorization token.
+     *
+     * @param userId The user ID to embed in the token.
+     * @return The generated JWT token.
      */
-    fun generate(): String {
-        val jwtSettings = AppSettings.security.jwt
-        val tokenLifetimeMs = jwtSettings.tokenLifetime
+    fun generate(userId: UserIdPrincipal): String {
+        val jwtSettings: JwtSettings = AppSettings.security.jwt
+        val tokenLifetimeMs: Long = jwtSettings.tokenLifetime
         val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeMs)
 
         tracer.debug("Generating new authorization token. Expiration: $expirationDate.")
 
         return JWT.create()
+            .withClaim(KEY_USER_ID, userId.name)
             .withAudience(jwtSettings.audience)
             .withIssuer(jwtSettings.issuer)
             .withExpiresAt(expirationDate)

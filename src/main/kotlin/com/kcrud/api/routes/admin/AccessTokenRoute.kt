@@ -34,8 +34,12 @@ fun Route.accessTokenRoute() {
      */
     suspend fun ApplicationCall.respondWithToken() {
         try {
-            val jwtToken = AuthenticationToken.generate()
+            val principal: UserIdPrincipal = this.principal<UserIdPrincipal>()
+                ?: throw IllegalArgumentException("User ID missing.")
+            val jwtToken: String = AuthenticationToken.generate(userId = principal)
             respond(hashMapOf(keyToken to jwtToken))
+        } catch (e: IllegalArgumentException) {
+            respond(status = HttpStatusCode.BadRequest, message = e.message ?: "Invalid user ID.")
         } catch (e: Exception) {
             respond(status = HttpStatusCode.InternalServerError, message = "Failed to generate token.")
         }
@@ -58,7 +62,7 @@ fun Route.accessTokenRoute() {
         // For example, in Postman set the endpoint and in the Headers add an Authorization key
         // with a 'Bearer' holding a previous valid token.
         post("refresh") {
-            val tokenState = AuthenticationToken.getState(call)
+            val tokenState: AuthenticationToken.TokenState = AuthenticationToken.getState(call)
 
             when (tokenState) {
                 AuthenticationToken.TokenState.Valid -> {

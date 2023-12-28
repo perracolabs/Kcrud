@@ -6,6 +6,7 @@
 
 package com.kcrud.plugins
 
+import com.kcrud.admin.env.security.authentication.userIdFromPrincipal
 import com.kcrud.admin.env.security.snowflake.SnowflakeFactory
 import com.kcrud.admin.settings.AppSettings
 import io.ktor.http.*
@@ -43,10 +44,11 @@ fun Application.configureCallLogging() {
         callIdMdc(name = "id")
 
         // Add the request duration to the log message.
-        format {
-            val durationMs = it.processingTimeMillis()
-            "Call Metric: [${it.request.origin.remoteHost}] " +
-                    "${it.request.httpMethod.value} - ${it.request.path()} - ${durationMs}ms"
+        format { call ->
+            val userId = call.userIdFromPrincipal()
+            val durationMs = call.processingTimeMillis()
+            "Call Metric: [${call.request.origin.remoteHost}] " +
+                    "${call.request.httpMethod.value} - ${call.request.path()} - by '$userId' - ${durationMs}ms"
         }
     }
 
