@@ -52,9 +52,10 @@ fun Application.configureCallLogging() {
             // user from the call. Otherwise, will be retrieved only when creating a new token.
             val user: ContextUser? = call.userFromCall()
 
-            val durationMs = call.processingTimeMillis()
+            val callDurationMs = call.processingTimeMillis()
             "Call Metric: [${call.request.origin.remoteHost}] " +
-                    "${call.request.httpMethod.value} - ${call.request.path()} - by '$user' - ${durationMs}ms"
+                    "${call.request.httpMethod.value} - ${call.request.path()} " +
+                    "- by '$user' - ${callDurationMs}ms"
         }
     }
 
