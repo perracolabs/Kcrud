@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 data class SecurityCheck(
     val errors: MutableList<String> = mutableListOf(),
     val jwtEnabled: Boolean = AppSettings.security.jwt.isEnabled,
-    val basicAuthEnabled: Boolean = AppSettings.security.basicAuth.isEnabled,
+    val basicAuthEnabled: Boolean = AppSettings.security.basic.isEnabled,
     val publicApiRateLimit: Int = AppSettings.security.constraints.publicApi.limit,
     val publicApiRateRefillMs: Long = AppSettings.security.constraints.publicApi.refill,
     val newTokenRateLimit: Int = AppSettings.security.constraints.newToken.limit,

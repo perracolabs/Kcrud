@@ -7,6 +7,7 @@
 package com.kcrud.api.views
 
 import com.kcrud.admin.env.security.authentication.BasicCredentials
+import com.kcrud.admin.settings.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
@@ -49,9 +50,9 @@ internal object SimpleLogin {
         val isValid = BasicCredentials.verify(username = username, password = password)
 
         if (isValid) {
-            call.respondText("Authentication successful")
+            call.respondText("Authentication successful.")
         } else {
-            call.respondText("Authentication failed")
+            call.respondText("Authentication failed.")
         }
     }
 
@@ -67,7 +68,8 @@ internal object SimpleLogin {
             form(action = LOGIN_PATH, method = FormMethod.post) {
                 p {
                     label {
-                        +"Username: "
+                        +"Username: (${AppSettings.security.basic.credentials.username})"
+                        br()
                         textInput(name = KEY_USERNAME) {
                             placeholder = "Enter username"
                         }
@@ -75,7 +77,8 @@ internal object SimpleLogin {
                 }
                 p {
                     label {
-                        +"Password: "
+                        +"Password: (${AppSettings.security.basic.credentials.password})"
+                        br()
                         passwordInput(name = KEY_PASSWORD) {
                             placeholder = "Enter password"
                         }

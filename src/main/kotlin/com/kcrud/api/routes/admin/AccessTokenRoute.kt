@@ -7,6 +7,7 @@
 package com.kcrud.api.routes.admin
 
 import com.kcrud.admin.env.security.authentication.AuthenticationToken
+import com.kcrud.admin.env.security.user.ContextPrincipal
 import com.kcrud.admin.settings.AppSettings
 import com.kcrud.plugins.RateLimitScope
 import com.kcrud.utils.NetworkUtils
@@ -34,12 +35,12 @@ fun Route.accessTokenRoute() {
      */
     suspend fun ApplicationCall.respondWithToken() {
         try {
-            val principal: UserIdPrincipal = this.principal<UserIdPrincipal>()
-                ?: throw IllegalArgumentException("User ID missing.")
-            val jwtToken: String = AuthenticationToken.generate(userId = principal)
+            val principal: ContextPrincipal = this.principal<ContextPrincipal>()
+                ?: throw IllegalArgumentException("User is missing.")
+            val jwtToken: String = AuthenticationToken.generate(principal = principal)
             respond(hashMapOf(keyToken to jwtToken))
         } catch (e: IllegalArgumentException) {
-            respond(status = HttpStatusCode.BadRequest, message = e.message ?: "Invalid user ID.")
+            respond(status = HttpStatusCode.BadRequest, message = e.message ?: "Invalid user.")
         } catch (e: Exception) {
             respond(status = HttpStatusCode.InternalServerError, message = "Failed to generate token.")
         }
@@ -49,7 +50,7 @@ fun Route.accessTokenRoute() {
 
         // Endpoint for initial token generation; requires Basic Authentication credentials.
         rateLimit(RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
-            authenticate(AppSettings.security.basicAuth.providerName) {
+            authenticate(AppSettings.security.basic.providerName) {
                 // Creates a new token and responds with it.
                 post("create") {
                     call.respondWithToken()
@@ -85,7 +86,7 @@ fun Route.accessTokenRoute() {
 
         // Alternative example showing how to create tokens via the browser URL.
         // The browser URL requires a GET instead of a POST.
-        authenticate(AppSettings.security.basicAuth.providerName) {
+        authenticate(AppSettings.security.basic.providerName) {
             // Generate auth tokens via the browser URL.
             get("form-create") {
                 call.respondWithToken()

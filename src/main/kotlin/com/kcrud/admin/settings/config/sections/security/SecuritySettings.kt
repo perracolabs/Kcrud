@@ -17,13 +17,13 @@ import com.kcrud.admin.settings.config.sections.security.sections.JwtSettings
  * @property encryption Settings related to encryption, such as the encryption keys.
  * @property constraints Settings related to security constraints, such endpoints rate limits.
  * @property jwt Settings related to JWT authentication, such as the JWT secrets.
- * @property basicAuth Settings related to basic authentication, such as the basic auth credentials.
+ * @property basic Settings related to basic authentication, such as the basic auth credentials.
  */
 internal data class SecuritySettings(
     val encryption: EncryptionSettings,
     val constraints: ConstraintsSettings,
     val jwt: JwtSettings,
-    val basicAuth: BasicAuthSettings
+    val basic: BasicAuthSettings
 ) {
     companion object {
         const val MIN_USERNAME_LENGTH: Int = 4

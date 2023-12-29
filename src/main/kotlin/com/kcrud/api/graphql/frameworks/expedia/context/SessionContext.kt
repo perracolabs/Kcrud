@@ -29,7 +29,7 @@ internal class SessionContext(private val env: DataFetchingEnvironment) {
         val user: ContextUser? = getUser()
 
         user?.let { contextUser ->
-            tracer.info("Context user: ${contextUser.userId}. Role: ${contextUser.role}.")
+            tracer.info("Context user: ${contextUser.id}. Role: ${contextUser.role}.")
         } ?: tracer.info("No context user found.")
     }
 
@@ -43,10 +43,12 @@ internal class SessionContext(private val env: DataFetchingEnvironment) {
         fun injectUserFromHeader(map: MutableMap<String, Any>, headers: Headers) {
             // In a real application, the role should ideally
             // be retrieved from a database or another source.
-            map[ContextUser.KEY_USER] = ContextUser(
-                userId = headers[ContextUser.KEY_USER],
-                role = UserRole.ADMIN
-            )
+            headers[ContextUser.KEY_USER]?.let { userId ->
+                map[ContextUser.KEY_USER] = ContextUser(
+                    id = userId,
+                    role = UserRole.ADMIN
+                )
+            }
         }
     }
 }

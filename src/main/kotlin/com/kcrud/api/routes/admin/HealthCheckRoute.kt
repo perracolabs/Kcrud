@@ -31,7 +31,7 @@ import io.ktor.server.routing.*
  * external service availability, or other critical component checks.
  */
 fun Route.systemRoute() {
-    authenticate(AppSettings.security.basicAuth.providerName) {
+    authenticate(AppSettings.security.basic.providerName) {
         get("/health") {
             val endpoints: List<String> = call.application.collectRoutes()
             val healthCheck = HealthCheck(endpoints = endpoints)

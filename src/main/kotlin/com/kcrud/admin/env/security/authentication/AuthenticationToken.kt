@@ -10,17 +10,17 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
+import com.kcrud.admin.env.security.user.ContextPrincipal
 import com.kcrud.admin.env.security.user.ContextUser
-import com.kcrud.admin.env.security.user.UserRole
 import com.kcrud.admin.settings.AppSettings
 import com.kcrud.admin.settings.config.sections.security.sections.JwtSettings
 import com.kcrud.utils.Tracer
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import java.util.*
 
 /**
@@ -100,22 +100,19 @@ internal object AuthenticationToken {
     /**
      * Generate a new authorization token.
      *
-     * @param userId The user ID to embed in the token.
+     * @param principal The [ContextPrincipal] details to embed in the token.
      * @return The generated JWT token.
      */
-    fun generate(userId: UserIdPrincipal): String {
+    fun generate(principal: ContextPrincipal): String {
         val jwtSettings: JwtSettings = AppSettings.security.jwt
         val tokenLifetimeMs: Long = jwtSettings.tokenLifetime
         val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeMs)
+        val userJson = Json.encodeToString(serializer = ContextUser.serializer(), value = principal.user)
 
         tracer.debug("Generating new authorization token. Expiration: $expirationDate.")
 
-        // In a real application, the role should ideally be retrieved from a database or another source.
-        val userRole: UserRole = UserRole.ADMIN
-
         return JWT.create()
-            .withClaim(ContextUser.KEY_USER_ID, userId.name)
-            .withClaim(ContextUser.KEY_USER_ROLE, userRole.name)
+            .withClaim(ContextUser.KEY_USER, userJson)
             .withAudience(jwtSettings.audience)
             .withIssuer(jwtSettings.issuer)
             .withExpiresAt(expirationDate)

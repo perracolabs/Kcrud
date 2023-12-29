@@ -52,8 +52,8 @@ internal object AuthenticationSetup {
      * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
      */
     fun configureBasicAuth(config: AuthenticationConfig) {
-        config.basic(name = AppSettings.security.basicAuth.providerName) {
-            realm = AppSettings.security.basicAuth.realm
+        config.basic(name = AppSettings.security.basic.providerName) {
+            realm = AppSettings.security.basic.realm
 
             validate { credentials ->
                 val isValid: Boolean = BasicCredentials.verify(username = credentials.name, password = credentials.password)

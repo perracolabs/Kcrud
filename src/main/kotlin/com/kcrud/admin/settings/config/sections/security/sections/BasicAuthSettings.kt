@@ -14,14 +14,14 @@ import com.kcrud.admin.settings.config.sections.security.SecuritySettings
  * @property isEnabled Flag to enable/disable basic authentication.
  * @property providerName Name of the basic authentication provider.
  * @property realm Security realm for the basic authentication.
- * @property loginForm Whether to use the Login Form, or the browser-based basic authentication.
+ * @property customLoginForm Whether to use a custom Login Form, or the browser-based built-in one.
  * @property credentials Credentials for the basic authentication.
  */
 internal data class BasicAuthSettings(
     val isEnabled: Boolean,
     val providerName: String,
     val realm: String,
-    val loginForm: Boolean,
+    val customLoginForm: Boolean,
     val credentials: Credentials
 ) {
     data class Credentials(

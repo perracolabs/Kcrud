@@ -27,7 +27,7 @@ fun Application.configureStatusPages() {
         status(HttpStatusCode.Unauthorized) { call: ApplicationCall, status: HttpStatusCode ->
             // Add WWW-Authenticate header to the response, indicating Basic Authentication is required.
             // This is specific to Basic Authentication, doesn't affect JWT.
-            val realm = AppSettings.security.basicAuth.realm
+            val realm = AppSettings.security.basic.realm
             call.response.header(name = HttpHeaders.WWWAuthenticate, value = "Basic realm=\"${realm}\"")
 
             // Respond with 401 Unauthorized status code.

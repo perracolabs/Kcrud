@@ -20,7 +20,7 @@ internal object BasicCredentials {
         if (username.isNullOrBlank() || password.isNullOrBlank()) {
             return false
         }
-        val configuredCredentials = AppSettings.security.basicAuth.credentials
+        val configuredCredentials = AppSettings.security.basic.credentials
         return (username.compareTo(other = configuredCredentials.username, ignoreCase = true) == 0)
                 && (password == configuredCredentials.password)
     }

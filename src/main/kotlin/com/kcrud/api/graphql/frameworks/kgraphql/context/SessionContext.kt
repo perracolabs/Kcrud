@@ -30,7 +30,7 @@ internal class SessionContext(private val context: Context) {
         val user: ContextUser? = getUser()
 
         user?.let {
-            tracer.info("Context user: ${it.userId}. Role: ${it.role}.")
+            tracer.info("Context user: ${it.id}. Role: ${it.role}.")
         } ?: tracer.info("No context user found.")
     }
 
@@ -44,11 +44,15 @@ internal class SessionContext(private val context: Context) {
         fun injectUserFromHeader(contextBuilder: ContextBuilder, call: ApplicationCall) {
             // In a real application, the role should ideally
             // be retrieved from a database or another source.
-            val user = ContextUser(
-                userId = call.request.headers[ContextUser.KEY_USER],
-                role = UserRole.ADMIN
-            )
-            contextBuilder.inject(ContextUser::class, user)
+            call.request.headers[ContextUser.KEY_USER]?.let { userId ->
+                contextBuilder.inject(
+                    ContextUser::class,
+                    ContextUser(
+                        id = userId,
+                        role = UserRole.ADMIN
+                    )
+                )
+            }
         }
     }
 }

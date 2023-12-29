@@ -10,8 +10,10 @@ package com.kcrud.admin.env.security.user
  * Example of user roles. Ideally these should be defined
  * at database level instead of being hardcoded.
  */
+@Suppress("unused")
 enum class UserRole {
     ADMIN,
     GUEST,
+    SUPER,
     USER
 }
