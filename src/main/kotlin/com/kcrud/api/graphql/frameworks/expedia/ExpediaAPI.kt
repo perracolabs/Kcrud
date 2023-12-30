@@ -7,8 +7,8 @@
 package com.kcrud.api.graphql.frameworks.expedia
 
 /**
- * Annotation for controlled access to the Expedia GraphQL API code,
+ * Annotation for controlled access to the Expedia GraphQL API.
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Expedia GraphQL context.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Expedia GraphQL API.")
 @Retention(AnnotationRetention.BINARY)
 annotation class ExpediaAPI

@@ -7,8 +7,8 @@
 package com.kcrud.admin.env.healthcheck
 
 /**
- * Annotation for controlled access to the Health Check Management code,
+ * Annotation for controlled access to the Health Check API.
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Health Check Management context.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Health Check API.")
 @Retention(AnnotationRetention.BINARY)
 annotation class HealthCheckAPI

@@ -7,8 +7,8 @@
 package com.kcrud.api.graphql.frameworks.kgraphql
 
 /**
- * Annotation for controlled access to the KGraphQL API code,
+ * Annotation for controlled access to the KGraphQL API.
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the KGraphQL context.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the KGraphQL API.")
 @Retention(AnnotationRetention.BINARY)
 annotation class KGraphQLAPI

@@ -7,8 +7,8 @@
 package com.kcrud.admin.settings.utils
 
 /**
- * Annotation for controlled access to the Config Management code,
+ * Annotation for controlled access to the Configuration API.
  */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Configuration Management context.")
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Configuration API.")
 @Retention(AnnotationRetention.BINARY)
 annotation class ConfigurationAPI
