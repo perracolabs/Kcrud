@@ -7,23 +7,30 @@
 package com.kcrud.admin.env.healthcheck
 
 import com.kcrud.admin.env.healthcheck.checks.*
+import com.kcrud.admin.env.healthcheck.utils.collectRoutes
 import com.kcrud.data.database.DatabaseManager
+import io.ktor.server.application.*
 import kotlinx.serialization.Serializable
 
 /**
  * A simple health check data class.
  */
+@Suppress("MemberVisibilityCanBePrivate")
+@OptIn(HealthCheckAPI::class)
 @Serializable
 data class HealthCheck(
-    val errors: MutableList<String> = mutableListOf(),
-    val server: ServerCheck = ServerCheck(),
-    val security: SecurityCheck = SecurityCheck(),
-    val database: DatabaseCheck = DatabaseManager.getHealthCheck(),
-    val application: ApplicationCheck = ApplicationCheck(),
-    val graphQL: GraphQLCheck = GraphQLCheck(),
-    val snowflake: SnowflakeCheck = SnowflakeCheck(),
-    val endpoints: List<String>,
+    @kotlinx.serialization.Transient
+    private val call: ApplicationCall? = null
 ) {
+    val errors: MutableList<String> = mutableListOf()
+    val server: ServerCheck = ServerCheck()
+    val security: SecurityCheck = SecurityCheck()
+    val database: DatabaseCheck = DatabaseManager.getHealthCheck()
+    val application: ApplicationCheck = ApplicationCheck()
+    val graphQL: GraphQLCheck = GraphQLCheck()
+    val snowflake: SnowflakeCheck = SnowflakeCheck()
+    val endpoints: List<String> = call?.application?.collectRoutes() ?: emptyList()
+
     init {
         errors.addAll(server.errors)
         errors.addAll(security.errors)

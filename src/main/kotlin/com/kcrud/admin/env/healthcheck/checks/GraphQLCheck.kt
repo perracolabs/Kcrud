@@ -6,12 +6,14 @@
 
 package com.kcrud.admin.env.healthcheck.checks
 
+import com.kcrud.admin.env.healthcheck.HealthCheckAPI
 import com.kcrud.admin.env.types.DeploymentType
 import com.kcrud.admin.settings.AppSettings
 import com.kcrud.api.graphql.utils.GraphQLFramework
 import kotlinx.serialization.Serializable
 
 @Suppress("unused")
+@HealthCheckAPI
 @Serializable
 data class GraphQLCheck(
     val errors: MutableList<String> = mutableListOf(),

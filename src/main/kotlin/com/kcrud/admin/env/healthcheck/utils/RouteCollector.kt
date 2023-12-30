@@ -6,6 +6,7 @@
 
 package com.kcrud.admin.env.healthcheck.utils
 
+import com.kcrud.admin.env.healthcheck.HealthCheckAPI
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
@@ -14,6 +15,7 @@ import io.ktor.server.routing.*
  *
  * @return A list of strings representing the registered routes.
  */
+@HealthCheckAPI
 fun Application.collectRoutes(): List<String> {
     return routing {}.allRoutes()
 }

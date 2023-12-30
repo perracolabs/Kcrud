@@ -6,6 +6,7 @@
 
 package com.kcrud.admin.env.healthcheck.checks
 
+import com.kcrud.admin.env.healthcheck.HealthCheckAPI
 import com.kcrud.admin.settings.AppSettings
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.serialization.Serializable
@@ -13,6 +14,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.name
 
 @Suppress("unused")
+@HealthCheckAPI
 @Serializable
 data class DatabaseCheck(
     val errors: MutableList<String> = mutableListOf(),

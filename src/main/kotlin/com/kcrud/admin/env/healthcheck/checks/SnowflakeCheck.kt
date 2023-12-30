@@ -6,11 +6,13 @@
 
 package com.kcrud.admin.env.healthcheck.checks
 
+import com.kcrud.admin.env.healthcheck.HealthCheckAPI
 import com.kcrud.admin.env.security.snowflake.SnowflakeData
 import com.kcrud.admin.env.security.snowflake.SnowflakeFactory
 import kotlinx.serialization.Serializable
 
 @Suppress("unused")
+@HealthCheckAPI
 @Serializable
 data class SnowflakeCheck(
     val errors: MutableList<String> = mutableListOf(),

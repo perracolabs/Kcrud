@@ -6,6 +6,7 @@
 
 package com.kcrud.admin.env.healthcheck.checks
 
+import com.kcrud.admin.env.healthcheck.HealthCheckAPI
 import com.kcrud.admin.env.types.DeploymentType
 import com.kcrud.admin.settings.AppSettings
 import com.kcrud.utils.NetworkUtils
@@ -13,6 +14,7 @@ import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 
 @Suppress("unused")
+@HealthCheckAPI
 @Serializable
 data class ServerCheck(
     val errors: MutableList<String> = mutableListOf(),
