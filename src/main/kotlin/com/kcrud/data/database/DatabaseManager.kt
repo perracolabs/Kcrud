@@ -6,6 +6,7 @@
 
 package com.kcrud.data.database
 
+import com.kcrud.admin.env.healthcheck.annotation.HealthCheckAPI
 import com.kcrud.admin.env.healthcheck.checks.DatabaseCheck
 import com.kcrud.data.database.annotation.DatabaseAPI
 import com.kcrud.data.tables.ContactTable
@@ -120,6 +121,7 @@ internal object DatabaseManager {
     /**
      * Retrieves HikariCP health metrics.
      */
+    @OptIn(HealthCheckAPI::class)
     fun getHealthCheck(): DatabaseCheck {
         return DatabaseCheck(
             alive = ping(),
