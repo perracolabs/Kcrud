@@ -8,7 +8,7 @@ package com.kcrud.api.graphql.frameworks.expedia.schema.employee
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
-import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
+import com.kcrud.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import com.kcrud.api.graphql.frameworks.expedia.context.SessionContext
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable

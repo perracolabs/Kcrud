@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.api.graphql.frameworks.kgraphql
+package com.kcrud.api.graphql.frameworks.kgraphql.annotation
 
 /**
  * Annotation for controlled access to the KGraphQL API.

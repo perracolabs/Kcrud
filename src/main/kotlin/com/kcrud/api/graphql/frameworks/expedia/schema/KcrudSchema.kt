@@ -9,7 +9,7 @@ package com.kcrud.api.graphql.frameworks.expedia.schema
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.federation.directives.ContactDirective
 import com.expediagroup.graphql.server.Schema
-import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
+import com.kcrud.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 
 @ContactDirective(
     name = "KCrud Schema",

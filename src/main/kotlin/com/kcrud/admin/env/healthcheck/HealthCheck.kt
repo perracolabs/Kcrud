@@ -6,6 +6,7 @@
 
 package com.kcrud.admin.env.healthcheck
 
+import com.kcrud.admin.env.healthcheck.annotation.HealthCheckAPI
 import com.kcrud.admin.env.healthcheck.checks.*
 import com.kcrud.admin.env.healthcheck.utils.collectRoutes
 import com.kcrud.data.database.DatabaseManager

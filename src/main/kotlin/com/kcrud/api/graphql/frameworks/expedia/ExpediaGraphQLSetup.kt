@@ -12,6 +12,7 @@ import com.expediagroup.graphql.generator.extensions.print
 import com.expediagroup.graphql.generator.toSchema
 import com.expediagroup.graphql.server.ktor.*
 import com.kcrud.admin.settings.AppSettings
+import com.kcrud.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import com.kcrud.api.graphql.frameworks.expedia.context.ContextFactory
 import com.kcrud.api.graphql.frameworks.expedia.schema.KcrudSchema
 import com.kcrud.api.graphql.frameworks.expedia.schema.employee.EmployeeMutations

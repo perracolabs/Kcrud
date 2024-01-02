@@ -8,7 +8,7 @@ package com.kcrud.api.graphql.frameworks.kgraphql.schema.employee
 
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import com.kcrud.api.graphql.frameworks.kgraphql.KGraphQLAPI
+import com.kcrud.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
 import com.kcrud.api.graphql.frameworks.kgraphql.context.SessionContext
 import com.kcrud.data.utils.pagination.Page
 import com.kcrud.data.utils.pagination.Pageable

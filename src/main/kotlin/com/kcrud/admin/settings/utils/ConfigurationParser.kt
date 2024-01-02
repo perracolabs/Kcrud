@@ -6,6 +6,7 @@
 
 package com.kcrud.admin.settings.utils
 
+import com.kcrud.admin.settings.annotation.ConfigurationAPI
 import com.kcrud.admin.settings.config.RootConfiguration
 import com.kcrud.utils.Tracer
 import io.ktor.server.config.*

@@ -7,6 +7,7 @@
 package com.kcrud.data.database
 
 import com.kcrud.admin.env.healthcheck.checks.DatabaseCheck
+import com.kcrud.data.database.annotation.DatabaseAPI
 import com.kcrud.data.tables.ContactTable
 import com.kcrud.data.tables.EmployeeTable
 import com.kcrud.data.tables.EmploymentTable

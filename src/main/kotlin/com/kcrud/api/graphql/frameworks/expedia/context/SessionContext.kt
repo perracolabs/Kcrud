@@ -8,7 +8,7 @@ package com.kcrud.api.graphql.frameworks.expedia.context
 
 import com.kcrud.admin.env.security.user.ContextUser
 import com.kcrud.admin.env.security.user.UserRole
-import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
+import com.kcrud.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import com.kcrud.utils.Tracer
 import graphql.schema.DataFetchingEnvironment
 import io.ktor.http.*

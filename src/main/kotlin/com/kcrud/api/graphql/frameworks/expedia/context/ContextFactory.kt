@@ -8,7 +8,7 @@ package com.kcrud.api.graphql.frameworks.expedia.context
 
 import com.expediagroup.graphql.generator.extensions.plus
 import com.expediagroup.graphql.server.ktor.DefaultKtorGraphQLContextFactory
-import com.kcrud.api.graphql.frameworks.expedia.ExpediaAPI
+import com.kcrud.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import graphql.GraphQLContext
 import io.ktor.server.request.*
 

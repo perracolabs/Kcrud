@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.admin.settings.utils
+package com.kcrud.admin.settings.annotation
 
 /**
  * Annotation for controlled access to the Configuration API.

@@ -6,7 +6,7 @@
 
 package com.kcrud.admin.env.healthcheck.checks
 
-import com.kcrud.admin.env.healthcheck.HealthCheckAPI
+import com.kcrud.admin.env.healthcheck.annotation.HealthCheckAPI
 import com.kcrud.admin.env.types.DeploymentType
 import com.kcrud.admin.settings.AppSettings
 import kotlinx.serialization.Serializable

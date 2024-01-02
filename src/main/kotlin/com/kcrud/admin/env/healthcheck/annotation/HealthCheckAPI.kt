@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package com.kcrud.admin.env.healthcheck
+package com.kcrud.admin.env.healthcheck.annotation
 
 /**
  * Annotation for controlled access to the Health Check API.

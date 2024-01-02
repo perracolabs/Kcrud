@@ -6,7 +6,7 @@
 
 package com.kcrud.admin.env.healthcheck.utils
 
-import com.kcrud.admin.env.healthcheck.HealthCheckAPI
+import com.kcrud.admin.env.healthcheck.annotation.HealthCheckAPI
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 

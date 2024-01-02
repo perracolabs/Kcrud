@@ -10,7 +10,7 @@ import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.ContextBuilder
 import com.kcrud.admin.env.security.user.ContextUser
 import com.kcrud.admin.env.security.user.UserRole
-import com.kcrud.api.graphql.frameworks.kgraphql.KGraphQLAPI
+import com.kcrud.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
 import com.kcrud.utils.Tracer
 import io.ktor.server.application.*
 

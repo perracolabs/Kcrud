@@ -6,10 +6,10 @@
 
 package com.kcrud.admin.settings
 
+import com.kcrud.admin.settings.annotation.ConfigurationAPI
 import com.kcrud.admin.settings.config.RootConfiguration
 import com.kcrud.admin.settings.config.sections.*
 import com.kcrud.admin.settings.config.sections.security.SecuritySettings
-import com.kcrud.admin.settings.utils.ConfigurationAPI
 import com.kcrud.admin.settings.utils.ConfigurationParser
 import com.kcrud.utils.Tracer
 import io.ktor.server.application.*

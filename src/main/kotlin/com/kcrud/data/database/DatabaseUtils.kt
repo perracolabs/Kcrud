@@ -6,6 +6,7 @@
 
 package com.kcrud.data.database
 
+import com.kcrud.data.database.annotation.DatabaseAPI
 import com.kcrud.utils.Tracer
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
