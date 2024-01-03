@@ -57,7 +57,7 @@ internal class EmploymentRepository : IEmploymentRepository {
     override fun update(employeeId: UUID, employmentId: UUID, employmentRequest: EmploymentRequest): Int {
         return transaction {
             EmploymentTable.update(where = {
-                EmploymentTable.id eq employmentId and (EmploymentTable.employeeId eq employeeId)
+                (EmploymentTable.id eq employmentId) and (EmploymentTable.employeeId eq employeeId)
             }) { employmentRow ->
                 employmentRequestToTable(
                     employeeId = employeeId,
