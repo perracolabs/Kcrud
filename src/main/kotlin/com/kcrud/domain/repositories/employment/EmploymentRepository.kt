@@ -23,9 +23,7 @@ internal class EmploymentRepository : IEmploymentRepository {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .select {
                     (EmploymentTable.id eq employmentId) and
-                            (EmploymentTable.employeeId eq employeeId) and
-                            (EmployeeTable.id eq employeeId) and
-                            (ContactTable.employeeId eq employeeId)
+                            (EmploymentTable.employeeId eq employeeId)
                 }.singleOrNull()?.let { resultRow ->
                     Employment.toEntity(row = resultRow)
                 }
@@ -35,7 +33,9 @@ internal class EmploymentRepository : IEmploymentRepository {
     override fun findByEmployeeId(employeeId: UUID): List<Employment> {
         return transaction {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
-                .select { (EmploymentTable.employeeId eq employeeId) and (ContactTable.employeeId eq employeeId) }
+                .select {
+                    (EmploymentTable.employeeId eq employeeId)
+                }
                 .map { resultRow ->
                     Employment.toEntity(row = resultRow)
                 }
