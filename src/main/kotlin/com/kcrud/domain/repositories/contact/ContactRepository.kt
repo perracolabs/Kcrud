@@ -46,7 +46,7 @@ internal class ContactRepository : IContactRepository {
             deleteByEmployeeId(employeeId = employeeId)
             null
         } else {
-            val contactId = findByEmployeeId(employeeId = employeeId)?.id
+            val contactId: UUID? = findByEmployeeId(employeeId = employeeId)?.id
 
             if (contactId == null) {
                 create(employeeId = employeeId, contactRequest = employeeRequest.contact)

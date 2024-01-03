@@ -41,27 +41,28 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
         return transaction {
-            val query = EmployeeTable.join(
+            val query: Query = EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
             ).selectAll()
-            val totalElements = query.count()
 
-            val paginatedData = query
+            val totalElements: Long = query.count()
+
+            val paginatedData: List<Employee> = query
                 .applyPagination(pageable = pageable)
                 .map { resultRow ->
                     Employee.toEntity(row = resultRow)
                 }
 
-            Page.create(content = paginatedData, totalElements = totalElements, pageable = pageable)
+            Page.build(content = paginatedData, totalElements = totalElements, pageable = pageable)
         }
     }
 
     override fun filter(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
         return transaction {
-            val query = EmployeeTable.selectAll()
+            val query: Query = EmployeeTable.selectAll()
 
             // Using lowerCase() to make the search case-insensitive.
             // This could be removed if the database is configured to use a case-insensitive collation.
@@ -84,21 +85,21 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
             }
 
             // Count total elements after applying filters.
-            val totalFilteredElements = query.count()
+            val totalFilteredElements: Long = query.count()
 
-            val paginatedData = query
+            val paginatedData: List<Employee> = query
                 .applyPagination(pageable = pageable)
                 .map { resultRow ->
                     Employee.toEntity(row = resultRow)
                 }
 
-            Page.create(content = paginatedData, totalElements = totalFilteredElements, pageable = pageable)
+            Page.build(content = paginatedData, totalElements = totalFilteredElements, pageable = pageable)
         }
     }
 
     override fun create(employeeRequest: EmployeeRequest): UUID {
         return transaction {
-            val newEmployeeId = EmployeeTable.insert { employeeRow ->
+            val newEmployeeId: UUID = EmployeeTable.insert { employeeRow ->
                 employeeRequestToTable(employeeRequest = employeeRequest, target = employeeRow)
             } get EmployeeTable.id
 
@@ -116,7 +117,7 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
     override fun update(employeeId: UUID, employeeRequest: EmployeeRequest): Int {
         return transaction {
 
-            val updateCount = EmployeeTable.update(
+            val updateCount: Int = EmployeeTable.update(
                 where = { EmployeeTable.id eq employeeId }
             ) { employeeRow ->
                 employeeRequestToTable(employeeRequest = employeeRequest, target = employeeRow)

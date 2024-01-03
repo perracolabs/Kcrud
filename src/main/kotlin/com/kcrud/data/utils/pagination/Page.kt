@@ -61,8 +61,7 @@ open class Page<out T : Any>(
          * @param pageable The pagination information that was used to request the content, or null if none was used.
          * @return A new [Page] object with the given content, including a computed page [Info] details.
          */
-        fun <T : Any> create(content: List<T>, totalElements: Long, pageable: Pageable?): Page<T> {
-
+        fun <T : Any> build(content: List<T>, totalElements: Long, pageable: Pageable?): Page<T> {
             val (totalPages, pageSize) = pageable?.let { pageableInstance ->
                 // If the page size is 0, then the requested size is the entire dataset elements.
                 val requestedSize = if (pageableInstance.size == 0) content.size else pageableInstance.size
