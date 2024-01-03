@@ -32,6 +32,8 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
 
     /**
      * Retrieves all employees in the system.
+     * @param pageable The pagination options to be applied.
+     *                If not provided, a single page with the result will be returned.
      * @return List of all employee entities.
      */
     fun findAll(pageable: Pageable? = null): Page<Employee> {
@@ -42,6 +44,7 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
      * Retrieves all employees in the system that match the provided filter set.
      * @param filterSet The filter set to be applied.
      * @param pageable The pagination options to be applied.
+     *                 If not provided, a single page with the result will be returned.
      * @return List of all employee entities that match the provided filter set.
      */
     fun filter(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<Employee> {

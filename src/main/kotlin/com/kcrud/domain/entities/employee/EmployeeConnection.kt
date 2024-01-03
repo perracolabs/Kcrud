@@ -26,4 +26,3 @@ class EmployeeConnection(
     val content: List<Employee>,
     val info: Page.Info
 )
-
