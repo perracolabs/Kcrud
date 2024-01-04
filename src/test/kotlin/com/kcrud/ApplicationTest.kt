@@ -6,7 +6,7 @@
 
 package com.kcrud
 
-import com.kcrud.plugins.configureRoutes
+import com.kcrud.core.plugins.configureRoutes
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*

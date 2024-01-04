@@ -139,7 +139,7 @@ dependencies {
     // https://github.com/swagger-api/swagger-codegen-generators
     implementation("io.ktor:ktor-server-openapi:$ktorVersion")
     implementation("io.ktor:ktor-server-swagger:$ktorVersion")
-    implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.45")
+    implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.46")
     implementation("commons-codec:commons-codec:1.16.0")
     implementation("com.google.code.gson:gson:2.10.1")
 

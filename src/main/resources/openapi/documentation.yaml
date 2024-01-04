@@ -78,15 +78,6 @@ paths:
         schema:
           type: "string"
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "200":
           description: "OK"
           content:
@@ -182,62 +173,12 @@ paths:
     get:
       description: ""
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "200":
           description: "OK"
           content:
             '*/*':
               schema:
                 $ref: "#/components/schemas/HealthCheck"
-              examples:
-                Example#1:
-                  description: ""
-                  value:
-                    errors: []
-                    server:
-                      errors: []
-                      machineId: "null"
-                      deploymentType: "null"
-                      developmentModeEnabled: "null"
-                      protocol: "null"
-                      host: "null"
-                      allowedHosts: "null"
-                      utc: "null"
-                      local: "null"
-                    security:
-                      errors: []
-                      jwtEnabled: "null"
-                      basicAuthEnabled: "null"
-                      publicApiRateLimit: "null"
-                      publicApiRateRefillMs: "null"
-                      newTokenRateLimit: "null"
-                      newTokenRateRefillMs: "null"
-                    database: "null"
-                    application:
-                      errors: []
-                      apiVersion: "null"
-                      docsEnabled: "null"
-                    graphQL:
-                      errors: []
-                      enabled: "null"
-                      framework: "null"
-                      playground: "null"
-                      dumpSchema: "null"
-                    snowflake:
-                      errors: []
-                      testId: "null"
-                      testResult: "null"
-                      timestampEpoch: "null"
-                      nanoTimeStart: "null"
-                    endpoints: "null"
   /login:
     post:
       description: ""
@@ -250,9 +191,9 @@ paths:
                 type: "string"
               examples:
                 Example#1:
-                  value: "Authentication failed"
+                  value: "Authentication failed."
                 Example#2:
-                  value: "Authentication successful"
+                  value: "Authentication successful."
   /search:
     post:
       description: "Search (Filter)"
@@ -416,17 +357,6 @@ paths:
         schema:
           type: "string"
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-                Example#2:
-                  value: ""
         "200":
           description: "OK"
           content:
