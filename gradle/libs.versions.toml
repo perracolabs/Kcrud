@@ -1,0 +1,130 @@
+# https://developer.android.com/build/migrate-to-catalogs
+
+[versions]
+commons-codec = "1.16.0"
+database-h2 = "2.2.224"
+database-sqlite = "3.44.1.0"
+exposed = "0.46.0"
+graphql-exposed-generator = "7.0.2"
+graphql-exposed-server = "7.0.2"
+graphql-kgraphql = "0.19.0"
+gson = "2.10.1"
+hikari-cp = "5.1.0"
+koin = "3.5.3"
+kotlin = "1.9.22"
+kotlinx-datetime = "0.5.0"
+ktor = "2.3.7"
+logback = "1.4.14"
+mockk = "1.13.8"
+mockito-kotlin = "5.2.1"
+swagger-codegen-generators = "1.0.46"
+typesafe-config = "1.4.3"
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+graphql-expedia = { id = "com.expediagroup.graphql", version.ref = "graphql-exposed-server" }
+
+[libraries]
+# Ktor.
+# https://github.com/ktorio/ktor
+# https://github.com/ktorio/ktor/releases
+# https://api.ktor.io
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors-jvm", version.ref = "ktor" }
+ktor-server-defaultheaders = { module = "io.ktor:ktor-server-default-headers-jvm", version.ref = "ktor" }
+ktor-server-htmlbuilder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+ktor-server-ratelimit = { module = "io.ktor:ktor-server-rate-limit", version.ref = "ktor" }
+ktor-server-statuspages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+ktor-server-autoheadresponse = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
+ktor-server-sessions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
+ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
+ktor-server-testhost = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor" }
+
+# Call Logging, Call Id.
+# https://ktor.io/docs/call-logging.html
+# https://ktor.io/docs/call-id.html
+ktor-server-calllogging = { module = "io.ktor:ktor-server-call-logging", version.ref = "ktor" }
+ktor-server-callid = { module = "io.ktor:ktor-server-call-id", version.ref = "ktor" }
+
+# Basic Authentication.
+# https://ktor.io/docs/basic.html
+ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+
+# JWT Authentication.
+# https://ktor.io/docs/jwt.html
+ktor-server-authjwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }
+
+# Serialization.
+# https://github.com/Kotlin/kotlinx.serialization
+# https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md
+ktor-server-contentnegotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinxjson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# Logging.
+# https://github.com/qos-ch/logback
+logbackclassic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+# Serializable DateTime.
+# https://github.com/Kotlin/kotlinx-datetime
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
+# 'Conf' type safety.
+# https://github.com/lightbend/config
+typesafeconfig = { module = "com.typesafe:config", version.ref = "typesafe-config" }
+
+# Exposed ORM.
+# https://github.com/JetBrains/Exposed
+# https://github.com/JetBrains/Exposed/blob/main/docs/ChangeLog.md
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-crypt = { module = "org.jetbrains.exposed:exposed-crypt", version.ref = "exposed" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+exposed-kotlindatetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
+
+# HikariCP (Database connection pooling)
+# https://github.com/brettwooldridge/HikariCP
+# https://ktor.io/docs/connection-pooling-caching.html
+hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikari-cp" }
+
+# Koin.
+# https://insert-koin.io/docs/quickstart/ktor
+# https://github.com/InsertKoinIO/koin
+# https://github.com/InsertKoinIO/koin-getting-started
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+koin-loggerslf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+
+# H2 database.
+# https://github.com/h2database/h2database
+database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
+
+# SQLite database.
+# https://github.com/sqlite/sqlite
+database-sqlite = { module = "org.xerial:sqlite-jdbc", version.ref = "database-sqlite" }
+
+# GraphQL using ExpediaGroup.
+# https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview
+# https://github.com/ExpediaGroup/graphql-kotlin/tree/master/servers/graphql-kotlin-ktor-server
+graphql-expedia-server = { module = "com.expediagroup:graphql-kotlin-ktor-server", version.ref = "graphql-exposed-server" }
+graphql-expedia-generator = { module = "com.expediagroup:graphql-kotlin-schema-generator", version.ref = "graphql-exposed-generator" }
+
+# GraphQL using KGraphQL.
+# https://github.com/aPureBase/KGraphQL
+graphql-kgraphql = { module = "com.apurebase:kgraphql", version.ref = "graphql-kgraphql" }
+graphql-kgraphql-ktor = { module = "com.apurebase:kgraphql-ktor", version.ref = "graphql-kgraphql" }
+
+# OpenAPI / SwaggerUI.
+# https://ktor.io/docs/swagger-ui.html#configure-swagger
+# https://github.com/swagger-api/swagger-codegen-generators
+docs-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
+docs-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
+docs-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-codegen-generators" }
+docs-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+docs-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }

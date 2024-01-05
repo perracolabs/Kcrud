@@ -42,10 +42,10 @@ bin/
 .DS_Store
 
 ### Custom ###
-/.database/
+/.runtime/*
+/.graphql/*
 /.idea/
-/.graphql/
 
 ### Swagger ###
-/docs/
-/docs/.swagger-codegen
+/docs/*
+/KcrudServer/docs/*

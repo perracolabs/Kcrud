@@ -5,7 +5,8 @@ A REST/GraphQL **CRUD** server example in [Kotlin](https://kotlinlang.org/) and 
 * Most common **REST** operations, including filterable and sortable pagination examples.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
 * [Database Connection Pooling](https://ktor.io/docs/connection-pooling-caching.html#connection-pooling) with [HikariCP ](https://github.com/brettwooldridge/HikariCP).
-* [Encryption](https://github.com/perracolabs/Kcrud/blob/master/src/main/kotlin/com/kcrud/data/database/tables/ContactTable.kt) at field level example.
+* [Encryption](https://github.com/perracolabs/Kcrud/blob/master/KcrudServer/src/main/kotlin/kcrud/server/data/tables/ContactTable.kt) at
+  field level example.
 * [GraphQL](https://graphql.org/) with either [ExpediaGroup](https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview) or [KGraphQL](https://github.com/aPureBase/KGraphQL) frameworks. Examples: Context, Mutations, Queries, Pagination and Filters.
 * [Koin](https://insert-koin.io/) dependency injection.
 * [Connection Rate limit](https://ktor.io/docs/rate-limit.html) examples.
@@ -26,11 +27,27 @@ A REST/GraphQL **CRUD** server example in [Kotlin](https://kotlinlang.org/) and 
 ---
 
 For convenience, it is included a
-*[Postman Collection (kcrud.postman_collection)](https://github.com/perracolabs/Kcrud/blob/master/postman/kcrud.postman_collection.json)*
+*[Postman Collection](https://github.com/perracolabs/Kcrud/blob/master/.postman/kcrud.postman_collection.json)*
 with all the available REST endpoints, including the GraphQL queries and mutations.
 
 ---
 
+## Project Structure:
+
+**Kcrud** is structured as a Multi-Module project, presently comprising two main modules: **KcrudServer** and **KcrudCore**.
+
+-**KcrudServer** functions as the central application module and is responsible for initiating the server.
+It encompasses the business logic tailored to the specific domains it deals with. Although it's presently named KcrudServer for
+illustration, a more fitting name would be one that reflects the particular domains it oversees.
+
+-**KcrudCore**, on the other hand, acts as the shared server module. It's devoid of any business logic but provides essential common server
+functionalities.
+This module is incorporated as a dependency within the KcrudServer module and should be similarly integrated into any new modules.
+
+This architecture facilitates the development of new modules, enabling them to be compiled independently or to function as part of a modular
+monolith.
+
+---
 ## Handling Security
 
 The enabling or disabling of security is managed through the `hconf` configuration file.

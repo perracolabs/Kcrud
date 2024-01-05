@@ -10,3 +10,6 @@ plugins {
 }
 
 rootProject.name = "Kcrud"
+
+include("KcrudCore")
+include("KcrudServer")
