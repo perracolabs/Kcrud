@@ -38,8 +38,7 @@ repositories {
 
 dependencies {
 
-    implementation(project(":KcrudCore"))
-
+    implementation(project(":kcrud-core"))
     implementation(libs.docs.commons.codec)
     implementation(libs.docs.gson)
 

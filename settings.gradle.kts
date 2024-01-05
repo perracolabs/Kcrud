@@ -11,5 +11,5 @@ plugins {
 
 rootProject.name = "Kcrud"
 
-include("KcrudCore")
-include("KcrudServer")
+include("kcrud-core")
+include("kcrud-server")

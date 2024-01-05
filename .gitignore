@@ -48,4 +48,4 @@ bin/
 
 ### Swagger ###
 /docs/*
-/KcrudServer/docs/*
+/kcrud-server/docs/*

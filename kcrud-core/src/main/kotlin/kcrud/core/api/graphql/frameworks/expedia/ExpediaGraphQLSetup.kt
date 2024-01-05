@@ -24,7 +24,9 @@ import kcrud.core.api.graphql.frameworks.expedia.types.CustomSchemaGeneratorHook
 import kcrud.core.utils.NetworkUtils
 import kcrud.core.utils.Tracer
 import java.io.File
+import java.net.URI
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
@@ -133,9 +135,10 @@ class ExpediaGraphQLSetup {
             )
         )
 
-        val sdl = schema.print()
-        val directoryPath = Files.createDirectories(Paths.get(AppSettings.graphql.schemaPath))
-        val file = File(directoryPath.resolve("schema.graphql").toUri())
+        val sdl: String = schema.print()
+        val directoryPath: Path = Files.createDirectories(Paths.get(AppSettings.graphql.schemaPath))
+        val fileUri: URI = directoryPath.normalize().resolve("schema.graphql").toUri()
+        val file = File(fileUri)
         file.writeText(text = sdl)
 
         tracer.info("Dumped GraphQL schema file:")
