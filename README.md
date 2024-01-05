@@ -34,18 +34,18 @@ with all the available REST endpoints, including the GraphQL queries and mutatio
 
 ## Project Structure:
 
-**Kcrud** is structured as a Multi-Module project, presently comprising two main modules: **kcrud-server** and **kcrud-core**.
+**Kcrud** is structured as a Multi-Module project, presently comprising two main modules: ```kcrud-server``` and ```kcrud-core```.
 
--**kcrud-server** functions as the central application module and is responsible for initiating the server.
-It encompasses the business logic tailored to the specific domains it deals with. Although it's presently named **kcrud-server** for
-illustration, a more fitting name would be one that reflects the particular domains it oversees.
+* ```kcrud-server``` functions as the main application module and is responsible for initiating the server.
+  It encompasses the business logic tailored to the specific domains it deals with. Although it's presently named ```kcrud-server``` for
+  a generic illustration, a more fitting name would be one that reflects the particular domains it oversees.
 
--**kcrud-core**, on the other hand, acts as the shared server module. It's devoid of any business logic but provides essential common server
-functionalities.
-This module is incorporated as a dependency within the **kcrud-server** module and should be similarly integrated into any new modules.
+* ```kcrud-core```, on the other hand, acts as the shared server module. It's devoid of any business logic but provides essential common
+  server functionalities.
+  This module is incorporated as a dependency within the ```kcrud-server``` module and should be similarly integrated into any new modules.
 
-This architecture facilitates the development of new modules, enabling them to be compiled independently or to function as part of a modular
-monolith.
+This architecture facilitates the development of new modules, enabling them to be decoupled and compiled independently or to function as
+part of a modular monolith.
 
 ---
 ## Handling Security
