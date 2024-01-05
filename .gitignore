@@ -42,9 +42,10 @@ bin/
 .DS_Store
 
 ### Custom ###
-/.runtime/*
+.runtime/*
+/.database/*
 /.graphql/*
-/.idea/
+.idea/
 
 ### Swagger ###
 /docs/*

@@ -44,27 +44,27 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
-    implementation(libs.ktor.serialization.kotlinxjson)
+    implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.auth)
-    implementation(libs.ktor.server.authjwt)
-    implementation(libs.ktor.server.contentnegotiation)
+    implementation(libs.ktor.server.auth.jwt)
+    implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.htmlbuilder)
+    implementation(libs.ktor.server.html.builder)
     implementation(libs.ktor.server.netty)
-    implementation(libs.ktor.server.ratelimit)
+    implementation(libs.ktor.server.rateLimit)
     implementation(libs.ktor.server.tests)
-    implementation(libs.ktor.server.testhost)
+    implementation(libs.ktor.server.test.host)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.crypt)
     implementation(libs.exposed.dao)
-    implementation(libs.exposed.kotlindatetime)
+    implementation(libs.exposed.kotlin.datetime)
 
     implementation(libs.graphql.expedia.server)
     implementation(libs.graphql.kgraphql.ktor)
 
     implementation(libs.koin.ktor)
-    implementation(libs.koin.loggerslf4j)
+    implementation(libs.koin.logger.slf4j)
     implementation(libs.koin.test)
 
     implementation(libs.test.kotlin.junit)

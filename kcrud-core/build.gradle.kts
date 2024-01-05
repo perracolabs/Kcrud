@@ -36,21 +36,21 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
-    implementation(libs.ktor.serialization.kotlinxjson)
+    implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.auth)
-    implementation(libs.ktor.server.authjwt)
-    implementation(libs.ktor.server.autoheadresponse)
-    implementation(libs.ktor.server.callid)
-    implementation(libs.ktor.server.calllogging)
-    implementation(libs.ktor.server.contentnegotiation)
+    implementation(libs.ktor.server.auth.jwt)
+    implementation(libs.ktor.server.autoHeadResponse)
+    implementation(libs.ktor.server.call.id)
+    implementation(libs.ktor.server.call.logging)
+    implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.cors)
-    implementation(libs.ktor.server.defaultheaders)
-    implementation(libs.ktor.server.ratelimit)
+    implementation(libs.ktor.server.defaultHeaders)
+    implementation(libs.ktor.server.rateLimit)
     implementation(libs.ktor.server.sessions)
-    implementation(libs.ktor.server.statuspages)
+    implementation(libs.ktor.server.statusPages)
     implementation(libs.ktor.server.tests)
-    implementation(libs.ktor.server.testhost)
+    implementation(libs.ktor.server.test.host)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.crypt)
@@ -61,13 +61,13 @@ dependencies {
     implementation(libs.graphql.kgraphql)
     implementation(libs.graphql.kgraphql.ktor)
 
-    implementation(libs.hikaricp)
+    implementation(libs.hikariCP)
 
-    implementation(libs.logbackclassic)
+    implementation(libs.logback.classic)
 
     implementation(libs.test.kotlin.junit)
     implementation(libs.test.mockk)
     implementation(libs.test.mockito.kotlin)
 
-    implementation(libs.typesafeconfig)
+    implementation(libs.typesafe.config)
 }
