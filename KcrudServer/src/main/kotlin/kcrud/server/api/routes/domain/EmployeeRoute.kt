@@ -23,7 +23,7 @@ import java.util.*
 /**
  * Employee related endpoints.
  *
- * These end points are defined in a single function
+ * These endpoints are defined in a single function
  * to demonstrate how to encapsulate routes in a single function.
  *
  * See [Route.employmentRoute] for an example of how to define multiple routes in multiple functions.

@@ -21,7 +21,7 @@ import java.util.*
 /**
  * Employment endpoints.
  *
- * These end points are defined in multiple functions
+ * These endpoints are defined in multiple functions
  * to demonstrate how to organize routes separately
  * and potentially in multiple files.
  *
