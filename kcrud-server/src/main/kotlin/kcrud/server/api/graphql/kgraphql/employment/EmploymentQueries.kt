@@ -7,7 +7,7 @@
 package kcrud.server.api.graphql.kgraphql.employment
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import kcrud.core.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
+import kcrud.base.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
 import kcrud.server.domain.entities.employment.Employment
 import kcrud.server.domain.services.EmploymentService
 import org.koin.core.component.KoinComponent

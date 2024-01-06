@@ -12,11 +12,11 @@ import io.ktor.server.auth.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
-import kcrud.core.admin.settings.AppSettings
-import kcrud.core.api.routes.accessTokenRoute
-import kcrud.core.api.routes.documentationRoute
-import kcrud.core.api.routes.systemRoute
-import kcrud.core.plugins.RateLimitScope
+import kcrud.base.admin.settings.AppSettings
+import kcrud.base.api.routes.accessTokenRoute
+import kcrud.base.api.routes.documentationRoute
+import kcrud.base.api.routes.systemRoute
+import kcrud.base.plugins.RateLimitScope
 import kcrud.server.api.routes.domain.employeeRoute
 import kcrud.server.api.routes.domain.employmentRoute
 import kcrud.server.api.routes.home.rootRoute

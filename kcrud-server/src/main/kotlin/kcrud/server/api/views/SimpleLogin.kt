@@ -10,8 +10,8 @@ import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import kcrud.core.admin.env.security.authentication.BasicCredentials
-import kcrud.core.admin.settings.AppSettings
+import kcrud.base.admin.env.security.authentication.BasicCredentials
+import kcrud.base.admin.settings.AppSettings
 import kotlinx.html.*
 
 /**

@@ -10,8 +10,8 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.core.admin.env.security.user.ContextPrincipal
-import kcrud.core.admin.settings.AppSettings
+import kcrud.base.admin.env.security.user.ContextPrincipal
+import kcrud.base.admin.settings.AppSettings
 import kcrud.server.api.views.SimpleLogin
 
 /**

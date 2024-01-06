@@ -6,7 +6,7 @@
 
 package kcrud.server.domain.entities.employment.types
 
-import kcrud.core.data.utils.EnumWithId
+import kcrud.base.data.utils.EnumWithId
 
 /**
  * Example in which each item has an id,

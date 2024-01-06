@@ -6,8 +6,8 @@
 
 package kcrud.server.domain.services
 
-import kcrud.core.data.pagination.Page
-import kcrud.core.data.pagination.Pageable
+import kcrud.base.data.pagination.Page
+import kcrud.base.data.pagination.Pageable
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
 import kcrud.server.domain.entities.employee.EmployeeRequest

@@ -6,8 +6,8 @@
 
 package kcrud.server.domain.entities.employee
 
-import kcrud.core.data.utils.SUUID
-import kcrud.core.utils.AgeDelegate
+import kcrud.base.data.utils.SUUID
+import kcrud.base.utils.AgeDelegate
 import kcrud.server.data.tables.ContactTable
 import kcrud.server.data.tables.EmployeeTable
 import kcrud.server.domain.entities.contact.Contact

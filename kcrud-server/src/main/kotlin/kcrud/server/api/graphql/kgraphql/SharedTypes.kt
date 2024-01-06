@@ -7,9 +7,9 @@
 package kcrud.server.api.graphql.kgraphql
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import kcrud.core.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
-import kcrud.core.data.pagination.Pageable
-import kcrud.core.data.utils.toUUID
+import kcrud.base.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
+import kcrud.base.data.pagination.Pageable
+import kcrud.base.data.utils.toUUID
 import kcrud.server.domain.entities.employee.types.Honorific
 import kcrud.server.domain.entities.employee.types.MaritalStatus
 import kcrud.server.domain.entities.employment.types.WorkModality

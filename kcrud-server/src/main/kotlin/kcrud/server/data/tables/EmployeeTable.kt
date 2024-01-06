@@ -6,7 +6,7 @@
 
 package kcrud.server.data.tables
 
-import kcrud.core.data.utils.enumById
+import kcrud.base.data.utils.enumById
 import kcrud.server.domain.entities.employee.types.Honorific
 import kcrud.server.domain.entities.employee.types.MaritalStatus
 import org.jetbrains.exposed.sql.Table

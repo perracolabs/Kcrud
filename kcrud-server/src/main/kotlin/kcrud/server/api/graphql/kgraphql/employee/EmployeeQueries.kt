@@ -8,10 +8,10 @@ package kcrud.server.api.graphql.kgraphql.employee
 
 import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
-import kcrud.core.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
-import kcrud.core.api.graphql.frameworks.kgraphql.context.SessionContext
-import kcrud.core.data.pagination.Page
-import kcrud.core.data.pagination.Pageable
+import kcrud.base.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
+import kcrud.base.api.graphql.frameworks.kgraphql.context.SessionContext
+import kcrud.base.data.pagination.Page
+import kcrud.base.data.pagination.Pageable
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeConnection
 import kcrud.server.domain.entities.employee.EmployeeFilterSet

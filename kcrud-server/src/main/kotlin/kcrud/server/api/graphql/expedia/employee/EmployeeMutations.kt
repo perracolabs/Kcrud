@@ -8,7 +8,7 @@ package kcrud.server.api.graphql.expedia.employee
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Mutation
-import kcrud.core.api.graphql.frameworks.expedia.annotation.ExpediaAPI
+import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeRequest
 import kcrud.server.domain.services.EmployeeService

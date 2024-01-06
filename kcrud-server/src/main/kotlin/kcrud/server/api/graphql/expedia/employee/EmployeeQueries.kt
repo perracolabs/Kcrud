@@ -9,10 +9,10 @@ package kcrud.server.api.graphql.expedia.employee
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
 import graphql.schema.DataFetchingEnvironment
-import kcrud.core.api.graphql.frameworks.expedia.annotation.ExpediaAPI
-import kcrud.core.api.graphql.frameworks.expedia.context.SessionContext
-import kcrud.core.data.pagination.Page
-import kcrud.core.data.pagination.Pageable
+import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
+import kcrud.base.api.graphql.frameworks.expedia.context.SessionContext
+import kcrud.base.data.pagination.Page
+import kcrud.base.data.pagination.Pageable
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeConnection
 import kcrud.server.domain.entities.employee.EmployeeFilterSet

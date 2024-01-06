@@ -6,7 +6,7 @@
 
 package kcrud.server.data.tables
 
-import kcrud.core.data.utils.EncryptionUtils
+import kcrud.base.data.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table

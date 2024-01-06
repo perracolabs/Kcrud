@@ -6,7 +6,8 @@
 
 package kcrud.server.data.utils
 
-import kcrud.core.data.database.database.DatabaseManager
+import kcrud.base.admin.settings.AppSettings
+import kcrud.base.data.database.DatabaseFactory
 import kcrud.server.data.tables.ContactTable
 import kcrud.server.data.tables.EmployeeTable
 import kcrud.server.data.tables.EmploymentTable
@@ -14,7 +15,7 @@ import kcrud.server.data.tables.EmploymentTable
 internal object DatabaseSetup {
 
     fun configure() {
-        DatabaseManager.init {
+        DatabaseFactory.init(settings = AppSettings.database) {
             addTable(ContactTable)
             addTable(EmployeeTable)
             addTable(EmploymentTable)

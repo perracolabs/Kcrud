@@ -6,7 +6,7 @@
 
 package kcrud.server.domain.entities.employment
 
-import kcrud.core.data.utils.SUUID
+import kcrud.base.data.utils.SUUID
 import kcrud.server.data.tables.EmploymentTable
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employment.types.WorkModality

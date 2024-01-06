@@ -7,12 +7,12 @@
 package kcrud.server.plugins
 
 import io.ktor.server.application.*
-import kcrud.core.admin.settings.AppSettings
-import kcrud.core.api.graphql.GraphQLFramework
-import kcrud.core.api.graphql.frameworks.expedia.ExpediaGraphQLSetup
-import kcrud.core.api.graphql.frameworks.expedia.annotation.ExpediaAPI
-import kcrud.core.api.graphql.frameworks.kgraphql.KGraphQLSetup
-import kcrud.core.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
+import kcrud.base.admin.settings.AppSettings
+import kcrud.base.api.graphql.GraphQLFramework
+import kcrud.base.api.graphql.frameworks.expedia.ExpediaGraphQLSetup
+import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
+import kcrud.base.api.graphql.frameworks.kgraphql.KGraphQLSetup
+import kcrud.base.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
 import kcrud.server.api.graphql.expedia.employee.EmployeeMutations
 import kcrud.server.api.graphql.expedia.employee.EmployeeQueries
 import kcrud.server.api.graphql.expedia.employment.EmploymentMutations

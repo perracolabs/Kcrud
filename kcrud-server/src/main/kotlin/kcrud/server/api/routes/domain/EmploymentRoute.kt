@@ -12,7 +12,7 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.core.data.utils.toUUIDOrNull
+import kcrud.base.data.utils.toUUIDOrNull
 import kcrud.server.domain.entities.employment.EmploymentRequest
 import kcrud.server.domain.services.EmploymentService
 import org.koin.ktor.ext.inject

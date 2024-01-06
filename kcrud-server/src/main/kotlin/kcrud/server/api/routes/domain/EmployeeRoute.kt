@@ -12,8 +12,8 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.core.data.pagination.getPageable
-import kcrud.core.data.utils.toUUIDOrNull
+import kcrud.base.data.pagination.getPageable
+import kcrud.base.data.utils.toUUIDOrNull
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
 import kcrud.server.domain.entities.employee.EmployeeRequest
 import kcrud.server.domain.services.EmployeeService

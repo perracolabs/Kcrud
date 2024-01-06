@@ -99,15 +99,6 @@ paths:
               $ref: "#/components/schemas/EmployeeRequest"
         required: true
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "200":
           description: "OK"
           content:
@@ -138,12 +129,6 @@ paths:
         \ in Postman set the endpoint and in the Headers add an Authorization key\
         \ <br> with a 'Bearer' holding a previous valid token."
       responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
         "200":
           description: "OK"
           content:
@@ -242,15 +227,6 @@ paths:
         schema:
           type: "string"
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "200":
           description: "OK"
           content:
@@ -274,15 +250,6 @@ paths:
               $ref: "#/components/schemas/EmploymentRequest"
         required: true
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "201":
           description: "Created"
           content:
@@ -304,15 +271,6 @@ paths:
         schema:
           type: "string"
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "200":
           description: "OK"
           content:

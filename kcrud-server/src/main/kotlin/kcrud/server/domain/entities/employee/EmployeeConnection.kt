@@ -6,7 +6,7 @@
 
 package kcrud.server.domain.entities.employee
 
-import kcrud.core.data.pagination.Page
+import kcrud.base.data.pagination.Page
 import kotlinx.serialization.Serializable
 
 /**

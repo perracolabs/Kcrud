@@ -6,9 +6,9 @@
 
 package kcrud.server.domain.repositories.employee
 
-import kcrud.core.data.pagination.Page
-import kcrud.core.data.pagination.Pageable
-import kcrud.core.data.pagination.applyPagination
+import kcrud.base.data.pagination.Page
+import kcrud.base.data.pagination.Pageable
+import kcrud.base.data.pagination.applyPagination
 import kcrud.server.data.tables.ContactTable
 import kcrud.server.data.tables.EmployeeTable
 import kcrud.server.data.tables.EmploymentTable

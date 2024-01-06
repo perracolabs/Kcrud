@@ -6,7 +6,7 @@
 
 package kcrud.server.data.tables
 
-import kcrud.core.data.utils.enumById
+import kcrud.base.data.utils.enumById
 import kcrud.server.domain.entities.employment.types.WorkModality
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table

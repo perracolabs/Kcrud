@@ -9,9 +9,9 @@ package kcrud.server
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import kcrud.core.admin.settings.AppSettings
-import kcrud.core.plugins.*
-import kcrud.core.utils.Tracer
+import kcrud.base.admin.settings.AppSettings
+import kcrud.base.plugins.*
+import kcrud.base.utils.Tracer
 import kcrud.server.data.utils.DatabaseSetup
 import kcrud.server.plugins.configureGraphQL
 import kcrud.server.plugins.configureKoin
