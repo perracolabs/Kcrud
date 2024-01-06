@@ -9,13 +9,13 @@ package kcrud.base.exceptions.shared
 import kotlinx.serialization.Serializable
 
 /**
- * Base class for all custom exceptions in the application.
+ * The application exception class, wrapping a [BaseError] instance.
  *
  * @param error The [BaseError] details associated with this exception.
  * @param reason An optional human-readable reason for the exception, providing more context.
  * @param cause The underlying cause of the exception, if any.
  */
-abstract class BaseException(
+class KcrudException(
     val error: BaseError,
     private val reason: String? = null,
     cause: Throwable? = null
@@ -39,7 +39,7 @@ abstract class BaseException(
      * @param status The HTTP status code associated with the error.
      * @param code The unique code identifying the error.
      * @param description A brief description of the error.
-     * @param reason An optional human-readable reason for the error.
+     * @param reason An optional human-readable reason for the error, providing more context.
      */
     @Serializable
     data class ErrorResponse(

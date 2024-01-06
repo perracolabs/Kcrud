@@ -10,7 +10,6 @@ import io.ktor.http.*
 
 /**
  * Abstract base class for representing application concrete errors.
- * This class ensures that each error code is unique across all instances.
  *
  * @param status The [HttpStatusCode] associated with this error.
  * @param code A unique code identifying the type of error.
@@ -21,24 +20,26 @@ abstract class BaseError(
     val status: HttpStatusCode,
     val description: String
 ) {
-    init {
-        // Register the error code to ensure its uniqueness across all instances.
-        registerCode(newCode = code)
+    /**
+     * Throw a [KcrudException].
+     *
+     * @param reason An optional human-readable reason for the error, providing more context.
+     * @param cause An optional underlying cause of the error, if any.
+     */
+    fun raise(reason: String? = null, cause: Throwable? = null): Nothing {
+        throw KcrudException(error = this, reason = reason, cause = cause)
     }
 
     companion object {
-        private val registeredCodes = mutableSetOf<String>()
-
         /**
-         * Registers a new error code and checks for uniqueness.
-         * If the code is already registered, an exception is thrown.
+         * Creates a new [BaseError] instance.
          *
-         * @param newCode The error code to be registered.
-         * @throws IllegalArgumentException if the code is already registered.
+         * @param status The [HttpStatusCode] associated with this error.
+         * @param code A unique code identifying the type of error.
+         * @param description A human-readable description of the error.
          */
-        fun registerCode(newCode: String) {
-            require(newCode !in registeredCodes) { "Duplicate error code detected: $newCode" }
-            registeredCodes += newCode
+        fun of(status: HttpStatusCode, code: String, description: String): BaseError {
+            return object : BaseError(status = status, code = code, description = description) {}
         }
     }
 }

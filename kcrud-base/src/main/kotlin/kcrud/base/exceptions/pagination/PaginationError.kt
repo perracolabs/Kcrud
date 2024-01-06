@@ -8,6 +8,7 @@ package kcrud.base.exceptions.pagination
 
 import io.ktor.http.*
 import kcrud.base.exceptions.shared.BaseError
+import kcrud.base.exceptions.shared.ErrorCodeRegistry
 
 /**
  * Pagination concrete errors.
@@ -30,13 +31,17 @@ sealed class PaginationError(
         description = "Order attributes mismatch. Expected both 'order' and 'sort', or none of them."
     )
 
-    data object InvalidOrderDirection : PaginationError(
+    data class InvalidOrderDirection(val direction: String?) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IOD",
-        description = "Ordering sort direction is invalid."
+        description = "Ordering sort direction is invalid. Received: '$direction'"
     )
 
     companion object {
         private const val TAG: String = "PGN."
+
+        init {
+            ErrorCodeRegistry.registerTag(tag = TAG)
+        }
     }
 }

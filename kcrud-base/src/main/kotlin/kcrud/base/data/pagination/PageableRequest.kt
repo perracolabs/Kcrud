@@ -8,7 +8,6 @@ package kcrud.base.data.pagination
 
 import io.ktor.server.application.*
 import kcrud.base.exceptions.pagination.PaginationError
-import kcrud.base.exceptions.pagination.PaginationException
 
 /**
  * Extension function to construct a [Pageable] instance from an ApplicationRequest query parameters.
@@ -17,13 +16,13 @@ fun ApplicationCall.getPageable(): Pageable? {
     val pageIndex: Int? = request.queryParameters["page"]?.toIntOrNull()
     val pageSize: Int? = request.queryParameters["size"]?.toIntOrNull()
     if ((pageIndex == null) != (pageSize == null)) {
-        throw PaginationException(error = PaginationError.InvalidPageablePair)
+        PaginationError.InvalidPageablePair.raise()
     }
 
     val orderFieldName: String? = request.queryParameters["order"]
     val sortDirection: String? = request.queryParameters["sort"]
     if ((orderFieldName == null) != (sortDirection == null)) {
-        throw PaginationException(error = PaginationError.InvalidOrderPair)
+        PaginationError.InvalidOrderPair.raise()
     }
 
     // If no parameters are provided, return null.
@@ -35,7 +34,7 @@ fun ApplicationCall.getPageable(): Pageable? {
     val order = orderFieldName?.let {
         val direction = Pageable.SortDirection.entries.firstOrNull { direction ->
             direction.name.equals(sortDirection, ignoreCase = true)
-        } ?: throw PaginationException(error = PaginationError.InvalidOrderDirection, reason = sortDirection)
+        } ?: PaginationError.InvalidOrderDirection(direction = sortDirection).raise()
 
         Pageable.Order(field = orderFieldName, sort = direction)
     }

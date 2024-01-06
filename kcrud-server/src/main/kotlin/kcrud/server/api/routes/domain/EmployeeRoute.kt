@@ -16,6 +16,7 @@ import kcrud.base.data.pagination.getPageable
 import kcrud.base.data.utils.toUUIDOrNull
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
 import kcrud.server.domain.entities.employee.EmployeeRequest
+import kcrud.server.domain.exceptions.EmployeeError
 import kcrud.server.domain.services.EmployeeService
 import org.koin.ktor.ext.inject
 import java.util.*
@@ -38,20 +39,20 @@ fun Route.employeeRoute() {
         get {
             val pageable = call.getPageable()
             val employees = service.findAll(pageable = pageable)
-            call.respond(employees)
+            call.respond(message = employees)
         }
 
         // Create
         post {
             val employeeRequest = call.receive<EmployeeRequest>()
             val createdEmployee = service.create(employeeRequest = employeeRequest)
-            call.respond(HttpStatusCode.Created, createdEmployee)
+            call.respond(status = HttpStatusCode.Created, message = createdEmployee)
         }
 
         // Delete All
         delete {
             service.deleteAll().also { deletedCount ->
-                call.respond(HttpStatusCode.OK, deletedCount)
+                call.respond(status = HttpStatusCode.OK, message = deletedCount)
             }
         }
 
@@ -60,7 +61,7 @@ fun Route.employeeRoute() {
             val pageable = call.getPageable()
             val filterSet = call.receive<EmployeeFilterSet>()
             val employees = service.filter(filterSet = filterSet, pageable = pageable)
-            call.respond(employees)
+            call.respond(message = employees)
         }
 
         route("{employee_id}") {
@@ -71,8 +72,8 @@ fun Route.employeeRoute() {
                 val employee = service.findById(employeeId = employeeId)
 
                 employee?.let {
-                    call.respond(employee)
-                } ?: call.respondNotFound(employeeId = employeeId)
+                    call.respond(message = employee)
+                } ?: EmployeeError.EmployeeNotFound(id = employeeId).raise()
             }
 
             // Update by employee ID
@@ -82,15 +83,15 @@ fun Route.employeeRoute() {
                 val updatedEmployee = service.update(employeeId = employeeId, employeeRequest = employeeRequest)
 
                 updatedEmployee?.let {
-                    call.respond(HttpStatusCode.OK, updatedEmployee)
-                } ?: call.respondNotFound(employeeId = employeeId)
+                    call.respond(status = HttpStatusCode.OK, message = updatedEmployee)
+                } ?: EmployeeError.EmployeeNotFound(id = employeeId).raise()
             }
 
             // Delete by employee ID
             delete {
                 val employeeId = call.getEmployeeId()
                 service.delete(employeeId = employeeId).also { deletedCount ->
-                    call.respond(HttpStatusCode.OK, deletedCount)
+                    call.respond(status = HttpStatusCode.OK, message = deletedCount)
                 }
             }
         }
@@ -104,11 +105,4 @@ fun Route.employeeRoute() {
 private fun ApplicationCall.getEmployeeId(): UUID {
     return parameters["employee_id"]?.toUUIDOrNull()
         ?: throw BadRequestException("Invalid employee ID argument.")
-}
-
-private suspend fun ApplicationCall.respondNotFound(employeeId: UUID) {
-    respond(
-        status = HttpStatusCode.NotFound,
-        message = "Employee ID not found '$employeeId'."
-    )
 }
