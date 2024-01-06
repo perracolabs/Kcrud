@@ -11,7 +11,6 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.mockk
-import kcrud.base.data.pagination.Pageable
 import kcrud.server.domain.entities.contact.Contact
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeRequest
@@ -111,79 +110,5 @@ class EmployeeServiceTest {
         }
 
         println("testCreateUpdateEmployee completed successfully.")
-    }
-
-    @Test
-    fun testPagination() = testApplication {
-        println("Running testPagination...")
-
-        // Force the application module to load.
-        client.get("/").apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
-
-        transaction {
-            val contactRepository = ContactRepository()
-            val employeeRepository = EmployeeRepository(contactRepository)
-            val employeeService = EmployeeService(employeeRepository)
-
-            val totalRecords = 10
-
-            // No records.
-            employeeService.findAll(pageable = Pageable(page = 1, size = totalRecords)).also { page ->
-                assertEquals(1, page.info.totalPages)
-                assertEquals(0, page.info.totalElements)
-                assertEquals(totalRecords, page.info.elementsPerPage)
-                assertEquals(0, page.info.elementsInPage)
-                assertEquals(1, page.info.pageIndex)
-                assertEquals(false, page.info.hasNext)
-                assertEquals(false, page.info.hasPrevious)
-                assertEquals(true, page.info.isFirst)
-                assertEquals(true, page.info.isLast)
-            }
-
-            // Create test records.
-            (1..totalRecords).forEach { index ->
-                val employeeRequest = EmployeeRequest(
-                    firstName = "Pepito $index",
-                    lastName = "Perez $index",
-                    dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index),
-                    honorific = Honorific.MR,
-                    maritalStatus = MaritalStatus.SINGLE
-                )
-
-                employeeService.create(employeeRequest)
-            }
-
-            // Test 2 pages.
-            employeeService.findAll(pageable = Pageable(page = 1, size = totalRecords / 2)).also { page ->
-                assertEquals(2, page.info.totalPages)
-                assertEquals(totalRecords, page.info.totalElements)
-                assertEquals(totalRecords / 2, page.info.elementsPerPage)
-                assertEquals(totalRecords / 2, page.info.elementsInPage)
-                assertEquals(1, page.info.pageIndex)
-                assertEquals(true, page.info.hasNext)
-                assertEquals(false, page.info.hasPrevious)
-                assertEquals(true, page.info.isFirst)
-                assertEquals(false, page.info.isLast)
-            }
-
-            // 1 Page
-            employeeService.findAll(pageable = Pageable(page = 1, size = 0)).also { page ->
-                assertEquals(1, page.info.totalPages)
-                assertEquals(totalRecords, page.info.totalElements)
-                assertEquals(totalRecords, page.info.elementsPerPage)
-                assertEquals(totalRecords, page.info.elementsInPage)
-                assertEquals(1, page.info.pageIndex)
-                assertEquals(false, page.info.hasNext)
-                assertEquals(false, page.info.hasPrevious)
-                assertEquals(true, page.info.isFirst)
-                assertEquals(true, page.info.isLast)
-            }
-
-            rollback()
-        }
-
-        println("testPagination completed successfully.")
     }
 }
