@@ -8,9 +8,12 @@ package kcrud.server.api.graphql.expedia.employee
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Mutation
+import graphql.execution.DataFetcherResult
 import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
+import kcrud.base.api.graphql.frameworks.expedia.utils.GraphQLResult
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeRequest
+import kcrud.server.domain.exceptions.EmployeeError
 import kcrud.server.domain.services.EmployeeService
 import org.koin.mp.KoinPlatform.getKoin
 import java.util.*
@@ -29,8 +32,10 @@ class EmployeeMutations : Mutation {
     }
 
     @GraphQLDescription("Updates an existing employee.")
-    suspend fun updateEmployee(employeeId: UUID, employee: EmployeeRequest): Employee? {
-        return service.update(employeeId = employeeId, employeeRequest = employee)
+    suspend fun updateEmployee(employeeId: UUID, employee: EmployeeRequest): DataFetcherResult<Employee?> {
+        val updatedEmployee: Employee? = service.update(employeeId = employeeId, employeeRequest = employee)
+        val error = if (updatedEmployee == null) EmployeeError.EmployeeNotFound(employeeId = employeeId) else null
+        return GraphQLResult.of(data = updatedEmployee, error = error)
     }
 
     @GraphQLDescription("Deletes an existing employee.")

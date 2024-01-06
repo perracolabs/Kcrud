@@ -8,9 +8,12 @@ package kcrud.server.api.graphql.expedia.employment
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Mutation
+import graphql.execution.DataFetcherResult
 import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
+import kcrud.base.api.graphql.frameworks.expedia.utils.GraphQLResult
 import kcrud.server.domain.entities.employment.Employment
 import kcrud.server.domain.entities.employment.EmploymentRequest
+import kcrud.server.domain.exceptions.EmploymentError
 import kcrud.server.domain.services.EmploymentService
 import org.koin.mp.KoinPlatform.getKoin
 import java.util.*
@@ -30,8 +33,19 @@ class EmploymentMutations : Mutation {
     }
 
     @GraphQLDescription("Updates an existing employment.")
-    fun updateEmployment(employeeId: UUID, employmentId: UUID, employment: EmploymentRequest): Employment? {
-        return service.update(employeeId = employeeId, employmentId = employmentId, employmentRequest = employment)
+    fun updateEmployment(employeeId: UUID, employmentId: UUID, employment: EmploymentRequest): DataFetcherResult<Employment?> {
+        val updatedEmployment: Employment? = service.update(
+            employeeId = employeeId,
+            employmentId = employmentId,
+            employmentRequest = employment
+        )
+
+        val error = if (updatedEmployment == null)
+            EmploymentError.EmploymentNotFound(employeeId = employeeId, employmentId = employmentId)
+        else
+            null
+
+        return GraphQLResult.of(data = updatedEmployment, error = error)
     }
 
     @GraphQLDescription("Deletes an existing employment.")

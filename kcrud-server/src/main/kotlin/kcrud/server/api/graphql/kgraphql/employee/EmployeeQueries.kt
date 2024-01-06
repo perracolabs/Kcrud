@@ -10,11 +10,13 @@ import com.apurebase.kgraphql.Context
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import kcrud.base.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
 import kcrud.base.api.graphql.frameworks.kgraphql.context.SessionContext
+import kcrud.base.api.graphql.frameworks.kgraphql.utils.GraphQLError
 import kcrud.base.data.pagination.Page
 import kcrud.base.data.pagination.Pageable
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeConnection
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
+import kcrud.server.domain.exceptions.EmployeeError
 import kcrud.server.domain.services.EmployeeService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -71,6 +73,7 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
                 description = "Returns a single employee given its id."
                 resolver { employeeId: UUID ->
                     service.findById(employeeId = employeeId)
+                        ?: GraphQLError.of(error = EmployeeError.EmployeeNotFound(employeeId = employeeId))
                 }
             }
 

@@ -8,7 +8,9 @@ package kcrud.server.api.graphql.kgraphql.employment
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import kcrud.base.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
+import kcrud.base.api.graphql.frameworks.kgraphql.utils.GraphQLError
 import kcrud.server.domain.entities.employment.Employment
+import kcrud.server.domain.exceptions.EmploymentError
 import kcrud.server.domain.services.EmploymentService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -45,10 +47,18 @@ internal class EmploymentQueries(private val schemaBuilder: SchemaBuilder) : Koi
             query("employment") {
                 description = "Returns a single employment given its id."
                 resolver { employeeId: UUID, employmentId: UUID ->
-                    service.findById(
+                    val employment: Employment? = service.findById(
                         employeeId = employeeId,
                         employmentId = employmentId
                     )
+
+                    employment
+                        ?: GraphQLError.of(
+                            error = EmploymentError.EmploymentNotFound(
+                                employeeId = employeeId,
+                                employmentId = employmentId
+                            )
+                        )
                 }
             }
             query("employments") {

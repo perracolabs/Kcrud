@@ -8,7 +8,10 @@ package kcrud.server.api.graphql.kgraphql.employment
 
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import kcrud.base.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
+import kcrud.base.api.graphql.frameworks.kgraphql.utils.GraphQLError
+import kcrud.server.domain.entities.employment.Employment
 import kcrud.server.domain.entities.employment.EmploymentRequest
+import kcrud.server.domain.exceptions.EmploymentError
 import kcrud.server.domain.services.EmploymentService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -49,11 +52,19 @@ internal class EmploymentMutations(private val schemaBuilder: SchemaBuilder) : K
             mutation("updateEmployment") {
                 description = "Updates an existing employment."
                 resolver { employeeId: UUID, employmentId: UUID, employment: EmploymentRequest ->
-                    service.update(
+                    val updatedEmployment: Employment? = service.update(
                         employeeId = employeeId,
                         employmentId = employmentId,
                         employmentRequest = employment
                     )
+
+                    updatedEmployment
+                        ?: GraphQLError.of(
+                            error = EmploymentError.EmploymentNotFound(
+                                employeeId = employeeId,
+                                employmentId = employmentId
+                            )
+                        )
                 }
             }
 

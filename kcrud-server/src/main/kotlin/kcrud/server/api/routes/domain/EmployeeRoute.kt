@@ -73,7 +73,7 @@ fun Route.employeeRoute() {
 
                 employee?.let {
                     call.respond(message = employee)
-                } ?: EmployeeError.EmployeeNotFound(id = employeeId).raise()
+                } ?: EmployeeError.EmployeeNotFound(employeeId = employeeId).raise()
             }
 
             // Update by employee ID
@@ -84,7 +84,7 @@ fun Route.employeeRoute() {
 
                 updatedEmployee?.let {
                     call.respond(status = HttpStatusCode.OK, message = updatedEmployee)
-                } ?: EmployeeError.EmployeeNotFound(id = employeeId).raise()
+                } ?: EmployeeError.EmployeeNotFound(employeeId = employeeId).raise()
             }
 
             // Delete by employee ID

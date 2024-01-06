@@ -29,17 +29,4 @@ abstract class BaseError(
     fun raise(reason: String? = null, cause: Throwable? = null): Nothing {
         throw KcrudException(error = this, reason = reason, cause = cause)
     }
-
-    companion object {
-        /**
-         * Creates a new [BaseError] instance.
-         *
-         * @param status The [HttpStatusCode] associated with this error.
-         * @param code A unique code identifying the type of error.
-         * @param description A human-readable description of the error.
-         */
-        fun of(status: HttpStatusCode, code: String, description: String): BaseError {
-            return object : BaseError(status = status, code = code, description = description) {}
-        }
-    }
 }

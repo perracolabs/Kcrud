@@ -17,10 +17,10 @@ sealed class EmployeeError(
     description: String
 ) : BaseError(status = status, code = code, description = description) {
 
-    data class EmployeeNotFound(val id: UUID) : EmployeeError(
+    data class EmployeeNotFound(val employeeId: UUID) : EmployeeError(
         status = HttpStatusCode.NotFound,
         code = "${TAG}ENF",
-        description = "Employee not found. Id: $id"
+        description = "Employee not found. Id: $employeeId"
     )
 
     companion object {

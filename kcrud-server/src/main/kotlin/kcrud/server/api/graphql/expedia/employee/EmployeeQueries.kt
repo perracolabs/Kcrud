@@ -8,14 +8,17 @@ package kcrud.server.api.graphql.expedia.employee
 
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
+import graphql.execution.DataFetcherResult
 import graphql.schema.DataFetchingEnvironment
 import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import kcrud.base.api.graphql.frameworks.expedia.context.SessionContext
+import kcrud.base.api.graphql.frameworks.expedia.utils.GraphQLResult
 import kcrud.base.data.pagination.Page
 import kcrud.base.data.pagination.Pageable
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeConnection
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
+import kcrud.server.domain.exceptions.EmployeeError
 import kcrud.server.domain.services.EmployeeService
 import org.koin.mp.KoinPlatform.getKoin
 import java.util.*
@@ -35,8 +38,10 @@ class EmployeeQueries : Query {
     suspend fun employee(
         @GraphQLDescription("The target employee to be returned.")
         employeeId: UUID
-    ): Employee? {
-        return service.findById(employeeId = employeeId)
+    ): DataFetcherResult<Employee?> {
+        val employee: Employee? = service.findById(employeeId = employeeId)
+        val error = if (employee == null) EmployeeError.EmployeeNotFound(employeeId = employeeId) else null
+        return GraphQLResult.of(data = employee, error = error)
     }
 
     @GraphQLDescription("Returns all existing employees.")
