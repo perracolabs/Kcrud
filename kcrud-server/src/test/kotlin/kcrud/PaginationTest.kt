@@ -24,8 +24,8 @@ import kotlin.test.assertEquals
 class PaginationTest {
 
     @Test
-    fun testPagination() = testApplication {
-        println("Running testPagination...")
+    fun testEmptyPagination() = testApplication {
+        println("Running testEmptyPagination...")
 
         // Force the application module to load.
         client.get("/").apply {
@@ -51,6 +51,26 @@ class PaginationTest {
                 assertEquals(true, page.info.isFirst)
                 assertEquals(true, page.info.isLast)
             }
+        }
+
+        println("testEmptyPagination completed successfully.")
+    }
+
+    @Test
+    fun testEvenPagination() = testApplication {
+        println("Running testEvenPagination...")
+
+        // Force the application module to load.
+        client.get("/").apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        transaction {
+            val contactRepository = ContactRepository()
+            val employeeRepository = EmployeeRepository(contactRepository)
+            val employeeService = EmployeeService(employeeRepository)
+
+            val totalRecords = 10
 
             // Create test records.
             (1..totalRecords).forEach { index ->
@@ -63,19 +83,6 @@ class PaginationTest {
                 )
 
                 employeeService.create(employeeRequest)
-            }
-
-            // Test 2 pages.
-            employeeService.findAll(pageable = Pageable(page = 1, size = totalRecords / 2)).also { page ->
-                assertEquals(2, page.info.totalPages)
-                assertEquals(totalRecords, page.info.totalElements)
-                assertEquals(totalRecords / 2, page.info.elementsPerPage)
-                assertEquals(totalRecords / 2, page.info.elementsInPage)
-                assertEquals(1, page.info.pageIndex)
-                assertEquals(true, page.info.hasNext)
-                assertEquals(false, page.info.hasPrevious)
-                assertEquals(true, page.info.isFirst)
-                assertEquals(false, page.info.isLast)
             }
 
             // 1 Page
@@ -91,9 +98,94 @@ class PaginationTest {
                 assertEquals(true, page.info.isLast)
             }
 
+            // 2 pages.
+            employeeService.findAll(pageable = Pageable(page = 1, size = totalRecords / 2)).also { page ->
+                assertEquals(2, page.info.totalPages)
+                assertEquals(totalRecords, page.info.totalElements)
+                assertEquals(totalRecords / 2, page.info.elementsPerPage)
+                assertEquals(totalRecords / 2, page.info.elementsInPage)
+                assertEquals(1, page.info.pageIndex)
+                assertEquals(true, page.info.hasNext)
+                assertEquals(false, page.info.hasPrevious)
+                assertEquals(true, page.info.isFirst)
+                assertEquals(false, page.info.isLast)
+            }
+
             rollback()
         }
 
-        println("testPagination completed successfully.")
+        println("testEvenPagination completed successfully.")
+    }
+
+    @Test
+    fun testOddPagination() = testApplication {
+        println("Running testOddPagination...")
+
+        // Force the application module to load.
+        client.get("/").apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        transaction {
+            val contactRepository = ContactRepository()
+            val employeeRepository = EmployeeRepository(contactRepository)
+            val employeeService = EmployeeService(employeeRepository)
+
+            val totalRecords = 12
+
+            // Create test records.
+            (1..totalRecords).forEach { index ->
+                val employeeRequest = EmployeeRequest(
+                    firstName = "Pepito $index",
+                    lastName = "Perez $index",
+                    dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index),
+                    honorific = Honorific.MR,
+                    maritalStatus = MaritalStatus.SINGLE
+                )
+
+                employeeService.create(employeeRequest)
+            }
+
+            val elementsPerPage = 5
+
+            (1..3).forEach { pageIndex ->
+                employeeService.findAll(pageable = Pageable(page = pageIndex, size = elementsPerPage)).also { page ->
+
+                    assertEquals(3, page.info.totalPages)
+                    assertEquals(totalRecords, page.info.totalElements)
+                    assertEquals(elementsPerPage, page.info.elementsPerPage)
+
+                    when (pageIndex) {
+                        1 -> {
+                            assertEquals(elementsPerPage, page.info.elementsInPage)
+                            assertEquals(true, page.info.hasNext)
+                            assertEquals(false, page.info.hasPrevious)
+                            assertEquals(true, page.info.isFirst)
+                            assertEquals(false, page.info.isLast)
+                        }
+
+                        2 -> {
+                            assertEquals(elementsPerPage, page.info.elementsInPage)
+                            assertEquals(true, page.info.hasNext)
+                            assertEquals(true, page.info.hasPrevious)
+                            assertEquals(false, page.info.isFirst)
+                            assertEquals(false, page.info.isLast)
+                        }
+
+                        3 -> {
+                            assertEquals(2, page.info.elementsInPage)
+                            assertEquals(false, page.info.hasNext)
+                            assertEquals(true, page.info.hasPrevious)
+                            assertEquals(false, page.info.isFirst)
+                            assertEquals(true, page.info.isLast)
+                        }
+                    }
+                }
+            }
+
+            rollback()
+        }
+
+        println("testOddPagination completed successfully.")
     }
 }
