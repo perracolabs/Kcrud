@@ -21,11 +21,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * Manages database configurations and provides utility methods for database operations,
  * serving as a centralized point for setting up database connections, transactions,
  * and other database-related configurations.
- *
- * Example usage:
- * ```
- * DatabaseManager.init(Mode.PERSISTENT, DBType.H2)
- * ```
  */
 object DatabaseFactory {
     private val tracer = Tracer<DatabaseFactory>()
@@ -51,6 +46,7 @@ object DatabaseFactory {
     /**
      * Initializes the database connection based on the provided mode and database type.
      *
+     * @param settings The database settings to use.
      * @param schemaSetup Optional lambda to setup the database schema.
      */
     @OptIn(DatabaseAPI::class)

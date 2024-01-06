@@ -41,24 +41,21 @@ object AuthenticationToken {
      * If invalid then the Unauthorized response is sent.
      */
     fun verify(call: ApplicationCall) {
+        val tokenState: TokenState = getState(call)
+        when (tokenState) {
+            TokenState.Valid -> {
+                // Token is valid; continue processing.
+            }
 
-        if (AppSettings.security.jwt.isEnabled) {
-            val tokenState: TokenState = getState(call)
-            when (tokenState) {
-                TokenState.Valid -> {
-                    // Token is valid; continue processing.
+            TokenState.Expired -> {
+                runBlocking {
+                    call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Token has expired.")
                 }
+            }
 
-                TokenState.Expired -> {
-                    runBlocking {
-                        call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Token has expired.")
-                    }
-                }
-
-                TokenState.Invalid -> {
-                    runBlocking {
-                        call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Token is invalid.")
-                    }
+            TokenState.Invalid -> {
+                runBlocking {
+                    call.respond(HttpStatusCode.Unauthorized, "Unauthorized: Token is invalid.")
                 }
             }
         }

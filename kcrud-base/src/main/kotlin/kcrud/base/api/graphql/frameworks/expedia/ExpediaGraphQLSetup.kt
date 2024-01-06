@@ -17,7 +17,7 @@ import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
-import kcrud.base.admin.settings.AppSettings
+import kcrud.base.admin.settings.config.sections.GraphQLSettings
 import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import kcrud.base.api.graphql.frameworks.expedia.context.ContextFactory
 import kcrud.base.api.graphql.frameworks.expedia.types.CustomSchemaGeneratorHooks
@@ -35,40 +35,40 @@ import java.nio.file.Paths
  * See: [Expedia GraphQL Documentation](https://opensource.expediagroup.com/graphql-kotlin/docs/)
  */
 @ExpediaAPI
-class ExpediaGraphQLSetup {
+class ExpediaGraphQLSetup(
+    private val application: Application,
+    private val settings: GraphQLSettings,
+    private val withSecurity: Boolean
+) {
     private val tracer = Tracer<ExpediaGraphQLSetup>()
     private val graphqlPackages = listOf("kcrud")
 
     /**
      * Configures the GraphQL engine.
      *
-     * @param application The application pipeline.
      * @param queries The list of GraphQL queries to be configured.
      * @param mutations The list of GraphQL mutations to be configured.
      */
     fun configure(
-        application: Application,
         queries: List<Query>,
         mutations: List<Mutation>
     ) {
-        val withPlayground = AppSettings.graphql.playground
         tracer.info("Configuring ExpediaGroup GraphQL engine.")
 
-        if (withPlayground) {
+        if (settings.playground) {
             tracer.byEnvironment(message = "GraphQL playground is enabled.")
         }
 
         installGraphQL(
-            application = application,
             schemaDirectives = KcrudSchema(),
             queriesSchema = queries,
             mutationsSchema = mutations
         )
 
         dumpSchema(queriesSchema = queries, mutationsSchema = mutations)
-        setEndpoints(application = application, withPlayground = withPlayground)
+        setEndpoints()
 
-        val endpoints = if (withPlayground) listOf("graphiql", "sdl", "graphql") else listOf("sdl", "graphql")
+        val endpoints = if (settings.playground) listOf("graphiql", "sdl", "graphql") else listOf("sdl", "graphql")
         NetworkUtils.logEndpoints(
             reason = "GraphQL",
             endpoints = endpoints
@@ -76,7 +76,6 @@ class ExpediaGraphQLSetup {
     }
 
     private fun installGraphQL(
-        application: Application,
         schemaDirectives: Schema,
         queriesSchema: List<Query>,
         mutationsSchema: List<Mutation>
@@ -96,9 +95,9 @@ class ExpediaGraphQLSetup {
         }
     }
 
-    private fun setEndpoints(application: Application, withPlayground: Boolean) {
+    private fun setEndpoints() {
         application.routing {
-            if (AppSettings.security.jwt.isEnabled) {
+            if (withSecurity) {
                 authenticate {
                     graphQLGetRoute()
                     graphQLPostRoute()
@@ -111,14 +110,14 @@ class ExpediaGraphQLSetup {
             graphQLSDLRoute() // http://localhost:8080/sdl
 
             // Set GraphQL playground for development and testing.
-            if (withPlayground) {
+            if (settings.playground) {
                 graphiQLRoute() // http://localhost:8080/graphiql
             }
         }
     }
 
     private fun dumpSchema(queriesSchema: List<Query>, mutationsSchema: List<Mutation>) {
-        if (!AppSettings.graphql.dumpSchema || AppSettings.graphql.schemaPath.isBlank())
+        if (!settings.dumpSchema || settings.schemaPath.isBlank())
             return
 
         tracer.byEnvironment(message = "Dumping GraphQL schema.")
@@ -136,7 +135,7 @@ class ExpediaGraphQLSetup {
         )
 
         val sdl: String = schema.print()
-        val directoryPath: Path = Files.createDirectories(Paths.get(AppSettings.graphql.schemaPath))
+        val directoryPath: Path = Files.createDirectories(Paths.get(settings.schemaPath))
         val fileUri: URI = directoryPath.normalize().resolve("schema.graphql").toUri()
         val file = File(fileUri)
         file.writeText(text = sdl)

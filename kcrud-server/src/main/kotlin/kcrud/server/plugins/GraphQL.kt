@@ -45,8 +45,11 @@ fun Application.configureGraphQL() {
 
 @OptIn(ExpediaAPI::class)
 private fun configureExpedia(application: Application) {
-    ExpediaGraphQLSetup().configure(
+    ExpediaGraphQLSetup(
         application = application,
+        settings = AppSettings.graphql,
+        withSecurity = AppSettings.security.jwt.isEnabled
+    ).configure(
         queries = listOf(
             EmployeeQueries(),
             EmploymentQueries()
@@ -60,7 +63,11 @@ private fun configureExpedia(application: Application) {
 
 @OptIn(KGraphQLAPI::class)
 private fun configureKGraphQL(application: Application) {
-    KGraphQLSetup().configure(application = application) { schemaBuilder ->
+    KGraphQLSetup(
+        application = application,
+        settings = AppSettings.graphql,
+        withSecurity = AppSettings.security.jwt.isEnabled
+    ).configure { schemaBuilder ->
         SharedTypes(schemaBuilder = schemaBuilder)
             .configure()
 
