@@ -13,11 +13,15 @@ import kcrud.base.api.graphql.frameworks.expedia.ExpediaGraphQLSetup
 import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import kcrud.base.api.graphql.frameworks.kgraphql.KGraphQLSetup
 import kcrud.base.api.graphql.frameworks.kgraphql.annotation.KGraphQLAPI
-import kcrud.server.api.graphql.expedia.employee.EmployeeMutations
-import kcrud.server.api.graphql.expedia.employee.EmployeeQueries
-import kcrud.server.api.graphql.expedia.employment.EmploymentMutations
-import kcrud.server.api.graphql.expedia.employment.EmploymentQueries
 import kcrud.server.api.graphql.kgraphql.SharedTypes
+import kcrud.server.api.graphql.expedia.employee.EmployeeMutations as ExpediaEmployeeMutations
+import kcrud.server.api.graphql.expedia.employee.EmployeeQueries as ExpediaEmployeeQueries
+import kcrud.server.api.graphql.expedia.employment.EmploymentMutations as ExpediaEmploymentMutations
+import kcrud.server.api.graphql.expedia.employment.EmploymentQueries as ExpediaEmploymentQueries
+import kcrud.server.api.graphql.kgraphql.employee.EmployeeMutations as KGraphQLEmployeeMutations
+import kcrud.server.api.graphql.kgraphql.employee.EmployeeQueries as KGraphQLEmployeeQueries
+import kcrud.server.api.graphql.kgraphql.employment.EmploymentMutations as KGraphQLEmploymentMutations
+import kcrud.server.api.graphql.kgraphql.employment.EmploymentQueries as KGraphQLEmploymentQueries
 
 /**
  * Sets up the GraphQL engine. Supported libraries are 'Expedia GraphQL' and 'KGraphQL'.
@@ -51,12 +55,12 @@ private fun configureExpedia(application: Application) {
         withSecurity = AppSettings.security.jwt.isEnabled
     ).configure(
         queries = listOf(
-            EmployeeQueries(),
-            EmploymentQueries()
+            ExpediaEmployeeQueries(),
+            ExpediaEmploymentQueries()
         ),
         mutations = listOf(
-            EmployeeMutations(),
-            EmploymentMutations()
+            ExpediaEmployeeMutations(),
+            ExpediaEmploymentMutations()
         )
     )
 }
@@ -71,20 +75,20 @@ private fun configureKGraphQL(application: Application) {
         SharedTypes(schemaBuilder = schemaBuilder)
             .configure()
 
-        kcrud.server.api.graphql.kgraphql.employee.EmployeeQueries(schemaBuilder = schemaBuilder)
+        KGraphQLEmployeeQueries(schemaBuilder = schemaBuilder)
             .configureInputs()
             .configureTypes()
             .configureQueries()
 
-        kcrud.server.api.graphql.kgraphql.employee.EmployeeMutations(schemaBuilder = schemaBuilder)
+        KGraphQLEmployeeMutations(schemaBuilder = schemaBuilder)
             .configureInputs()
             .configureMutations()
 
-        kcrud.server.api.graphql.kgraphql.employment.EmploymentQueries(schemaBuilder = schemaBuilder)
+        KGraphQLEmploymentQueries(schemaBuilder = schemaBuilder)
             .configureTypes()
             .configureQueries()
 
-        kcrud.server.api.graphql.kgraphql.employment.EmploymentMutations(schemaBuilder = schemaBuilder)
+        KGraphQLEmploymentMutations(schemaBuilder = schemaBuilder)
             .configureInputs()
             .configureMutations()
     }
