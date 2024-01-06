@@ -50,9 +50,7 @@ class EmployeeQueries : Query {
         SessionContext(env = env).printUser()
 
         val page: Page<Employee> = service.findAll(pageable = pageable)
-        return EmployeeConnection(
-            content = page.content, info = page.info
-        )
+        return EmployeeConnection(page = page)
     }
 
     @GraphQLDescription("Filterable paginated Employee query.")
@@ -62,10 +60,7 @@ class EmployeeQueries : Query {
         @GraphQLDescription("Pagination options. If not provided, a single page is returned.")
         pageable: Pageable? = null
     ): EmployeeConnection {
-        val page = service.filter(filterSet = filterSet, pageable = pageable)
-        return EmployeeConnection(
-            content = page.content,
-            info = page.info
-        )
+        val page: Page<Employee> = service.filter(filterSet = filterSet, pageable = pageable)
+        return EmployeeConnection(page = page)
     }
 }

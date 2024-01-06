@@ -93,4 +93,3 @@ private fun configureKGraphQL(application: Application) {
             .configureMutations()
     }
 }
-

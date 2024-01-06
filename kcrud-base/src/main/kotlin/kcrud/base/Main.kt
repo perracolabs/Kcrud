@@ -7,5 +7,5 @@
 package kcrud.base
 
 fun main() {
-    println("This is the shared core module. Execute the server module instead.")
+    println("This is the shared base module. Execute the application server module instead.")
 }

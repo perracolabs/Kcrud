@@ -44,7 +44,9 @@ internal class EmployeeMutations(private val schemaBuilder: SchemaBuilder) : Koi
         schemaBuilder.apply {
             mutation("createEmployee") {
                 description = "Creates a new employee."
-                resolver { employee: EmployeeRequest -> service.create(employeeRequest = employee) }
+                resolver { employee: EmployeeRequest ->
+                    service.create(employeeRequest = employee)
+                }
             }
 
             mutation("updateEmployee") {
@@ -56,7 +58,9 @@ internal class EmployeeMutations(private val schemaBuilder: SchemaBuilder) : Koi
 
             mutation("deleteEmployee") {
                 description = "Deletes an existing employee."
-                resolver { employeeId: UUID -> service.delete(employeeId = employeeId) }
+                resolver { employeeId: UUID ->
+                    service.delete(employeeId = employeeId)
+                }
             }
 
             mutation("deleteAllEmployees") {

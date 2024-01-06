@@ -9,7 +9,6 @@ package kcrud.base.admin.settings.config
 import kcrud.base.admin.settings.config.sections.*
 import kcrud.base.admin.settings.config.sections.security.SecuritySettings
 
-
 /**
  * Represents the top-level configuration settings for the application.
  *

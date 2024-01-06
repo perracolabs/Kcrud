@@ -69,7 +69,9 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
         schemaBuilder.apply {
             query("employee") {
                 description = "Returns a single employee given its id."
-                resolver { employeeId: UUID -> service.findById(employeeId = employeeId) }
+                resolver { employeeId: UUID ->
+                    service.findById(employeeId = employeeId)
+                }
             }
 
             query("employees") {
@@ -81,10 +83,7 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
                     SessionContext(context = context).printUser()
 
                     val page: Page<Employee> = service.findAll(pageable = pageable)
-                    EmployeeConnection(
-                        content = page.content,
-                        info = page.info
-                    )
+                    EmployeeConnection(page = page)
                 }
             }
 
@@ -92,10 +91,7 @@ internal class EmployeeQueries(private val schemaBuilder: SchemaBuilder) : KoinC
                 description = "Filterable paginated Employee query."
                 resolver { filterSet: EmployeeFilterSet, pageable: Pageable? ->
                     val page: Page<Employee> = service.filter(filterSet = filterSet, pageable = pageable)
-                    EmployeeConnection(
-                        content = page.content,
-                        info = page.info
-                    )
+                    EmployeeConnection(page = page)
                 }
             }
         }

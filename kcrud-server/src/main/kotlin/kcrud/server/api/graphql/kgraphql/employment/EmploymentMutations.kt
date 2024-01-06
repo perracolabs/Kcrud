@@ -59,12 +59,16 @@ internal class EmploymentMutations(private val schemaBuilder: SchemaBuilder) : K
 
             mutation("deleteEmployment") {
                 description = "Deletes an existing employment."
-                resolver { employmentId: UUID -> service.delete(employmentId = employmentId) }
+                resolver { employmentId: UUID ->
+                    service.delete(employmentId = employmentId)
+                }
             }
 
             mutation("deleteAllEmployments") {
                 description = "Deletes all employments for an existing employee."
-                resolver { employeeId: UUID -> service.deleteAll(employeeId = employeeId) }
+                resolver { employeeId: UUID ->
+                    service.deleteAll(employeeId = employeeId)
+                }
             }
         }
 

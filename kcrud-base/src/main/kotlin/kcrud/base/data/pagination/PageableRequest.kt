@@ -7,6 +7,8 @@
 package kcrud.base.data.pagination
 
 import io.ktor.server.application.*
+import kcrud.base.exceptions.pagination.PaginationError
+import kcrud.base.exceptions.pagination.PaginationException
 
 /**
  * Extension function to construct a [Pageable] instance from an ApplicationRequest query parameters.
@@ -14,30 +16,29 @@ import io.ktor.server.application.*
 fun ApplicationCall.getPageable(): Pageable? {
     val pageIndex: Int? = request.queryParameters["page"]?.toIntOrNull()
     val pageSize: Int? = request.queryParameters["size"]?.toIntOrNull()
+    if ((pageIndex == null) != (pageSize == null)) {
+        throw PaginationException(error = PaginationError.InvalidPageablePair)
+    }
+
     val orderFieldName: String? = request.queryParameters["order"]
     val sortDirection: String? = request.queryParameters["sort"]
+    if ((orderFieldName == null) != (sortDirection == null)) {
+        throw PaginationException(error = PaginationError.InvalidOrderPair)
+    }
 
-    // Check if pagination and order parameters are valid pairs.
-    val isPaginationValid = (pageIndex != null && pageSize != null) || (pageIndex == null && pageSize == null)
-    val isOrderingValid = (orderFieldName != null && sortDirection != null) || (orderFieldName == null && sortDirection == null)
-
-    // If neither pagination nor ordering parameters are provided, return null.
-    if (pageIndex == null && pageSize == null && orderFieldName == null && sortDirection == null) {
+    // If no parameters are provided, return null.
+    if (pageIndex == null && orderFieldName == null) {
         return null
     }
 
-    // Ensure that incomplete pairs are not provided.
-    require(isPaginationValid) { "Incomplete pageable attributes. Either both page and size must be specified, or none of them." }
-    require(isOrderingValid) { "Incomplete order attributes. Either both order and direction must be specified, or none of them." }
+    // Create the Order object if ordering parameters are provided.
+    val order = orderFieldName?.let {
+        val direction = Pageable.SortDirection.entries.firstOrNull { direction ->
+            direction.name.equals(sortDirection, ignoreCase = true)
+        } ?: throw PaginationException(error = PaginationError.InvalidOrderDirection, reason = sortDirection)
 
-    // Create the Order object if ordering parameters are provided
-    val order = if (orderFieldName != null) {
-        Pageable.Order(
-            field = orderFieldName,
-            sort = Pageable.SortDirection.entries.firstOrNull { it.name.equals(sortDirection, ignoreCase = true) }
-                ?: throw IllegalArgumentException("Ordering sort direction is invalid: $sortDirection")
-        )
-    } else null
+        Pageable.Order(field = orderFieldName, sort = direction)
+    }
 
     return Pageable(
         page = pageIndex ?: 1,

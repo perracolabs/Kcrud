@@ -12,7 +12,9 @@ import io.ktor.server.plugins.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import kcrud.base.admin.settings.AppSettings
+import kcrud.base.exceptions.shared.BaseException
 import kcrud.base.utils.Tracer
+import kotlinx.serialization.json.Json
 
 /**
  * Install the StatusPages feature for handling HTTP status codes.
@@ -23,6 +25,13 @@ fun Application.configureStatusPages() {
     val tracer = Tracer<Application>()
 
     install(StatusPages) {
+
+        // Custom application exceptions.
+        exception<BaseException> { call: ApplicationCall, cause ->
+            tracer.error(message = cause.messageDetail(), throwable = cause)
+            call.respondError(cause = cause)
+        }
+
         // Handle 401 Unauthorized status.
         status(HttpStatusCode.Unauthorized) { call: ApplicationCall, status: HttpStatusCode ->
             // Add WWW-Authenticate header to the response, indicating Basic Authentication is required.
@@ -34,26 +43,34 @@ fun Application.configureStatusPages() {
             call.respond(status = HttpStatusCode.Unauthorized, message = "$status")
         }
 
+        // Security exception handling.
         status(HttpStatusCode.MethodNotAllowed) { call: ApplicationCall, status: HttpStatusCode ->
             call.respond(status = HttpStatusCode.MethodNotAllowed, message = "$status")
         }
 
         // Additional exception handling.
         exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = formatErrorMessage(cause), throwable = cause)
+            tracer.error(message = cause.message, throwable = cause)
             call.respond(status = HttpStatusCode.BadRequest, message = cause.localizedMessage)
         }
         exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = formatErrorMessage(cause = cause), throwable = cause)
+            tracer.error(message = cause.message, throwable = cause)
             call.respond(status = HttpStatusCode.NotFound, message = cause.localizedMessage)
         }
         exception<Throwable> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = formatErrorMessage(cause = cause), throwable = cause)
+            tracer.error(message = cause.message, throwable = cause)
             call.respond(status = HttpStatusCode.InternalServerError, message = "Internal server error. ${cause.localizedMessage}")
         }
     }
 }
 
-private fun formatErrorMessage(cause: Throwable): String {
-    return "\n----\nCaught ${cause.javaClass.simpleName} by Status Page plugin:"
+private suspend fun ApplicationCall.respondError(cause: BaseException) {
+    // Set the ETag header with the error code.
+    this.response.header(HttpHeaders.ETag, cause.error.code)
+
+    // Serialize the error response.
+    val json = Json.encodeToString(serializer = BaseException.ErrorResponse.serializer(), value = cause.toErrorResponse())
+
+    // Send the serialized error response.
+    this.respondText(text = json, contentType = ContentType.Application.Json, status = cause.error.status)
 }

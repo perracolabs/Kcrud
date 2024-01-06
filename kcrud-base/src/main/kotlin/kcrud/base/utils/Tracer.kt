@@ -39,7 +39,7 @@ class Tracer(private val logger: Logger) {
         logger.error(message)
     }
 
-    fun error(message: String, throwable: Throwable) {
+    fun error(message: String? = "Unexpected Exception", throwable: Throwable) {
         logger.error(message, throwable)
     }
 

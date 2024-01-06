@@ -15,7 +15,7 @@ A REST/GraphQL **CRUD** server example in [Kotlin](https://kotlinlang.org/) and 
 * [JSON serialization](https://ktor.io/docs/serialization.html) with [Kotlinx](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) and [SQLite](https://github.com/sqlite/sqlite) embeddable databases, both in-memory and file-based.
-* [HOCON configuration](https://ktor.io/docs/configuration-file.html) example, including parsing for strongly typed settings.
+* [HOCON](https://ktor.io/docs/configuration-file.html) configuration example, including parsing for strongly typed settings.
 * [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger), [OpenAPI](https://ktor.io/docs/openapi.html) and [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/) integration.
 * [Routing](https://ktor.io/docs/routing-in-ktor.html) organization examples.
 * [Call Logging](https://ktor.io/docs/call-logging.html) and [Call ID](https://ktor.io/docs/call-id.html) examples for events traceability.

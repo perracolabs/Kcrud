@@ -53,7 +53,9 @@ internal class EmploymentQueries(private val schemaBuilder: SchemaBuilder) : Koi
             }
             query("employments") {
                 description = "Returns all employments for a given employee."
-                resolver { employeeId: UUID -> service.findByEmployeeId(employeeId = employeeId) }
+                resolver { employeeId: UUID ->
+                    service.findByEmployeeId(employeeId = employeeId)
+                }
             }
         }
 

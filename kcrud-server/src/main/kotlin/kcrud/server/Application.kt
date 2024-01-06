@@ -50,11 +50,11 @@ fun Application.module() {
 
     configureAuthentication()
 
-    configureStatusPages()
-
     configureRoutes()
 
     configureGraphQL()
+
+    configureStatusPages()
 
     // The database is started last once all
     // the plugins and modules are configured.
