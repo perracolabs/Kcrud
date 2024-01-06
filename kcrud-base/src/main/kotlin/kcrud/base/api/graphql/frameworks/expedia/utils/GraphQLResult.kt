@@ -14,21 +14,19 @@ import kcrud.base.exceptions.shared.KcrudException
 object GraphQLResult {
     fun <T : Any?> of(data: T, error: BaseError?): DataFetcherResult<T> {
 
-        if (error != null) {
-            val graphQLError = GraphqlErrorException.newErrorException()
-                .cause(KcrudException(error = error))
-                .extensions(mapOf("code" to error.code, "status" to error.status.value))
-                .message(error.description)
+        val result: DataFetcherResult.Builder<T> = DataFetcherResult.newResult<T>()
+            .data(data)
+
+        error?.let {
+            val graphQLError: GraphqlErrorException = GraphqlErrorException.newErrorException()
+                .cause(KcrudException(error = it))
+                .extensions(mapOf("code" to it.code, "status" to it.status.value))
+                .message(it.description)
                 .build()
 
-            return DataFetcherResult.newResult<T>()
-                .data(data)
-                .error(graphQLError)
-                .build()
-        } else {
-            return DataFetcherResult.newResult<T>()
-                .data(data)
-                .build()
+            result.error(graphQLError)
         }
+
+        return result.build()
     }
 }
