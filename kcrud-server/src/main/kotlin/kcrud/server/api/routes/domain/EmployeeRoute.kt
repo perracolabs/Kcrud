@@ -12,6 +12,7 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kcrud.base.admin.settings.AppSettings
 import kcrud.base.data.pagination.getPageable
 import kcrud.base.data.utils.toUUIDOrNull
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
@@ -97,7 +98,7 @@ fun Route.employeeRoute() {
         }
     }
 
-    route("v1/employees") {
+    route("${AppSettings.deployment.apiVersion}/employees") {
         routeSetup()
     }
 }

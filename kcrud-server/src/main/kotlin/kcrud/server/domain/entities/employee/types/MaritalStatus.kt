@@ -6,13 +6,10 @@
 
 package kcrud.server.domain.entities.employee.types
 
-import kotlinx.serialization.Serializable
-
 /**
  * Example of employee marital status. Ideally these should be defined
  * at database level instead of being hardcoded.
  */
-@Serializable
 enum class MaritalStatus {
     MARRIED,
     SINGLE,

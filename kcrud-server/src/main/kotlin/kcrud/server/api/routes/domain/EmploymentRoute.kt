@@ -12,6 +12,7 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kcrud.base.admin.settings.AppSettings
 import kcrud.base.data.utils.toUUIDOrNull
 import kcrud.server.domain.entities.employment.EmploymentRequest
 import kcrud.server.domain.exceptions.EmploymentError
@@ -31,7 +32,7 @@ import java.util.*
 fun Route.employmentRoute() {
     val service by inject<EmploymentService>()
 
-    route("v1/employees/{employee_id}/employments") {
+    route("${AppSettings.deployment.apiVersion}/employees/{employee_id}/employments") {
         setupEmploymentRoutes(service)
     }
 }

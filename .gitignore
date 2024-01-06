@@ -41,12 +41,14 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+### Swagger ###
+/docs/*
+/kcrud-server/docs/*
+
 ### Custom ###
+/kcrud-server/.runtime/database/*
+/kcrud-server/.runtime/graphql/*
 .runtime/*
 /.database/*
 /.graphql/*
 .idea/
-
-### Swagger ###
-/docs/*
-/kcrud-server/docs/*
