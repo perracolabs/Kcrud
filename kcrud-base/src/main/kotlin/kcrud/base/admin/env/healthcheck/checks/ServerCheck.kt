@@ -14,7 +14,6 @@ import kcrud.base.utils.NetworkUtils
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
-@Suppress("unused")
 @HealthCheckAPI
 @Serializable
 data class ServerCheck(

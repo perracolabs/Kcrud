@@ -11,7 +11,6 @@ import kcrud.base.admin.env.security.snowflake.SnowflakeData
 import kcrud.base.admin.env.security.snowflake.SnowflakeFactory
 import kotlinx.serialization.Serializable
 
-@Suppress("unused")
 @HealthCheckAPI
 @Serializable
 data class SnowflakeCheck(

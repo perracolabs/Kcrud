@@ -10,7 +10,6 @@ import kcrud.base.admin.env.healthcheck.annotation.HealthCheckAPI
 import kcrud.base.admin.settings.AppSettings
 import kotlinx.serialization.Serializable
 
-@Suppress("unused")
 @HealthCheckAPI
 @Serializable
 data class SecurityCheck(

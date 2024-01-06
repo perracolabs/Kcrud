@@ -18,9 +18,10 @@ import kotlinx.serialization.Serializable
  * Graphql on the other hand would need to return this class instead,
  * as it does not support generics.
  *
- * @param page The [Page] to wrap.
+ * @param page The [Page] to wrap. This one is decomposed into the
+ * [content] and [info] class fields.
  */
-@Suppress("unused")
+@Suppress("MemberVisibilityCanBePrivate")
 @Serializable
 data class EmployeeConnection(private val page: Page<Employee>) {
     /** The data that forms the content of a page. */

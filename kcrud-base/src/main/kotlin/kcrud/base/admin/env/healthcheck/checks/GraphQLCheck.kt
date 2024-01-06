@@ -12,7 +12,6 @@ import kcrud.base.admin.types.EnvironmentType
 import kcrud.base.api.graphql.GraphQLFramework
 import kotlinx.serialization.Serializable
 
-@Suppress("unused")
 @HealthCheckAPI
 @Serializable
 data class GraphQLCheck(

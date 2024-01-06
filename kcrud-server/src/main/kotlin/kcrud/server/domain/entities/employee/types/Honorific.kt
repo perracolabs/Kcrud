@@ -7,12 +7,14 @@
 package kcrud.server.domain.entities.employee.types
 
 import kcrud.base.data.utils.EnumWithId
+import kotlinx.serialization.Serializable
 
 /**
  * Example in which each item has an id,
  * which is the actual value that will be stored in the database,
  * instead of the name of the enum item.
  */
+@Serializable
 enum class Honorific(override val id: Int) : EnumWithId {
     MR(100),
     MRS(101),

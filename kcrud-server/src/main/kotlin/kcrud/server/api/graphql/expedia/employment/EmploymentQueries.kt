@@ -20,13 +20,14 @@ import java.util.*
 /**
  * Employment query definitions.
  */
+@Suppress("RedundantSuspendModifier")
 @ExpediaAPI
 class EmploymentQueries : Query {
 
     private val service: EmploymentService = getKoin().get()
 
     @GraphQLDescription("Returns a concrete employment for a given employee.")
-    fun employment(employeeId: UUID, employmentId: UUID): DataFetcherResult<Employment?> {
+    suspend fun employment(employeeId: UUID, employmentId: UUID): DataFetcherResult<Employment?> {
         val employment: Employment? = service.findById(employeeId = employeeId, employmentId = employmentId)
 
         val error = if (employment == null)
@@ -38,7 +39,7 @@ class EmploymentQueries : Query {
     }
 
     @GraphQLDescription("Returns all employments for a given employee.")
-    fun employments(employeeId: UUID): List<Employment> {
+    suspend fun employments(employeeId: UUID): List<Employment> {
         return service.findByEmployeeId(employeeId = employeeId)
     }
 }

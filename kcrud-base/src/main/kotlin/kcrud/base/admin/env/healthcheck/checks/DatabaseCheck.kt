@@ -13,7 +13,6 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.name
 
-@Suppress("unused")
 @HealthCheckAPI
 @Serializable
 data class DatabaseCheck(

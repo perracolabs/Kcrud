@@ -10,6 +10,8 @@ import com.zaxxer.hikari.HikariDataSource
 import kcrud.base.admin.env.healthcheck.annotation.HealthCheckAPI
 import kcrud.base.admin.env.healthcheck.checks.DatabaseCheck
 import kcrud.base.admin.settings.config.sections.DatabaseSettings
+import kcrud.base.data.database.DatabaseFactory.DBType
+import kcrud.base.data.database.DatabaseFactory.Mode
 import kcrud.base.data.database.annotation.DatabaseAPI
 import kcrud.base.utils.Tracer
 import org.jetbrains.exposed.sql.Database
@@ -21,6 +23,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * Manages database configurations and provides utility methods for database operations,
  * serving as a centralized point for setting up database connections, transactions,
  * and other database-related configurations.
+ *
+ * Currently, supports [DBType.H2] and [DBType.SQLITE] databases, for both [Mode.IN_MEMORY]
+ * and [Mode.PERSISTENT]. But using any other database such as PostgreSQL or MySQL is possible
+ * by adding the corresponding JDBC driver dependency to the project.
  */
 object DatabaseFactory {
     private val tracer = Tracer<DatabaseFactory>()
@@ -28,7 +34,6 @@ object DatabaseFactory {
     private var database: Database? = null
     private var hikariDataSource: HikariDataSource? = null
 
-    @Suppress("unused")
     enum class Mode {
         /** Represents an in-memory database mode. */
         IN_MEMORY,
@@ -37,7 +42,6 @@ object DatabaseFactory {
         PERSISTENT
     }
 
-    @Suppress("unused")
     enum class DBType {
         H2,
         SQLITE

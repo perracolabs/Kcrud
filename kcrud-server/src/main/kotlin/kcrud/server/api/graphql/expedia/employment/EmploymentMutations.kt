@@ -21,19 +21,19 @@ import java.util.*
 /**
  * Employment mutation definitions.
  */
-@Suppress("unused")
+@Suppress("unused", "RedundantSuspendModifier")
 @ExpediaAPI
 class EmploymentMutations : Mutation {
 
     private val service: EmploymentService = getKoin().get()
 
     @GraphQLDescription("Creates a new employment.")
-    fun createEmployment(employeeId: UUID, employment: EmploymentRequest): Employment {
+    suspend fun createEmployment(employeeId: UUID, employment: EmploymentRequest): Employment {
         return service.create(employeeId = employeeId, employmentRequest = employment)
     }
 
     @GraphQLDescription("Updates an existing employment.")
-    fun updateEmployment(employeeId: UUID, employmentId: UUID, employment: EmploymentRequest): DataFetcherResult<Employment?> {
+    suspend fun updateEmployment(employeeId: UUID, employmentId: UUID, employment: EmploymentRequest): DataFetcherResult<Employment?> {
         val updatedEmployment: Employment? = service.update(
             employeeId = employeeId,
             employmentId = employmentId,
@@ -49,12 +49,12 @@ class EmploymentMutations : Mutation {
     }
 
     @GraphQLDescription("Deletes an existing employment.")
-    fun deleteEmployment(employmentId: UUID): Int {
+    suspend fun deleteEmployment(employmentId: UUID): Int {
         return service.delete(employmentId = employmentId)
     }
 
     @GraphQLDescription("Deletes all employments for a given employee.")
-    fun deleteAllEmployments(employeeId: UUID): Int {
+    suspend fun deleteAllEmployments(employeeId: UUID): Int {
         return service.deleteAll(employeeId = employeeId)
     }
 }

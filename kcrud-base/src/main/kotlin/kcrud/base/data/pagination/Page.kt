@@ -15,7 +15,6 @@ import kotlin.math.max
  * @param content The data that forms the content in a page.
  * @param info Information about the current page and the entire dataset.
  */
-@Suppress("unused")
 @Serializable
 open class Page<out T : Any>(
     val content: List<T>,
@@ -30,7 +29,6 @@ open class Page<out T : Any>(
      * @param elementsPerPage The number of elements per each page.
      * @param elementsInPage The number of elements in the current page.
      */
-    @Suppress("unused")
     @Serializable
     data class Info(
         val totalPages: Int,

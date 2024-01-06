@@ -11,7 +11,6 @@ import kcrud.base.admin.settings.AppSettings
 import kcrud.base.admin.types.EnvironmentType
 import kotlinx.serialization.Serializable
 
-@Suppress("unused")
 @HealthCheckAPI
 @Serializable
 data class ApplicationCheck(
