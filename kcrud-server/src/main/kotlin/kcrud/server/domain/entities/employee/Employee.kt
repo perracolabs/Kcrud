@@ -47,8 +47,8 @@ data class Employee(
     // The regular serializable property 'age' is manually assigned the value from the
     // delegated property 'ageDelegate'. This approach ensures 'age' remains serializable
     // while incorporating the logic within AgeDelegate.
-    private val ageDelegate: Int by AgeDelegate(dob)
-    val age = ageDelegate
+    private val _age: Int by AgeDelegate(dob)
+    val age: Int = _age
 
     companion object {
         fun toEntity(row: ResultRow): Employee {
