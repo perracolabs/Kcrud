@@ -37,6 +37,8 @@ import kotlinx.serialization.json.Json
  * See: [Content negotiation and serialization](https://ktor.io/docs/serialization.html#0)
  *
  * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
+ *
+ * See: [Ktor Rate Limit](https://ktor.io/docs/rate-limit.html)
  */
 fun Application.configureRoutes() {
 
