@@ -114,6 +114,10 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
             // So, this validation is not really necessary and could be removed.
             // However, this verification shows how to raise a custom error for the email field
             // with a concrete error code and description.
+            // The difference between this approach and the one used in the EmailString serializer,
+            // is that the serializer is a generic one, and it is not aware of the context in which
+            // it is being used, so it cannot provide a more concrete error code and description
+            // as if using the following approach.
             val email: String = contact.email
             if (!SecurityUtils.isValidEmail(email = email)) {
                 EmployeeError.InvalidEmailFormat(employeeId = employeeId, email = email).raise(reason = reason)
