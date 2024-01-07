@@ -8,6 +8,7 @@ package kcrud.server.domain.services
 
 import kcrud.server.domain.entities.employment.Employment
 import kcrud.server.domain.entities.employment.EmploymentRequest
+import kcrud.server.domain.exceptions.EmploymentError
 import kcrud.server.domain.repositories.employment.IEmploymentRepository
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -44,6 +45,12 @@ internal class EmploymentService(private val repository: IEmploymentRepository) 
      * @return The created employment entity with generated ID.
      */
     fun create(employeeId: UUID, employmentRequest: EmploymentRequest): Employment {
+        verify(
+            employeeId = employeeId,
+            employmentId = null,
+            employmentRequest = employmentRequest,
+            reason = "Create Employment."
+        )
         val employmentId: UUID = repository.create(employeeId = employeeId, employmentRequest = employmentRequest)
         return findById(employeeId = employeeId, employmentId = employmentId)!!
     }
@@ -55,6 +62,13 @@ internal class EmploymentService(private val repository: IEmploymentRepository) 
      * @return The updated employment entity if the update was successful, null otherwise.
      */
     fun update(employeeId: UUID, employmentId: UUID, employmentRequest: EmploymentRequest): Employment? {
+        verify(
+            employeeId = employeeId,
+            employmentId = employmentId,
+            employmentRequest = employmentRequest,
+            reason = "Update Employment."
+        )
+
         val updateCount = repository.update(
             employeeId = employeeId,
             employmentId = employmentId,
@@ -84,5 +98,31 @@ internal class EmploymentService(private val repository: IEmploymentRepository) 
      */
     fun deleteAll(employeeId: UUID): Int {
         return repository.deleteAll(employeeId = employeeId)
+    }
+
+    private fun verify(employeeId: UUID, employmentId: UUID?, employmentRequest: EmploymentRequest, reason: String) {
+        // Verify that the employment period dates are valid.
+        employmentRequest.period.endDate?.let { endDate ->
+            if (endDate < employmentRequest.period.startDate) {
+                EmploymentError.PeriodDatesMismatch(
+                    employeeId = employeeId,
+                    employmentId = employmentId,
+                    startDate = employmentRequest.period.startDate,
+                    endDate = endDate
+                ).raise(reason = reason)
+            }
+        }
+
+        // Verify that the employment probation end date is valid.
+        employmentRequest.probationEndDate?.let { probationEndDate ->
+            if (probationEndDate < employmentRequest.period.startDate) {
+                EmploymentError.InvalidProbationEndDate(
+                    employeeId = employeeId,
+                    employmentId = employmentId,
+                    startDate = employmentRequest.period.startDate,
+                    probationEndDate = probationEndDate
+                ).raise(reason = reason)
+            }
+        }
     }
 }

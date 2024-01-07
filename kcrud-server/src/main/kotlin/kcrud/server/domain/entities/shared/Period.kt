@@ -23,12 +23,6 @@ data class Period(
     val endDate: LocalDate? = null,
     val comments: String? = null
 ) {
-    init {
-        endDate?.let {
-            require(startDate <= it) { "End Date cannot be earlier than Start Date." }
-        }
-    }
-
     companion object {
         fun toEntity(row: ResultRow, table: Table): Period {
             val isActiveCol = table.columns.single { it.name == "is_active" }

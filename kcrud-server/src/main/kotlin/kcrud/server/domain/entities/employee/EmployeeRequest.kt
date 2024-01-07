@@ -6,6 +6,7 @@
 
 package kcrud.server.domain.entities.employee
 
+import kcrud.base.data.serializers.NoBlankString
 import kcrud.server.domain.entities.contact.ContactRequest
 import kcrud.server.domain.entities.employee.types.Honorific
 import kcrud.server.domain.entities.employee.types.MaritalStatus
@@ -24,15 +25,10 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class EmployeeRequest(
-    val firstName: String,
-    val lastName: String,
+    val firstName: NoBlankString,
+    val lastName: NoBlankString,
     val dob: LocalDate,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
     val contact: ContactRequest? = null
-) {
-    init {
-        require(firstName.isNotBlank()) { "First name can't be empty." }
-        require(lastName.isNotBlank()) { "Last name can't be empty." }
-    }
-}
+)

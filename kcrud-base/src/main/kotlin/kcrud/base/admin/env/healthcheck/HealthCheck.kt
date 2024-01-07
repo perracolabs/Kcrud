@@ -24,7 +24,7 @@ data class HealthCheck(
     private val call: ApplicationCall? = null
 ) {
     val errors: MutableList<String> = mutableListOf()
-    val server: ServerCheck = ServerCheck()
+    val server: ServerCheck = ServerCheck(call = call)
     val security: SecurityCheck = SecurityCheck()
     val database: DatabaseCheck = DatabaseFactory.getHealthCheck()
     val application: ApplicationCheck = ApplicationCheck()

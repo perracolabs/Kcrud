@@ -48,7 +48,7 @@ object NetworkUtils {
         return url
     }
 
-    fun getPort(): Int {
+    private fun getPort(): Int {
         return if (AppSettings.deployment.useSecureConnection)
             AppSettings.deployment.sslPort
         else
@@ -64,5 +64,14 @@ object NetworkUtils {
 
     fun isSecureProtocol(protocol: String): Boolean {
         return (protocol == SECURE_PROTOCOL.name)
+    }
+
+    fun isInsecurePort(ports: List<Int?>): Boolean {
+        ports.forEach { port ->
+            if (port == null || port == 0 || port == 8080) {
+                return true
+            }
+        }
+        return false
     }
 }

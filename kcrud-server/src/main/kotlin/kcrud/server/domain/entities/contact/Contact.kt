@@ -6,7 +6,7 @@
 
 package kcrud.server.domain.entities.contact
 
-import kcrud.base.data.utils.SUUID
+import kcrud.base.data.serializers.SUUID
 import kcrud.server.data.tables.ContactTable
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow

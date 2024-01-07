@@ -11,6 +11,7 @@ import com.expediagroup.graphql.server.operations.Mutation
 import graphql.execution.DataFetcherResult
 import kcrud.base.api.graphql.frameworks.expedia.annotation.ExpediaAPI
 import kcrud.base.api.graphql.frameworks.expedia.utils.GraphQLResult
+import kcrud.base.exceptions.shared.KcrudException
 import kcrud.server.domain.entities.employment.Employment
 import kcrud.server.domain.entities.employment.EmploymentRequest
 import kcrud.server.domain.exceptions.EmploymentError
@@ -28,17 +29,28 @@ class EmploymentMutations : Mutation {
     private val service: EmploymentService = getKoin().get()
 
     @GraphQLDescription("Creates a new employment.")
-    suspend fun createEmployment(employeeId: UUID, employment: EmploymentRequest): Employment {
-        return service.create(employeeId = employeeId, employmentRequest = employment)
+    suspend fun createEmployment(employeeId: UUID, employment: EmploymentRequest): DataFetcherResult<Employment?> {
+        try {
+            val newEmployment: Employment = service.create(employeeId = employeeId, employmentRequest = employment)
+            return GraphQLResult.of(data = newEmployment, error = null)
+        } catch (e: KcrudException) {
+            return GraphQLResult.of(data = null, error = e.error)
+        }
     }
 
     @GraphQLDescription("Updates an existing employment.")
     suspend fun updateEmployment(employeeId: UUID, employmentId: UUID, employment: EmploymentRequest): DataFetcherResult<Employment?> {
-        val updatedEmployment: Employment? = service.update(
-            employeeId = employeeId,
-            employmentId = employmentId,
-            employmentRequest = employment
-        )
+        val updatedEmployment: Employment?
+
+        try {
+            updatedEmployment = service.update(
+                employeeId = employeeId,
+                employmentId = employmentId,
+                employmentRequest = employment
+            )
+        } catch (e: KcrudException) {
+            return GraphQLResult.of(data = null, error = e.error)
+        }
 
         val error = if (updatedEmployment == null)
             EmploymentError.EmploymentNotFound(employeeId = employeeId, employmentId = employmentId)

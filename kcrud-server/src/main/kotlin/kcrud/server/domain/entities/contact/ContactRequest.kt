@@ -6,6 +6,7 @@
 
 package kcrud.server.domain.entities.contact
 
+import kcrud.base.data.serializers.EmailString
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,11 +17,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ContactRequest(
-    val email: String,
+    val email: EmailString,
     val phone: String
-) {
-    init {
-        require(email.isNotBlank()) { "Email can't be empty." }
-        require(phone.isNotBlank()) { "Phone can't be empty." }
-    }
-}
+)

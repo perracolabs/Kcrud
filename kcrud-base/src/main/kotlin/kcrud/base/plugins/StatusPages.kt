@@ -59,7 +59,8 @@ fun Application.configureStatusPages() {
         }
         exception<Throwable> { call: ApplicationCall, cause: Throwable ->
             tracer.error(message = cause.message, throwable = cause)
-            call.respond(status = HttpStatusCode.InternalServerError, message = "Internal server error. ${cause.localizedMessage}")
+            val message = cause.cause?.localizedMessage ?: cause.localizedMessage
+            call.respond(status = HttpStatusCode.InternalServerError, message = message)
         }
     }
 }
