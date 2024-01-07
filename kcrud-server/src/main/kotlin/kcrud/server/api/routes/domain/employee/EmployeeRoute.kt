@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.server.api.routes.domain
+package kcrud.server.api.routes.domain.employee
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -15,6 +15,7 @@ import io.ktor.server.routing.*
 import kcrud.base.admin.settings.AppSettings
 import kcrud.base.data.pagination.getPageable
 import kcrud.base.data.utils.toUUIDOrNull
+import kcrud.server.api.routes.domain.employment.employmentRoute
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
 import kcrud.server.domain.entities.employee.EmployeeRequest
 import kcrud.server.domain.exceptions.EmployeeError
@@ -27,6 +28,9 @@ import java.util.*
  *
  * These endpoints are defined in a single function
  * to demonstrate how to encapsulate routes in a single function.
+ *
+ * See [Application Structure](https://ktor.io/docs/structuring-applications.html) for examples
+ * of how to organize routes in diverse ways.
  *
  * See [Route.employmentRoute] for an example of how to define multiple routes in multiple functions.
  */

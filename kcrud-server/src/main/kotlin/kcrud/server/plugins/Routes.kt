@@ -17,8 +17,8 @@ import kcrud.base.api.routes.accessTokenRoute
 import kcrud.base.api.routes.documentationRoute
 import kcrud.base.api.routes.systemRoute
 import kcrud.base.plugins.RateLimitScope
-import kcrud.server.api.routes.domain.employeeRoute
-import kcrud.server.api.routes.domain.employmentRoute
+import kcrud.server.api.routes.domain.employee.employeeRoute
+import kcrud.server.api.routes.domain.employment.employmentRoute
 import kcrud.server.api.routes.home.rootRoute
 import kotlinx.serialization.json.Json
 
@@ -33,6 +33,9 @@ import kotlinx.serialization.json.Json
  * mechanism allows us to define how we want this request to be served.
  *
  * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html)
+ *
+ * See [Application Structure](https://ktor.io/docs/structuring-applications.html) for examples
+ * of how to organize routes in diverse ways.
  *
  * See: [Content negotiation and serialization](https://ktor.io/docs/serialization.html#0)
  *
