@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.cors)
     implementation(libs.ktor.server.defaultHeaders)
+    implementation(libs.ktor.server.http.redirect)
+    implementation(libs.ktor.server.hsts)
     implementation(libs.ktor.server.rateLimit)
     implementation(libs.ktor.server.sessions)
     implementation(libs.ktor.server.statusPages)

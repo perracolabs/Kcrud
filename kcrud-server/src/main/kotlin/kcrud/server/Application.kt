@@ -42,6 +42,8 @@ fun Application.module() {
 
     configureCors()
 
+    configureSecureConnection()
+
     configureHeaders()
 
     configureCallLogging()

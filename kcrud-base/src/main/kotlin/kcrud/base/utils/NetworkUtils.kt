@@ -16,7 +16,6 @@ object NetworkUtils {
     private val tracer = Tracer<NetworkUtils>()
 
     private const val LISTEN_ALL_IPS: String = "0.0.0.0"
-    private const val SECURE_PORT: Int = 443
     private val SECURE_PROTOCOL: URLProtocol = URLProtocol.HTTPS
     private val INSECURE_PROTOCOL: URLProtocol = URLProtocol.HTTP
 
@@ -37,23 +36,33 @@ object NetworkUtils {
     }
 
     fun getServerUrl(): Url? {
-        val host = AppSettings.deployment.host
+        val host: String = AppSettings.deployment.host
         var url: Url? = null
 
         if (host != LISTEN_ALL_IPS) {
-            val port = AppSettings.deployment.port
-            val protocol = getProtocol()
+            val port: Int = getPort()
+            val protocol: URLProtocol = getProtocol()
             url = URLBuilder(protocol = protocol, host = host, port = port).build()
         }
 
         return url
     }
 
+    fun getPort(): Int {
+        return if (AppSettings.deployment.useSecureConnection)
+            AppSettings.deployment.sslPort
+        else
+            AppSettings.deployment.port
+    }
+
     fun getProtocol(): URLProtocol {
-        return if (AppSettings.deployment.port == SECURE_PORT) SECURE_PROTOCOL else INSECURE_PROTOCOL
+        return if (AppSettings.deployment.useSecureConnection)
+            SECURE_PROTOCOL
+        else
+            INSECURE_PROTOCOL
     }
 
     fun isSecureProtocol(protocol: String): Boolean {
-        return protocol == SECURE_PROTOCOL.name
+        return (protocol == SECURE_PROTOCOL.name)
     }
 }

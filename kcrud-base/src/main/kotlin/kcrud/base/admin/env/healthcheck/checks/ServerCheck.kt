@@ -21,7 +21,10 @@ data class ServerCheck(
     val machineId: Int = AppSettings.server.machineId,
     val environmentType: EnvironmentType = AppSettings.deployment.type,
     val developmentModeEnabled: Boolean = AppSettings.server.development,
+    val useSecureConnection: Boolean = AppSettings.deployment.useSecureConnection,
     val protocol: String = NetworkUtils.getProtocol().name,
+    val port: Int = AppSettings.deployment.port,
+    val sslPort: Int = AppSettings.deployment.sslPort,
     val host: String = NetworkUtils.getServerUrl().toString(),
     val allowedHosts: List<String> = AppSettings.cors.allowedHosts,
     val utc: LocalDateTime = DateTimeUtils.currentUTCDateTime(),
@@ -41,6 +44,20 @@ data class ServerCheck(
 
             if (!NetworkUtils.isSecureProtocol(protocol = protocol)) {
                 errors.add("$className. Using insecure '$protocol' protocol in '$environmentType' environment.")
+            }
+
+            if (port == sslPort) {
+                errors.add("$className. Secure and insecure ports are the same: $port.")
+            }
+
+            if (useSecureConnection) {
+                if (sslPort == 0 || sslPort == 8080) {
+                    errors.add("$className. Secure port is not set.")
+                }
+            } else {
+                if (port == 0) {
+                    errors.add("$className. Insecure port is not set.")
+                }
             }
         }
     }
