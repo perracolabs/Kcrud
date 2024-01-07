@@ -41,7 +41,7 @@ data class EmploymentRequest(
      * Such approach, other than an error message, does not allow to pass to the client
      * more contextual information about the error, such as the field name decoupled from
      * the message, and/or a more concrete error code which may reflect how the error happened,
-     * for example whether creating or updating, and other details such as the record IDs, etc.
+     * for example whether creating or updating, and other details such as record IDs, etc.
      * For a better approach, see the usage of [EmploymentError.PeriodDatesMismatch].
      */
 }
