@@ -104,14 +104,19 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
      */
     private fun verifyIntegrity(employeeId: UUID?, employeeRequest: EmployeeRequest, reason: String) {
         employeeRequest.contact?.let { contact ->
-            val email: String = contact.email
-            if (!SecurityUtils.isValidEmail(email = email)) {
-                EmployeeError.InvalidEmailFormat(employeeId = employeeId, email = email).raise(reason = reason)
-            }
-
             val phone: String = contact.phone
             if (!SecurityUtils.isValidPhone(phone = phone)) {
                 EmployeeError.InvalidPhoneFormat(employeeId = employeeId, phone = phone).raise(reason = reason)
+            }
+
+            // Note: For sake of the example, we are already validating the email via the EmailString serializer
+            // defined in the ContactRequest entity.
+            // So, this validation is not really necessary and could be removed.
+            // However, this verification shows how to raise a custom error for the email field
+            // with a concrete error code and description.
+            val email: String = contact.email
+            if (!SecurityUtils.isValidEmail(email = email)) {
+                EmployeeError.InvalidEmailFormat(employeeId = employeeId, email = email).raise(reason = reason)
             }
         }
     }
