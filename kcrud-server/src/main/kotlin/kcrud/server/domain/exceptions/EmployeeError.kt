@@ -20,10 +20,17 @@ sealed class EmployeeError(
     data class EmployeeNotFound(val employeeId: UUID) : EmployeeError(
         status = HttpStatusCode.NotFound,
         code = "${TAG}ENF",
-        description = "Employee not found. Id: $employeeId"
+        description = "Employee not found. Employee Id: $employeeId"
+    )
+
+    data class InvalidEmailFormat(val employeeId: UUID?, val email: String) : EmployeeError(
+        status = HttpStatusCode.BadRequest,
+        code = "${TAG}IEF",
+        description = "Invalid email format: '$email'. Employee Id: $employeeId"
     )
 
     companion object {
+
         private const val TAG: String = "EMP."
 
         init {

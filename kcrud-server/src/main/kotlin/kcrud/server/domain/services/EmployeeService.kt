@@ -6,11 +6,13 @@
 
 package kcrud.server.domain.services
 
+import kcrud.base.admin.env.security.utils.SecurityUtils
 import kcrud.base.data.pagination.Page
 import kcrud.base.data.pagination.Pageable
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
 import kcrud.server.domain.entities.employee.EmployeeRequest
+import kcrud.server.domain.exceptions.EmployeeError
 import kcrud.server.domain.repositories.employee.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -57,6 +59,7 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
      * @return The created employee entity with generated ID.
      */
     fun create(employeeRequest: EmployeeRequest): Employee {
+        verifyEmail(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
         val employeeId = repository.create(employeeRequest = employeeRequest)
         return findById(employeeId = employeeId)!!
     }
@@ -68,6 +71,7 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
      * @return The updated employee entity if the update was successful, null otherwise.
      */
     fun update(employeeId: UUID, employeeRequest: EmployeeRequest): Employee? {
+        verifyEmail(employeeId = employeeId, employeeRequest = employeeRequest, reason = "Update Employee.")
         val updatedCount = repository.update(employeeId = employeeId, employeeRequest = employeeRequest)
         return if (updatedCount > 0) findById(employeeId = employeeId) else null
     }
@@ -87,5 +91,22 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
      */
     fun deleteAll(): Int {
         return repository.deleteAll()
+    }
+
+    /**
+     * Verifies if the employee's contact email address is in the correct format.
+     *
+     * @param employeeId The ID of the employee being verified.
+     * @param employeeRequest The employee request details.
+     * @param reason The reason for the email verification.
+     * @throws EmployeeError.InvalidEmailFormat If the email is not in the correct format.
+     */
+    private fun verifyEmail(employeeId: UUID?, employeeRequest: EmployeeRequest, reason: String) {
+        employeeRequest.contact?.let { contact ->
+            val email: String = contact.email
+            if (!SecurityUtils.isValidEmail(email = email)) {
+                EmployeeError.InvalidEmailFormat(employeeId = employeeId, email = email).raise(reason = reason)
+            }
+        }
     }
 }
