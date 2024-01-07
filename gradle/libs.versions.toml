@@ -5,6 +5,7 @@ commons-codec = "1.16.0"
 database-h2 = "2.2.224"
 database-sqlite = "3.44.1.0"
 exposed = "0.46.0"
+google-phonenumber = "8.12.39"
 graphql-exposed-generator = "7.0.2"
 graphql-exposed-server = "7.0.2"
 graphql-kgraphql = "0.19.0"
@@ -129,6 +130,10 @@ docs-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
 docs-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-generators" }
 docs-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 docs-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+# Phone number validation.
+# https://github.com/google/libphonenumber
+google-phonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "google-phonenumber" }
 
 test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }

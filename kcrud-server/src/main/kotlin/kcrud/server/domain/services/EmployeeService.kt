@@ -9,6 +9,7 @@ package kcrud.server.domain.services
 import kcrud.base.admin.env.security.utils.SecurityUtils
 import kcrud.base.data.pagination.Page
 import kcrud.base.data.pagination.Pageable
+import kcrud.base.exceptions.shared.BaseError
 import kcrud.server.domain.entities.employee.Employee
 import kcrud.server.domain.entities.employee.EmployeeFilterSet
 import kcrud.server.domain.entities.employee.EmployeeRequest
@@ -59,7 +60,7 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
      * @return The created employee entity with generated ID.
      */
     fun create(employeeRequest: EmployeeRequest): Employee {
-        verifyEmail(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
+        verifyIntegrity(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
         val employeeId = repository.create(employeeRequest = employeeRequest)
         return findById(employeeId = employeeId)!!
     }
@@ -71,7 +72,7 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
      * @return The updated employee entity if the update was successful, null otherwise.
      */
     fun update(employeeId: UUID, employeeRequest: EmployeeRequest): Employee? {
-        verifyEmail(employeeId = employeeId, employeeRequest = employeeRequest, reason = "Update Employee.")
+        verifyIntegrity(employeeId = employeeId, employeeRequest = employeeRequest, reason = "Update Employee.")
         val updatedCount = repository.update(employeeId = employeeId, employeeRequest = employeeRequest)
         return if (updatedCount > 0) findById(employeeId = employeeId) else null
     }
@@ -94,18 +95,23 @@ internal class EmployeeService(private val repository: IEmployeeRepository) : Ko
     }
 
     /**
-     * Verifies if the employee's contact email address is in the correct format.
+     * Verifies if the employee's contact fields.
      *
      * @param employeeId The ID of the employee being verified.
      * @param employeeRequest The employee request details.
      * @param reason The reason for the email verification.
-     * @throws EmployeeError.InvalidEmailFormat If the email is not in the correct format.
+     * @throws BaseError If any of the fields is invalid.
      */
-    private fun verifyEmail(employeeId: UUID?, employeeRequest: EmployeeRequest, reason: String) {
+    private fun verifyIntegrity(employeeId: UUID?, employeeRequest: EmployeeRequest, reason: String) {
         employeeRequest.contact?.let { contact ->
             val email: String = contact.email
             if (!SecurityUtils.isValidEmail(email = email)) {
                 EmployeeError.InvalidEmailFormat(employeeId = employeeId, email = email).raise(reason = reason)
+            }
+
+            val phone: String = contact.phone
+            if (!SecurityUtils.isValidPhone(phone = phone)) {
+                EmployeeError.InvalidPhoneFormat(employeeId = employeeId, phone = phone).raise(reason = reason)
             }
         }
     }

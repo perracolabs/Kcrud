@@ -6,6 +6,8 @@
 
 package kcrud.base.admin.env.security.utils
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+
 /**
  * Utility class for security related operations.
  */
@@ -84,6 +86,17 @@ object SecurityUtils {
         }
 
         return true
+    }
+
+    /**
+     * Verifies if a phone number is in the correct format.
+     * @param phone The phone number to check.
+     * @return True if the phone number is valid, false otherwise.
+     */
+    fun isValidPhone(phone: String): Boolean {
+        val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
+        val numberProto = phoneUtil.parse(phone, null) // Region code is null for international numbers.
+        return phoneUtil.isValidNumber(numberProto)
     }
 
     /**

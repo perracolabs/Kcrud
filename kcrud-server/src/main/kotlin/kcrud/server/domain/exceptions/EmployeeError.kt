@@ -29,6 +29,12 @@ sealed class EmployeeError(
         description = "Invalid email format: '$email'. Employee Id: $employeeId"
     )
 
+    data class InvalidPhoneFormat(val employeeId: UUID?, val phone: String) : EmployeeError(
+        status = HttpStatusCode.BadRequest,
+        code = "${TAG}IPF",
+        description = "Invalid phone format: '$phone'. Employee Id: $employeeId"
+    )
+
     companion object {
 
         private const val TAG: String = "EMP."

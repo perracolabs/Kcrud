@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.docs.commons.codec)
     implementation(libs.docs.gson)
 
+    implementation(libs.google.phonenumber)
+
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.ktor.serialization.kotlinx.json)
