@@ -25,9 +25,6 @@ data class EmploymentRequest(
 ) {
     // Example of a validation rule within a data class.
     // This is not a good practice, as it couples the data class with the validation logic.
-    // In addition to that, it is not possible to pass to the client more detailed information
-    // about the error, such as the field name or concrete code for the error.
-    // For a better approach, see the validation use of 'EmploymentError.PeriodDatesMismatch'.
     //
     //    init {
     //        probationEndDate?.let { date ->
@@ -36,4 +33,8 @@ data class EmploymentRequest(
     //            }
     //        }
     //    }
+    //
+    // In addition to that, it is not possible to pass to the client more detailed information
+    // about the error, such as the field name or concrete code for the error.
+    // For a better approach, see the validation use of 'EmploymentError.PeriodDatesMismatch'.
 }
