@@ -28,6 +28,10 @@ import kotlinx.serialization.json.Json
  * This includes a basic GET route for the root URL and conditional
  * JWT authentication for employee-related routes.
  *
+ * Routing is the core Ktor plugin for handling incoming requests in a server application.
+ * When the client makes a request to a specific URL (for example, /hello), the routing
+ * mechanism allows us to define how we want this request to be served.
+ *
  * See: [Ktor Routing Documentation](https://ktor.io/docs/routing-in-ktor.html)
  *
  * See: [Content negotiation and serialization](https://ktor.io/docs/serialization.html#0)
