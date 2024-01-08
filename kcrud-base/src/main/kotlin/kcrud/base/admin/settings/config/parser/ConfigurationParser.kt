@@ -43,7 +43,7 @@ internal object ConfigurationParser {
      * @param mappings Map of top-level configuration paths to their corresponding classes.
      * @return A new [ConfigurationCatalog] object populated with the parsed configuration data.
      */
-    fun parse(configuration: ApplicationConfig, mappings: List<KeyClassMap>): ConfigurationCatalog {
+    fun parse(configuration: ApplicationConfig, mappings: List<ConfigClassMap>): ConfigurationCatalog {
         // Retrieve the primary constructor of the generic type for parameter mapping.
         val constructor: KFunction<ConfigurationCatalog> = ConfigurationCatalog::class.primaryConstructor
             ?: throw IllegalArgumentException("Primary constructor is required for ${ConfigurationCatalog::class.simpleName}.")
@@ -53,16 +53,16 @@ internal object ConfigurationParser {
 
         // Map each configuration path to its corresponding class, instantiating classes for each setting.
         // Nested settings are handled recursively.
-        val arguments: Map<KParameter, Any> = mappings.mapNotNull { keyClassMap ->
+        val arguments: Map<KParameter, Any> = mappings.mapNotNull { configClassMap ->
             val configInstance: Any = instantiateConfig(
                 config = configuration,
-                keyPath = keyClassMap.path,
-                kClass = keyClassMap.kClass
+                keyPath = configClassMap.path,
+                kClass = configClassMap.kClass
             )
 
             // Add into the resulting arguments map the corresponding constructor parameter
             // as the instantiated configuration class.
-            constructorParameters[keyClassMap.argument]?.let { parameter ->
+            constructorParameters[configClassMap.argument]?.let { parameter ->
                 parameter to configInstance
             }
         }.toMap()

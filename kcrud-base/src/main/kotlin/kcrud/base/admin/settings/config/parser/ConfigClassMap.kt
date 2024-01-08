@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
  * @param path The configuration path.
  * @param argument The constructor argument name for the data class.
  * @param kClass The target data class type to be instantiated.
- * @return A [KeyClassMap] object containing the mapping.
+ * @return A [ConfigClassMap] object containing the mapping.
  */
 @ConfigurationAPI
-data class KeyClassMap(val path: String, val argument: String, val kClass: KClass<*>)
+data class ConfigClassMap(val path: String, val argument: String, val kClass: KClass<*>)

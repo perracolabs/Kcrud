@@ -9,8 +9,8 @@ package kcrud.base.admin.settings
 import io.ktor.server.application.*
 import kcrud.base.admin.settings.annotation.ConfigurationAPI
 import kcrud.base.admin.settings.config.ConfigurationCatalog
+import kcrud.base.admin.settings.config.parser.ConfigClassMap
 import kcrud.base.admin.settings.config.parser.ConfigurationParser
-import kcrud.base.admin.settings.config.parser.KeyClassMap
 import kcrud.base.admin.settings.config.sections.*
 import kcrud.base.admin.settings.config.sections.security.SecuritySettings
 import kcrud.base.utils.Tracer
@@ -47,13 +47,13 @@ object AppSettings {
         // ConfigurationCatalog class, and the third argument is the data class
         // that will be instantiated with the configuration values.
         val configMappings = listOf(
-            KeyClassMap(path = "ktor", argument = "server", kClass = ServerSettings::class),
-            KeyClassMap(path = "ktor.deployment", argument = "deployment", kClass = DeploymentSettings::class),
-            KeyClassMap(path = "ktor.cors", argument = "cors", kClass = CorsSettings::class),
-            KeyClassMap(path = "ktor.database", argument = "database", kClass = DatabaseSettings::class),
-            KeyClassMap(path = "ktor.docs", argument = "docs", kClass = DocsSettings::class),
-            KeyClassMap(path = "ktor.graphql", argument = "graphql", kClass = GraphQLSettings::class),
-            KeyClassMap(path = "ktor.security", argument = "security", kClass = SecuritySettings::class)
+            ConfigClassMap(path = "ktor", argument = "server", kClass = ServerSettings::class),
+            ConfigClassMap(path = "ktor.deployment", argument = "deployment", kClass = DeploymentSettings::class),
+            ConfigClassMap(path = "ktor.cors", argument = "cors", kClass = CorsSettings::class),
+            ConfigClassMap(path = "ktor.database", argument = "database", kClass = DatabaseSettings::class),
+            ConfigClassMap(path = "ktor.docs", argument = "docs", kClass = DocsSettings::class),
+            ConfigClassMap(path = "ktor.graphql", argument = "graphql", kClass = GraphQLSettings::class),
+            ConfigClassMap(path = "ktor.security", argument = "security", kClass = SecuritySettings::class)
         )
 
         configuration = ConfigurationParser.parse(
