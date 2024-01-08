@@ -61,7 +61,7 @@ internal object ConfigurationParser {
             )
 
             // Add into the resulting arguments map the corresponding constructor parameter
-            // as the instantiated configuration class.
+            // linked to the newly instantiated configuration class.
             constructorParameters[configClassMap.argument]?.let { parameter ->
                 parameter to configInstance
             }
