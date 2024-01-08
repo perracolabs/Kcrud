@@ -6,6 +6,7 @@
 
 package kcrud.base.admin.settings.config.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
 import kcrud.base.api.graphql.GraphQLFramework
 
 /**
@@ -23,4 +24,4 @@ data class GraphQLSettings(
     val playground: Boolean,
     val dumpSchema: Boolean,
     val schemaPath: String
-)
+) : ConfigSection

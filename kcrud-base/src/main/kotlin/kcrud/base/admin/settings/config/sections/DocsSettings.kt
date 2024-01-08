@@ -6,6 +6,8 @@
 
 package kcrud.base.admin.settings.config.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
+
 /**
  * Contains settings related to Swagger, OpenAPI, and Redoc.
  *
@@ -21,4 +23,4 @@ data class DocsSettings(
     val swaggerPath: String,
     val openApiPath: String,
     val redocPath: String
-)
+) : ConfigSection

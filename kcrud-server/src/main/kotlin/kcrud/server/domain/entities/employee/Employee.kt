@@ -41,17 +41,19 @@ data class Employee(
     // To serialize default values 'encodeDefaults' in the json configuration must be set to True.
     val fullName: String = "$firstName $lastName"
 
-    // Although 'age' could be simply assigned by calling 'DateTimeUtils.calculateAge(dob)',
-    // this example demonstrates a workaround for kotlinx.serialization's limitation with
-    // delegated properties, as such cannot serialize delegated properties.
-    // The regular serializable property 'age' is manually assigned the value from the
-    // delegated property 'ageDelegate'. This approach ensures 'age' remains serializable
-    // while incorporating the logic within AgeDelegate.
+    /**
+     * Workaround example for kotlinx-serialization's inability to serialize delegated properties.
+     * A private delegated property `_age` using `AgeDelegate` encapsulates age calculation logic.
+     * The public property `age` is assigned `_age`'s value, ensuring serialization compatibility.
+     * This pattern maintains property delegation benefits, like encapsulation and potential lazy
+     * evaluation, while adapting to kotlinx-serialization's limitations.
+     */
     private val _age: Int by AgeDelegate(dob)
     val age: Int = _age
 
     companion object {
-        fun toEntity(row: ResultRow): Employee {
+        fun from(row: ResultRow): Employee {
+            val contact: Contact? = row.getOrNull(ContactTable.id)?.let { Contact.from(row = row) }
             return Employee(
                 id = row[EmployeeTable.id],
                 firstName = row[EmployeeTable.firstName],
@@ -59,7 +61,7 @@ data class Employee(
                 dob = row[EmployeeTable.dob],
                 maritalStatus = row[EmployeeTable.maritalStatus],
                 honorific = row[EmployeeTable.honorific],
-                contact = row.getOrNull(ContactTable.id)?.let { Contact.toEntity(row = row) }
+                contact = contact
             )
         }
     }

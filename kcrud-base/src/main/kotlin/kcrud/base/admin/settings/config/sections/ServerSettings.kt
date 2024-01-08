@@ -6,6 +6,8 @@
 
 package kcrud.base.admin.settings.config.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
+
 /**
  * Contains the server root-level main configuration settings.
  *
@@ -17,4 +19,4 @@ package kcrud.base.admin.settings.config.sections
 data class ServerSettings(
     val development: Boolean,
     val machineId: Int
-)
+) : ConfigSection

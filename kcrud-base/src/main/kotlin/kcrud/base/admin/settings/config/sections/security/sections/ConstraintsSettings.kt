@@ -6,6 +6,8 @@
 
 package kcrud.base.admin.settings.config.sections.security.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
+
 /**
  * Security constraints settings.
  *
@@ -15,7 +17,7 @@ package kcrud.base.admin.settings.config.sections.security.sections
 data class ConstraintsSettings(
     val publicApi: LimitSpec,
     val newToken: LimitSpec
-) {
+) : ConfigSection {
     data class LimitSpec(
         val limit: Int,
         val refill: Long

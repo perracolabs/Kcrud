@@ -6,6 +6,8 @@
 
 package kcrud.base.admin.settings.config.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
+
 /**
  * Contains settings related to CORS.
  *
@@ -13,4 +15,4 @@ package kcrud.base.admin.settings.config.sections
  */
 data class CorsSettings(
     val allowedHosts: List<String>
-)
+) : ConfigSection

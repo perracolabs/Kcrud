@@ -25,7 +25,7 @@ data class Contact(
     val phone: String
 ) {
     companion object {
-        fun toEntity(row: ResultRow): Contact {
+        fun from(row: ResultRow): Contact {
             return Contact(
                 id = row[ContactTable.id],
                 email = row[ContactTable.email],

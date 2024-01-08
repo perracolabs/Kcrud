@@ -6,6 +6,7 @@
 
 package kcrud.base.admin.settings.config.sections.security.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
 import kcrud.base.admin.settings.config.sections.security.SecuritySettings
 
 /**
@@ -23,7 +24,7 @@ data class BasicAuthSettings(
     val realm: String,
     val customLoginForm: Boolean,
     val credentials: Credentials
-) {
+) : ConfigSection {
     data class Credentials(
         val username: String,
         val password: String

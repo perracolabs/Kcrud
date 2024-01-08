@@ -6,6 +6,7 @@
 
 package kcrud.base.admin.settings.config.sections.security.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
 import kcrud.base.admin.settings.config.sections.security.SecuritySettings
 
 /**
@@ -19,7 +20,7 @@ data class EncryptionSettings(
     val algorithm: String,
     val salt: String,
     val key: String
-) {
+) : ConfigSection {
     init {
         require(algorithm.isNotBlank()) { "Missing encryption algorithm." }
         require(salt.isNotBlank()) { "Missing encryption salt." }

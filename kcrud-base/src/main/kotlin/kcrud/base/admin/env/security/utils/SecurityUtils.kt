@@ -128,6 +128,7 @@ object SecurityUtils {
      * @param input The string to sanitize.
      * @return The sanitized string with HTML tags escaped.
      */
+    @Suppress("unused")
     fun sanitizeInput(input: String): String {
         return input.replace("<", "&lt;").replace(">", "&gt;")
     }

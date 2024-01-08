@@ -9,7 +9,8 @@ package kcrud.base.admin.settings
 import io.ktor.server.application.*
 import kcrud.base.admin.settings.annotation.ConfigurationAPI
 import kcrud.base.admin.settings.config.ConfigurationCatalog
-import kcrud.base.admin.settings.config.ConfigurationParser
+import kcrud.base.admin.settings.config.parser.ConfigurationParser
+import kcrud.base.admin.settings.config.parser.KeyClassMap
 import kcrud.base.admin.settings.config.sections.*
 import kcrud.base.admin.settings.config.sections.security.SecuritySettings
 import kcrud.base.utils.Tracer
@@ -31,6 +32,7 @@ object AppSettings {
     val graphql: GraphQLSettings get() = configuration.graphql
     val security: SecuritySettings get() = configuration.security
 
+    @OptIn(ConfigurationAPI::class)
     @Synchronized
     fun load(context: Application) {
         if (AppSettings::configuration.isInitialized)
@@ -39,21 +41,21 @@ object AppSettings {
         val tracer = Tracer<AppSettings>()
         tracer.debug("Loading application configuration.")
 
-        // Map connecting configuration paths (e.g., "ktor", "ktor.database") to pairs
-        // of parameter names in the Config class and their corresponding data classes.
-        // This enables dynamic parsing of configuration sections and instantiation
-        // of the associated settings classes.
-        val configMappings = mapOf(
-            "ktor" to Pair("server", ServerSettings::class),
-            "ktor.deployment" to Pair("deployment", DeploymentSettings::class),
-            "ktor.cors" to Pair("cors", CorsSettings::class),
-            "ktor.database" to Pair("database", DatabaseSettings::class),
-            "ktor.docs" to Pair("docs", DocsSettings::class),
-            "ktor.graphql" to Pair("graphql", GraphQLSettings::class),
-            "ktor.security" to Pair("security", SecuritySettings::class)
+        // Map connecting configuration paths.
+        // Where the first argument is the path to the configuration section,
+        // the second argument is the name of the constructor argument in the
+        // ConfigurationCatalog class, and the third argument is the data class
+        // that will be instantiated with the configuration values.
+        val configMappings = listOf(
+            KeyClassMap(path = "ktor", argument = "server", kClass = ServerSettings::class),
+            KeyClassMap(path = "ktor.deployment", argument = "deployment", kClass = DeploymentSettings::class),
+            KeyClassMap(path = "ktor.cors", argument = "cors", kClass = CorsSettings::class),
+            KeyClassMap(path = "ktor.database", argument = "database", kClass = DatabaseSettings::class),
+            KeyClassMap(path = "ktor.docs", argument = "docs", kClass = DocsSettings::class),
+            KeyClassMap(path = "ktor.graphql", argument = "graphql", kClass = GraphQLSettings::class),
+            KeyClassMap(path = "ktor.security", argument = "security", kClass = SecuritySettings::class)
         )
 
-        @OptIn(ConfigurationAPI::class)
         configuration = ConfigurationParser.parse(
             configuration = context.environment.config,
             mappings = configMappings

@@ -34,7 +34,7 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
             ).selectAll().where {
                 EmployeeTable.id eq employeeId
             }.singleOrNull()?.let { resultRow ->
-                Employee.toEntity(row = resultRow)
+                Employee.from(row = resultRow)
             }
         }
     }
@@ -53,7 +53,7 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
             val paginatedData: List<Employee> = query
                 .applyPagination(pageable = pageable)
                 .map { resultRow ->
-                    Employee.toEntity(row = resultRow)
+                    Employee.from(row = resultRow)
                 }
 
             Page.build(content = paginatedData, totalElements = totalElements, pageable = pageable)
@@ -90,7 +90,7 @@ internal class EmployeeRepository(private val contactRepository: IContactReposit
             val paginatedData: List<Employee> = query
                 .applyPagination(pageable = pageable)
                 .map { resultRow ->
-                    Employee.toEntity(row = resultRow)
+                    Employee.from(row = resultRow)
                 }
 
             Page.build(content = paginatedData, totalElements = totalFilteredElements, pageable = pageable)

@@ -6,6 +6,7 @@
 
 package kcrud.base.admin.settings.config.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
 import kcrud.base.admin.types.EnvironmentType
 
 /**
@@ -27,4 +28,4 @@ data class DeploymentSettings(
     val host: String,
     val apiVersion: String,
     val workingDir: String
-)
+) : ConfigSection

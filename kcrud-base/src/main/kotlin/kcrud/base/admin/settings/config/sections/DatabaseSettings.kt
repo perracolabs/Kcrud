@@ -6,6 +6,7 @@
 
 package kcrud.base.admin.settings.config.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
 import kcrud.base.data.database.DatabaseFactory
 
 /**
@@ -27,4 +28,4 @@ data class DatabaseSettings(
     val jdbcUrl: String,
     val jdbcDriver: String,
     val connectionPoolSize: Int
-)
+) : ConfigSection

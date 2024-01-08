@@ -33,13 +33,13 @@ data class Employment(
     val employee: Employee
 ) {
     companion object {
-        fun toEntity(row: ResultRow): Employment {
+        fun from(row: ResultRow): Employment {
             return Employment(
                 id = row[EmploymentTable.id],
                 period = Period.toEntity(row = row, table = EmploymentTable),
                 probationEndDate = row[EmploymentTable.probationEndDate],
                 workModality = row[EmploymentTable.workModality],
-                employee = Employee.toEntity(row = row)
+                employee = Employee.from(row = row)
             )
         }
     }

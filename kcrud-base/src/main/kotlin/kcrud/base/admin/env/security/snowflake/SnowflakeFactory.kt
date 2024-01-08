@@ -10,7 +10,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.nanoseconds
 
 /**
  * Generates unique identifiers suitable for distributed systems based
@@ -136,11 +136,11 @@ internal object SnowflakeFactory {
 
         // Extract the timestamp segment.
         val timestampMs: Long = (normalizedId ushr (MACHINE_ID_BITS + SEQUENCE_BITS))
-        val instant: Instant = Instant.fromEpochMilliseconds(timestampMs)
-        val utcTimestampSegment: LocalDateTime = instant.toLocalDateTime(TimeZone.UTC)
+        val instant: Instant = Instant.fromEpochMilliseconds(epochMilliseconds = timestampMs)
+        val utcTimestampSegment: LocalDateTime = instant.toLocalDateTime(timeZone = TimeZone.UTC)
 
         // Convert the timestamp to LocalDateTime using the system's default timezone.
-        val localTimestampSegment: LocalDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        val localTimestampSegment: LocalDateTime = instant.toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
 
         // Extract the sequence number segment.
         val sequenceSegment: Long = normalizedId and MAX_SEQUENCE
@@ -165,6 +165,6 @@ internal object SnowflakeFactory {
      */
     private fun newTimestamp(): Long {
         val nanoTimeDiff: Long = System.nanoTime() - nanoTimeStart
-        return timestampEpoch + TimeUnit.NANOSECONDS.toMillis(nanoTimeDiff)
+        return timestampEpoch + nanoTimeDiff.nanoseconds.inWholeMilliseconds
     }
 }

@@ -26,7 +26,7 @@ internal class ContactRepository : IContactRepository {
             ContactTable.selectAll().where {
                 ContactTable.id eq contactId
             }.singleOrNull()?.let { resultRow ->
-                Contact.toEntity(row = resultRow)
+                Contact.from(row = resultRow)
             }
         }
     }
@@ -36,7 +36,7 @@ internal class ContactRepository : IContactRepository {
             ContactTable.selectAll().where {
                 ContactTable.employeeId eq employeeId
             }.singleOrNull()?.let { resultRow ->
-                Contact.toEntity(row = resultRow)
+                Contact.from(row = resultRow)
             }
         }
     }

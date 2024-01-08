@@ -6,6 +6,7 @@
 
 package kcrud.base.admin.settings.config.sections.security.sections
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
 import kcrud.base.admin.settings.config.sections.security.SecuritySettings
 
 /**
@@ -25,7 +26,7 @@ data class JwtSettings(
     val issuer: String,
     val realm: String,
     val secretKey: String
-) {
+) : ConfigSection {
     init {
         require(tokenLifetime > 0) { "Invalid JWT token lifetime. Must be > 0." }
         require(audience.isNotBlank()) { "Missing JWT audience." }

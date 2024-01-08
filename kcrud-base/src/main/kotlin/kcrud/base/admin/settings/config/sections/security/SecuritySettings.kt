@@ -6,6 +6,7 @@
 
 package kcrud.base.admin.settings.config.sections.security
 
+import kcrud.base.admin.settings.config.parser.ConfigSection
 import kcrud.base.admin.settings.config.sections.security.sections.BasicAuthSettings
 import kcrud.base.admin.settings.config.sections.security.sections.ConstraintsSettings
 import kcrud.base.admin.settings.config.sections.security.sections.EncryptionSettings
@@ -24,7 +25,7 @@ data class SecuritySettings(
     val constraints: ConstraintsSettings,
     val jwt: JwtSettings,
     val basic: BasicAuthSettings
-) {
+) : ConfigSection {
     companion object {
         const val MIN_USERNAME_LENGTH: Int = 4
         const val MIN_KEY_LENGTH: Int = 12

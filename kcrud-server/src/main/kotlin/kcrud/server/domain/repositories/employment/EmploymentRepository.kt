@@ -25,7 +25,7 @@ internal class EmploymentRepository : IEmploymentRepository {
                     (EmploymentTable.id eq employmentId) and
                             (EmploymentTable.employeeId eq employeeId)
                 }.singleOrNull()?.let { resultRow ->
-                    Employment.toEntity(row = resultRow)
+                    Employment.from(row = resultRow)
                 }
         }
     }
@@ -37,7 +37,7 @@ internal class EmploymentRepository : IEmploymentRepository {
                     (EmploymentTable.employeeId eq employeeId)
                 }
                 .map { resultRow ->
-                    Employment.toEntity(row = resultRow)
+                    Employment.from(row = resultRow)
                 }
         }
     }

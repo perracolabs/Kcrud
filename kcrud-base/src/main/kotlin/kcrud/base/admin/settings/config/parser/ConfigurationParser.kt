@@ -4,10 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.base.admin.settings.config
+package kcrud.base.admin.settings.config.parser
 
 import io.ktor.server.config.*
 import kcrud.base.admin.settings.annotation.ConfigurationAPI
+import kcrud.base.admin.settings.config.ConfigurationCatalog
 import kcrud.base.utils.Tracer
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -42,23 +43,26 @@ internal object ConfigurationParser {
      * @param mappings Map of top-level configuration paths to their corresponding classes.
      * @return A new [ConfigurationCatalog] object populated with the parsed configuration data.
      */
-    fun parse(
-        configuration: ApplicationConfig,
-        mappings: Map<String, Pair<String, KClass<*>>>
-    ): ConfigurationCatalog {
+    fun parse(configuration: ApplicationConfig, mappings: List<KeyClassMap>): ConfigurationCatalog {
         // Retrieve the primary constructor of the generic type for parameter mapping.
         val constructor: KFunction<ConfigurationCatalog> = ConfigurationCatalog::class.primaryConstructor
             ?: throw IllegalArgumentException("Primary constructor is required for ${ConfigurationCatalog::class.simpleName}.")
 
+        // Create a map between each constructor parameter with its corresponding name as key.
         val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
         // Map each configuration path to its corresponding class, instantiating classes for each setting.
         // Nested settings are handled recursively.
-        val arguments: Map<KParameter, Any> = mappings.mapNotNull { (keyPath, keyClassMap) ->
-            val (argumentName, configClass) = keyClassMap
-            val configInstance: Any = instantiateConfig(config = configuration, keyPath = keyPath, kClass = configClass)
+        val arguments: Map<KParameter, Any> = mappings.mapNotNull { keyClassMap ->
+            val configInstance: Any = instantiateConfig(
+                config = configuration,
+                keyPath = keyClassMap.path,
+                kClass = keyClassMap.kClass
+            )
 
-            constructorParameters[argumentName]?.let { parameter ->
+            // Add into the resulting arguments map the corresponding constructor parameter
+            // as the instantiated configuration class.
+            constructorParameters[keyClassMap.argument]?.let { parameter ->
                 parameter to configInstance
             }
         }.toMap()
